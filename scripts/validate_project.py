@@ -79,6 +79,30 @@ if meta.get("status")=="ok":
             if price<=0:
                 fail(f"theme {c.get('code')} missing live price: {p.get('name')}")
 
+    sentiment=data.get("sentiment") or {}
+    kr=sentiment.get("kr") or {}
+    us=sentiment.get("us") or {}
+    try:
+        kr_score=float(kr.get("score"))
+    except Exception:
+        kr_score=-1
+    if not (0 <= kr_score <= 100):
+        fail("Korea sentiment score missing/invalid")
+    if len(kr.get("components") or []) < 6:
+        fail("Korea sentiment components incomplete")
+    try:
+        us_score=float(us.get("score"))
+    except Exception:
+        us_score=-1
+    if us.get("available") and not (0 <= us_score <= 100):
+        fail("US sentiment score invalid")
+    try:
+        blend=float(sentiment.get("blended_score"))
+    except Exception:
+        blend=-1
+    if not (0 <= blend <= 100):
+        fail("blended sentiment score missing/invalid")
+
 html=(ROOT/"index.html").read_text(encoding="utf-8")
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
 if not m:
