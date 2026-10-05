@@ -61,6 +61,9 @@ for p in all_profiles:
     for k in ("macdScore","maScore","rsiScore","stochScore","tradingGrade","tradingTrend","tradingAction","divergence"):
         if not str(text.get(k,"")).strip():
             fail(f"{name} technical field missing: {k}")
+    for k in ("currentPriceText","fairPriceText","price1","target1Display"):
+        if not str(text.get(k,"")).strip() or str(text.get(k,"")).strip()=="—":
+            fail(f"{name} visible profile data missing: {k}")
     links=p.get("links") or {}
     for lk in ("disclosure","ir","consensus","news"):
         u=str(links.get(lk,""))
@@ -138,6 +141,9 @@ if "Trading Indicators" in html:
     fail("duplicate Trading Indicators block remains")
 if "data-profile-market=\"KOSPI\"" not in html or "data-profile-market=\"KOSDAQ\"" not in html:
     fail("KOSPI/KOSDAQ TOP5 selector missing")
+for i in range(1,6):
+    if f'data-key="price{i}"' not in html or f'data-key="target{i}Display"' not in html:
+        fail(f"selected-market TOP5 price/target binding missing: row {i}")
 if "trendStateCard" not in html or "actionStateCard" not in html or "heatStateCard" not in html:
     fail("colored trading state cards missing")
 
