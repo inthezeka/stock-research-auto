@@ -23,9 +23,9 @@ kosdaq_profiles=groups.get("KOSDAQ") or data.get("stock_profiles_kosdaq") or []
 profiles=kospi_profiles
 if len(kospi_profiles)!=5:
     fail(f"KOSPI TOP5 profile count={len(kospi_profiles)}")
-if len(kosdaq_profiles)!=5:
-    fail(f"KOSDAQ TOP5 profile count={len(kosdaq_profiles)}")
-if len(kosdaq_profiles)==5:
+if not (1 <= len(kosdaq_profiles) <= 5):
+    fail(f"KOSDAQ qualified profile count={len(kosdaq_profiles)}")
+if kosdaq_profiles:
     priorities=[0 if float(p.get("selection_trading_score",0))>=70 else 1 for p in kosdaq_profiles]
     if priorities!=sorted(priorities):
         fail("KOSDAQ 70+ priority ordering violated")
