@@ -67,6 +67,31 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .search-result-badge{display:none}.search-result-badge.show{display:inline-flex}
 @media(max-width:760px){.stock-search-row{grid-template-columns:1fr}.stock-search-row .btn{width:100%}}
 
+
+/* v18 dual screening: Fundamental + ICT */
+.screening-mode-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.screening-mode-btn{appearance:none;border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-weight:900;cursor:pointer;color:#344054}
+.screening-mode-btn.active{background:#0B1F3A;color:#fff;border-color:#0B1F3A}
+.screening-panel{display:none}.screening-panel.active{display:block}
+.pipeline-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0}
+.pipeline-step{background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px;min-height:118px}
+.pipeline-step .num{font-size:10px;font-weight:900;color:var(--blue);letter-spacing:.08em}
+.pipeline-step h4{font-size:13px;margin:6px 0}
+.pipeline-step p{font-size:10px;color:var(--sub);line-height:1.55;margin:0}
+.scan-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0}
+.scan-status{font-size:11px;color:#667085}
+.compact-chips{display:flex;gap:6px;flex-wrap:wrap}
+.compact-chip{padding:6px 8px;border-radius:999px;background:#F2F4F7;font-size:10px;font-weight:800}
+.entry-s{color:#067647;background:#ECFDF3}.entry-a{color:#175CD3;background:#EFF8FF}.entry-b{color:#B54708;background:#FFFAEB}.entry-c{color:#B42318;background:#FEF3F2}
+.ict-score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.ict-score-card>div{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:10px;font-size:10px}
+.ict-detail-card{margin-top:12px}
+.ict-detail-card h3{margin:0 0 8px}
+.ict-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ict-detail-grid>div{padding:9px;border:1px solid #EEF1F4;border-radius:9px;background:#FAFBFC;font-size:10px;line-height:1.5}
+.ict-best-note{margin-top:12px;padding:12px;border-radius:10px;background:#F5F9FF;border-left:4px solid var(--blue);font-size:11px;line-height:1.6}
+@media(max-width:1000px){.pipeline-grid{grid-template-columns:1fr 1fr}.ict-detail-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pipeline-grid,.ict-detail-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -84,12 +109,11 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <a href="#deepdive"><span class="nav-num">05</span>DEEP DIVE</a>
     <a href="#valuation"><span class="nav-num">06</span>VALUATION</a>
     <a href="#catalyst"><span class="nav-num">07</span>CATALYST / RISK</a>
-    <a href="#technical"><span class="nav-num">08</span>TECHNICAL</a>
-    <a href="#strategy"><span class="nav-num">09</span>STRATEGY</a>
-    <a href="#scenario"><span class="nav-num">10</span>SCENARIO</a>
+    <a href="#strategy"><span class="nav-num">08</span>STRATEGY</a>
+    <a href="#scenario"><span class="nav-num">09</span>SCENARIO</a>
     <div class="nav-group">FRAMEWORK</div>
-    <a href="#blueprint"><span class="nav-num">11</span>THEME RADAR</a>
-    <a href="#sources"><span class="nav-num">12</span>SOURCE RULE</a>
+    <a href="#blueprint"><span class="nav-num">10</span>THEME RADAR</a>
+    <a href="#sources"><span class="nav-num">11</span>SOURCE RULE</a>
   </nav>
 </aside>
 
@@ -194,12 +218,18 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="screening" class="section-track" data-name="SCREENING">
-  <div class="section-head"><div><h2 class="section-title">③ 추천 종목 TOP 5</h2><p class="section-desc">KOSPI·KOSDAQ 모두 Trading Score를 적용합니다. Trading Score 60 미만은 제외하고 70점 이상을 우선하며, ICT 기반 M&#39;s(HH 지속 + Discount 구간)를 최우선 기술항목으로 반영해 Fundamental/Catalyst 60% + Trading Score 40%로 최종 순위를 산정합니다. [AI]</p></div><button class="btn secondary" onclick="openHelp()">종목명 / 수치 수정하기</button></div>
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">③ 종목 선정 · Fundamental / ICT Trading</h2>
+      <p class="section-desc">추천은 두 개의 독립 경로로 운영합니다. Fundamental은 기업의 성장·이익·Valuation·Catalyst를 먼저 압축한 뒤 ICT 구조로 진입 품질을 검증하고, Trading은 유동성 상위 종목을 ICT Setup 완성도만으로 순위화합니다. [AI]</p>
+    </div>
+  </div>
+
   <div class="card stock-search-card">
     <div class="stock-search-head">
       <div>
         <div class="stock-search-title">🔎 종목검색 · KOSPI / KOSDAQ</div>
-        <div class="stock-search-desc">KOSPI·KOSDAQ 전체 상장종목에서 검색합니다. 검색 종목의 차트는 Naver 조회를 우선하고 브라우저 차단 시 GitHub의 KRX 백업 일봉으로 자동 전환해 Trading Score를 계산합니다. [AI]</div>
+        <div class="stock-search-desc">전체 상장종목 검색은 추천 랭킹과 별개입니다. 검색 종목을 선택하면 아래 상세분석만 해당 종목 기준으로 변경합니다.</div>
       </div>
       <span class="tag blue search-result-badge" id="stockSearchBadge">SEARCH RESULT</span>
     </div>
@@ -209,39 +239,63 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
         <option value="KOSPI">KOSPI</option>
         <option value="KOSDAQ">KOSDAQ</option>
       </select>
-      <input id="stockSearchInput" class="stock-search-input" type="search" autocomplete="off" placeholder="예: 삼성전자, 알테오젠, 005930" aria-label="종목 검색">
+      <input id="stockSearchInput" class="stock-search-input" type="search" autocomplete="off" placeholder="예: 삼성전자, 티엘비, 356860" aria-label="종목 검색">
       <button type="button" class="btn dark" id="stockSearchButton">검색</button>
     </div>
     <div id="stockSearchResults" class="stock-search-results"></div>
     <div id="stockSearchStatus" class="stock-search-status">KOSPI·KOSDAQ 전체 상장종목 목록을 불러오는 중입니다...</div>
   </div>
-  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>최종점수</th><th>Trading</th><th>M&#39;s</th><th>현재가</th><th>목표/적정가</th><th>예상수익률</th><th>Risk / Reward</th><th>투자기간</th><th>핵심 Catalyst</th><th>의견</th></tr></thead><tbody>
-    <tr class="stock-pick-row" data-profile-index="0"><td class="rank">🥇</td><td><b data-edit data-key="stock1">삼성전기</b></td><td><span class="score-pill" data-edit data-key="score1">92 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price1">—</td><td data-edit data-key="target1Display">—</td><td class="up" data-edit data-key="return1">+44% [AI]</td><td><b data-edit data-key="rr1">3.5 : 1 [AI]</b></td><td data-edit data-key="period1">3~12개월</td><td data-edit data-key="cat1">AI MLCC LTA + FCBGA 이익 상향</td><td><span class="rating buy" data-edit data-key="op1">Strong Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="1"><td class="rank">2</td><td><b data-edit data-key="stock2">SK하이닉스</b></td><td><span class="score-pill" data-edit data-key="score2">91 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price2">—</td><td data-edit data-key="target2Display">—</td><td class="up" data-edit data-key="return2">+70.6%</td><td><b data-edit data-key="rr2">3.0 : 1 [AI]</b></td><td data-edit data-key="period2">3~12개월</td><td data-edit data-key="cat2">HBM4 · AI 메모리 이익 레버리지</td><td><span class="rating buy" data-edit data-key="op2">Strong Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="2"><td class="rank">3</td><td><b data-edit data-key="stock3">LS ELECTRIC</b></td><td><span class="score-pill" data-edit data-key="score3">88 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price3">—</td><td data-edit data-key="target3Display">—</td><td class="up" data-edit data-key="return3">+31.7%</td><td><b data-edit data-key="rr3">2.3 : 1 [AI]</b></td><td data-edit data-key="period3">3~12개월</td><td data-edit data-key="cat3">북미 Grid · AI 데이터센터 전력 CAPEX</td><td><span class="rating buy" data-edit data-key="op3">Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="3"><td class="rank">4</td><td><b data-edit data-key="stock4">삼성전자</b></td><td><span class="score-pill" data-edit data-key="score4">87 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price4">—</td><td data-edit data-key="target4Display">—</td><td class="up" data-edit data-key="return4">+73.0%</td><td><b data-edit data-key="rr4">2.5 : 1 [AI]</b></td><td data-edit data-key="period4">3~12개월</td><td data-edit data-key="cat4">메모리 초호황 · HBM4 가격/출하</td><td><span class="rating buy" data-edit data-key="op4">Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="4"><td class="rank">5</td><td><b data-edit data-key="stock5">한화에어로스페이스</b></td><td><span class="score-pill" data-edit data-key="score5">85 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price5">—</td><td data-edit data-key="target5Display">—</td><td class="up" data-edit data-key="return5">+52.5%</td><td><b data-edit data-key="rr5">2.4 : 1 [AI]</b></td><td data-edit data-key="period5">3~12개월</td><td data-edit data-key="cat5">방산 수출 + 누리호5 + 수주잔고</td><td><span class="rating buy" data-edit data-key="op5">Buy</span></td></tr>
-  </tbody></table></div>
-  <div class="note" style="margin-top:12px">선정 로직: KOSPI·KOSDAQ 공통 Trading Score 60 미만 제외 · 70점 이상 우선 · M&#39;s 30점 이상이면서 HH 지속 + ICT Discount 구간 종목을 최우선. 최종점수 = Fundamental/Catalyst 60% + Trading Score 40% [AI].</div>
+
+  <div class="screening-mode-tabs">
+    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental → 최종 TOP 5</button>
+    <button type="button" class="screening-mode-btn" data-screening-mode="trading">ICT Trading → TOP 10</button>
+  </div>
+
+  <div id="fundamentalPanel" class="screening-panel active">
+    <div class="pipeline-grid">
+      <div class="pipeline-step"><div class="num">01</div><h4>Fundamental Screening</h4><p>KOSPI/KOSDAQ 전체에서 유동성·시가총액 조건을 통과한 후보를 분석해 Fundamental TOP 20을 발굴합니다.</p></div>
+      <div class="pipeline-step"><div class="num">02</div><h4>Fundamental TOP 10</h4><p>Growth · Earnings · Valuation · Catalyst를 각각 25점으로 평가해 상위 10개를 압축합니다. [AI]</p></div>
+      <div class="pipeline-step"><div class="num">03</div><h4>ICT Screening</h4><p>Liquidity · Structure · MSS/BOS · FVG · Protected Low를 검증합니다.</p></div>
+      <div class="pipeline-step"><div class="num">04</div><h4>Entry Quality</h4><p>S = 즉시 관심 · A = Pullback 대기 · B = Breakout 대기 · C = 제외.</p></div>
+      <div class="pipeline-step"><div class="num">05</div><h4>최종 TOP 5</h4><p>Fundamental 우수성에 ICT Entry Quality를 결합해 실제 관찰 우선순위를 결정합니다. [AI]</p></div>
+    </div>
+    <div class="scan-toolbar">
+      <button type="button" class="btn dark" id="fundamentalScanBtn">Fundamental 스캔 실행</button>
+      <span class="scan-status" id="fundamentalScanStatus">새 선정 기준으로 스캔 대기 중</span>
+    </div>
+    <div class="card"><h3 class="subhead">① Fundamental TOP 20</h3><div id="fundTop20List" class="compact-chips"><span class="note">스캔 실행 후 표시됩니다.</span></div></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>시장</th><th>Fundamental</th><th>Growth</th><th>Earnings</th><th>Valuation</th><th>Catalyst</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="8">스캔 대기 중</td></tr></tbody></table></div></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">⑤ Fundamental 최종 TOP 5</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Fundamental</th><th>ICT</th><th>Entry Quality</th><th>현재가</th><th>핵심 Catalyst</th><th>상태</th></tr></thead><tbody id="fundFinalBody"><tr><td colspan="8">ICT Screening 완료 후 표시됩니다.</td></tr></tbody></table></div></div>
+  </div>
+
+  <div id="tradingPanel" class="screening-panel">
+    <div class="card">
+      <h3 class="subhead">ICT SCORE · 100점</h3>
+      <div class="ict-score-card">
+        <div><b>HTF Market Structure · 20</b><br>Weekly / Daily HH·HL·Protected Structure</div>
+        <div><b>External Liquidity · 15</b><br>상방 External BSL의 명확성과 거리</div>
+        <div><b>Liquidity Event · 10</b><br>SSL Sweep / BSL Sweep / External BOS</div>
+        <div><b>MSS / BOS · 15</b><br>1H 중심 Bullish MSS / BOS 확인</div>
+        <div><b>Displacement · 10</b><br>큰 몸통 · Repricing · FVG 동반</div>
+        <div><b>FVG / Order Block · 10</b><br>현재가 아래 Bullish PD Array</div>
+        <div><b>Premium / Discount · 5</b><br>Long은 Discount / EQ 우선</div>
+        <div><b>Protected Low · 5</b><br>Internal / H1 Major / Daily 구분</div>
+        <div><b>Risk / Reward · 10</b><br>실제 Liquidity Target 기준 최소 1:2</div>
+      </div>
+      <p class="note">90~100 S · 80~89 A · 70~79 B · 60~69 Watch · 60 미만 제외. 예상수익률이 아니라 현재 ICT Setup의 완성도 순으로 랭킹합니다. [AI]</p>
+    </div>
+    <div class="scan-toolbar">
+      <button type="button" class="btn dark" id="ictScanBtn">ICT Trading TOP10 스캔</button>
+      <span class="scan-status" id="ictScanStatus">거래대금·유동성 상위 후보 스캔 대기 중</span>
+    </div>
+    <div class="card"><h3 class="subhead">ICT Trading TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>현재가</th><th>ICT Score</th><th>HTF Bias</th><th>External BSL</th><th>Internal BSL</th><th>Protected Low</th><th>현재 Setup</th><th>Entry Zone</th><th>Invalidation</th><th>1차 Target</th><th>2차 Target</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="14">스캔 대기 중</td></tr></tbody></table></div></div>
+    <div id="ictBestNote" class="ict-best-note" style="display:none"></div>
+    <div id="ictTop5Details"></div>
+  </div>
 </section>
 
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
-  <div class="top5-selector">
-    <div class="top5-selector-head">
-      <div>
-        <div class="top5-selector-title">추천종목 TOP 5 선택</div>
-        <div class="top5-selector-desc">KOSPI / KOSDAQ 모두 동일하게 Trading Score 60 미만 제외 · 70점 이상 우선 적용합니다. M&#39;s 30/40 이상 + HH 지속 + ICT Discount 구간은 ★ 우선순위이며, Final = Fundamental/Catalyst 60% + Trading 40%입니다. [AI]</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-        <div class="market-profile-toggle" id="profileMarketToggle">
-          <button type="button" class="market-profile-btn active" data-profile-market="KOSPI">KOSPI TOP5</button>
-          <button type="button" class="market-profile-btn" data-profile-market="KOSDAQ">KOSDAQ TOP5</button>
-        </div>
-        <span class="selected-stock-note" id="selectedStockNote">KOSPI · TOP 1 SELECTED</span>
-      </div>
-    </div>
-    <div class="top5-tabs" id="topPickTabs"></div>
-  </div>
+  <div class="note" style="margin-bottom:12px">상단 Fundamental / ICT 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
   <div class="card top-pick">
     <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">🥇 TOP PICK</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill" data-edit data-key="topPickScore">92 / Strong Buy [AI]</span></div></div>
     <div class="thesis"><b>투자 Thesis</b><br><span data-edit data-key="thesis">“이 종목을 지금 투자해야 하는 가장 중요한 이유는 AI 서버용 MLCC 장기계약과 FCBGA 믹스 개선이 2027년 이익 추정치를 끌어올리는 가운데, 최근 주가 조정 후에도 실적 상향 흐름이 이어지고 있기 때문이다.” [AI]</span></div>
@@ -294,63 +348,6 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 </section>
 
-<section id="technical" class="section-track" data-name="TECHNICAL">
-  <div class="section-head">
-    <div><h2 class="section-title">Technical & Market Structure · Trading Score</h2><p class="section-desc">일봉 스윙 기준 Trading Score 100점입니다. M&#39;s 40점(ICT: HH 지속·HL·Discount/OTE)으로 가장 높은 비중을 주고, MACD 20점 · 이동평균/괴리율 20점 · RSI 10점 · Stochastic 10점을 합산합니다. [AI]</p></div>
-    <span class="score-pill" data-edit data-key="tradingScore">—</span>
-  </div>
-  <div class="trading-score-hero">
-    <div class="card trading-total"><div class="ts-label">TRADING SCORE</div><div class="ts-value" data-edit data-key="tradingScore">—</div><div class="ts-grade" data-edit data-key="tradingGrade">—</div></div>
-    <div class="trading-meta">
-      <div class="metric state-metric state-gray" id="trendStateCard"><div class="m-label">현재 추세</div><div class="m-val" data-edit data-key="tradingTrend">—</div></div>
-      <div class="metric state-metric state-gray" id="actionStateCard"><div class="m-label">매매 판단</div><div class="m-val" data-edit data-key="tradingAction">—</div></div>
-      <div class="metric state-metric state-gray" id="heatStateCard"><div class="m-label">과열도</div><div class="m-val" data-edit data-key="tradingOverheat">—</div></div>
-    </div>
-  </div>
-  <div class="table-wrap"><table class="table score-breakdown">
-    <thead><tr><th>지표</th><th>현재 상태</th><th>점수</th><th>최대점수</th><th>판단</th></tr></thead>
-    <tbody>
-      <tr><td><b>M&#39;s · ICT</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="msValue">—</span></div></td><td data-edit data-key="msScore">—</td><td>40</td><td data-edit data-key="msScoreState">—</td></tr>
-      <tr><td><b>MACD</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="macdValue">—</span></div></td><td data-edit data-key="macdScore">—</td><td>20</td><td data-edit data-key="macdScoreState">—</td></tr>
-      <tr><td><b>MA / 괴리율</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="maValue">—</span><span class="score-sub" data-edit data-key="maGapInfo">—</span></div></td><td data-edit data-key="maScore">—</td><td>20</td><td data-edit data-key="maScoreState">—</td></tr>
-      <tr><td><b>RSI(14)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="rsiValue">—</span></div></td><td data-edit data-key="rsiScore">—</td><td>10</td><td data-edit data-key="rsiScoreState">—</td></tr>
-      <tr><td><b>Stochastic(14,3)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="stochValue">—</span></div></td><td data-edit data-key="stochScore">—</td><td>10</td><td data-edit data-key="stochScoreState">—</td></tr>
-      <tr class="total-row"><td><b>TOTAL</b></td><td data-edit data-key="tradingGrade">—</td><td data-edit data-key="tradingScore">—</td><td>100</td><td data-edit data-key="tradingAction">—</td></tr>
-    </tbody>
-  </table></div>
-  <div class="card" style="margin-top:14px">
-    <h3 class="subhead">Price Structure</h3>
-    <div class="spark"><svg viewBox="0 0 600 132" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1769E0" stop-opacity=".15"/><stop offset="100%" stop-color="#1769E0" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10 L600,132 L0,132 Z"/><path class="price" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10"/><line class="resist" x1="0" y1="24" x2="600" y2="24"/><line class="support" x1="0" y1="88" x2="600" y2="88"/><text class="spark-label" x="10" y="19">Resistance</text><text class="spark-label" x="10" y="84">Support</text></svg></div>
-    <div class="grid-3" style="margin-top:10px"><div><div class="eyebrow">SUPPORT</div><b data-edit data-key="support">—</b></div><div><div class="eyebrow">RESISTANCE</div><b data-edit data-key="resistance">—</b></div><div><div class="eyebrow">DIVERGENCE</div><b data-edit data-key="divergence">—</b></div></div>
-    <div class="technical-legend" style="margin-top:12px"><b>Confirmation</b> · <span data-edit data-key="technicalConfirmation">M&#39;s와 4개 보조지표의 동조 여부를 확인합니다. [AI]</span></div>
-    <p class="section-desc" style="margin-top:12px" data-edit data-key="technicalComment">가격 데이터 갱신 시 자동 계산됩니다.</p>
-  </div>
-  <div class="tech-analysis-grid">
-    <div class="card"><h3 class="subhead">핵심 분석 5가지</h3><div class="facts">
-      <div class="fact-row"><span>1. 추세</span><b data-edit data-key="maScoreState">—</b></div>
-      <div class="fact-row"><span>2. 모멘텀</span><b><span data-edit data-key="macdScoreState">—</span> · <span data-edit data-key="rsiScoreState">—</span></b></div>
-      <div class="fact-row"><span>3. 진입 타이밍</span><b data-edit data-key="stochScoreState">—</b></div>
-      <div class="fact-row"><span>4. 과열도</span><b><span data-edit data-key="tradingOverheat">—</span> · <span data-edit data-key="maGapInfo">—</span></b></div>
-      <div class="fact-row"><span>5. 위험요인</span><b data-edit data-key="divergence">—</b></div>
-    </div><h3 class="subhead" style="margin-top:18px">별도 확인 지표</h3><div class="facts">
-      <div class="fact-row"><span>거래량</span><b data-edit data-key="volumeInfo">—</b></div>
-      <div class="fact-row"><span>ATR / 변동성</span><b data-edit data-key="atrInfo">—</b></div>
-      <div class="fact-row"><span>Gap</span><b data-edit data-key="gapInfo">—</b></div>
-      <div class="fact-row"><span>거래대금</span><b data-edit data-key="turnoverInfo">—</b></div>
-      <div class="fact-row"><span>52주 위치</span><b data-edit data-key="high52Info">—</b></div>
-    </div></div>
-    <div class="card"><h3 class="subhead">가격 전략</h3><div class="table-wrap"><table class="table price-plan-table"><thead><tr><th>구분</th><th>가격</th><th>산정 근거</th></tr></thead><tbody>
-      <tr><td>현재가</td><td data-edit data-key="tpCurrent">—</td><td data-edit data-key="tpCurrentBasis">현재 종가</td></tr>
-      <tr><td>1차 진입가</td><td data-edit data-key="tpEntry1">—</td><td data-edit data-key="tpEntry1Basis">—</td></tr>
-      <tr><td>2차 진입가</td><td data-edit data-key="tpEntry2">—</td><td data-edit data-key="tpEntry2Basis">—</td></tr>
-      <tr><td>추가매수 가능가격</td><td data-edit data-key="tpAdd">—</td><td data-edit data-key="tpAddBasis">—</td></tr>
-      <tr><td>1차 목표가</td><td data-edit data-key="tpTarget1">—</td><td data-edit data-key="tpTarget1Basis">—</td></tr>
-      <tr><td>2차 목표가</td><td data-edit data-key="tpTarget2">—</td><td data-edit data-key="tpTarget2Basis">—</td></tr>
-      <tr><td>기술적 손절가</td><td data-edit data-key="tpStop">—</td><td data-edit data-key="tpStopBasis">—</td></tr>
-    </tbody></table></div><p class="note" style="margin-top:10px">가격은 MA20/MA60/지지·저항/직전 고저점/ATR 중 실제 계산 가능한 근거만 사용합니다. ATR 기반 가격은 [AI]입니다.</p></div>
-  </div>
-  <div class="card tech-final"><div class="eyebrow">FINAL TECHNICAL VIEW</div><div class="tech-final-line" data-edit data-key="tradingConclusion">Trading Score —</div><div class="tech-entry" data-edit data-key="tradingEntryCondition">진입 조건을 계산 중입니다.</div></div>
-</section>
 <section id="strategy" class="section-track" data-name="STRATEGY">
   <div class="section-head"><div><h2 class="section-title">⑤ 매매전략 & Risk / Reward</h2><p class="section-desc">Trade Plan은 자동 분석 결과를 표시하는 읽기전용 영역입니다. 사용자가 직접 선택하거나 수정하지 않습니다.</p></div><span class="trade-lock">READ ONLY</span></div>
   <div class="strategy">
@@ -585,7 +582,7 @@ function applyTradingStateColors(){
   paint('actionStateCard',document.querySelector('#actionStateCard [data-key="tradingAction"]')?.textContent||'','action');
   paint('heatStateCard',document.querySelector('#heatStateCard [data-key="tradingOverheat"]')?.textContent||'','heat');
 }
-const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','technical','strategy','scenario','blueprint','sources'];
+const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','strategy','scenario','blueprint','sources'];
 function applyProfileText(profile){
   if(!profile)return;
   const t=profile.text||{};
@@ -1273,7 +1270,7 @@ async function buildSearchProfile(item){
   t.technicalComment='Trading Score '+tech.total+'/100 ('+tech.grade+'/'+tech.label+'), M\'s '+tech.components.ms[0]+'/40 · '+tech.components.ms[1]+', 추세 '+tech.trend+', 과열도 '+tech.heat+'. [AI]';t.tradingConclusion='Trading Score '+tech.total+'/100 | M\'s '+tech.components.ms[0]+'/40 | 추세: '+tech.trend+' | 과열도: '+tech.heat+' | 전략: '+tech.action+' [AI]';t.tradingEntryCondition=tech.g20>8?'추격매수보다 MA20 괴리 축소 후 재진입 신호 확인이 우선입니다. [AI]':'MA20 방향과 MACD·Stochastic 동조를 확인해 분할 진입합니다. [AI]';
   const probs=tech.total>=80?[40,45,15]:tech.total>=70?[35,45,20]:tech.total>=60?[30,45,25]:tech.total>=50?[25,45,30]:[15,35,50],bull=tech.target2,base=tech.target1,bear=tech.stop;
   [['bull',bull,probs[0],'2차 기술목표 돌파 시나리오 [AI]'],['base',base,probs[1],'1차 기술목표/저항 테스트 시나리오 [AI]'],['bear',bear,probs[2],'기술적 지지 이탈 시나리오 [AI]']].forEach(([k,v,pr,c])=>{t[k+'Price']=v==null?'—':srFmt(v)+'원 [AI]';t[k+'Prob']=pr+'% [AI]';t[k+'Return']=v==null?'—':(srPct(v,tech.price)>=0?'+':'')+srPct(v,tech.price).toFixed(1)+'% [AI]';t[k+'Cond']=c});
-  t.finalOpinion=tech.label.toUpperCase()+' · '+tech.action;t.finalLine='검색 종목은 Trading Score와 기술적 가격전략 중심 분석입니다. 정성적 Fundamental/Catalyst 점수는 TOP5 선정점수와 별개입니다. [AI]';
+  t.finalOpinion=tech.label.toUpperCase()+' · '+tech.action;t.finalLine='검색 종목 상세분석입니다. 추천 랭킹은 Fundamental 파이프라인 또는 ICT Trading 파이프라인에서 별도로 산정합니다. [AI]';
   t.metricSource=(fundamentalSource||'공개시장데이터')+(cons?' · '+cons.source+' ('+cons.asOf+')':'')+' · KRX 일봉 · 자체계산 항목 [AI]';t.sourceTopPick=item.name+' 검색 분석';t.sourceConsensus=m.target?'Consensus 목표가 연결':'FnGuide Consensus 별도 확인';t.sourceMarketDate=rows.at(-1)?.date||'';
   return p;
 }
@@ -1289,7 +1286,7 @@ function srUniverseItem(x){
     typeName:market,
     market,
     reutersCode:x.ticker||x.reutersCode||((market==='KOSDAQ')?String(x.code||'').padStart(6,'0')+'.KQ':String(x.code||'').padStart(6,'0')+'.KS'),
-    shares:srNum(x.shares),close:srNum(x.close),marketcap:srNum(x.marketcap)
+    shares:srNum(x.shares),close:srNum(x.close),marketcap:srNum(x.marketcap),volume:srNum(x.volume),turnover:srNum(x.turnover)
   };
 }
 async function loadStockUniverse(force=false){
@@ -1469,6 +1466,275 @@ function initStockSearch(){
   market?.addEventListener('change',()=>{if(input.value.trim())searchStocks()});
 }
 
+
+let fundamentalScanResults={top20:[],top10:[],final5:[]};
+let ictTradingResults={top10:[],top5:[]};
+const srKosaiCache=new Map();
+
+function initScreeningModes(){
+  document.querySelectorAll('[data-screening-mode]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-screening-mode]').forEach(b=>b.classList.toggle('active',b===btn));
+    const mode=btn.dataset.screeningMode;
+    document.getElementById('fundamentalPanel')?.classList.toggle('active',mode==='fundamental');
+    document.getElementById('tradingPanel')?.classList.toggle('active',mode==='trading');
+  }));
+  document.getElementById('fundamentalScanBtn')?.addEventListener('click',runFundamentalPipeline);
+  document.getElementById('ictScanBtn')?.addEventListener('click',runIctTradingScan);
+  document.getElementById('fundFinalBody')?.addEventListener('click',async e=>{
+    const tr=e.target.closest('tr[data-code]');if(!tr)return;
+    const item=fullStockUniverse.find(x=>x.code===tr.dataset.code);if(!item)return;
+    const status=document.getElementById('fundamentalScanStatus');
+    await analyzeSearchItem(item,status,{classList:{remove(){}}});
+  });
+  document.getElementById('ictTop10Body')?.addEventListener('click',async e=>{
+    const tr=e.target.closest('tr[data-code]');if(!tr)return;
+    const item=fullStockUniverse.find(x=>x.code===tr.dataset.code);if(!item)return;
+    const status=document.getElementById('ictScanStatus');
+    await analyzeSearchItem(item,status,{classList:{remove(){}}});
+  });
+}
+
+function srLiquidityCandidates(limit=50){
+  return fullStockUniverse
+    .filter(x=>(x.turnover||0)>=5e9&&(x.marketcap||0)>=1e11)
+    .sort((a,b)=>(b.turnover||0)-(a.turnover||0))
+    .slice(0,limit);
+}
+async function srKosaiCached(item){
+  if(srKosaiCache.has(item.code))return srKosaiCache.get(item.code);
+  const p=srKosaiReport(item).catch(()=>null);srKosaiCache.set(item.code,p);return p;
+}
+function srClamp(v,a=0,b=25){return Math.max(a,Math.min(b,v))}
+function srFundamentalScore(report){
+  if(!report?.quant)return null;
+  const q=report.quant,qs=Array.isArray(q.quarterly)?q.quarterly:[],v=q.valuation||{};
+  const last=qs.at(-1)||{},prev=qs.at(-2)||{},prev4=qs.at(-5)||null;
+  const rev=srNum(last.rev),prevRev=srNum(prev.rev),yoyRev=prev4&&srNum(prev4.rev)?(rev/srNum(prev4.rev)-1)*100:(prevRev?((rev/prevRev)-1)*100:null);
+  const op=srNum(last.op),prevOp=srNum(prev.op),opm=rev&&op!=null?op/rev*100:null,prevOpm=prevRev&&prevOp!=null?prevOp/prevRev*100:null;
+  const net=srNum(last.np_owner??last.np);
+  const per=srNum(v.per),pbr=srNum(v.pbr),roe=srNum(v.roe_ttm);
+  let growth=12;if(yoyRev!=null){growth=srClamp(12+yoyRev*0.65,0,25)}
+  let earnings=8;
+  if(opm!=null)earnings+=srClamp(opm*0.8,0,10);
+  if(net!=null&&net>0)earnings+=4;
+  if(opm!=null&&prevOpm!=null&&opm>prevOpm)earnings+=3;
+  earnings=srClamp(earnings,0,25);
+  let valuation=12;
+  if(per!=null){valuation+=per>0&&per<=10?8:per<=20?5:per<=35?2:per>60?-5:0}
+  if(pbr!=null){valuation+=pbr<=1.5?4:pbr<=3?2:pbr>8?-3:0}
+  if(roe!=null){valuation+=roe>=20?4:roe>=12?2:roe<5?-2:0}
+  valuation=srClamp(valuation,0,25);
+  const kp=(report.keypoints||[]).map(x=>String(x?.ko||'')).filter(Boolean),out=String(report.outlook?.ko||'');
+  const text=(kp.join(' ')+out).toLowerCase();
+  let catalyst=8+Math.min(8,kp.length*2);
+  if(/수주|증설|양산|신제품|신규|점유율|고객|capex|ai|hbm|socamm|확대|성장/.test(text))catalyst+=6;
+  if(/지연|감소|둔화|적자|리스크/.test(text))catalyst-=3;
+  catalyst=srClamp(catalyst,0,25);
+  return{growth:Math.round(growth),earnings:Math.round(earnings),valuation:Math.round(valuation),catalyst:Math.round(catalyst),total:Math.round(growth+earnings+valuation+catalyst)};
+}
+async function srMapLimit(arr,limit,fn){
+  const out=new Array(arr.length);let idx=0;
+  async function worker(){while(true){const i=idx++;if(i>=arr.length)return;try{out[i]=await fn(arr[i],i)}catch(e){out[i]=null}}}
+  await Promise.all(Array.from({length:Math.min(limit,arr.length)},worker));return out;
+}
+function srRenderFundTop20(list){
+  const el=document.getElementById('fundTop20List');if(!el)return;
+  el.innerHTML=list.map((x,i)=>'<span class="compact-chip">'+(i+1)+'. '+srEsc(x.item.name)+' · '+x.f.total+'</span>').join('');
+}
+function srRenderFundTop10(list){
+  const el=document.getElementById('fundTop10Body');if(!el)return;
+  el.innerHTML=list.map((x,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td>'+x.item.market+'</td><td><b>'+x.f.total+'</b></td><td>'+x.f.growth+'</td><td>'+x.f.earnings+'</td><td>'+x.f.valuation+'</td><td>'+x.f.catalyst+'</td></tr>').join('');
+}
+function srEntryClass(g){return g==='S'?'entry-s':g==='A'?'entry-a':g==='B'?'entry-b':'entry-c'}
+function srRenderFundFinal(list){
+  const el=document.getElementById('fundFinalBody');if(!el)return;
+  el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" style="cursor:pointer"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+x.item.market+'</span></td><td>'+x.f.total+'</td><td>'+x.ict.score+'</td><td><span class="tag '+srEntryClass(x.ict.entryQuality)+'">'+x.ict.entryQuality+'</span></td><td>'+srFmt(x.ict.price)+'원</td><td>'+srEsc(x.catalystText||'공시·실적 Catalyst 확인')+'</td><td>'+srEsc(x.ict.finalOpinion)+'</td></tr>').join('');
+}
+
+function srAggregateWeekly(rows){
+  const map=new Map();
+  for(const r of rows){
+    const s=String(r.date||'').replace(/\D/g,'').slice(0,8);if(s.length<8)continue;
+    const d=new Date(Date.UTC(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6,8))),day=(d.getUTCDay()+6)%7;
+    d.setUTCDate(d.getUTCDate()-day);
+    const key=d.toISOString().slice(0,10);
+    const cur=map.get(key);
+    if(!cur)map.set(key,{date:key,open:r.open,high:r.high,low:r.low,close:r.close,volume:r.volume||0});
+    else{cur.high=Math.max(cur.high,r.high);cur.low=Math.min(cur.low,r.low);cur.close=r.close;cur.volume+=(r.volume||0)}
+  }
+  return [...map.values()];
+}
+function srAggregateFixed(rows,n){
+  const out=[];
+  for(let i=0;i<rows.length;i+=n){
+    const a=rows.slice(i,i+n);if(!a.length)continue;
+    out.push({date:a[0].date,open:a[0].open,high:Math.max(...a.map(x=>x.high)),low:Math.min(...a.map(x=>x.low)),close:a.at(-1).close,volume:a.reduce((s,x)=>s+(x.volume||0),0)});
+  }
+  return out;
+}
+function srIctPivots(rows,span=2){
+  const highs=[],lows=[];
+  for(let i=span;i<rows.length-span;i++){
+    let hi=true,lo=true;
+    for(let j=i-span;j<=i+span;j++){if(j===i)continue;if(rows[j].high>=rows[i].high)hi=false;if(rows[j].low<=rows[i].low)lo=false}
+    if(hi)highs.push({i,v:rows[i].high,date:rows[i].date});
+    if(lo)lows.push({i,v:rows[i].low,date:rows[i].date});
+  }
+  return{highs,lows};
+}
+function srIctStructure(rows){
+  if(!rows?.length)return{bias:'Neutral',highs:[],lows:[],hh:false,hl:false,lh:false,ll:false};
+  const p=srIctPivots(rows,2),h=p.highs.slice(-3),l=p.lows.slice(-3);
+  const hh=h.length>=2&&h.at(-1).v>h.at(-2).v,lh=h.length>=2&&h.at(-1).v<h.at(-2).v,hl=l.length>=2&&l.at(-1).v>l.at(-2).v,ll=l.length>=2&&l.at(-1).v<l.at(-2).v;
+  let bias='Neutral';
+  if(hh&&hl)bias='Bullish';else if(hh||hl)bias='Bullish Transition';else if(lh&&ll)bias='Bearish';else if(lh||ll)bias='Bearish Transition';
+  return{bias,highs:p.highs,lows:p.lows,hh,hl,lh,ll};
+}
+function srNearestAbove(points,price){return points.map(x=>x.v).filter(v=>v>price).sort((a,b)=>a-b)[0]??null}
+function srNearestBelow(points,price){return points.map(x=>x.v).filter(v=>v<price).sort((a,b)=>b-a)[0]??null}
+function srIctLiquidity(rows){
+  const price=rows.at(-1).close,p=srIctPivots(rows,2);
+  const highs=p.highs.slice(-8),lows=p.lows.slice(-8);
+  const internalBSL=srNearestAbove(highs.slice(-4),price),externalBSL=srNearestAbove(highs,price)??Math.max(...rows.slice(-80).map(x=>x.high));
+  const internalSSL=srNearestBelow(lows.slice(-4),price),externalSSL=srNearestBelow(lows,price)??Math.min(...rows.slice(-80).map(x=>x.low));
+  return{price,internalBSL,externalBSL,internalSSL,externalSSL,highs,lows};
+}
+function srIctEvent(rows){
+  if(rows.length<5)return{type:'Liquidity Event 없음',bullishMss:false,bullishBos:false,bearishMss:false};
+  const prev=rows.slice(0,-1),p=srIctPivots(prev,2),last=rows.at(-1),ph=p.highs.at(-1)?.v,pl=p.lows.at(-1)?.v;
+  const sslSweep=pl!=null&&last.low<pl&&last.close>pl;
+  const bslSweep=ph!=null&&last.high>ph&&last.close<ph;
+  const bullBos=ph!=null&&last.close>ph,bearBos=pl!=null&&last.close<pl;
+  const s=srIctStructure(prev);
+  const bullishMss=(s.bias.startsWith('Bearish')||s.bias==='Neutral')&&bullBos;
+  const bearishMss=(s.bias.startsWith('Bullish')||s.bias==='Neutral')&&bearBos;
+  let type='Liquidity Event 없음';
+  if(sslSweep)type='SSL Sweep 후 회복';else if(bslSweep)type='BSL Sweep 후 하락';else if(bullBos)type='External High BOS';else if(bearBos)type='External Low BOS';
+  return{type,sslSweep,bslSweep,bullishBos:bullBos,bearishBos:bearBos,bullishMss,bearishMss,ph,pl};
+}
+function srIctFvg(rows){
+  const out=[];for(let i=2;i<rows.length;i++){
+    if(rows[i].low>rows[i-2].high)out.push({type:'Bullish FVG',low:rows[i-2].high,high:rows[i].low,i});
+    if(rows[i].high<rows[i-2].low)out.push({type:'Bearish FVG',low:rows[i].high,high:rows[i-2].low,i});
+  }
+  return out.slice(-10);
+}
+function srMedian(a){const b=a.filter(Number.isFinite).sort((x,y)=>x-y);if(!b.length)return null;return b[Math.floor(b.length/2)]}
+function srIctDisplacement(rows,event){
+  if(rows.length<10)return{bullish:false,bearish:false,ratio:0};
+  const bodies=rows.slice(-20,-1).map(x=>Math.abs(x.close-x.open)),med=srMedian(bodies)||1,last=rows.at(-1),body=Math.abs(last.close-last.open),ratio=body/med;
+  return{bullish:last.close>last.open&&ratio>=1.5&&(event.bullishBos||event.sslSweep),bearish:last.close<last.open&&ratio>=1.5&&(event.bearishBos||event.bslSweep),ratio};
+}
+function srIctPd(rows){
+  const recent=rows.slice(-80),hi=Math.max(...recent.map(x=>x.high)),lo=Math.min(...recent.map(x=>x.low)),price=rows.at(-1).close,eq=(hi+lo)/2;
+  const pos=(price-lo)/(hi-lo||1);return{hi,lo,eq,pos,zone:pos<.5?'Discount':pos<=.55?'Equilibrium':'Premium'};
+}
+function srLoadMinuteRows(item){
+  const d=new Date();d.setDate(d.getDate()-30);
+  const start=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'090000';
+  const url='https://api.stock.naver.com/chart/domestic/item/'+item.code+'/minute?periodType=60&startDateTime='+start;
+  return srFetchJson(url).then(a=>(Array.isArray(a)?a:[]).map(x=>({date:String(x.localDateTime||''),open:srNum(x.openPrice),high:srNum(x.highPrice),low:srNum(x.lowPrice),close:srNum(x.currentPrice??x.closePrice),volume:srNum(x.accumulatedTradingVolume)||0})).filter(x=>[x.open,x.high,x.low,x.close].every(Number.isFinite))).catch(()=>[]);
+}
+function srIctScore(res,item){
+  let score=0,parts={};
+  const wb=res.weekly.bias,db=res.daily.bias;
+  parts.htf=(wb==='Bullish'&&db==='Bullish')?20:(wb.startsWith('Bullish')&&db.startsWith('Bullish'))?16:(db.startsWith('Bullish')?12:wb==='Bearish'&&db==='Bearish'?0:7);score+=parts.htf;
+  const ext=res.liq.externalBSL,price=res.price,up=ext&&price?(ext/price-1):null;
+  parts.liquidity=ext?(up!=null&&up>=.08?15:up>=.04?12:up>0?8:2):2;score+=parts.liquidity;
+  parts.event=res.event.sslSweep?10:res.event.bullishBos?8:res.event.bslSweep?1:3;score+=parts.event;
+  parts.mss=res.event.bullishMss?15:res.event.bullishBos?12:res.h1.bias.startsWith('Bullish')?8:4;score+=parts.mss;
+  parts.displacement=res.disp.bullish?10:res.disp.ratio>=1.2?5:2;score+=parts.displacement;
+  parts.fvg=res.bullFvg?10:4;score+=parts.fvg;
+  parts.pd=res.pd.zone==='Discount'?5:res.pd.zone==='Equilibrium'?3:0;score+=parts.pd;
+  parts.protected=res.protectedLow?5:0;score+=parts.protected;
+  parts.rr=res.rr>=3?10:res.rr>=2.5?8:res.rr>=2?6:0;score+=parts.rr;
+  let penalty=0;
+  if(up!=null&&up<.03)penalty+=8;
+  if(res.event.bslSweep&&res.event.bearishMss)penalty+=15;
+  if(res.pd.pos>.8)penalty+=8;
+  if(!res.disp.bullish)penalty+=3;
+  if(res.rr<2)penalty+=10;
+  if((item.turnover||0)<5e9)penalty+=10;
+  score=Math.max(0,Math.min(100,score-penalty));
+  return{score,parts,penalty};
+}
+function srEntryQuality(res){
+  if(res.score>=90&&res.pd.zone!=='Premium'&&res.rr>=2&&res.bullFvg&&(res.event.bullishMss||res.event.sslSweep))return'S';
+  if(res.score>=80&&res.daily.bias.startsWith('Bullish'))return'A';
+  if(res.score>=70)return'B';
+  return'C';
+}
+async function srIctAnalyzeItem(item){
+  const daily=await srLoadChartRows(item),weekly=srAggregateWeekly(daily),minute=await srLoadMinuteRows(item),h1=minute.length>=12?minute:daily.slice(-60),h4=minute.length>=12?srAggregateFixed(minute,4):daily.slice(-60);
+  const price=daily.at(-1).close,ws=srIctStructure(weekly),ds=srIctStructure(daily),s4=srIctStructure(h4),s1=srIctStructure(h1);
+  const liq=srIctLiquidity(daily),event=srIctEvent(h1),disp=srIctDisplacement(h1,event),fvgs=srIctFvg(h1),bullFvg=fvgs.filter(x=>x.type==='Bullish FVG'&&x.low<price).at(-1)||null,pd=srIctPd(daily);
+  const protectedLow=srNearestBelow(s1.lows.slice(-6),price)||srNearestBelow(ds.lows.slice(-6),price)||liq.externalSSL;
+  const internalProtectedLow=srNearestBelow(s1.lows.slice(-4),price),dailyProtectedLow=srNearestBelow(ds.lows.slice(-5),price);
+  const entry=bullFvg?(bullFvg.low+bullFvg.high)/2:(pd.zone==='Discount'?price:pd.eq);
+  const target1=liq.internalBSL||liq.externalBSL,target2=liq.externalBSL||target1,stop=protectedLow;
+  const risk=entry&&stop?entry-stop:null,reward=entry&&target1?target1-entry:null,rr=risk>0&&reward>0?reward/risk:0;
+  const base={item,price,dailyRows:daily,weekly:ws,daily:ds,h4:s4,h1:s1,liq,event,disp,fvgs,bullFvg,pd,protectedLow,internalProtectedLow,dailyProtectedLow,entry,target1,target2,stop,rr,intradayAvailable:minute.length>=12};
+  const sc=srIctScore(base,item);Object.assign(base,sc);base.entryQuality=srEntryQuality(base);
+  base.setup=base.entryQuality==='S'?'Immediate Setup':base.entryQuality==='A'?'Pullback Watch':base.entryQuality==='B'?'Breakout Watch':'No Trade';
+  base.finalOpinion=base.entryQuality==='S'?'① 지금 진입 검토':base.entryQuality==='A'?'② 조정 대기':base.entryQuality==='B'?'③ BSL 돌파 대기':'④ 매매 제외';
+  return base;
+}
+function srFmtPx(v){return v==null?'—':srFmt(v)+'원'}
+function srRenderIctTop10(list){
+  const el=document.getElementById('ictTop10Body');if(!el)return;
+  el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" style="cursor:pointer"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td>'+srFmtPx(x.price)+'</td><td><b>'+x.score+'</b></td><td>'+x.weekly.bias+' / '+x.daily.bias+'</td><td>'+srFmtPx(x.liq.externalBSL)+'</td><td>'+srFmtPx(x.liq.internalBSL)+'</td><td>'+srFmtPx(x.protectedLow)+'</td><td>'+x.setup+'</td><td>'+srFmtPx(x.entry)+'</td><td>'+srFmtPx(x.stop)+'</td><td>'+srFmtPx(x.target1)+'</td><td>'+srFmtPx(x.target2)+'</td><td>'+x.rr.toFixed(2)+':1</td></tr>').join('');
+}
+function srRenderIctDetails(list){
+  const el=document.getElementById('ictTop5Details');if(!el)return;
+  el.innerHTML=list.map((x,i)=>'<div class="card ict-detail-card"><h3>'+(i+1)+'. '+srEsc(x.item.name)+' · ICT '+x.score+'/100 · '+x.entryQuality+'</h3><div class="ict-detail-grid">'+
+    '<div><b>1. Market Structure</b><br>Weekly: '+x.weekly.bias+'<br>Daily: '+x.daily.bias+'<br>4H: '+x.h4.bias+(x.intradayAvailable?'':' [일봉대체]')+'<br>1H: '+x.h1.bias+(x.intradayAvailable?'':' [일봉대체]')+'</div>'+
+    '<div><b>2. Liquidity Map</b><br>External BSL: '+srFmtPx(x.liq.externalBSL)+'<br>Internal BSL: '+srFmtPx(x.liq.internalBSL)+'<br>External SSL: '+srFmtPx(x.liq.externalSSL)+'<br>Internal SSL: '+srFmtPx(x.liq.internalSSL)+'</div>'+
+    '<div><b>3. Protected Structure</b><br>Internal Protected Low: '+srFmtPx(x.internalProtectedLow)+'<br>Daily Protected Low: '+srFmtPx(x.dailyProtectedLow)+'<br>Major Protected Low: '+srFmtPx(x.protectedLow)+'</div>'+
+    '<div><b>4. Liquidity Event</b><br>'+x.event.type+'<br>BOS: '+(x.event.bullishBos?'Bullish':x.event.bearishBos?'Bearish':'없음')+'<br>MSS: '+(x.event.bullishMss?'Bullish':x.event.bearishMss?'Bearish':'미확인')+'</div>'+
+    '<div><b>5. Displacement / FVG</b><br>Displacement: '+(x.disp.bullish?'Bullish':x.disp.bearish?'Bearish':'미확인')+'<br>FVG: '+(x.bullFvg?srFmtPx(x.bullFvg.low)+' ~ '+srFmtPx(x.bullFvg.high):'Bullish FVG 미확인')+'</div>'+
+    '<div><b>6. Entry Scenario</b><br>Pullback: '+srFmtPx(x.entry)+' 부근 PD Array 확인<br>Breakout: '+srFmtPx(x.liq.externalBSL)+' 돌파 후 Retest / MSS 확인</div>'+
+    '<div><b>7. Risk Management</b><br>Warning: '+srFmtPx(x.internalProtectedLow)+'<br>Invalidation: '+srFmtPx(x.stop)+'</div>'+
+    '<div><b>8. Target / Draw</b><br>Target 1: '+srFmtPx(x.target1)+'<br>Target 2: '+srFmtPx(x.target2)+'<br>R:R: '+x.rr.toFixed(2)+':1<br>'+x.finalOpinion+'</div>'+
+  '</div><p class="note" style="margin-top:10px">BSL/SSL은 주문이 존재할 가능성이 있는 유동성 가격대로 해석하며, Target 도달을 보장하지 않습니다. 구조·점수·시나리오 해석은 [AI]입니다.</p></div>').join('');
+}
+async function runIctTradingScan(){
+  const status=document.getElementById('ictScanStatus'),btn=document.getElementById('ictScanBtn');if(btn)btn.disabled=true;
+  try{
+    status.textContent='유동성 상위 후보 선정 중...';
+    await loadStockUniverse();
+    const candidates=srLiquidityCandidates(20);
+    status.textContent='ICT 구조 분석 중 · Weekly/Daily/4H/1H best-effort...';
+    const analyzed=(await srMapLimit(candidates,3,srIctAnalyzeItem)).filter(Boolean);
+    analyzed.sort((a,b)=>b.score-a.score||b.rr-a.rr);
+    const top10=analyzed.filter(x=>x.score>=60).slice(0,10);
+    ictTradingResults={top10,top5:top10.slice(0,5)};
+    srRenderIctTop10(top10);srRenderIctDetails(ictTradingResults.top5);
+    const best=top10[0],notNow=top10.find(x=>x.entryQuality==='A'||x.entryQuality==='B');
+    const note=document.getElementById('ictBestNote');
+    if(note){note.style.display='block';note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+'<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음')+' [AI]'}
+    status.textContent='ICT TOP10 완료 · '+top10.length+'개 종목 · 1H/4H 데이터가 차단된 종목은 일봉 구조로 대체 표시됩니다. [AI]';
+  }catch(e){console.error(e);status.textContent='ICT 스캔 실패: '+e.message}
+  finally{if(btn)btn.disabled=false}
+}
+async function runFundamentalPipeline(){
+  const status=document.getElementById('fundamentalScanStatus'),btn=document.getElementById('fundamentalScanBtn');if(btn)btn.disabled=true;
+  try{
+    await loadStockUniverse();status.textContent='Fundamental 후보 수집 중...';
+    const candidates=srLiquidityCandidates(50);
+    const reports=(await srMapLimit(candidates,8,async item=>{const report=await srKosaiCached(item);const f=srFundamentalScore(report);return report&&f?{item,report,f}:null})).filter(Boolean);
+    reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
+    const top20=reports.slice(0,20),top10=top20.slice(0,10);
+    srRenderFundTop20(top20);srRenderFundTop10(top10);status.textContent='Fundamental TOP10 완료 · ICT Screening 진행 중...';
+    const withIct=(await srMapLimit(top10,3,async x=>{const ict=await srIctAnalyzeItem(x.item);const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';return{...x,ict,catalystText}})).filter(Boolean);
+    const rank={S:0,A:1,B:2,C:3};
+    withIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.score-a.ict.score||b.f.total-a.f.total);
+    const final5=withIct.filter(x=>x.ict.entryQuality!=='C').slice(0,5);
+    fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
+    status.textContent='완료 · Fundamental TOP20 → TOP10 → ICT Screening → Entry Quality → 최종 TOP5 [AI]';
+  }catch(e){console.error(e);status.textContent='Fundamental 스캔 실패: '+e.message}
+  finally{if(btn)btn.disabled=false}
+}
+
 function applyAutoData(d){
   const previousTicker=stockProfiles[activeProfileIndex]?.ticker||null;
   autoData=d;
@@ -1484,7 +1750,6 @@ function applyAutoData(d){
   const profiles=profileGroups[activeProfileMarket]||[];
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
   renderTopPickTabs(profiles);
-  renderScreeningTable(profiles);
   if(profiles.length)selectStockProfile(activeProfileIndex,false);
   renderThemeSection(d);renderSentiment(d.sentiment||{});
   if(d.meta){
@@ -1511,7 +1776,7 @@ bindTop5TableRows();
 async function boot(){
   await loadStockUniverse();
   initStockSearch();
-  document.querySelectorAll('[data-profile-market]').forEach(btn=>btn.addEventListener('click',()=>setProfileMarket(btn.dataset.profileMarket,true)));
+  initScreeningModes();
   await refreshMarketData();
   // 설명/코멘트는 로컬 오버라이드가 가능하지만 Trade Plan은 자동 데이터만 표시합니다.
   loadText();calcRR();applyTradingStateColors();
