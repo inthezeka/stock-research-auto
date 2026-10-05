@@ -1205,6 +1205,40 @@ def apply_valuation_snapshot(profile, snap):
     profile["valuation_snapshot"] = snap
 
 
+
+KOSDAQ_IR_LINKS = {
+    "196170": {
+        "url": "https://www.alteogen.com/kr/sub/ir/information.php",
+        "title": "알테오젠 공식 IR / 투자정보",
+        "desc": "알테오젠 공식 홈페이지의 IR 투자정보 페이지로 연결합니다.",
+        "source": "official",
+    },
+    "277810": {
+        "url": "https://rainbow-robotics.com/company/ir/",
+        "title": "레인보우로보틱스 공식 IR",
+        "desc": "레인보우로보틱스 공식 홈페이지의 IR·공시·사업보고서 페이지로 연결합니다.",
+        "source": "official",
+    },
+    "035900": {
+        "url": "https://www.jype.com/ko/board/ir-data",
+        "title": "JYP Entertainment 공식 IR 자료",
+        "desc": "JYP Entertainment 공식 홈페이지의 실적발표·IR 자료실로 연결합니다.",
+        "source": "official",
+    },
+    "108490": {
+        "url": "https://m.irgo.co.kr/LC/3665",
+        "title": "로보티즈 IR 자료실",
+        "desc": "공식 홈페이지에 별도 IR 자료실이 확인되지 않아 IRGO의 로보티즈 IR 자료 페이지로 연결합니다.",
+        "source": "IRGO",
+    },
+    "083650": {
+        "url": "https://m.irgo.co.kr/IR-COMP/083650/-IR-PAGE",
+        "title": "비에이치아이 IR 자료실",
+        "desc": "비에이치아이의 IR 자료·IR 일정이 제공되는 IRGO 페이지로 연결합니다.",
+        "source": "IRGO",
+    },
+}
+
 KOSDAQ_CANDIDATE_CODES = {
     "196170",  # 알테오젠
     "277810",  # 레인보우로보틱스
@@ -1309,8 +1343,8 @@ def build_kosdaq_profiles(d, base_profile):
             "risk4I": "영향 M",
             "disclosureTitle": f"{name} 최근 공시 확인",
             "disclosureDesc": "네이버증권 공시 페이지에서 최신 공시를 직접 확인합니다.",
-            "irTitle": f"{name} IR / 실적자료",
-            "irDesc": "기업 공식 홈페이지 또는 네이버 종목페이지에서 IR 자료를 확인합니다.",
+            "irTitle": (KOSDAQ_IR_LINKS.get(code) or {}).get("title", f"{name} IR / 실적자료"),
+            "irDesc": (KOSDAQ_IR_LINKS.get(code) or {}).get("desc", "IR 자료 페이지를 확인합니다."),
             "consTitle": f"{name} Consensus 최신성",
             "consDesc": "Forward 지표·이익 추정치·목표주가 최신성을 확인합니다.",
             "newsTitle": f"{name} 최신 주요기사",
@@ -1336,7 +1370,7 @@ def build_kosdaq_profiles(d, base_profile):
             "inputs": inputs,
             "links": {
                 "disclosure": f"https://stock.naver.com/domestic/stock/{code}/notice",
-                "ir": f"https://finance.naver.com/item/main.naver?code={code}",
+                "ir": (KOSDAQ_IR_LINKS.get(code) or {}).get("url", f"https://finance.naver.com/item/main.naver?code={code}"),
                 "consensus": f"https://finance.naver.com/item/coinfo.naver?code={code}",
                 "news": f"https://stock.naver.com/domestic/stock/{code}/news",
             },
@@ -1440,6 +1474,102 @@ def update_market_text(d, market):
         t["sourceUS"] = f"Nasdaq {t.get('nasdaq','—')} · US10Y {t.get('us10y','—')}"
         return md
     return d.get("meta", {}).get("market_date")
+
+
+
+def scenario_probabilities(score):
+    s = float(score or 0)
+    if s >= 80:
+        return 40, 45, 15
+    if s >= 70:
+        return 35, 45, 20
+    if s >= 60:
+        return 30, 45, 25
+    if s >= 50:
+        return 25, 45, 30
+    if s >= 40:
+        return 20, 40, 40
+    return 15, 35, 50
+
+
+def first_valid_above(price, *values):
+    vals = [n(v) for v in values]
+    vals = [v for v in vals if v is not None and v > price]
+    return min(vals) if vals else None
+
+
+def first_valid_below(price, *values):
+    vals = [n(v) for v in values]
+    vals = [v for v in vals if v is not None and v < price]
+    return max(vals) if vals else None
+
+
+def apply_kosdaq_scenario(profile, tech):
+    if profile.get("market") != "KOSDAQ":
+        return
+    txt = profile.setdefault("text", {})
+    price = n(tech.get("price"))
+    if price is None:
+        return
+    strategy = tech.get("price_strategy") or {}
+    score = ((tech.get("trading_score") or {}).get("total")) or 0
+    bull_p, base_p, bear_p = scenario_probabilities(score)
+
+    bull = first_valid_above(
+        price,
+        (strategy.get("target2") or {}).get("price"),
+        tech.get("high52"),
+    )
+    base = first_valid_above(
+        price,
+        (strategy.get("target1") or {}).get("price"),
+        tech.get("resistance"),
+    )
+    bear = first_valid_below(
+        price,
+        (strategy.get("stop") or {}).get("price"),
+        tech.get("support"),
+        tech.get("m60"),
+        tech.get("low20"),
+    )
+
+    atr14 = n(tech.get("atr14"))
+    if bull is None and atr14 is not None:
+        bull = price + 2.0 * atr14
+    if base is None and atr14 is not None:
+        base = price + 1.0 * atr14
+    if bear is None and atr14 is not None:
+        bear = max(0, price - 1.5 * atr14)
+
+    def set_case(prefix, value, prob, cond):
+        txt[f"{prefix}Price"] = "—" if value is None else f"{fmt_price(value)}원 [AI]"
+        txt[f"{prefix}Prob"] = f"{prob}% [AI]"
+        txt[f"{prefix}Return"] = "—" if value is None else f"{pct(value, price):+.1f}% [AI]"
+        txt[f"{prefix}Cond"] = cond
+
+    set_case(
+        "bull",
+        bull,
+        bull_p,
+        "2차 기술목표 또는 52주 고점 돌파와 MACD·MA 상승 구조 유지 시나리오 [AI]",
+    )
+    set_case(
+        "base",
+        base,
+        base_p,
+        "1차 기술목표/저항 테스트와 현재 추세 유지 시나리오 [AI]",
+    )
+    set_case(
+        "bear",
+        bear,
+        bear_p,
+        "기술적 손절가·지지선·MA60 중 유효 지지 이탈 시나리오 [AI]",
+    )
+    txt["finalOpinion"] = f"{(tech.get('trading_score') or {}).get('grade_label','Neutral').upper()} · {(tech.get('trading_score') or {}).get('action','관망')}"
+    txt["finalLine"] = (
+        f"Trading Score {score}, {(tech.get('trading_score') or {}).get('trend','확인 필요')} 추세 기준으로 "
+        f"Bull/Base/Bear를 기술적 목표·지지·ATR에 연결했습니다. 시나리오 확률은 Trading Score 구간 기반 자체 휴리스틱 [AI]."
+    )
 
 
 def profile_live_update(p, live):
@@ -1588,6 +1718,8 @@ def profile_live_update(p, live):
         txt["tradingEntryCondition"] = "MA20 지지 유지와 MACD Histogram 개선이 이어질 때 분할 진입 우위. [AI]"
     else:
         txt["tradingEntryCondition"] = "MA20 방향과 MACD·Stochastic 동조가 확인될 때까지 신규 진입은 보수적으로 접근. [AI]"
+
+    apply_kosdaq_scenario(p, tech)
 
     txt["sourceMarketDate"] = f"{tech.get('date','')} 종가"
 
