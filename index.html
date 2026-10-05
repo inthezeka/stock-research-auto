@@ -453,58 +453,69 @@ const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersec
 
 
 let stockProfiles=[];
+let profileGroups={KOSPI:[],KOSDAQ:[]};
+let activeProfileMarket='KOSPI';
 let activeProfileIndex=0;
-function profileRating(score){score=Number(score)||0;return score>=90?'Strong Buy':score>=80?'Buy':score>=70?'Trading Buy':score>=60?'Neutral':'Avoid'}
+function profileRating(score){score=Number(score)||0;return score>=90?'Strong Buy':score>=80?'Buy':score>=70?'Positive':score>=60?'Neutral':'Avoid'}
 function renderTopPickTabs(profiles=[]){
   stockProfiles=Array.isArray(profiles)?profiles.slice(0,5):[];
   const el=document.getElementById('topPickTabs');if(!el)return;
-  if(!stockProfiles.length){el.innerHTML='<div class="note" style="grid-column:1/-1">추천 TOP5 상세 데이터가 아직 없습니다.</div>';return}
-  el.innerHTML=stockProfiles.map((p,i)=>`<button type="button" class="top5-tab ${i===activeProfileIndex?'active':''}" data-profile-tab="${i}" aria-pressed="${i===activeProfileIndex?'true':'false'}"><div class="top5-tab-rank">TOP ${i+1}</div><div class="top5-tab-name">${p.name||'-'}</div><div class="top5-tab-meta">${Math.round(Number(p.score)||0)}점 · ${p.rating||profileRating(p.score)} · ${p.sector_name||p.sector||''}</div></button>`).join('');
-  el.querySelectorAll('[data-profile-tab]').forEach(btn=>{
-    btn.addEventListener('click',()=>selectStockProfile(Number(btn.dataset.profileTab),false));
+  document.querySelectorAll('[data-profile-market]').forEach(btn=>{
+    const active=btn.dataset.profileMarket===activeProfileMarket;
+    btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',active?'true':'false');
   });
+  if(!stockProfiles.length){el.innerHTML='<div class="note" style="grid-column:1/-1">선택 시장의 추천 TOP5 상세 데이터가 아직 없습니다.</div>';return}
+  el.innerHTML=stockProfiles.map((p,i)=>'<button type="button" class="top5-tab '+(i===activeProfileIndex?'active':'')+'" data-profile-tab="'+i+'" aria-pressed="'+(i===activeProfileIndex?'true':'false')+'"><div class="top5-tab-rank">TOP '+(i+1)+'</div><div class="top5-tab-name">'+(p.name||'-')+'</div><div class="top5-tab-meta">'+Math.round(Number(p.score)||0)+'점 · '+(p.rating||profileRating(p.score))+' · '+(p.sector_name||p.sector||'')+'</div></button>').join('');
+  el.querySelectorAll('[data-profile-tab]').forEach(btn=>btn.addEventListener('click',()=>selectStockProfile(Number(btn.dataset.profileTab),false)));
+}
+function setProfileMarket(market,selectFirst=true){
+  if(!profileGroups[market]||!profileGroups[market].length)return;
+  activeProfileMarket=market;activeProfileIndex=0;
+  renderTopPickTabs(profileGroups[market]);
+  if(selectFirst)selectStockProfile(0,false);
+}
+function applyTradingStateColors(){
+  const paint=(id,value,type)=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.classList.remove('state-green','state-orange','state-gray','state-red','state-blue');
+    let cls='state-gray';
+    if(type==='trend'){if(value.includes('상승'))cls=value.includes('초기')?'state-blue':'state-green';else if(value.includes('조정'))cls='state-orange';else if(value.includes('하락'))cls='state-red';}
+    if(type==='action'){if(value.includes('신규진입')||value.includes('보유'))cls='state-green';else if(value.includes('눌림')||value.includes('일부매도'))cls='state-orange';else if(value.includes('손절'))cls='state-red';else cls='state-gray';}
+    if(type==='heat'){if(value.includes('보통'))cls='state-green';else if(value.includes('주의'))cls='state-orange';else if(value.includes('높음'))cls='state-red';}
+    el.classList.add(cls);
+  };
+  paint('trendStateCard',document.querySelector('#trendStateCard [data-key="tradingTrend"]')?.textContent||'','trend');
+  paint('actionStateCard',document.querySelector('#actionStateCard [data-key="tradingAction"]')?.textContent||'','action');
+  paint('heatStateCard',document.querySelector('#heatStateCard [data-key="tradingOverheat"]')?.textContent||'','heat');
 }
 function applyProfileText(profile){
   if(!profile)return;
   const t=profile.text||{};
   document.querySelectorAll('[data-key]').forEach(el=>{const k=el.dataset.key;if(t[k]!=null)el.innerHTML=t[k]});
   const inp=profile.inputs||{};tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
-  updateProfileLinks(profile);
-  calcRR();
+  updateProfileLinks(profile);calcRR();applyTradingStateColors();
 }
 function updateProfileLinks(profile){
-  const code=profile?.stock_code||'';
-  const links=profile?.links||{};
-  const defaults={
-    disclosure:code?`https://stock.naver.com/domestic/stock/${code}/notice`:'#',
-    ir:code?`https://finance.naver.com/item/main.naver?code=${code}`:'#',
-    consensus:code?`https://finance.naver.com/item/coinfo.naver?code=${code}`:'#',
-    news:code?`https://stock.naver.com/domestic/stock/${code}/news`:'#'
-  };
+  const code=profile?.stock_code||'';const links=profile?.links||{};
+  const defaults={disclosure:code?'https://stock.naver.com/domestic/stock/'+code+'/notice':'#',ir:code?'https://finance.naver.com/item/main.naver?code='+code:'#',consensus:code?'https://finance.naver.com/item/coinfo.naver?code='+code:'#',news:code?'https://stock.naver.com/domestic/stock/'+code+'/news':'#'};
   [['disclosureLink','disclosure'],['irLink','ir'],['consensusLink','consensus'],['newsLink','news']].forEach(([id,key])=>{const a=document.getElementById(id);if(a)a.href=links[key]||defaults[key]});
 }
 function selectStockProfile(index,scrollToDetail=false){
   if(!stockProfiles.length)return;
-  index=Math.max(0,Math.min(Number(index)||0,stockProfiles.length-1));
-  activeProfileIndex=index;
-  const profile=stockProfiles[index];
-  applyProfileText(profile);
-  document.querySelectorAll('[data-profile-tab]').forEach((b,i)=>{
-    const active=i===index;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active?'true':'false');
-  });
-  document.querySelectorAll('.stock-pick-row').forEach((r,i)=>r.classList.toggle('active',i===index));
-  const note=document.getElementById('selectedStockNote');if(note)note.textContent=`TOP ${index+1} · ${profile.name||'SELECTED'}`;
-  const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent=index===0?'🥇 TOP PICK':`TOP ${index+1} · SELECTED`;
-  document.title=`${profile.name||'종목'} | Stock Research`;
+  index=Math.max(0,Math.min(Number(index)||0,stockProfiles.length-1));activeProfileIndex=index;
+  const profile=stockProfiles[index];applyProfileText(profile);
+  document.querySelectorAll('[data-profile-tab]').forEach((b,i)=>{const active=i===index;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active?'true':'false')});
+  document.querySelectorAll('.stock-pick-row').forEach((r,i)=>r.classList.toggle('active',activeProfileMarket==='KOSPI'&&i===index));
+  const note=document.getElementById('selectedStockNote');if(note)note.textContent=activeProfileMarket+' · TOP '+(index+1)+' · '+(profile.name||'SELECTED');
+  const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent=index===0?'🥇 '+activeProfileMarket+' TOP PICK':activeProfileMarket+' TOP '+(index+1)+' · SELECTED';
+  document.title=(profile.name||'종목')+' | Stock Research';
   if(scrollToDetail)document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function bindTop5TableRows(){
   document.querySelectorAll('.stock-pick-row[data-profile-index]').forEach(row=>{
-    row.tabIndex=0;
-    row.setAttribute('role','button');
-    const activate=()=>selectStockProfile(Number(row.dataset.profileIndex),true);
-    row.addEventListener('click',activate);
-    row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
+    row.tabIndex=0;row.setAttribute('role','button');
+    const activate=()=>{if(activeProfileMarket!=='KOSPI')setProfileMarket('KOSPI',false);selectStockProfile(Number(row.dataset.profileIndex),true)};
+    row.addEventListener('click',activate);row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate()}});
   });
 }
 
@@ -585,7 +596,11 @@ function applyAutoData(d){
   if(d.text){document.querySelectorAll('[data-edit]').forEach(el=>{const k=el.dataset.key;if(d.text[k]!=null)el.innerHTML=d.text[k]})}
   if(d.bind){document.querySelectorAll('[data-bind]').forEach(el=>{const k=el.dataset.bind;if(d.bind[k]!=null)el.textContent=d.bind[k]})}
   if(d.inputs){tradeIds.forEach(id=>{if(d.inputs[id]!=null)setTradeValue(id,d.inputs[id])})}
-  const profiles=(Array.isArray(d.stock_profiles)&&d.stock_profiles.length)?d.stock_profiles:synthesizeProfiles(d);
+  const kospi=(Array.isArray(d.stock_profile_groups?.KOSPI)&&d.stock_profile_groups.KOSPI.length)?d.stock_profile_groups.KOSPI:((Array.isArray(d.stock_profiles)&&d.stock_profiles.length)?d.stock_profiles:synthesizeProfiles(d));
+  const kosdaq=(Array.isArray(d.stock_profile_groups?.KOSDAQ)&&d.stock_profile_groups.KOSDAQ.length)?d.stock_profile_groups.KOSDAQ:((Array.isArray(d.stock_profiles_kosdaq)&&d.stock_profiles_kosdaq.length)?d.stock_profiles_kosdaq:[]);
+  profileGroups={KOSPI:kospi.slice(0,5),KOSDAQ:kosdaq.slice(0,5)};
+  if(!profileGroups[activeProfileMarket]?.length)activeProfileMarket='KOSPI';
+  const profiles=profileGroups[activeProfileMarket]||[];
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
   renderTopPickTabs(profiles);if(profiles.length)selectStockProfile(activeProfileIndex,false);
   renderThemeSection(d);renderSentiment(d.sentiment||{});
@@ -611,9 +626,10 @@ async function refreshMarketData(){
 bindTop5TableRows();
 
 async function boot(){
+  document.querySelectorAll('[data-profile-market]').forEach(btn=>btn.addEventListener('click',()=>setProfileMarket(btn.dataset.profileMarket,true)));
   await refreshMarketData();
   // 설명/코멘트는 로컬 오버라이드가 가능하지만 Trade Plan은 자동 데이터만 표시합니다.
-  loadText();calcRR();
+  loadText();calcRR();applyTradingStateColors();
 }
 boot();
 </script>
