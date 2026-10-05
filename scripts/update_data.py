@@ -1640,6 +1640,8 @@ def main():
         "market_date": md,
         "status": "ok",
         "ui_version": "v14-kospi-kosdaq-trading-score",
+        "profile_count": 10,
+        "profile_groups": {"KOSPI": 5, "KOSDAQ": 5},
         "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
         "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
         "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
