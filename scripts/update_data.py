@@ -1334,11 +1334,9 @@ def build_kosdaq_profiles(d, base_profile, live_by_code):
     ranked = eligible[:5]
     d["kosdaq_selection_diagnostics"] = diagnostics
 
-    if len(ranked) < 5:
-        raise RuntimeError(
-            "KOSDAQ Trading Score>=60 candidates fewer than 5: "
-            + json.dumps(diagnostics, ensure_ascii=False)
-        )
+    # Do not force low-score names into the list just to make five.
+    # KOSDAQ recommendations are "up to 5" and only include names that pass
+    # the Trading Score >= 60 gate.
 
     base_text_keys = list((base_profile.get("text") or {}).keys())
     base_input_keys = list((base_profile.get("inputs") or {}).keys())
@@ -1898,11 +1896,11 @@ def main():
         return 4
 
     kosdaq_profiles = build_kosdaq_profiles(d, profiles[0], live_by_code)
-    if len(kosdaq_profiles) != 5:
+    if not kosdaq_profiles:
         print(json.dumps({
             "status": "rejected",
-            "reason": "KOSDAQ TOP5 profile build failed",
-            "count": len(kosdaq_profiles),
+            "reason": "No KOSDAQ candidate passed Trading Score >= 60",
+            "diagnostics": d.get("kosdaq_selection_diagnostics") or [],
         }, ensure_ascii=False))
         return 4
 
@@ -1978,8 +1976,8 @@ def main():
         "market_date": md,
         "status": "ok",
         "ui_version": "v15-kosdaq-gated-selection",
-        "profile_count": 10,
-        "profile_groups": {"KOSPI": 5, "KOSDAQ": 5},
+        "profile_count": 5 + len(kosdaq_profiles),
+        "profile_groups": {"KOSPI": 5, "KOSDAQ": len(kosdaq_profiles)},
         "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
         "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
         "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
