@@ -1131,6 +1131,80 @@ def apply_quarterly_financials(profile, snapshot):
 
 
 
+
+def clean_metric_number(value):
+    if value is None:
+        return None
+    text = str(value).strip().replace(",", "")
+    text = re.sub(r"(배|원|%|백만|천주)$", "", text).strip()
+    m = re.search(r"-?\d+(?:\.\d+)?", text)
+    return float(m.group()) if m else None
+
+
+def find_nested_value(obj, candidate_keys):
+    keys = {str(k).lower() for k in candidate_keys}
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if str(k).lower() in keys and v not in (None, "", "-", "—"):
+                return v
+        for v in obj.values():
+            found = find_nested_value(v, candidate_keys)
+            if found not in (None, "", "-", "—"):
+                return found
+    elif isinstance(obj, list):
+        for v in obj:
+            found = find_nested_value(v, candidate_keys)
+            if found not in (None, "", "-", "—"):
+                return found
+    return None
+
+
+def fetch_stock_valuation_snapshot(code):
+    url = f"https://m.stock.naver.com/api/stock/{code}/integration"
+    j = req(url, 2).json()
+    info = {}
+    for item in j.get("totalInfos") or []:
+        c = str(item.get("code") or "").strip()
+        if c:
+            info[c] = item.get("value")
+    target_raw = find_nested_value(
+        j.get("consensusInfo") or {},
+        ("targetPrice", "target_price", "consensusTargetPrice", "averageTargetPrice"),
+    )
+    return {
+        "per": clean_metric_number(info.get("per")),
+        "forward_per": clean_metric_number(info.get("cnsPer")),
+        "pbr": clean_metric_number(info.get("pbr")),
+        "eps": clean_metric_number(info.get("eps")),
+        "forward_eps": clean_metric_number(info.get("cnsEps")),
+        "bps": clean_metric_number(info.get("bps")),
+        "target_price": clean_metric_number(target_raw),
+        "market_value": info.get("marketValue"),
+        "source": "Naver Stock integration",
+        "url": url,
+    }
+
+
+def apply_valuation_snapshot(profile, snap):
+    txt = profile.setdefault("text", {})
+    if snap.get("per") is not None:
+        txt["per"] = f"{snap['per']:.2f}x"
+    if snap.get("forward_per") is not None:
+        txt["fper"] = f"{snap['forward_per']:.2f}x"
+        txt["fper2"] = f"{snap['forward_per']:.2f}x"
+    if snap.get("pbr") is not None:
+        txt["pbr"] = f"{snap['pbr']:.2f}x"
+    if snap.get("forward_eps") is not None and snap.get("bps") not in (None, 0):
+        roe_proxy = snap["forward_eps"] / snap["bps"] * 100
+        txt["roe"] = f"{roe_proxy:.1f}% [AI]"
+    if snap.get("target_price") is not None:
+        txt["fairPriceText"] = f"{fmt_price(snap['target_price'])}원 Cons."
+        txt["fairB"] = f"{fmt_price(snap['target_price'])}원"
+        txt["calcB"] = "네이버증권 Consensus 목표가 기준."
+        profile.setdefault("inputs", {})["target2"] = str(int(round(snap["target_price"])))
+    profile["valuation_snapshot"] = snap
+
+
 KOSDAQ_CANDIDATE_CODES = {
     "196170",  # 알테오젠
     "277810",  # 레인보우로보틱스
@@ -1188,6 +1262,8 @@ def build_kosdaq_profiles(d, base_profile):
         rating = recommendation_rating(score)
 
         text = {k: "—" for k in base_text_keys}
+        for k in ["heroEyebrow","heroTitle","heroDesc","heroQuote","marketRegime","kospi","kospiDelta","nasdaq","nasdaqDelta","fx","fxDelta","us10y","us10yDelta","flowState","flowDesc","marketReason1","marketReason2","marketReason3","marketImpact","sector1","sector1Point","sector1Cycle","sector1Growth","sector2","sector2Point","sector2Cycle","sector2Growth","sector3","sector3Point","sector3Cycle","sector3Growth","sourceKR","sourceUS","sourceTopPick","sourceConsensus","footerDataNote","kospiFlow","kosdaqFlow"]:
+            text.pop(k, None)
         text.update({
             "topPickName": name,
             "topPickTicker": f"{code} · KOSDAQ · 자동 업데이트",
@@ -1281,6 +1357,47 @@ def build_kosdaq_profiles(d, base_profile):
             txt[f"rr{i}"] = "—"
 
     return profiles
+
+
+
+def synchronize_profile_group_rows(profiles):
+    """Populate the visible TOP5 comparison table from each profile itself."""
+    rows = []
+    for q in profiles[:5]:
+        txt = q.setdefault("text", {})
+        inp = q.setdefault("inputs", {})
+        current = n(inp.get("currentPrice"))
+        target = n(inp.get("target2"))
+        stop = n(inp.get("stopPrice"))
+        if current is not None and target is not None:
+            upside = pct(target, current)
+            txt["upsideText"] = f"{upside:+.1f}% [AI]"
+        if current is not None and target is not None and stop is not None and current > stop:
+            rr = (target - current) / (current - stop)
+            txt["topRR"] = f"{rr:.2f} : 1 [AI]"
+        rows.append({
+            "name": q.get("name") or "—",
+            "score": int(round(n(q.get("score")) or 0)),
+            "price": "—" if current is None else f"{fmt_price(current)}원",
+            "target": txt.get("fairPriceText") or ("—" if target is None else f"{fmt_price(target)}원 [AI]"),
+            "return": txt.get("upsideText") or "—",
+            "rr": txt.get("topRR") or "—",
+            "period": txt.get("tradePeriod") or "1~6개월",
+            "cat": txt.get("shortCat") or "Catalyst 확인 [AI]",
+            "op": q.get("rating") or "Neutral",
+        })
+    for p in profiles:
+        txt = p.setdefault("text", {})
+        for i, row in enumerate(rows, 1):
+            txt[f"stock{i}"] = row["name"]
+            txt[f"score{i}"] = f"{row['score']} / 100"
+            txt[f"price{i}"] = row["price"]
+            txt[f"target{i}Display"] = row["target"]
+            txt[f"return{i}"] = row["return"]
+            txt[f"rr{i}"] = row["rr"]
+            txt[f"period{i}"] = row["period"]
+            txt[f"cat{i}"] = row["cat"]
+            txt[f"op{i}"] = row["op"]
 
 
 def reset_profile_scores(profiles):
@@ -1434,6 +1551,12 @@ def profile_live_update(p, live):
         reason = item.get("reason") or "확인 필요"
         txt[text_key] = "—" if val is None else f"{fmt_price(val)}원 [AI]"
         txt[text_key + "Basis"] = reason + (" [AI]" if reason != "현재 종가" else "")
+
+    if "Consensus 목표가 확인 필요" in str(txt.get("fairPriceText", "")):
+        tech_target = (strategy.get("target2") or {}).get("price")
+        if tech_target is not None:
+            txt["fairPriceText"] = f"{fmt_price(tech_target)}원 기술목표 [AI]"
+            inp["target2"] = str(int(round(tech_target)))
 
     # Keep the read-only Trade Plan synchronized with the new technical strategy.
     def set_input(input_key, strat_key):
@@ -1598,10 +1721,17 @@ def main():
         return 4
 
     for p in all_profiles:
+        try:
+            snap = fetch_stock_valuation_snapshot(p.get("stock_code"))
+            apply_valuation_snapshot(p, snap)
+        except Exception as e:
+            errors.append(f"{p.get('name')} valuation: {e}")
         profile_live_update(p, live_by_code.get(p.get("stock_code")))
 
     reset_profile_scores(profiles)
     reset_profile_scores(kosdaq_profiles)
+    synchronize_profile_group_rows(profiles)
+    synchronize_profile_group_rows(kosdaq_profiles)
     d["stock_profile_groups"] = {"KOSPI": profiles[:5], "KOSDAQ": kosdaq_profiles}
     d["stock_profiles_kosdaq"] = kosdaq_profiles
     update_theme_cards(d, live_by_code)
