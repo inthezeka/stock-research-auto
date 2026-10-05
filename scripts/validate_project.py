@@ -25,6 +25,10 @@ if len(kospi_profiles)!=5:
     fail(f"KOSPI TOP5 profile count={len(kospi_profiles)}")
 if len(kosdaq_profiles)!=5:
     fail(f"KOSDAQ TOP5 profile count={len(kosdaq_profiles)}")
+if len(kosdaq_profiles)==5:
+    priorities=[0 if float(p.get("selection_trading_score",0))>=70 else 1 for p in kosdaq_profiles]
+    if priorities!=sorted(priorities):
+        fail("KOSDAQ 70+ priority ordering violated")
 all_profiles=kospi_profiles+kosdaq_profiles
 
 financial_keys=[]
@@ -72,6 +76,23 @@ for p in all_profiles:
         ir=(p.get("links") or {}).get("ir","")
         if "finance.naver.com/item/main.naver" in ir or not ir.startswith("http"):
             fail(f"{name} KOSDAQ IR link not connected: {ir}")
+        try:
+            gate=float(p.get("selection_trading_score"))
+            fundamental=float(p.get("fundamental_score"))
+            final=float(p.get("selection_score"))
+        except Exception:
+            fail(f"{name} KOSDAQ selection scores missing")
+        else:
+            if gate < 60:
+                fail(f"{name} KOSDAQ Trading Score gate failed: {gate}")
+            expected=fundamental*0.60+gate*0.40
+            if abs(final-expected)>0.11:
+                fail(f"{name} KOSDAQ composite mismatch: {final} vs {expected:.2f}")
+            priority=str(p.get("selection_priority",""))
+            if gate>=70 and priority!="70+":
+                fail(f"{name} KOSDAQ priority mismatch")
+            if 60<=gate<70 and priority!="60~69":
+                fail(f"{name} KOSDAQ priority mismatch")
     links=p.get("links") or {}
     for lk in ("disclosure","ir","consensus","news"):
         u=str(links.get(lk,""))
