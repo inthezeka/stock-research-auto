@@ -990,70 +990,72 @@ def quarter_label(raw):
 
 
 def fetch_quarterly_financials(code):
-    """Parse Naver/FnGuide quarterly table: latest 3 quarters + next estimate."""
-    url = f"https://finance.naver.com/item/main.naver?code={code}"
-    response = req(url, 2)
-    soup = BeautifulSoup(response.content, "html.parser", from_encoding="euc-kr")
-    target = None
-    for table in soup.find_all("table"):
-        t = table.get_text(" ", strip=True)
-        if "최근 분기 실적" in t and "매출액" in t and "영업이익" in t:
-            target = table
-            break
-    if target is None:
-        raise RuntimeError("quarterly finance table not found")
+    """Use Naver mobile JSON quarterly financial endpoint."""
+    url = f"https://m.stock.naver.com/api/stock/{code}/finance/quarter"
+    j = req(url, 2).json()
+    info = j.get("financeInfo") or j.get("finance_info") or j
+    titles = info.get("trTitleList") or info.get("titleList") or []
+    row_list = info.get("rowList") or info.get("rows") or []
+    if not titles or not row_list:
+        raise RuntimeError(f"quarter finance JSON incomplete: keys={list(info)[:8]}")
 
-    dates = []
-    for th in target.find_all("th"):
-        txt = th.get_text(" ", strip=True)
-        if re.fullmatch(r"\d{4}\.\d{2}(?:\(E\))?", txt):
-            dates.append(txt)
-    if len(dates) < 6:
-        raise RuntimeError(f"quarter headers insufficient: {dates}")
-    dates = dates[-6:]
+    cols = []
+    for x in titles:
+        key = str(x.get("key") or "").strip()
+        title = str(x.get("title") or "").strip().rstrip(".")
+        cons = str(x.get("isConsensus") or x.get("consensus") or "N").upper() == "Y"
+        if key and title:
+            cols.append({"key": key, "title": title, "estimate": cons})
+    if len(cols) < 4:
+        raise RuntimeError(f"quarter headers insufficient: {cols}")
 
     rows = {}
-    for tr in target.find_all("tr"):
-        th = tr.find("th")
-        if not th:
-            continue
-        label = th.get_text(" ", strip=True).replace(" ", "")
-        vals = [fin_number(td.get_text(" ", strip=True)) for td in tr.find_all("td")]
-        if len(vals) >= len(dates):
-            rows[label] = vals[-len(dates):]
+    for row in row_list:
+        label = str(row.get("title") or row.get("name") or "").replace(" ", "")
+        columns = row.get("columns") or {}
+        values = {}
+        for c in cols:
+            cell = columns.get(c["key"])
+            if isinstance(cell, dict):
+                cell = cell.get("value")
+            values[c["key"]] = fin_number(cell)
+        if label:
+            rows[label] = values
 
-    def row(*names):
+    def series(*names):
         for name in names:
             key = name.replace(" ", "")
             if key in rows:
-                return rows[key]
-        return [None] * len(dates)
+                return [rows[key].get(c["key"]) for c in cols]
+        return [None] * len(cols)
 
-    rev = row("매출액")
-    op = row("영업이익")
-    net = row("당기순이익", "당기순이익(지배)")
-    eps = row("EPS(원)", "EPS")
+    rev = series("매출액")
+    op = series("영업이익")
+    net = series("당기순이익", "당기순이익(지배)", "지배주주순이익")
+    eps = series("EPS(원)", "EPS")
 
-    est_idxs = [i for i, d in enumerate(dates) if "(E)" in d]
+    est_idxs = [i for i, c in enumerate(cols) if c["estimate"]]
     if est_idxs:
-        end = est_idxs[0]
-        start = max(0, end - 3)
-        idxs = list(range(start, end + 1))
-        if len(idxs) < 4:
-            idxs = list(range(max(0, len(dates) - 4), len(dates)))
+        end_idx = est_idxs[0]
+        idxs = list(range(max(0, end_idx - 3), end_idx + 1))
     else:
-        idxs = list(range(max(0, len(dates) - 4), len(dates)))
+        idxs = list(range(max(0, len(cols) - 4), len(cols)))
+    if len(idxs) < 4:
+        idxs = list(range(max(0, len(cols) - 4), len(cols)))
+    idxs = idxs[-4:]
 
     quarters = []
-    for i in idxs[-4:]:
+    for i in idxs:
         qoq = None
         if i > 0 and rev[i] is not None and rev[i - 1] not in (None, 0):
             qoq = pct(rev[i], rev[i - 1])
         opm = None if rev[i] in (None, 0) or op[i] is None else op[i] / rev[i] * 100
+        raw_title = cols[i]["title"].rstrip(".")
+        raw_for_label = raw_title + ("(E)" if cols[i]["estimate"] and "(E)" not in raw_title else "")
         quarters.append({
-            "raw_date": dates[i],
-            "label": quarter_label(dates[i]),
-            "estimate": "(E)" in dates[i],
+            "raw_date": raw_title,
+            "label": quarter_label(raw_for_label),
+            "estimate": cols[i]["estimate"],
             "revenue": rev[i],
             "op": op[i],
             "opm": opm,
@@ -1063,10 +1065,12 @@ def fetch_quarterly_financials(code):
         })
 
     if len(quarters) != 4:
-        raise RuntimeError(f"quarter selection failed: {dates}")
+        raise RuntimeError(f"quarter selection failed: {cols}")
+    if not any(q.get("estimate") for q in quarters):
+        raise RuntimeError("next-quarter consensus column missing")
     return {
         "quarters": quarters,
-        "source": "Naver Finance · FnGuide",
+        "source": "Naver Stock · FnGuide quarterly",
         "url": url,
         "fetched_at": NOW.isoformat(),
     }
