@@ -992,8 +992,8 @@ def quarter_label(raw):
 def fetch_quarterly_financials(code):
     """Parse Naver/FnGuide quarterly table: latest 3 quarters + next estimate."""
     url = f"https://finance.naver.com/item/main.naver?code={code}"
-    html = req(url, 2).text
-    soup = BeautifulSoup(html, "html.parser")
+    response = req(url, 2)
+    soup = BeautifulSoup(response.content, "html.parser", from_encoding="euc-kr")
     target = None
     for table in soup.find_all("table"):
         t = table.get_text(" ", strip=True)
