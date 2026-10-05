@@ -164,21 +164,34 @@ if meta.get("status")=="ok":
 html=(ROOT/"index.html").read_text(encoding="utf-8")
 if "TOP5 추천점수 시장심리 조정" in html or "심리 0 [AI]" in html:
     fail("stock sentiment score wording remains in HTML")
-if "Trading Score" not in html or "다음 분기 EPS(E)" not in html:
-    fail("new Trading Score / quarterly valuation UI missing")
-if "Trading Indicators" in html:
-    fail("duplicate Trading Indicators block remains")
-if "data-profile-market=\"KOSPI\"" not in html or "data-profile-market=\"KOSDAQ\"" not in html:
-    fail("KOSPI/KOSDAQ TOP5 selector missing")
-for i in range(1,6):
-    if f'data-key="price{i}"' not in html or f'data-key="target{i}Display"' not in html:
-        fail(f"selected-market TOP5 price/target binding missing: row {i}")
-if "trendStateCard" not in html or "actionStateCard" not in html or "heatStateCard" not in html:
-    fail("colored trading state cards missing")
+# v18 dual-selection UI validation.
+# The former Technical & Market Structure / Trading Score page was intentionally removed.
+if 'id="technical"' in html or "Technical & Market Structure · Trading Score" in html:
+    fail("legacy Technical & Market Structure section must be removed")
+required_ui=[
+    "③ 종목 선정 · Fundamental / ICT Trading",
+    "① Fundamental TOP 20",
+    "② Fundamental TOP 10",
+    "⑤ Fundamental 최종 TOP 5",
+    "ICT Trading TOP 10",
+    'id="fundamentalScanBtn"',
+    'id="ictScanBtn"',
+    'id="fundTop20List"',
+    'id="fundTop10Body"',
+    'id="fundFinalBody"',
+    'id="ictTop10Body"',
+]
+for token in required_ui:
+    if token not in html:
+        fail(f"dual Fundamental/ICT screening UI missing: {token}")
 if 'id="stockSearchInput"' not in html or 'id="stockSearchMarket"' not in html or 'function buildSearchProfile' not in html:
     fail("KOSPI/KOSDAQ live stock search UI missing")
 if "front-api/search/autoComplete" not in html or "chart/domestic/item/" not in html:
     fail("live stock search data endpoints missing")
+if "function runFundamentalPipeline" not in html or "function runIctTradingScan" not in html:
+    fail("dual screening engine missing")
+if "HTF Market Structure" not in html or "External Liquidity" not in html or "Protected Low" not in html:
+    fail("ICT score framework missing")
 
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
 if not m:
