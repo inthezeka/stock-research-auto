@@ -1113,6 +1113,19 @@ def apply_quarterly_financials(profile, snapshot):
     return True
 
 
+
+def reset_profile_scores(profiles):
+    """Keep market sentiment separate from stock recommendation scores."""
+    for p in profiles:
+        p.pop("adjusted_score", None)
+        p.pop("sentiment_modifier", None)
+        p.setdefault("text", {})["topPickScore"] = f"{int(n(p.get('score')) or 0)} / {p.get('rating','')} [AI]"
+    for p in profiles:
+        txt = p.setdefault("text", {})
+        for i, q in enumerate(profiles[:5], 1):
+            txt[f"score{i}"] = f"{int(n(q.get('score')) or 0)} / 100"
+
+
 def update_market_text(d, market):
     t = d.setdefault("text", {})
     latest_dates = []
@@ -1148,8 +1161,12 @@ def profile_live_update(p, live):
         return
     tech = live["tech"]
     price = tech["price"]
+    score = tech.get("trading_score") or {}
+    comps = score.get("components") or {}
+    strategy = tech.get("price_strategy") or {}
     txt = p.setdefault("text", {})
     inp = p.setdefault("inputs", {})
+
     inp["currentPrice"] = str(int(round(price)))
     txt["currentPriceText"] = f"{fmt_price(price)}원"
 
@@ -1166,52 +1183,121 @@ def profile_live_update(p, live):
     rv = tech.get("rsi")
     sk, sd = tech.get("stoch_k"), tech.get("stoch_d")
     macd, sig, hist = tech.get("macd"), tech.get("macd_signal"), tech.get("macd_hist")
-    m5, m20, m60 = tech.get("m5"), tech.get("m20"), tech.get("m60")
+    m5, m20, m60, m120 = tech.get("m5"), tech.get("m20"), tech.get("m60"), tech.get("m120")
 
     txt["technicalState"] = tech.get("state") or "관망"
     txt["rsiValue"] = "—" if rv is None else f"{rv:.1f}"
-    if rv is None:
-        txt["rsiSignal"] = "데이터 확인 중"
-    elif rv >= 70:
-        txt["rsiSignal"] = "과매수 주의"
-    elif rv <= 30:
-        txt["rsiSignal"] = "과매도 반등 관찰"
-    else:
-        txt["rsiSignal"] = "상승 우위" if rv >= 50 else "중립 이하"
+    txt["rsiSignal"] = (comps.get("rsi") or {}).get("state", "데이터 확인 중")
 
     if sk is None or sd is None:
         txt["stochValue"] = "—"
-        txt["stochSignal"] = "데이터 확인 중"
     else:
         txt["stochValue"] = f"%K {sk:.1f} / %D {sd:.1f}"
-        txt["stochSignal"] = "K>D · 단기 모멘텀 우위" if sk > sd else "K≤D · 단기 모멘텀 확인"
+    txt["stochSignal"] = (comps.get("stochastic") or {}).get("state", "데이터 확인 중")
 
     if macd is None or sig is None:
         txt["macdValue"] = "—"
-        txt["macdSignal"] = "데이터 확인 중"
     else:
-        txt["macdValue"] = f"MACD {macd:,.0f} / Signal {sig:,.0f}"
-        txt["macdSignal"] = "Histogram + · 추세 모멘텀 우위" if (hist or 0) > 0 else "Histogram - · 추세 둔화 확인"
+        txt["macdValue"] = f"MACD {macd:,.0f} / Signal {sig:,.0f} / Hist {hist:,.0f}"
+    txt["macdSignal"] = (comps.get("macd") or {}).get("state", "데이터 확인 중")
 
     if m5 is None or m20 is None or m60 is None:
         txt["maValue"] = "—"
-        txt["maSignal"] = "데이터 확인 중"
     else:
-        txt["maValue"] = f"5D {fmt_price(m5)} / 20D {fmt_price(m20)} / 60D {fmt_price(m60)}"
-        txt["maSignal"] = "정배열" if m5 > m20 > m60 else ("역배열" if m5 < m20 < m60 else "혼조 배열")
+        txt["maValue"] = (
+            f"5D {fmt_price(m5)} / 20D {fmt_price(m20)} / 60D {fmt_price(m60)}"
+            + (f" / 120D {fmt_price(m120)}" if m120 is not None else "")
+        )
+    txt["maSignal"] = (comps.get("ma") or {}).get("state", "데이터 확인 중")
+
+    # 100-point Trading Score.
+    total = score.get("total")
+    grade = score.get("grade")
+    grade_label = score.get("grade_label")
+    txt["tradingScore"] = "—" if total is None else f"{total} / 100"
+    txt["tradingGrade"] = "—" if total is None else f"{grade} / {grade_label}"
+    txt["tradingTrend"] = score.get("trend") or "확인 필요"
+    txt["tradingAction"] = score.get("action") or "관망"
+    txt["tradingOverheat"] = score.get("overheat") or "확인 필요"
+    txt["macdScore"] = f"{(comps.get('macd') or {}).get('score','—')} / 30"
+    txt["maScore"] = f"{(comps.get('ma') or {}).get('score','—')} / 30"
+    txt["rsiScore"] = f"{(comps.get('rsi') or {}).get('score','—')} / 20"
+    txt["stochScore"] = f"{(comps.get('stochastic') or {}).get('score','—')} / 20"
+    txt["macdScoreState"] = (comps.get("macd") or {}).get("state", "확인 필요")
+    txt["maScoreState"] = (comps.get("ma") or {}).get("state", "확인 필요")
+    txt["rsiScoreState"] = (comps.get("rsi") or {}).get("state", "확인 필요")
+    txt["stochScoreState"] = (comps.get("stochastic") or {}).get("state", "확인 필요")
+
+    gap20, gap60 = tech.get("gap20"), tech.get("gap60")
+    txt["maGapInfo"] = (
+        f"MA20 괴리 {'—' if gap20 is None else f'{gap20:+.1f}%'} · "
+        f"MA60 괴리 {'—' if gap60 is None else f'{gap60:+.1f}%'} [AI]"
+    )
+    txt["volumeInfo"] = (
+        "—" if tech.get("volume_ratio") is None
+        else f"20D 평균 대비 {tech['volume_ratio']:.2f}배 [AI]"
+    )
+    txt["atrInfo"] = "—" if tech.get("atr14") is None else f"ATR14 {fmt_price(tech['atr14'])}원 [AI]"
+    txt["gapInfo"] = "—" if tech.get("gap_pct") is None else f"시가 Gap {tech['gap_pct']:+.2f}% [AI]"
+    txt["turnoverInfo"] = format_amount(tech.get("turnover"))
+    txt["high52Info"] = (
+        ("52주 신고가" if tech.get("new_high") else f"52주 고점 {fmt_price(tech.get('high52'))}원")
+        + " [AI]"
+    )
+    divs = score.get("divergence") or []
+    txt["divergence"] = " · ".join(divs) + " [AI]" if divs else "뚜렷한 RSI/MACD Divergence 없음 [AI]"
+    confirmations = score.get("confirmation") or []
+    txt["technicalConfirmation"] = " · ".join(confirmations) + " [AI]" if confirmations else "4개 지표 동조 신호 추가 확인 필요 [AI]"
+
+    # Price strategy uses only MA/support/resistance/high-low/ATR-derived values.
+    strategy_map = {
+        "current": ("tpCurrent",),
+        "entry1": ("tpEntry1",),
+        "entry2": ("tpEntry2",),
+        "add": ("tpAdd",),
+        "target1": ("tpTarget1",),
+        "target2": ("tpTarget2",),
+        "stop": ("tpStop",),
+    }
+    for key, (text_key,) in strategy_map.items():
+        item = strategy.get(key) or {}
+        val = item.get("price")
+        reason = item.get("reason") or "확인 필요"
+        txt[text_key] = "—" if val is None else f"{fmt_price(val)}원 [AI]"
+        txt[text_key + "Basis"] = reason + (" [AI]" if reason != "현재 종가" else "")
+
+    # Keep the read-only Trade Plan synchronized with the new technical strategy.
+    def set_input(input_key, strat_key):
+        item = strategy.get(strat_key) or {}
+        if item.get("price") is not None:
+            inp[input_key] = str(int(round(item["price"])))
+
+    set_input("buy1", "entry1")
+    set_input("buy2", "entry2")
+    set_input("stopPrice", "stop")
+    set_input("target1", "target1")
+    set_input("target2", "target2")
 
     r20, r60 = tech.get("r20"), tech.get("r60")
     txt["technicalComment"] = (
-        f"현재가 {fmt_price(price)}원, 20일 {signed(r20)}, 60일 {signed(r60)}, RSI14 "
-        f"{'—' if rv is None else f'{rv:.1f}'}. 지지 {fmt_price(sup)}원 / 저항 {fmt_price(res)}원을 함께 확인합니다. [AI]"
+        f"Trading Score {total}/100 ({grade}/{grade_label}), 추세 {score.get('trend')}, "
+        f"과열도 {score.get('overheat')}. 현재가 {fmt_price(price)}원, "
+        f"20일 {signed(r20)}, 60일 {signed(r60)}, RSI14 "
+        f"{'—' if rv is None else f'{rv:.1f}'}, 지지 {fmt_price(sup)}원 / 저항 {fmt_price(res)}원. [AI]"
     )
-    txt["sourceMarketDate"] = f"{tech.get('date','')} 종가"
+    txt["tradingConclusion"] = (
+        f"Trading Score {total}/100 | 추세: {score.get('trend')} | "
+        f"모멘텀: {(comps.get('macd') or {}).get('state','확인 필요')} | "
+        f"과열도: {score.get('overheat')} | 전략: {score.get('action')} [AI]"
+    )
+    if gap20 is not None and gap20 > 8:
+        txt["tradingEntryCondition"] = "현재 추격매수보다 MA20 괴리 축소 후 Stochastic 재골든크로스 확인 시 진입 우위. [AI]"
+    elif score.get("action") == "신규진입":
+        txt["tradingEntryCondition"] = "MA20 지지 유지와 MACD Histogram 개선이 이어질 때 분할 진입 우위. [AI]"
+    else:
+        txt["tradingEntryCondition"] = "MA20 방향과 MACD·Stochastic 동조가 확인될 때까지 신규 진입은 보수적으로 접근. [AI]"
 
-    if sup is not None:
-        buy1 = int(round((price * 0.67 + sup * 0.33) / 1000) * 1000)
-        buy2 = int(round(sup / 1000) * 1000)
-        stop = int(round((sup * 0.95) / 1000) * 1000)
-        inp["buy1"], inp["buy2"], inp["stopPrice"] = str(buy1), str(buy2), str(stop)
+    txt["sourceMarketDate"] = f"{tech.get('date','')} 종가"
 
 
 def update_theme_cards(d, live_by_code):
@@ -1304,10 +1390,28 @@ def main():
         d.setdefault("text", {})["marketRegime"] = sentiment["regime"]
 
     profiles = d.get("stock_profiles") or []
+
+    quarterly_ok = 0
+    for p in profiles[:5]:
+        try:
+            snap = fetch_quarterly_financials(p.get("stock_code"))
+            if apply_quarterly_financials(p, snap):
+                quarterly_ok += 1
+        except Exception as e:
+            errors.append(f"{p.get('name')} quarterly: {e}")
+    if quarterly_ok < min(5, len(profiles)):
+        print(json.dumps({
+            "status": "rejected",
+            "reason": "TOP5 quarterly finance incomplete",
+            "quarterly_ok": quarterly_ok,
+            "errors": errors[-10:],
+        }, ensure_ascii=False))
+        return 4
+
     for p in profiles:
         profile_live_update(p, live_by_code.get(p.get("stock_code")))
 
-    apply_sentiment_to_profiles(profiles, sentiment, live_by_code)
+    reset_profile_scores(profiles)
     update_theme_cards(d, live_by_code)
 
     # Refresh TOP5 summary cards/bind without touching verified financial snapshot fields.
@@ -1343,7 +1447,7 @@ def main():
         "generated_at": NOW.isoformat(),
         "market_date": md,
         "status": "ok",
-        "ui_version": "v12-top5-financials-github",
+        "ui_version": "v13-quarterly-trading-score",
         "coverage": {
             "stocks_fresh": len(live_by_code),
             "stocks_total": len(stocks),
@@ -1353,7 +1457,7 @@ def main():
             "market_fresh_ratio": round(market_ratio, 4),
         },
         "errors": errors[:20],
-        "note": "실시간 가격/기술지표 갱신. TOP5 4개년 실적/컨센서스는 마지막 검증 스냅샷을 보존합니다.",
+        "note": "실시간 가격/기술지표·Trading Score 갱신. TOP5 실적은 최근 분기 + 다음 분기(E) Consensus 기준입니다.",
     })
 
     tmp = DATA_PATH.with_suffix(".json.tmp")
