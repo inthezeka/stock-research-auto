@@ -199,7 +199,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="stock-search-head">
       <div>
         <div class="stock-search-title">🔎 종목검색 · KOSPI / KOSDAQ</div>
-        <div class="stock-search-desc">종목명 또는 6자리 종목코드를 검색하면 아래 Deep Dive 전체를 해당 종목 기준으로 즉시 전환합니다. 가격·분기실적·Valuation·Trading Score는 공개 시장데이터를 실시간 조회해 계산합니다. [AI]</div>
+        <div class="stock-search-desc">KOSPI·KOSDAQ 전체 상장종목에서 종목명 또는 6자리 종목코드를 검색합니다. 검색 종목을 선택하면 아래 Deep Dive 전체가 해당 종목 기준으로 전환되며 가격·분기실적·Valuation·Trading Score를 공개 시장데이터로 계산합니다. [AI]</div>
       </div>
       <span class="tag blue search-result-badge" id="stockSearchBadge">SEARCH RESULT</span>
     </div>
@@ -213,7 +213,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
       <button type="button" class="btn dark" id="stockSearchButton">검색</button>
     </div>
     <div id="stockSearchResults" class="stock-search-results"></div>
-    <div id="stockSearchStatus" class="stock-search-status">TOP5 외 종목도 검색할 수 있습니다. 검색 결과를 선택하면 아래 상세분석에 반영됩니다.</div>
+    <div id="stockSearchStatus" class="stock-search-status">KOSPI·KOSDAQ 전체 상장종목 목록을 불러오는 중입니다...</div>
   </div>
   <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>투자점수</th><th>현재가</th><th>목표/적정가</th><th>예상수익률</th><th>Risk / Reward</th><th>투자기간</th><th>핵심 Catalyst</th><th>의견</th></tr></thead><tbody>
     <tr class="stock-pick-row" data-profile-index="0"><td class="rank">🥇</td><td><b data-edit data-key="stock1">삼성전기</b></td><td><span class="score-pill" data-edit data-key="score1">92 / 100</span></td><td data-edit data-key="price1">—</td><td data-edit data-key="target1Display">—</td><td class="up" data-edit data-key="return1">+44% [AI]</td><td><b data-edit data-key="rr1">3.5 : 1 [AI]</b></td><td data-edit data-key="period1">3~12개월</td><td data-edit data-key="cat1">AI MLCC LTA + FCBGA 이익 상향</td><td><span class="rating buy" data-edit data-key="op1">Strong Buy</span></td></tr>
@@ -794,11 +794,44 @@ async function buildSearchProfile(item){
   t.metricSource='Naver Stock 공개 API · 분기실적/Valuation/일봉 기반 검색 분석 · 계산값 [AI]';t.sourceTopPick=item.name+' 검색 분석';t.sourceConsensus=m.target?'Consensus 목표가 연결':'Consensus 목표가 미확인';t.sourceMarketDate=rows.at(-1)?.date||'';
   return p;
 }
-function localSearchUniverse(q,market){
-  q=q.trim().toLowerCase();const all=[...(profileGroups.KOSPI||[]),...(profileGroups.KOSDAQ||[])],seen=new Set(),out=[];
-  for(const p of all){const mk=p.market||(/\.KQ$/.test(p.ticker||'')?'KOSDAQ':'KOSPI');if(market!=='ALL'&&mk!==market)continue;if((p.name||'').toLowerCase().includes(q)||(p.stock_code||'').includes(q)){if(!seen.has(p.stock_code)){seen.add(p.stock_code);out.push({code:p.stock_code,name:p.name,typeName:mk,reutersCode:p.ticker||''})}}}
-  return out.slice(0,10);
+let fullStockUniverse=[];
+let stockUniverseMeta={count:0,as_of:''};
+let stockUniverseLoading=null;
+
+function srUniverseItem(x){
+  const market=x.market||srMarketOf(x.typeName||x.reutersCode,'');
+  return{
+    code:String(x.code||x.stock_code||'').replace(/\D/g,'').padStart(6,'0').slice(-6),
+    name:String(x.name||'').trim(),
+    typeName:market,
+    market,
+    reutersCode:x.ticker||x.reutersCode||((market==='KOSDAQ')?String(x.code||'').padStart(6,'0')+'.KQ':String(x.code||'').padStart(6,'0')+'.KS')
+  };
 }
+async function loadStockUniverse(force=false){
+  if(fullStockUniverse.length&&!force)return fullStockUniverse;
+  if(stockUniverseLoading&&!force)return stockUniverseLoading;
+  stockUniverseLoading=(async()=>{
+    const status=document.getElementById('stockSearchStatus');
+    try{
+      const r=await fetch('stock-universe.json?v='+Date.now(),{cache:'no-store'});
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      const d=await r.json();
+      const arr=Array.isArray(d)?d:(d.items||[]);
+      fullStockUniverse=arr.map(srUniverseItem).filter(x=>/^\d{6}$/.test(x.code)&&x.name&&(x.market==='KOSPI'||x.market==='KOSDAQ'));
+      stockUniverseMeta={count:fullStockUniverse.length,as_of:d.as_of||''};
+      if(status)status.textContent='전체 상장종목 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 검색 준비 완료'+(stockUniverseMeta.as_of?' · KRX '+stockUniverseMeta.as_of:'')+'.';
+      return fullStockUniverse;
+    }catch(e){
+      console.warn('stock-universe.json load failed',e);
+      if(status)status.textContent='전체 종목 목록 로드 실패 · 다시 검색하면 재시도합니다.';
+      fullStockUniverse=[];
+      return fullStockUniverse;
+    }finally{stockUniverseLoading=null}
+  })();
+  return stockUniverseLoading;
+}
+function srNorm(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,'')}
 function srMarketOf(raw,fallback=''){
   const s=String(raw||'');
   if(/코스닥|KOSDAQ|\.KQ\b/i.test(s))return'KOSDAQ';
@@ -810,9 +843,39 @@ function srMarketAllowed(item,market){
   const mk=srMarketOf(item.typeName||item.market||item.reutersCode,'');
   return !mk||mk===market;
 }
+function localSearchUniverse(q,market){
+  const nq=srNorm(q);
+  if(!nq)return[];
+  const primary=fullStockUniverse.length?fullStockUniverse:[
+    ...(profileGroups.KOSPI||[]).map(p=>({code:p.stock_code,name:p.name,market:'KOSPI',ticker:p.ticker})),
+    ...(profileGroups.KOSDAQ||[]).map(p=>({code:p.stock_code,name:p.name,market:'KOSDAQ',ticker:p.ticker}))
+  ];
+  const out=[];
+  for(const raw of primary){
+    const x=srUniverseItem(raw);
+    if(!srMarketAllowed(x,market))continue;
+    const nn=srNorm(x.name),code=x.code;
+    if(!(code.includes(nq)||nn.includes(nq)))continue;
+    let rank=4;
+    if(code===nq||nn===nq)rank=0;
+    else if(code.startsWith(nq))rank=1;
+    else if(nn.startsWith(nq))rank=2;
+    else rank=3;
+    out.push({...x,_rank:rank});
+  }
+  out.sort((a,b)=>a._rank-b._rank||a.name.localeCompare(b.name,'ko'));
+  return out.slice(0,20).map(({_rank,...x})=>x);
+}
 async function srResolveStockCode(code,market){
+  await loadStockUniverse();
+  const exact=fullStockUniverse.find(x=>x.code===code);
+  if(exact){
+    if(market!=='ALL'&&exact.market!==market)throw new Error(exact.name+'은(는) '+exact.market+' 종목입니다.');
+    return srUniverseItem(exact);
+  }
   const local=localSearchUniverse(code,market)[0];
   if(local)return local;
+  // Same-origin universe is primary. Remote lookup is only a fallback for newly listed issues not yet in the snapshot.
   const urls=[
     'https://m.stock.naver.com/api/stock/'+code+'/basic',
     'https://m.stock.naver.com/front-api/stock/domestic/basic?code='+code+'&endType=stock'
@@ -831,10 +894,7 @@ async function srResolveStockCode(code,market){
       }
     }catch(e){lastErr=e}
   }
-  if(/^\d{6}$/.test(code)&&market!=='ALL'){
-    return{code,name:code,typeName:market,reutersCode:market==='KOSDAQ'?code+'.KQ':code+'.KS',unresolved:true};
-  }
-  throw lastErr||new Error('종목코드를 확인하지 못했습니다.');
+  throw lastErr||new Error('KOSPI·KOSDAQ 전체 상장종목에서 해당 코드를 찾지 못했습니다.');
 }
 async function srRemoteSearch(q){
   const urls=[
@@ -848,63 +908,69 @@ async function srRemoteSearch(q){
   if(lastErr)throw lastErr;
   return[];
 }
+function srEsc(s){return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 async function analyzeSearchItem(item,status,box){
   box?.classList.remove('show');
   status.textContent=(item.name||item.code)+' 데이터를 불러오는 중...';
   try{
     const p=await buildSearchProfile(item);
     if(!p.name||/^\d{6}$/.test(p.name)){
-      try{
-        const b=await srFetchJson('https://m.stock.naver.com/api/stock/'+item.code+'/basic');
-        const nm=String(srNested(b,['stockName','itemName','name','korName'])||'').trim();
-        const mk=srMarketOf(srNested(b,['stockExchangeName','marketName','market','marketType','exchangeName'])||'',p.market);
-        if(nm){p.name=nm;p.text.topPickName=nm;p.text.topPickTicker=item.code+' · '+(mk||p.market)+' · SEARCH RESULT';p.text.disclosureTitle=nm+' 최근 공시';p.text.irTitle=nm+' IR / 실적자료';p.text.consTitle=nm+' Consensus';p.text.newsTitle=nm+' 최신 주요기사';p.text.sourceTopPick=nm+' 검색 분석'}
-      }catch(_){}
+      const exact=fullStockUniverse.find(x=>x.code===item.code);
+      if(exact){
+        p.name=exact.name;p.market=exact.market;
+        p.text.topPickName=exact.name;p.text.topPickTicker=item.code+' · '+exact.market+' · SEARCH RESULT';
+        p.text.disclosureTitle=exact.name+' 최근 공시';p.text.irTitle=exact.name+' IR / 실적자료';p.text.consTitle=exact.name+' Consensus';p.text.newsTitle=exact.name+' 최신 주요기사';p.text.sourceTopPick=exact.name+' 검색 분석';
+      }
     }
     applyProfileText(p);
     const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
     const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
     document.getElementById('stockSearchBadge')?.classList.add('show');
-    status.textContent=p.name+' 분석 완료 · TOP5 선정과 별도의 검색 분석입니다. [AI]';
+    status.textContent=p.name+' 분석 완료 · 전체 상장종목 검색 결과입니다. [AI]';
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
     console.error(e);
-    status.textContent='분석 데이터 조회 실패: '+e.message+' · 종목코드/시장 구분을 확인한 뒤 다시 시도해주세요.';
+    status.textContent=(item.name||item.code)+' 종목은 찾았지만 상세 데이터 조회에 실패했습니다: '+e.message;
   }
 }
 async function searchStocks(){
   const input=document.getElementById('stockSearchInput'),market=document.getElementById('stockSearchMarket')?.value||'ALL',box=document.getElementById('stockSearchResults'),status=document.getElementById('stockSearchStatus');
   const q=input?.value.trim()||'';
-  if(!q){box.classList.remove('show');status.textContent='종목명 또는 종목코드를 입력해주세요.';return}
-  status.textContent='검색 중...';
+  if(!q){box.classList.remove('show');status.textContent='종목명 또는 6자리 종목코드를 입력해주세요.';return}
+  status.textContent='KOSPI·KOSDAQ 전체 종목에서 검색 중...';
+  await loadStockUniverse();
   if(/^\d{6}$/.test(q)){
     try{
       const item=await srResolveStockCode(q,market);
-      status.textContent=(item.name||q)+' 확인 · 분석을 시작합니다...';
+      status.textContent=item.name+' ('+item.code+') 확인 · 상세 분석을 시작합니다...';
       await analyzeSearchItem(item,status,box);
     }catch(e){
       console.error(e);
+      box.innerHTML='<div class="stock-search-item"><span class="stock-search-meta">검색 결과가 없습니다.</span></div>';
+      box.classList.add('show');
       status.textContent='종목코드 확인 실패: '+e.message;
     }
     return;
   }
-  let items=[];
-  try{items=(await srRemoteSearch(q)).filter(x=>srMarketAllowed(x,market))}
-  catch(e){items=localSearchUniverse(q,market)}
+  let items=localSearchUniverse(q,market);
   if(!items.length){
-    box.innerHTML='<div class="stock-search-item"><span class="stock-search-meta">검색 결과가 없습니다.</span></div>';
+    try{items=(await srRemoteSearch(q)).filter(x=>srMarketAllowed(x,market))}catch(e){}
+  }
+  if(!items.length){
+    box.innerHTML='<div class="stock-search-item"><span class="stock-search-meta">KOSPI·KOSDAQ 전체 상장종목에서 검색 결과가 없습니다.</span></div>';
     box.classList.add('show');
-    status.textContent='종목명 자동검색이 차단된 경우에도 6자리 종목코드 검색은 사용할 수 있습니다.';
+    status.textContent='검색어를 다시 확인해주세요.';
     return;
   }
-  box.innerHTML=items.slice(0,10).map((x,i)=>'<button type="button" class="stock-search-item" data-search-idx="'+i+'"><span><span class="stock-search-name">'+x.name+'</span><br><span class="stock-search-meta">'+x.code+'</span></span><span class="tag blue">'+(srMarketOf(x.typeName||x.reutersCode,'')||x.typeName||'KR')+'</span></button>').join('');
-  box.classList.add('show');status.textContent=items.length+'개 결과';
+  box.innerHTML=items.map((x,i)=>'<button type="button" class="stock-search-item" data-search-idx="'+i+'"><span><span class="stock-search-name">'+srEsc(x.name)+'</span><br><span class="stock-search-meta">'+x.code+'</span></span><span class="tag blue">'+srEsc(x.market||srMarketOf(x.typeName||x.reutersCode,''))+'</span></button>').join('');
+  box.classList.add('show');
+  status.textContent='전체 상장종목 '+(stockUniverseMeta.count||fullStockUniverse.length).toLocaleString('ko-KR')+'개 중 '+items.length+'개 결과';
   box.querySelectorAll('[data-search-idx]').forEach(btn=>btn.addEventListener('click',()=>analyzeSearchItem(items[Number(btn.dataset.searchIdx)],status,box)));
 }
 let stockSearchTimer=null;
 function initStockSearch(){
-  const input=document.getElementById('stockSearchInput'),btn=document.getElementById('stockSearchButton');
+  const input=document.getElementById('stockSearchInput'),btn=document.getElementById('stockSearchButton'),market=document.getElementById('stockSearchMarket');
   if(!input||!btn)return;
   btn.addEventListener('click',searchStocks);
   input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchStocks()}});
@@ -914,8 +980,9 @@ function initStockSearch(){
       const v=input.value.trim();
       if(/^\d+$/.test(v)){if(v.length===6)searchStocks()}
       else if(v.length>=2)searchStocks();
-    },350)
+    },300)
   });
+  market?.addEventListener('change',()=>{if(input.value.trim())searchStocks()});
 }
 
 function applyAutoData(d){
@@ -958,6 +1025,7 @@ async function refreshMarketData(){
 bindTop5TableRows();
 
 async function boot(){
+  await loadStockUniverse();
   initStockSearch();
   document.querySelectorAll('[data-profile-market]').forEach(btn=>btn.addEventListener('click',()=>setProfileMarket(btn.dataset.profileMarket,true)));
   await refreshMarketData();
