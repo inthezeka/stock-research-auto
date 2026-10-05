@@ -24,11 +24,11 @@ SESSION.headers.update({
 TIMEOUT = (3.0, 7.0)
 
 
-def req(url, attempts=2):
+def req(url, attempts=2, headers=None):
     last = None
     for i in range(attempts):
         try:
-            r = SESSION.get(url, timeout=TIMEOUT)
+            r = SESSION.get(url, timeout=TIMEOUT, headers=headers)
             r.raise_for_status()
             return r
         except Exception as e:
@@ -235,11 +235,305 @@ def market_series():
                 "date": rows[-1]["date"],
                 "fresh": True,
                 "source": source,
+                "rows": rows,
             }
         except Exception as e:
             errors.append(f"{key}: {e}")
             out[key] = {"fresh": False}
     return out, errors
+
+
+
+def clamp(v, lo=0.0, hi=100.0):
+    return max(lo, min(hi, float(v)))
+
+
+def percentile_rank(values, current):
+    vals = [float(x) for x in values if x is not None and math.isfinite(float(x))]
+    if current is None or len(vals) < 10:
+        return 50.0
+    cur = float(current)
+    return 100.0 * sum(1 for x in vals if x <= cur) / len(vals)
+
+
+def rolling_returns(closes, period):
+    out = []
+    for i in range(period, len(closes)):
+        v = pct(closes[i], closes[i - period])
+        if v is not None:
+            out.append(v)
+    return out
+
+
+def daily_returns(closes):
+    out = []
+    for i in range(1, len(closes)):
+        v = pct(closes[i], closes[i - 1])
+        if v is not None:
+            out.append(v)
+    return out
+
+
+def rolling_realized_vol(closes, window=20):
+    rets = daily_returns(closes)
+    out = []
+    for i in range(window, len(rets) + 1):
+        w = rets[i - window:i]
+        if len(w) == window:
+            out.append(statistics.pstdev(w) * math.sqrt(252))
+    return out
+
+
+def sentiment_label(score):
+    if score is None:
+        return "데이터 확인 중"
+    s = float(score)
+    if s < 25:
+        return "극단적 공포"
+    if s < 45:
+        return "공포"
+    if s <= 55:
+        return "중립"
+    if s < 75:
+        return "탐욕"
+    return "극단적 탐욕"
+
+
+def fetch_us_sentiment(previous=None):
+    """CNN Fear & Greed primary, public CNN-derived mirror fallback."""
+    errors = []
+    try:
+        headers = {
+            "User-Agent": SESSION.headers.get("User-Agent"),
+            "Accept": "application/json,text/plain,*/*",
+            "Referer": "https://edition.cnn.com/markets/fear-and-greed",
+        }
+        j = req("https://production.dataviz.cnn.io/index/fearandgreed/graphdata", 2, headers=headers).json()
+        fg = j.get("fear_and_greed") or {}
+        score = n(fg.get("score"))
+        if score is None:
+            raise RuntimeError("CNN score missing")
+        return {
+            "available": True,
+            "fresh": True,
+            "score": round(clamp(score), 1),
+            "rating": sentiment_label(score),
+            "rating_en": str(fg.get("rating") or ""),
+            "previous_close": n(fg.get("previous_close")),
+            "previous_1_week": n(fg.get("previous_1_week")),
+            "previous_1_month": n(fg.get("previous_1_month")),
+            "timestamp": fg.get("timestamp") or NOW.isoformat(),
+            "source": "CNN Fear & Greed",
+        }
+    except Exception as e:
+        errors.append(f"CNN: {e}")
+
+    try:
+        j = req("https://fearandgreedgraph.com/api/fear-greed", 1).json()
+        vals = j.get("values") or []
+        dates = j.get("dates") or []
+        score = n(vals[-1] if vals else None)
+        if score is None:
+            raise RuntimeError("mirror score missing")
+        return {
+            "available": True,
+            "fresh": True,
+            "score": round(clamp(score), 1),
+            "rating": sentiment_label(score),
+            "rating_en": "",
+            "previous_close": n(vals[-2] if len(vals) > 1 else None),
+            "previous_1_week": n(vals[-6] if len(vals) > 5 else None),
+            "previous_1_month": n(vals[-22] if len(vals) > 21 else None),
+            "timestamp": (dates[-1] if dates else NOW.date().isoformat()),
+            "source": "FearAndGreedGraph mirror · CNN-derived",
+        }
+    except Exception as e:
+        errors.append(f"mirror: {e}")
+
+    if previous and n(previous.get("score")) is not None:
+        out = dict(previous)
+        out["fresh"] = False
+        out["fallback_reason"] = " / ".join(errors)[:300]
+        return out
+    return {
+        "available": False,
+        "fresh": False,
+        "score": None,
+        "rating": "데이터 확인 중",
+        "source": "CNN Fear & Greed",
+        "fallback_reason": " / ".join(errors)[:300],
+    }
+
+
+def compute_korea_sentiment(market):
+    """Keyless Korea sentiment score; own calculation [AI].
+
+    Volatility uses KOSPI 20-day realized volatility instead of scraping
+    VKOSPI. USD/KRW 20-day momentum is used as a safe-haven/FX proxy.
+    Component scores are trailing-percentile normalized.
+    """
+    try:
+        k_rows = (market.get("kospi") or {}).get("rows") or []
+        q_rows = (market.get("kosdaq") or {}).get("rows") or []
+        fx_rows = (market.get("usdkrw") or {}).get("rows") or []
+        kc = [x["close"] for x in k_rows]
+        qc = [x["close"] for x in q_rows]
+        fc = [x["close"] for x in fx_rows]
+        if len(kc) < 80 or len(qc) < 80 or len(fc) < 40:
+            raise RuntimeError("insufficient history")
+
+        k_daily = daily_returns(kc)
+        q_daily = daily_returns(qc)
+        k20 = rolling_returns(kc, 20)
+        fx20 = rolling_returns(fc, 20)
+        vols = rolling_realized_vol(kc, 20)
+        if not (k_daily and q_daily and k20 and fx20 and vols):
+            raise RuntimeError("indicator series empty")
+
+        momentum_score = percentile_rank(k_daily, k_daily[-1])
+        kosdaq_score = percentile_rank(q_daily, q_daily[-1])
+        strength_score = (momentum_score + kosdaq_score) / 2.0
+        trend_score = percentile_rank(k20, k20[-1])
+        vol_score = 100.0 - percentile_rank(vols, vols[-1])
+        fx_score = 100.0 - percentile_rank(fx20, fx20[-1])
+
+        components = [
+            {"key": "volatility", "label": "변동성 · 20D RV", "score": round(clamp(vol_score), 1), "weight": 30, "value": f"{vols[-1]:.1f}%"},
+            {"key": "momentum", "label": "KOSPI 모멘텀", "score": round(clamp(momentum_score), 1), "weight": 25, "value": signed(k_daily[-1], 2)},
+            {"key": "strength", "label": "주가 강도", "score": round(clamp(strength_score), 1), "weight": 15, "value": signed((k_daily[-1] + q_daily[-1]) / 2.0, 2)},
+            {"key": "trend", "label": "KOSPI 20D 추세", "score": round(clamp(trend_score), 1), "weight": 15, "value": signed(k20[-1], 2)},
+            {"key": "kosdaq", "label": "KOSDAQ 모멘텀", "score": round(clamp(kosdaq_score), 1), "weight": 10, "value": signed(q_daily[-1], 2)},
+            {"key": "safe_haven", "label": "안전자산/FX proxy", "score": round(clamp(fx_score), 1), "weight": 5, "value": f"USD/KRW 20D {signed(fx20[-1], 2)}"},
+        ]
+        score = sum(x["score"] * x["weight"] for x in components) / 100.0
+        return {
+            "available": True,
+            "fresh": True,
+            "score": round(clamp(score), 1),
+            "rating": sentiment_label(score),
+            "timestamp": NOW.isoformat(),
+            "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
+            "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
+            "components": components,
+        }
+    except Exception as e:
+        return {
+            "available": False,
+            "fresh": False,
+            "score": None,
+            "rating": "데이터 확인 중",
+            "timestamp": NOW.isoformat(),
+            "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
+            "error": str(e)[:250],
+            "components": [],
+        }
+
+
+def build_sentiment(us, kr):
+    us_score = n((us or {}).get("score"))
+    kr_score = n((kr or {}).get("score"))
+    if us_score is not None and kr_score is not None:
+        blended = kr_score * 0.55 + us_score * 0.45
+    elif kr_score is not None:
+        blended = kr_score
+    elif us_score is not None:
+        blended = us_score
+    else:
+        blended = None
+
+    if blended is None:
+        modifier = 0
+        regime = "NEUTRAL · SENTIMENT DATA CHECK"
+        note = "심리지수 연결 상태를 확인 중입니다."
+    elif blended >= 80:
+        modifier = -3
+        regime = "RISK-ON · EXTREME GREED WATCH"
+        note = "과열 구간입니다. 신규 추격매수 점수를 낮추고 눌림·확인 매매를 우선합니다. [AI]"
+    elif blended >= 70:
+        modifier = -1
+        regime = "RISK-ON · GREED"
+        note = "탐욕 우위입니다. 추세는 우호적이지만 신규 진입은 가격 위치를 더 엄격히 봅니다. [AI]"
+    elif blended >= 56:
+        modifier = 0
+        regime = "SELECTIVE RISK-ON"
+        note = "심리는 위험자산 선호 쪽이지만 과열은 아닙니다. 종목별 실적·기술적 위치를 우선합니다. [AI]"
+    elif blended >= 45:
+        modifier = 0
+        regime = "NEUTRAL · SELECTIVE"
+        note = "심리가 중립권입니다. 시장보다 종목별 Catalyst와 Risk/Reward 비중을 높입니다. [AI]"
+    elif blended >= 25:
+        modifier = -1
+        regime = "SELECTIVE RISK-OFF"
+        note = "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]"
+    else:
+        modifier = -1
+        regime = "RISK-OFF · EXTREME FEAR"
+        note = "극단적 공포입니다. 일괄 매수 가점은 주지 않고 기술적 반등 조건이 확인된 종목만 별도 가점합니다. [AI]"
+
+    gap = None if us_score is None or kr_score is None else kr_score - us_score
+    return {
+        "us": us,
+        "kr": kr,
+        "blended_score": None if blended is None else round(clamp(blended), 1),
+        "blended_rating": sentiment_label(blended),
+        "kr_us_gap": None if gap is None else round(gap, 1),
+        "regime": regime,
+        "recommendation": {
+            "base_modifier": modifier,
+            "note": note,
+            "profiles": [],
+        },
+        "updated_at": NOW.isoformat(),
+    }
+
+
+def apply_sentiment_to_profiles(profiles, sentiment, live_by_code):
+    rec = sentiment.setdefault("recommendation", {})
+    blend = n(sentiment.get("blended_score"))
+    base_modifier = int(rec.get("base_modifier") or 0)
+    adjustments = []
+
+    for p in profiles[:5]:
+        base = int(round(n(p.get("score")) or 0))
+        modifier = base_modifier
+        rationale = "시장심리 기본 조정"
+
+        if blend is not None and blend < 25:
+            live = live_by_code.get(p.get("stock_code"))
+            tech = (live or {}).get("tech") or {}
+            price, m5, rv = tech.get("price"), tech.get("m5"), tech.get("rsi")
+            bounce = (
+                price is not None and m5 is not None and rv is not None
+                and price > m5 and 30 <= rv <= 55
+            )
+            if bounce:
+                modifier = 2
+                rationale = "극단적 공포 + 단기 반등 조건 충족"
+            else:
+                modifier = -1
+                rationale = "극단적 공포 · 반등 확인 전"
+
+        adjusted = int(round(clamp(base + modifier, 0, 100)))
+        p["adjusted_score"] = adjusted
+        p["sentiment_modifier"] = modifier
+        p.setdefault("text", {})["topPickScore"] = f"{adjusted} / {p.get('rating','')} [AI]"
+        adjustments.append({
+            "name": p.get("name"),
+            "base_score": base,
+            "modifier": modifier,
+            "adjusted_score": adjusted,
+            "reason": rationale,
+        })
+
+    for p in profiles:
+        txt = p.setdefault("text", {})
+        for i, q in enumerate(profiles[:5], 1):
+            adj = q.get("adjusted_score", q.get("score"))
+            mod = int(q.get("sentiment_modifier") or 0)
+            suffix = f" · 심리 {mod:+d} [AI]" if mod else " · 심리 0 [AI]"
+            txt[f"score{i}"] = f"{int(adj)} / 100{suffix}"
+
+    rec["profiles"] = adjustments
 
 
 def update_market_text(d, market):
@@ -424,10 +718,19 @@ def main():
 
     md = update_market_text(d, market)
 
+    previous_sentiment = d.get("sentiment") or {}
+    us_sentiment = fetch_us_sentiment(previous_sentiment.get("us"))
+    kr_sentiment = compute_korea_sentiment(market)
+    sentiment = build_sentiment(us_sentiment, kr_sentiment)
+    d["sentiment"] = sentiment
+    if sentiment.get("regime"):
+        d.setdefault("text", {})["marketRegime"] = sentiment["regime"]
+
     profiles = d.get("stock_profiles") or []
     for p in profiles:
         profile_live_update(p, live_by_code.get(p.get("stock_code")))
 
+    apply_sentiment_to_profiles(profiles, sentiment, live_by_code)
     update_theme_cards(d, live_by_code)
 
     # Refresh TOP5 summary cards/bind without touching verified financial snapshot fields.
@@ -450,7 +753,16 @@ def main():
         print(json.dumps({"status": "rejected", "reason": "financial snapshot incomplete", "bad": financial_bad[:20]}, ensure_ascii=False))
         return 3
 
-    d.setdefault("meta", {}).update({
+    meta = d.setdefault("meta", {})
+    sources = meta.setdefault("sources", [])
+    for src in (
+        "CNN Fear & Greed · 미국 투자심리",
+        "KOSPI·KOSDAQ·USD/KRW 기반 한국 공포탐욕 자체계산 [AI]",
+    ):
+        if src not in sources:
+            sources.append(src)
+
+    meta.update({
         "generated_at": NOW.isoformat(),
         "market_date": md,
         "status": "ok",
