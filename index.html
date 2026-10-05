@@ -38,6 +38,17 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .tech-final{margin-top:14px;padding:18px}.tech-final-line{font-size:16px;font-weight:900;color:var(--navy);line-height:1.6}.tech-entry{margin-top:8px;color:#475467;line-height:1.65}
 @media(max-width:900px){.trading-score-hero{grid-template-columns:1fr}.trading-meta{grid-template-columns:1fr}.tech-analysis-grid{grid-template-columns:1fr}}
 
+.market-profile-toggle{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#F8FAFC}
+.market-profile-btn{border:0;background:transparent;color:#667085;padding:8px 14px;border-radius:9px;font-weight:900;font-size:12px;cursor:pointer}
+.market-profile-btn.active{background:#1769E0;color:#fff;box-shadow:0 2px 8px rgba(23,105,224,.18)}
+.state-metric{border:1px solid var(--border);border-radius:14px;transition:.2s ease}
+.state-metric .m-val{font-weight:950}
+.state-green{background:#ECFDF3!important;border-color:#ABEFC6!important}.state-green .m-val{color:#067647!important}
+.state-orange{background:#FFF6ED!important;border-color:#FFD6AE!important}.state-orange .m-val{color:#B54708!important}
+.state-gray{background:#F2F4F7!important;border-color:#D0D5DD!important}.state-gray .m-val{color:#475467!important}
+.state-red{background:#FEF3F2!important;border-color:#FECDCA!important}.state-red .m-val{color:#B42318!important}
+.state-blue{background:#EFF8FF!important;border-color:#B2DDFF!important}.state-blue .m-val{color:#175CD3!important}
+.score-current{display:flex;flex-direction:column;gap:4px}.score-current .score-value{font-weight:900}.score-current .score-sub{font-size:11px;color:#667085}
 </style>
 </head>
 <body>
@@ -178,7 +189,19 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
   <div class="top5-selector">
-    <div class="top5-selector-head"><div><div class="top5-selector-title">추천종목 TOP 5 선택</div><div class="top5-selector-desc">TOP 1~5를 클릭하면 아래 투자 Thesis부터 실적·Valuation·Catalyst/Risk·기술적 분석·매매전략·시나리오까지 선택 종목 기준으로 즉시 변경됩니다.</div></div><span class="selected-stock-note" id="selectedStockNote">TOP 1 SELECTED</span></div>
+    <div class="top5-selector-head">
+      <div>
+        <div class="top5-selector-title">추천종목 TOP 5 선택</div>
+        <div class="top5-selector-desc">KOSPI / KOSDAQ을 선택한 뒤 TOP 1~5를 클릭하면 아래 상세 분석 전체가 선택 종목 기준으로 변경됩니다.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+        <div class="market-profile-toggle" id="profileMarketToggle">
+          <button type="button" class="market-profile-btn active" data-profile-market="KOSPI">KOSPI TOP5</button>
+          <button type="button" class="market-profile-btn" data-profile-market="KOSDAQ">KOSDAQ TOP5</button>
+        </div>
+        <span class="selected-stock-note" id="selectedStockNote">KOSPI · TOP 1 SELECTED</span>
+      </div>
+    </div>
     <div class="top5-tabs" id="topPickTabs"></div>
   </div>
   <div class="card top-pick">
@@ -235,100 +258,60 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 
 <section id="technical" class="section-track" data-name="TECHNICAL">
   <div class="section-head">
-    <div>
-      <h2 class="section-title">Technical & Market Structure · Trading Score</h2>
-      <p class="section-desc">일봉 스윙 기준으로 MACD 30점 · 이동평균/괴리율 30점 · RSI 20점 · Stochastic 20점을 합산하여 100점 만점으로 평가합니다. 추정·계산값은 [AI]입니다.</p>
-    </div>
-    <span class="score-pill"><span data-edit data-key="tradingScore">— / 100</span></span>
+    <div><h2 class="section-title">Technical & Market Structure · Trading Score</h2><p class="section-desc">일봉 스윙 기준으로 MACD 30점 · 이동평균/괴리율 30점 · RSI 20점 · Stochastic 20점을 합산합니다. 동일 지표는 점수표에서 상태·점수·판단을 한 번에 확인합니다. [AI]</p></div>
+    <span class="score-pill" data-edit data-key="tradingScore">—</span>
   </div>
-
   <div class="trading-score-hero">
-    <div class="card trading-total">
-      <div class="ts-label">TRADING SCORE</div>
-      <div class="ts-value" data-edit data-key="tradingScore">— / 100</div>
-      <div class="ts-grade" data-edit data-key="tradingGrade">—</div>
-    </div>
+    <div class="card trading-total"><div class="ts-label">TRADING SCORE</div><div class="ts-value" data-edit data-key="tradingScore">—</div><div class="ts-grade" data-edit data-key="tradingGrade">—</div></div>
     <div class="trading-meta">
-      <div class="metric"><div class="m-label">현재 추세</div><div class="m-val" data-edit data-key="tradingTrend">—</div></div>
-      <div class="metric"><div class="m-label">매매 판단</div><div class="m-val" data-edit data-key="tradingAction">—</div></div>
-      <div class="metric"><div class="m-label">과열도</div><div class="m-val" data-edit data-key="tradingOverheat">—</div></div>
+      <div class="metric state-metric state-gray" id="trendStateCard"><div class="m-label">현재 추세</div><div class="m-val" data-edit data-key="tradingTrend">—</div></div>
+      <div class="metric state-metric state-gray" id="actionStateCard"><div class="m-label">매매 판단</div><div class="m-val" data-edit data-key="tradingAction">—</div></div>
+      <div class="metric state-metric state-gray" id="heatStateCard"><div class="m-label">과열도</div><div class="m-val" data-edit data-key="tradingOverheat">—</div></div>
     </div>
   </div>
-
   <div class="table-wrap"><table class="table score-breakdown">
     <thead><tr><th>지표</th><th>현재 상태</th><th>점수</th><th>최대점수</th><th>판단</th></tr></thead>
     <tbody>
-      <tr><td><b>MACD</b></td><td data-edit data-key="macdValue">—</td><td data-edit data-key="macdScore">— / 30</td><td>30</td><td data-edit data-key="macdScoreState">—</td></tr>
-      <tr><td><b>MA / 괴리율</b></td><td><span data-edit data-key="maValue">—</span><br><span class="note" data-edit data-key="maGapInfo">—</span></td><td data-edit data-key="maScore">— / 30</td><td>30</td><td data-edit data-key="maScoreState">—</td></tr>
-      <tr><td><b>RSI(14)</b></td><td data-edit data-key="rsiValue">—</td><td data-edit data-key="rsiScore">— / 20</td><td>20</td><td data-edit data-key="rsiScoreState">—</td></tr>
-      <tr><td><b>Stochastic(14,3)</b></td><td data-edit data-key="stochValue">—</td><td data-edit data-key="stochScore">— / 20</td><td>20</td><td data-edit data-key="stochScoreState">—</td></tr>
-      <tr class="total-row"><td><b>TOTAL</b></td><td data-edit data-key="tradingGrade">—</td><td data-edit data-key="tradingScore">— / 100</td><td>100</td><td data-edit data-key="tradingAction">—</td></tr>
+      <tr><td><b>MACD</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="macdValue">—</span></div></td><td data-edit data-key="macdScore">—</td><td>30</td><td data-edit data-key="macdScoreState">—</td></tr>
+      <tr><td><b>MA / 괴리율</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="maValue">—</span><span class="score-sub" data-edit data-key="maGapInfo">—</span></div></td><td data-edit data-key="maScore">—</td><td>30</td><td data-edit data-key="maScoreState">—</td></tr>
+      <tr><td><b>RSI(14)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="rsiValue">—</span></div></td><td data-edit data-key="rsiScore">—</td><td>20</td><td data-edit data-key="rsiScoreState">—</td></tr>
+      <tr><td><b>Stochastic(14,3)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="stochValue">—</span></div></td><td data-edit data-key="stochScore">—</td><td>20</td><td data-edit data-key="stochScoreState">—</td></tr>
+      <tr class="total-row"><td><b>TOTAL</b></td><td data-edit data-key="tradingGrade">—</td><td data-edit data-key="tradingScore">—</td><td>100</td><td data-edit data-key="tradingAction">—</td></tr>
     </tbody>
   </table></div>
-
-  <div class="two-col" style="margin-top:14px">
-    <div class="card">
-      <h3 class="subhead">Price Structure</h3>
-      <div class="spark"><svg viewBox="0 0 600 132" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1769E0" stop-opacity=".15"/><stop offset="100%" stop-color="#1769E0" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10 L600,132 L0,132 Z"/><path class="price" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10"/><line class="resist" x1="0" y1="24" x2="600" y2="24"/><line class="support" x1="0" y1="88" x2="600" y2="88"/><text class="spark-label" x="10" y="19">Resistance</text><text class="spark-label" x="10" y="84">Support</text></svg></div>
-      <div class="grid-3" style="margin-top:10px"><div><div class="eyebrow">SUPPORT</div><b data-edit data-key="support">—</b></div><div><div class="eyebrow">RESISTANCE</div><b data-edit data-key="resistance">—</b></div><div><div class="eyebrow">DIVERGENCE</div><b data-edit data-key="divergence">—</b></div></div>
-      <p class="section-desc" style="margin-top:12px" data-edit data-key="technicalComment">가격 데이터 갱신 시 자동 계산됩니다.</p>
-    </div>
-    <div class="card">
-      <h3 class="subhead">Trading Indicators</h3>
-      <div class="indicator-grid">
-        <div class="indicator-card"><div class="indicator-name">RSI · 14</div><div class="indicator-value" data-edit data-key="rsiValue">—</div><div class="indicator-signal" data-edit data-key="rsiSignal">—</div><div class="indicator-help">강한 상승 종목에서는 50~65 구간을 건강한 상승구간으로 평가하며, 70 이상은 과열 감점합니다.</div></div>
-        <div class="indicator-card"><div class="indicator-name">STOCHASTIC · 14,3</div><div class="indicator-value" data-edit data-key="stochValue">—</div><div class="indicator-signal" data-edit data-key="stochSignal">—</div><div class="indicator-help">20~50 구간 Golden Cross를 가장 우호적으로 평가하고 80 이상 Dead Cross는 강하게 감점합니다.</div></div>
-        <div class="indicator-card"><div class="indicator-name">MACD · 12,26,9</div><div class="indicator-value" data-edit data-key="macdValue">—</div><div class="indicator-signal" data-edit data-key="macdSignal">—</div><div class="indicator-help">Cross뿐 아니라 0선 위치, Histogram 방향·증가속도, MACD/Signal 방향을 함께 점수화합니다.</div></div>
-        <div class="indicator-card"><div class="indicator-name">MOVING AVERAGE · 5/20/60/120</div><div class="indicator-value" data-edit data-key="maValue">—</div><div class="indicator-signal" data-edit data-key="maSignal">—</div><div class="indicator-help">정배열과 MA20·60 기울기를 확인하고 MA20 괴리율 +8% 이상부터 과열 감점을 적용합니다.</div></div>
-      </div>
-      <div class="technical-legend"><b>Confirmation</b> · <span data-edit data-key="technicalConfirmation">4개 지표 동조 여부를 확인합니다. [AI]</span></div>
-    </div>
+  <div class="card" style="margin-top:14px">
+    <h3 class="subhead">Price Structure</h3>
+    <div class="spark"><svg viewBox="0 0 600 132" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1769E0" stop-opacity=".15"/><stop offset="100%" stop-color="#1769E0" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10 L600,132 L0,132 Z"/><path class="price" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10"/><line class="resist" x1="0" y1="24" x2="600" y2="24"/><line class="support" x1="0" y1="88" x2="600" y2="88"/><text class="spark-label" x="10" y="19">Resistance</text><text class="spark-label" x="10" y="84">Support</text></svg></div>
+    <div class="grid-3" style="margin-top:10px"><div><div class="eyebrow">SUPPORT</div><b data-edit data-key="support">—</b></div><div><div class="eyebrow">RESISTANCE</div><b data-edit data-key="resistance">—</b></div><div><div class="eyebrow">DIVERGENCE</div><b data-edit data-key="divergence">—</b></div></div>
+    <div class="technical-legend" style="margin-top:12px"><b>Confirmation</b> · <span data-edit data-key="technicalConfirmation">4개 지표 동조 여부를 확인합니다. [AI]</span></div>
+    <p class="section-desc" style="margin-top:12px" data-edit data-key="technicalComment">가격 데이터 갱신 시 자동 계산됩니다.</p>
   </div>
-
   <div class="tech-analysis-grid">
-    <div class="card">
-      <h3 class="subhead">핵심 분석 5가지</h3>
-      <div class="facts">
-        <div class="fact-row"><span>1. 추세</span><b data-edit data-key="maScoreState">—</b></div>
-        <div class="fact-row"><span>2. 모멘텀</span><b><span data-edit data-key="macdScoreState">—</span> · <span data-edit data-key="rsiScoreState">—</span></b></div>
-        <div class="fact-row"><span>3. 진입 타이밍</span><b data-edit data-key="stochScoreState">—</b></div>
-        <div class="fact-row"><span>4. 과열도</span><b><span data-edit data-key="tradingOverheat">—</span> · <span data-edit data-key="maGapInfo">—</span></b></div>
-        <div class="fact-row"><span>5. 위험요인</span><b data-edit data-key="divergence">—</b></div>
-      </div>
-      <h3 class="subhead" style="margin-top:18px">별도 확인 지표</h3>
-      <div class="facts">
-        <div class="fact-row"><span>거래량</span><b data-edit data-key="volumeInfo">—</b></div>
-        <div class="fact-row"><span>ATR / 변동성</span><b data-edit data-key="atrInfo">—</b></div>
-        <div class="fact-row"><span>Gap</span><b data-edit data-key="gapInfo">—</b></div>
-        <div class="fact-row"><span>거래대금</span><b data-edit data-key="turnoverInfo">—</b></div>
-        <div class="fact-row"><span>52주 위치</span><b data-edit data-key="high52Info">—</b></div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="subhead">가격 전략</h3>
-      <div class="table-wrap"><table class="table price-plan-table">
-        <thead><tr><th>구분</th><th>가격</th><th>산정 근거</th></tr></thead>
-        <tbody>
-          <tr><td>현재가</td><td data-edit data-key="tpCurrent">—</td><td data-edit data-key="tpCurrentBasis">현재 종가</td></tr>
-          <tr><td>1차 진입가</td><td data-edit data-key="tpEntry1">—</td><td data-edit data-key="tpEntry1Basis">—</td></tr>
-          <tr><td>2차 진입가</td><td data-edit data-key="tpEntry2">—</td><td data-edit data-key="tpEntry2Basis">—</td></tr>
-          <tr><td>추가매수 가능가격</td><td data-edit data-key="tpAdd">—</td><td data-edit data-key="tpAddBasis">—</td></tr>
-          <tr><td>1차 목표가</td><td data-edit data-key="tpTarget1">—</td><td data-edit data-key="tpTarget1Basis">—</td></tr>
-          <tr><td>2차 목표가</td><td data-edit data-key="tpTarget2">—</td><td data-edit data-key="tpTarget2Basis">—</td></tr>
-          <tr><td>기술적 손절가</td><td data-edit data-key="tpStop">—</td><td data-edit data-key="tpStopBasis">—</td></tr>
-        </tbody>
-      </table></div>
-      <p class="note" style="margin-top:10px">가격은 MA20/MA60/지지·저항/직전 고저점/ATR 중 실제 계산 가능한 근거만 사용합니다. ATR 기반 가격은 [AI]입니다.</p>
-    </div>
+    <div class="card"><h3 class="subhead">핵심 분석 5가지</h3><div class="facts">
+      <div class="fact-row"><span>1. 추세</span><b data-edit data-key="maScoreState">—</b></div>
+      <div class="fact-row"><span>2. 모멘텀</span><b><span data-edit data-key="macdScoreState">—</span> · <span data-edit data-key="rsiScoreState">—</span></b></div>
+      <div class="fact-row"><span>3. 진입 타이밍</span><b data-edit data-key="stochScoreState">—</b></div>
+      <div class="fact-row"><span>4. 과열도</span><b><span data-edit data-key="tradingOverheat">—</span> · <span data-edit data-key="maGapInfo">—</span></b></div>
+      <div class="fact-row"><span>5. 위험요인</span><b data-edit data-key="divergence">—</b></div>
+    </div><h3 class="subhead" style="margin-top:18px">별도 확인 지표</h3><div class="facts">
+      <div class="fact-row"><span>거래량</span><b data-edit data-key="volumeInfo">—</b></div>
+      <div class="fact-row"><span>ATR / 변동성</span><b data-edit data-key="atrInfo">—</b></div>
+      <div class="fact-row"><span>Gap</span><b data-edit data-key="gapInfo">—</b></div>
+      <div class="fact-row"><span>거래대금</span><b data-edit data-key="turnoverInfo">—</b></div>
+      <div class="fact-row"><span>52주 위치</span><b data-edit data-key="high52Info">—</b></div>
+    </div></div>
+    <div class="card"><h3 class="subhead">가격 전략</h3><div class="table-wrap"><table class="table price-plan-table"><thead><tr><th>구분</th><th>가격</th><th>산정 근거</th></tr></thead><tbody>
+      <tr><td>현재가</td><td data-edit data-key="tpCurrent">—</td><td data-edit data-key="tpCurrentBasis">현재 종가</td></tr>
+      <tr><td>1차 진입가</td><td data-edit data-key="tpEntry1">—</td><td data-edit data-key="tpEntry1Basis">—</td></tr>
+      <tr><td>2차 진입가</td><td data-edit data-key="tpEntry2">—</td><td data-edit data-key="tpEntry2Basis">—</td></tr>
+      <tr><td>추가매수 가능가격</td><td data-edit data-key="tpAdd">—</td><td data-edit data-key="tpAddBasis">—</td></tr>
+      <tr><td>1차 목표가</td><td data-edit data-key="tpTarget1">—</td><td data-edit data-key="tpTarget1Basis">—</td></tr>
+      <tr><td>2차 목표가</td><td data-edit data-key="tpTarget2">—</td><td data-edit data-key="tpTarget2Basis">—</td></tr>
+      <tr><td>기술적 손절가</td><td data-edit data-key="tpStop">—</td><td data-edit data-key="tpStopBasis">—</td></tr>
+    </tbody></table></div><p class="note" style="margin-top:10px">가격은 MA20/MA60/지지·저항/직전 고저점/ATR 중 실제 계산 가능한 근거만 사용합니다. ATR 기반 가격은 [AI]입니다.</p></div>
   </div>
-
-  <div class="card tech-final">
-    <div class="eyebrow">FINAL TECHNICAL VIEW</div>
-    <div class="tech-final-line" data-edit data-key="tradingConclusion">Trading Score — / 100</div>
-    <div class="tech-entry" data-edit data-key="tradingEntryCondition">진입 조건을 계산 중입니다.</div>
-  </div>
+  <div class="card tech-final"><div class="eyebrow">FINAL TECHNICAL VIEW</div><div class="tech-final-line" data-edit data-key="tradingConclusion">Trading Score —</div><div class="tech-entry" data-edit data-key="tradingEntryCondition">진입 조건을 계산 중입니다.</div></div>
 </section>
-
 <section id="strategy" class="section-track" data-name="STRATEGY">
   <div class="section-head"><div><h2 class="section-title">⑤ 매매전략 & Risk / Reward</h2><p class="section-desc">Trade Plan은 자동 분석 결과를 표시하는 읽기전용 영역입니다. 사용자가 직접 선택하거나 수정하지 않습니다.</p></div><span class="trade-lock">READ ONLY</span></div>
   <div class="strategy">
