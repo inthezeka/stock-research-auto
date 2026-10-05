@@ -799,23 +799,123 @@ function localSearchUniverse(q,market){
   for(const p of all){const mk=p.market||(/\.KQ$/.test(p.ticker||'')?'KOSDAQ':'KOSPI');if(market!=='ALL'&&mk!==market)continue;if((p.name||'').toLowerCase().includes(q)||(p.stock_code||'').includes(q)){if(!seen.has(p.stock_code)){seen.add(p.stock_code);out.push({code:p.stock_code,name:p.name,typeName:mk,reutersCode:p.ticker||''})}}}
   return out.slice(0,10);
 }
+function srMarketOf(raw,fallback=''){
+  const s=String(raw||'');
+  if(/코스닥|KOSDAQ|\.KQ\b/i.test(s))return'KOSDAQ';
+  if(/코스피|KOSPI|\.KS\b/i.test(s))return'KOSPI';
+  return fallback==='ALL'?'':fallback;
+}
+function srMarketAllowed(item,market){
+  if(market==='ALL')return true;
+  const mk=srMarketOf(item.typeName||item.market||item.reutersCode,'');
+  return !mk||mk===market;
+}
+async function srResolveStockCode(code,market){
+  const local=localSearchUniverse(code,market)[0];
+  if(local)return local;
+  const urls=[
+    'https://m.stock.naver.com/api/stock/'+code+'/basic',
+    'https://m.stock.naver.com/front-api/stock/domestic/basic?code='+code+'&endType=stock'
+  ];
+  let lastErr=null;
+  for(const url of urls){
+    try{
+      const b=await srFetchJson(url);
+      const name=String(srNested(b,['stockName','itemName','name','korName'])||'').trim();
+      const marketRaw=srNested(b,['stockExchangeName','marketName','market','marketType','stockExchangeType','exchangeName'])||'';
+      const mk=srMarketOf(typeof marketRaw==='object'?JSON.stringify(marketRaw):marketRaw,market);
+      if(name){
+        const item={code,name,typeName:mk||market||'',reutersCode:mk==='KOSDAQ'?code+'.KQ':(mk==='KOSPI'?code+'.KS':'')};
+        if(!srMarketAllowed(item,market))throw new Error(name+'은(는) '+mk+' 종목입니다.');
+        return item;
+      }
+    }catch(e){lastErr=e}
+  }
+  if(/^\d{6}$/.test(code)&&market!=='ALL'){
+    return{code,name:code,typeName:market,reutersCode:market==='KOSDAQ'?code+'.KQ':code+'.KS',unresolved:true};
+  }
+  throw lastErr||new Error('종목코드를 확인하지 못했습니다.');
+}
+async function srRemoteSearch(q){
+  const urls=[
+    'https://m.stock.naver.com/front-api/search/autoComplete?query='+encodeURIComponent(q)+'&target=stock,index,marketindicator,coin,ipo',
+    'https://ac.stock.naver.com/ac?q='+encodeURIComponent(q)+'&target=stock,index,marketindicator,coin,ipo&st=111'
+  ];
+  let lastErr=null;
+  for(const url of urls){
+    try{const items=srSearchItems(await srFetchJson(url));if(items.length)return items}catch(e){lastErr=e}
+  }
+  if(lastErr)throw lastErr;
+  return[];
+}
+async function analyzeSearchItem(item,status,box){
+  box?.classList.remove('show');
+  status.textContent=(item.name||item.code)+' 데이터를 불러오는 중...';
+  try{
+    const p=await buildSearchProfile(item);
+    if(!p.name||/^\d{6}$/.test(p.name)){
+      try{
+        const b=await srFetchJson('https://m.stock.naver.com/api/stock/'+item.code+'/basic');
+        const nm=String(srNested(b,['stockName','itemName','name','korName'])||'').trim();
+        const mk=srMarketOf(srNested(b,['stockExchangeName','marketName','market','marketType','exchangeName'])||'',p.market);
+        if(nm){p.name=nm;p.text.topPickName=nm;p.text.topPickTicker=item.code+' · '+(mk||p.market)+' · SEARCH RESULT';p.text.disclosureTitle=nm+' 최근 공시';p.text.irTitle=nm+' IR / 실적자료';p.text.consTitle=nm+' Consensus';p.text.newsTitle=nm+' 최신 주요기사';p.text.sourceTopPick=nm+' 검색 분석'}
+      }catch(_){}
+    }
+    applyProfileText(p);
+    const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
+    const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
+    document.getElementById('stockSearchBadge')?.classList.add('show');
+    status.textContent=p.name+' 분석 완료 · TOP5 선정과 별도의 검색 분석입니다. [AI]';
+    document.title=p.name+' | Stock Research';
+    document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){
+    console.error(e);
+    status.textContent='분석 데이터 조회 실패: '+e.message+' · 종목코드/시장 구분을 확인한 뒤 다시 시도해주세요.';
+  }
+}
 async function searchStocks(){
   const input=document.getElementById('stockSearchInput'),market=document.getElementById('stockSearchMarket')?.value||'ALL',box=document.getElementById('stockSearchResults'),status=document.getElementById('stockSearchStatus');
-  const q=input?.value.trim()||'';if(!q){box.classList.remove('show');status.textContent='종목명 또는 종목코드를 입력해주세요.';return}
-  status.textContent='검색 중...';let items=[];
-  try{
-    const url='https://m.stock.naver.com/front-api/search/autoComplete?query='+encodeURIComponent(q)+'&target=stock,index,marketindicator,coin,ipo';
-    items=srSearchItems(await srFetchJson(url)).filter(x=>market==='ALL'||x.typeName.toUpperCase().includes(market)||x.typeName.includes(market==='KOSPI'?'코스피':'코스닥'));
-  }catch(e){items=localSearchUniverse(q,market)}
-  if(!items.length){box.innerHTML='<div class="stock-search-item"><span class="stock-search-meta">검색 결과가 없습니다.</span></div>';box.classList.add('show');status.textContent='네이버 검색이 브라우저에서 차단된 경우 현재 분석 Universe 안에서만 검색됩니다.';return}
-  box.innerHTML=items.slice(0,10).map((x,i)=>'<button type="button" class="stock-search-item" data-search-idx="'+i+'"><span><span class="stock-search-name">'+x.name+'</span><br><span class="stock-search-meta">'+x.code+'</span></span><span class="tag blue">'+x.typeName+'</span></button>').join('');box.classList.add('show');status.textContent=items.length+'개 결과';
-  box.querySelectorAll('[data-search-idx]').forEach(btn=>btn.addEventListener('click',async()=>{const item=items[Number(btn.dataset.searchIdx)];box.classList.remove('show');status.textContent=item.name+' 데이터를 불러오는 중...';try{const p=await buildSearchProfile(item);applyProfileText(p);const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;document.getElementById('stockSearchBadge')?.classList.add('show');status.textContent=p.name+' 분석 완료 · TOP5 선정과 별도의 검색 분석입니다. [AI]';document.title=p.name+' | Stock Research';document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){console.error(e);status.textContent='분석 데이터 조회 실패: '+e.message+' · 잠시 후 다시 시도해주세요.';}}));
+  const q=input?.value.trim()||'';
+  if(!q){box.classList.remove('show');status.textContent='종목명 또는 종목코드를 입력해주세요.';return}
+  status.textContent='검색 중...';
+  if(/^\d{6}$/.test(q)){
+    try{
+      const item=await srResolveStockCode(q,market);
+      status.textContent=(item.name||q)+' 확인 · 분석을 시작합니다...';
+      await analyzeSearchItem(item,status,box);
+    }catch(e){
+      console.error(e);
+      status.textContent='종목코드 확인 실패: '+e.message;
+    }
+    return;
+  }
+  let items=[];
+  try{items=(await srRemoteSearch(q)).filter(x=>srMarketAllowed(x,market))}
+  catch(e){items=localSearchUniverse(q,market)}
+  if(!items.length){
+    box.innerHTML='<div class="stock-search-item"><span class="stock-search-meta">검색 결과가 없습니다.</span></div>';
+    box.classList.add('show');
+    status.textContent='종목명 자동검색이 차단된 경우에도 6자리 종목코드 검색은 사용할 수 있습니다.';
+    return;
+  }
+  box.innerHTML=items.slice(0,10).map((x,i)=>'<button type="button" class="stock-search-item" data-search-idx="'+i+'"><span><span class="stock-search-name">'+x.name+'</span><br><span class="stock-search-meta">'+x.code+'</span></span><span class="tag blue">'+(srMarketOf(x.typeName||x.reutersCode,'')||x.typeName||'KR')+'</span></button>').join('');
+  box.classList.add('show');status.textContent=items.length+'개 결과';
+  box.querySelectorAll('[data-search-idx]').forEach(btn=>btn.addEventListener('click',()=>analyzeSearchItem(items[Number(btn.dataset.searchIdx)],status,box)));
 }
 let stockSearchTimer=null;
 function initStockSearch(){
   const input=document.getElementById('stockSearchInput'),btn=document.getElementById('stockSearchButton');
-  if(!input||!btn)return;btn.addEventListener('click',searchStocks);input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchStocks()}});
-  input.addEventListener('input',()=>{clearTimeout(stockSearchTimer);stockSearchTimer=setTimeout(()=>{if(input.value.trim().length>=2)searchStocks()},350)});
+  if(!input||!btn)return;
+  btn.addEventListener('click',searchStocks);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchStocks()}});
+  input.addEventListener('input',()=>{
+    clearTimeout(stockSearchTimer);
+    stockSearchTimer=setTimeout(()=>{
+      const v=input.value.trim();
+      if(/^\d+$/.test(v)){if(v.length===6)searchStocks()}
+      else if(v.length>=2)searchStocks();
+    },350)
+  });
 }
 
 function applyAutoData(d){
