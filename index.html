@@ -262,11 +262,11 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="fundamentalScanBtn">Fundamental 스캔 실행</button>
-      <span class="scan-status" id="fundamentalScanStatus">새 선정 기준으로 스캔 대기 중</span>
+      <span class="scan-status" id="fundamentalScanStatus">페이지 로드 후 자동 조회합니다.</span>
     </div>
-    <div class="card"><h3 class="subhead">① Fundamental TOP 20</h3><div id="fundTop20List" class="compact-chips"><span class="note">스캔 실행 후 표시됩니다.</span></div></div>
-    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>시장</th><th>Fundamental</th><th>Growth</th><th>Earnings</th><th>Valuation</th><th>Catalyst</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="8">스캔 대기 중</td></tr></tbody></table></div></div>
-    <div class="card" style="margin-top:12px"><h3 class="subhead">⑤ Fundamental 최종 TOP 5</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Fundamental</th><th>ICT</th><th>Entry Quality</th><th>현재가</th><th>핵심 Catalyst</th><th>상태</th></tr></thead><tbody id="fundFinalBody"><tr><td colspan="8">ICT Screening 완료 후 표시됩니다.</td></tr></tbody></table></div></div>
+    <div class="card"><h3 class="subhead">① Fundamental TOP 20</h3><div id="fundTop20List" class="compact-chips"><span class="note">자동 조회 중입니다...</span></div></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>시장</th><th>Fundamental</th><th>Growth</th><th>Earnings</th><th>Valuation</th><th>Catalyst</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="8">자동 조회 중입니다...</td></tr></tbody></table></div></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">⑤ Fundamental 최종 TOP 5</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Fundamental</th><th>ICT</th><th>Entry Quality</th><th>현재가</th><th>핵심 Catalyst</th><th>상태</th></tr></thead><tbody id="fundFinalBody"><tr><td colspan="8">Fundamental 및 ICT 자동 분석 중입니다...</td></tr></tbody></table></div></div>
   </div>
 
   <div id="tradingPanel" class="screening-panel">
@@ -287,9 +287,9 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="ictScanBtn">ICT Trading TOP10 스캔</button>
-      <span class="scan-status" id="ictScanStatus">거래대금·유동성 상위 후보 스캔 대기 중</span>
+      <span class="scan-status" id="ictScanStatus">페이지 로드 후 자동 ICT 조회합니다.</span>
     </div>
-    <div class="card"><h3 class="subhead">ICT Trading TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>현재가</th><th>ICT Score</th><th>HTF Bias</th><th>External BSL</th><th>Internal BSL</th><th>Protected Low</th><th>현재 Setup</th><th>Entry Zone</th><th>Invalidation</th><th>1차 Target</th><th>2차 Target</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="14">스캔 대기 중</td></tr></tbody></table></div></div>
+    <div class="card"><h3 class="subhead">ICT Trading TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>현재가</th><th>ICT Score</th><th>HTF Bias</th><th>External BSL</th><th>Internal BSL</th><th>Protected Low</th><th>현재 Setup</th><th>Entry Zone</th><th>Invalidation</th><th>1차 Target</th><th>2차 Target</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="14">자동 ICT 분석 중입니다...</td></tr></tbody></table></div></div>
     <div id="ictBestNote" class="ict-best-note" style="display:none"></div>
     <div id="ictTop5Details"></div>
   </div>
@@ -1123,6 +1123,57 @@ async function srKrxHistory(item){
   try{sessionStorage.setItem(cacheKey,JSON.stringify(rows))}catch(_){}
   return rows;
 }
+const srDailyRowsCache=new Map();
+async function srKrxBatchHistory(items,statusEl){
+  const list=(items||[]).filter(Boolean),codes=new Set(list.map(x=>x.code));
+  const out=new Map();
+  for(const item of list){
+    if(srDailyRowsCache.has(item.code))out.set(item.code,srDailyRowsCache.get(item.code));
+    else{
+      try{
+        const cached=JSON.parse(sessionStorage.getItem('krxhist:'+item.code+':'+(stockUniverseMeta?.as_of||'2026-10-05'))||'null');
+        if(Array.isArray(cached)&&cached.length>=65){out.set(item.code,cached);srDailyRowsCache.set(item.code,cached)}
+      }catch(_){}
+    }
+  }
+  const missing=[...codes].filter(code=>!out.has(code));
+  if(!missing.length)return out;
+  const asOf=(stockUniverseMeta?.as_of)||'2026-10-05';
+  const dates=srBusinessDates(asOf,78),need=new Set(missing),rowsByCode=new Map(missing.map(code=>[code,[]]));
+  const base='https://raw.githubusercontent.com/FinanceData/fdr_krx_data_cache/master/data/listing/krx/';
+  let done=0;
+  async function one(date){
+    try{
+      const txt=await srFetchText(base+date+'.csv');
+      const lines=txt.replace(/^\uFEFF/,'').split(/\r?\n/);
+      if(lines.length<2)return;
+      const h=srCsvLine(lines[0]),ix={};h.forEach((x,i)=>ix[x]=i);
+      for(let i=1;i<lines.length;i++){
+        const line=lines[i];if(!line)continue;
+        const a=srCsvLine(line),code=String(a[ix.Code]||'').padStart(6,'0');
+        if(!need.has(code))continue;
+        const num=k=>srNum(a[ix[k]]);
+        const row={date,open:num('Open'),high:num('High'),low:num('Low'),close:num('Close'),volume:num('Volume')||0};
+        if([row.high,row.low,row.close].every(Number.isFinite))rowsByCode.get(code).push(row);
+      }
+    }catch(_){}
+    finally{
+      done++;
+      if(statusEl&&done%10===0)statusEl.textContent='KRX 일봉 일괄 조회 '+done+'/'+dates.length+' · '+missing.length+'개 종목 동시 처리 중...';
+    }
+  }
+  const concurrency=8;
+  for(let i=0;i<dates.length;i+=concurrency)await Promise.all(dates.slice(i,i+concurrency).map(one));
+  for(const item of list){
+    if(out.has(item.code))continue;
+    const rows=(rowsByCode.get(item.code)||[]).sort((a,b)=>a.date.localeCompare(b.date));
+    if(rows.length>=65){
+      out.set(item.code,rows);srDailyRowsCache.set(item.code,rows);
+      try{sessionStorage.setItem('krxhist:'+item.code+':'+asOf,JSON.stringify(rows))}catch(_){}
+    }
+  }
+  return out;
+}
 async function srLoadChartRows(item){
   try{
     const j=await srFetchJson('https://api.stock.naver.com/chart/domestic/item/'+item.code+'?periodType=dayCandle');
@@ -1665,8 +1716,8 @@ function srEntryQuality(res){
   if(res.score>=70)return'B';
   return'C';
 }
-async function srIctAnalyzeItem(item){
-  const daily=await srLoadChartRows(item),weekly=srAggregateWeekly(daily),minute=await srLoadMinuteRows(item),h1=minute.length>=12?minute:daily.slice(-60),h4=minute.length>=12?srAggregateFixed(minute,4):daily.slice(-60);
+async function srIctAnalyzeItem(item,dailyOverride=null){
+  const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item),weekly=srAggregateWeekly(daily),minute=await srLoadMinuteRows(item),h1=minute.length>=12?minute:daily.slice(-60),h4=minute.length>=12?srAggregateFixed(minute,4):daily.slice(-60);
   const price=daily.at(-1).close,ws=srIctStructure(weekly),ds=srIctStructure(daily),s4=srIctStructure(h4),s1=srIctStructure(h1);
   const liq=srIctLiquidity(daily),event=srIctEvent(h1),disp=srIctDisplacement(h1,event),fvgs=srIctFvg(h1),bullFvg=fvgs.filter(x=>x.type==='Bullish FVG'&&x.low<price).at(-1)||null,pd=srIctPd(daily);
   const protectedLow=srNearestBelow(s1.lows.slice(-6),price)||srNearestBelow(ds.lows.slice(-6),price)||liq.externalSSL;
@@ -1704,8 +1755,10 @@ async function runIctTradingScan(){
     status.textContent='유동성 상위 후보 선정 중...';
     await loadStockUniverse();
     const candidates=srLiquidityCandidates(20);
+    status.textContent='ICT 일봉 데이터 일괄 조회 중...';
+    const dailyMap=await srKrxBatchHistory(candidates,status);
     status.textContent='ICT 구조 분석 중 · Weekly/Daily/4H/1H best-effort...';
-    const analyzed=(await srMapLimit(candidates,3,srIctAnalyzeItem)).filter(Boolean);
+    const analyzed=(await srMapLimit(candidates,4,item=>srIctAnalyzeItem(item,dailyMap.get(item.code)))).filter(Boolean);
     analyzed.sort((a,b)=>b.score-a.score||b.rr-a.rr);
     const top10=analyzed.filter(x=>x.score>=60).slice(0,10);
     ictTradingResults={top10,top5:top10.slice(0,5)};
@@ -1725,8 +1778,10 @@ async function runFundamentalPipeline(){
     const reports=(await srMapLimit(candidates,8,async item=>{const report=await srKosaiCached(item);const f=srFundamentalScore(report);return report&&f?{item,report,f}:null})).filter(Boolean);
     reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
     const top20=reports.slice(0,20),top10=top20.slice(0,10);
-    srRenderFundTop20(top20);srRenderFundTop10(top10);status.textContent='Fundamental TOP10 완료 · ICT Screening 진행 중...';
-    const withIct=(await srMapLimit(top10,3,async x=>{const ict=await srIctAnalyzeItem(x.item);const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';return{...x,ict,catalystText}})).filter(Boolean);
+    srRenderFundTop20(top20);srRenderFundTop10(top10);status.textContent='Fundamental TOP10 완료 · ICT용 일봉 일괄 조회 중...';
+    const dailyMap=await srKrxBatchHistory(top10.map(x=>x.item),status);
+    status.textContent='Fundamental TOP10 · ICT Screening 진행 중...';
+    const withIct=(await srMapLimit(top10,4,async x=>{const ict=await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code));const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';return{...x,ict,catalystText}})).filter(Boolean);
     const rank={S:0,A:1,B:2,C:3};
     withIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.score-a.ict.score||b.f.total-a.f.total);
     const final5=withIct.filter(x=>x.ict.entryQuality!=='C').slice(0,5);
@@ -1734,6 +1789,70 @@ async function runFundamentalPipeline(){
     status.textContent='완료 · Fundamental TOP20 → TOP10 → ICT Screening → Entry Quality → 최종 TOP5 [AI]';
   }catch(e){console.error(e);status.textContent='Fundamental 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
+}
+
+
+let automaticScreeningStarted=false;
+async function runAutomaticScreenings(){
+  if(automaticScreeningStarted)return;
+  automaticScreeningStarted=true;
+  const fStatus=document.getElementById('fundamentalScanStatus'),iStatus=document.getElementById('ictScanStatus');
+  const fBtn=document.getElementById('fundamentalScanBtn'),iBtn=document.getElementById('ictScanBtn');
+  if(fBtn)fBtn.disabled=true;if(iBtn)iBtn.disabled=true;
+  try{
+    await loadStockUniverse();
+    if(fStatus)fStatus.textContent='자동 조회 1/4 · Fundamental 후보 50개 분석 중...';
+    if(iStatus)iStatus.textContent='자동 조회 대기 · Fundamental 후보 선별 후 ICT 일괄 분석합니다.';
+    const fundCandidates=srLiquidityCandidates(50);
+    const reports=(await srMapLimit(fundCandidates,8,async item=>{
+      const report=await srKosaiCached(item),fund=srFundamentalScore(report);
+      return report&&fund?{item,report,f:fund}:null;
+    })).filter(Boolean);
+    reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
+    const top20=reports.slice(0,20),top10=top20.slice(0,10);
+    srRenderFundTop20(top20);srRenderFundTop10(top10);
+    if(fStatus)fStatus.textContent='자동 조회 2/4 · Fundamental TOP10 완료 · ICT 가격구조 준비 중...';
+
+    const tradingCandidates=srLiquidityCandidates(20);
+    const unionMap=new Map();
+    [...tradingCandidates,...top10.map(x=>x.item)].forEach(item=>unionMap.set(item.code,item));
+    const union=[...unionMap.values()];
+    if(iStatus)iStatus.textContent='자동 조회 2/4 · KRX 일봉 '+union.length+'개 종목 일괄 조회 중...';
+    const dailyMap=await srKrxBatchHistory(union,iStatus||fStatus);
+
+    if(fStatus)fStatus.textContent='자동 조회 3/4 · Fundamental TOP10 ICT Screening 중...';
+    const fundWithIct=(await srMapLimit(top10,4,async x=>{
+      const ict=await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code));
+      const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';
+      return{...x,ict,catalystText};
+    })).filter(Boolean);
+    const rank={S:0,A:1,B:2,C:3};
+    fundWithIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.score-a.ict.score||b.f.total-a.f.total);
+    const final5=fundWithIct.filter(x=>x.ict.entryQuality!=='C').slice(0,5);
+    fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
+    if(fStatus)fStatus.textContent='자동 조회 완료 · Fundamental TOP20 → TOP10 → ICT → 최종 TOP5 [AI]';
+
+    if(iStatus)iStatus.textContent='자동 조회 4/4 · ICT Trading 후보 20개 구조 분석 중...';
+    const analyzed=(await srMapLimit(tradingCandidates,4,item=>srIctAnalyzeItem(item,dailyMap.get(item.code)))).filter(Boolean);
+    analyzed.sort((a,b)=>b.score-a.score||b.rr-a.rr);
+    const ictTop10=analyzed.filter(x=>x.score>=60).slice(0,10);
+    ictTradingResults={top10:ictTop10,top5:ictTop10.slice(0,5)};
+    srRenderIctTop10(ictTop10);srRenderIctDetails(ictTradingResults.top5);
+    const best=ictTop10[0],notNow=ictTop10.find(x=>x.entryQuality==='A'||x.entryQuality==='B');
+    const note=document.getElementById('ictBestNote');
+    if(note){
+      note.style.display='block';
+      note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
+        '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음')+' [AI]';
+    }
+    if(iStatus)iStatus.textContent='자동 조회 완료 · ICT TOP10 '+ictTop10.length+'개 · 1H/4H 차단 시 일봉 대체 표시 [AI]';
+  }catch(e){
+    console.error('automatic screening failed',e);
+    if(fStatus)fStatus.textContent='자동 조회 일부 실패 · 수동 새로고침 가능: '+e.message;
+    if(iStatus)iStatus.textContent='자동 조회 일부 실패 · 수동 스캔 버튼으로 재시도 가능합니다.';
+  }finally{
+    if(fBtn)fBtn.disabled=false;if(iBtn)iBtn.disabled=false;
+  }
 }
 
 function applyAutoData(d){
@@ -1781,6 +1900,8 @@ async function boot(){
   await refreshMarketData();
   // 설명/코멘트는 로컬 오버라이드가 가능하지만 Trade Plan은 자동 데이터만 표시합니다.
   loadText();calcRR();applyTradingStateColors();
+  // Fundamental / ICT Screening은 별도 클릭 없이 페이지 로드 직후 자동 실행합니다.
+  setTimeout(()=>runAutomaticScreenings(),250);
 }
 boot();
 </script>
