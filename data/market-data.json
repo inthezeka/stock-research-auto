@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-05T12:41:10.426897+09:00",
+    "generated_at": "2026-10-05T12:41:59.583660+09:00",
     "market_date": "2026-10-05",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -15,7 +15,7 @@
     "note": "실시간 가격/기술지표·Trading Score 갱신. TOP5 실적은 최근 분기 + 다음 분기(E) Consensus 기준입니다.",
     "ui_version": "v14-kospi-kosdaq-trading-score",
     "profile_switch": "enabled",
-    "profile_count": 5,
+    "profile_count": 10,
     "validation_policy": "live run: stock fresh >=80%, market fresh >=60%; JSON/links/theme/TOP5/JS/smoke test pass required",
     "financial_snapshot_date": "2026-10-05",
     "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
@@ -30,7 +30,11 @@
     },
     "errors": [],
     "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
-    "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음."
+    "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
+    "profile_groups": {
+      "KOSPI": 5,
+      "KOSDAQ": 5
+    }
   },
   "text": {
     "heroEyebrow": "AI INVESTMENT WORKFLOW",
@@ -1457,7 +1461,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       },
       "market": "KOSPI"
     },
@@ -1770,7 +1774,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       },
       "market": "KOSPI"
     },
@@ -2083,7 +2087,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       },
       "market": "KOSPI"
     },
@@ -2396,7 +2400,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       },
       "market": "KOSPI"
     },
@@ -2709,7 +2713,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       },
       "market": "KOSPI"
     }
@@ -2730,9 +2734,9 @@
     "kr": {
       "available": true,
       "fresh": true,
-      "score": 57.2,
+      "score": 57.5,
       "rating": "탐욕",
-      "timestamp": "2026-10-05T12:41:10.426897+09:00",
+      "timestamp": "2026-10-05T12:41:59.583660+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
       "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
       "components": [
@@ -2774,22 +2778,22 @@
         {
           "key": "safe_haven",
           "label": "안전자산/FX proxy",
-          "score": 48.5,
+          "score": 53.1,
           "weight": 5,
-          "value": "USD/KRW 20D -0.01%"
+          "value": "USD/KRW 20D -0.16%"
         }
       ]
     },
-    "blended_score": 45.5,
+    "blended_score": 45.7,
     "blended_rating": "중립",
-    "kr_us_gap": 26.0,
+    "kr_us_gap": 26.3,
     "regime": "NEUTRAL · SELECTIVE",
     "recommendation": {
       "base_modifier": 0,
       "note": "심리가 중립권입니다. 시장보다 종목별 Catalyst와 Risk/Reward 비중을 높입니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-05T12:41:10.426897+09:00"
+    "updated_at": "2026-10-05T12:41:59.583660+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3102,7 +3106,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         },
         "market": "KOSPI"
       },
@@ -3415,7 +3419,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         },
         "market": "KOSPI"
       },
@@ -3728,7 +3732,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         },
         "market": "KOSPI"
       },
@@ -4041,7 +4045,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         },
         "market": "KOSPI"
       },
@@ -4354,7 +4358,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         },
         "market": "KOSPI"
       }
@@ -4670,7 +4674,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/196170/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         }
       },
       {
@@ -4983,7 +4987,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/277810/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         }
       },
       {
@@ -5296,7 +5300,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/035900/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         }
       },
       {
@@ -5609,7 +5613,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/108490/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         }
       },
       {
@@ -5922,7 +5926,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/083650/finance/quarter",
-          "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+          "fetched_at": "2026-10-05T12:41:59.583660+09:00"
         }
       }
     ]
@@ -6238,7 +6242,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/196170/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       }
     },
     {
@@ -6551,7 +6555,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/277810/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       }
     },
     {
@@ -6864,7 +6868,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/035900/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       }
     },
     {
@@ -7177,7 +7181,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/108490/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       }
     },
     {
@@ -7490,7 +7494,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/083650/finance/quarter",
-        "fetched_at": "2026-10-05T12:41:10.426897+09:00"
+        "fetched_at": "2026-10-05T12:41:59.583660+09:00"
       }
     }
   ]
