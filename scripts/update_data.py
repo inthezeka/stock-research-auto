@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, math, os, statistics, sys, time
+import json, math, os, re, statistics, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -953,6 +953,164 @@ def apply_sentiment_to_profiles(profiles, sentiment, live_by_code):
             txt[f"score{i}"] = f"{int(adj)} / 100{suffix}"
 
     rec["profiles"] = adjustments
+
+
+
+def fin_number(text):
+    if text is None:
+        return None
+    t = str(text).strip().replace(",", "").replace(" ", "").replace("원", "")
+    if t in ("", "-", "—", "N/A", "nan"):
+        return None
+    neg = t.startswith("(") and t.endswith(")")
+    if neg:
+        t = t[1:-1]
+    try:
+        v = float(t)
+        return -v if neg else v
+    except Exception:
+        return None
+
+
+def fmt_fin_100m(v):
+    if v is None:
+        return "—"
+    if abs(v) >= 10000:
+        return f"{v/10000:.2f}조"
+    return f"{v:,.0f}억"
+
+
+def quarter_label(raw):
+    m = re.match(r"^(\d{4})\.(\d{2})(\(E\))?$", str(raw).strip())
+    if not m:
+        return str(raw)
+    year, month, est = int(m.group(1)), int(m.group(2)), bool(m.group(3))
+    q = max(1, min(4, (month - 1) // 3 + 1))
+    return f"{year}Q{q}{'E' if est else 'A'}"
+
+
+def fetch_quarterly_financials(code):
+    """Parse Naver/FnGuide quarterly table: latest 3 quarters + next estimate."""
+    url = f"https://finance.naver.com/item/main.naver?code={code}"
+    html = req(url, 2).text
+    soup = BeautifulSoup(html, "html.parser")
+    target = None
+    for table in soup.find_all("table"):
+        t = table.get_text(" ", strip=True)
+        if "최근 분기 실적" in t and "매출액" in t and "영업이익" in t:
+            target = table
+            break
+    if target is None:
+        raise RuntimeError("quarterly finance table not found")
+
+    dates = []
+    for th in target.find_all("th"):
+        txt = th.get_text(" ", strip=True)
+        if re.fullmatch(r"\d{4}\.\d{2}(?:\(E\))?", txt):
+            dates.append(txt)
+    if len(dates) < 6:
+        raise RuntimeError(f"quarter headers insufficient: {dates}")
+    dates = dates[-6:]
+
+    rows = {}
+    for tr in target.find_all("tr"):
+        th = tr.find("th")
+        if not th:
+            continue
+        label = th.get_text(" ", strip=True).replace(" ", "")
+        vals = [fin_number(td.get_text(" ", strip=True)) for td in tr.find_all("td")]
+        if len(vals) >= len(dates):
+            rows[label] = vals[-len(dates):]
+
+    def row(*names):
+        for name in names:
+            key = name.replace(" ", "")
+            if key in rows:
+                return rows[key]
+        return [None] * len(dates)
+
+    rev = row("매출액")
+    op = row("영업이익")
+    net = row("당기순이익", "당기순이익(지배)")
+    eps = row("EPS(원)", "EPS")
+
+    est_idxs = [i for i, d in enumerate(dates) if "(E)" in d]
+    if est_idxs:
+        end = est_idxs[0]
+        start = max(0, end - 3)
+        idxs = list(range(start, end + 1))
+        if len(idxs) < 4:
+            idxs = list(range(max(0, len(dates) - 4), len(dates)))
+    else:
+        idxs = list(range(max(0, len(dates) - 4), len(dates)))
+
+    quarters = []
+    for i in idxs[-4:]:
+        qoq = None
+        if i > 0 and rev[i] is not None and rev[i - 1] not in (None, 0):
+            qoq = pct(rev[i], rev[i - 1])
+        opm = None if rev[i] in (None, 0) or op[i] is None else op[i] / rev[i] * 100
+        quarters.append({
+            "raw_date": dates[i],
+            "label": quarter_label(dates[i]),
+            "estimate": "(E)" in dates[i],
+            "revenue": rev[i],
+            "op": op[i],
+            "opm": opm,
+            "net": net[i],
+            "eps": eps[i],
+            "qoq": qoq,
+        })
+
+    if len(quarters) != 4:
+        raise RuntimeError(f"quarter selection failed: {dates}")
+    return {
+        "quarters": quarters,
+        "source": "Naver Finance · FnGuide",
+        "url": url,
+        "fetched_at": NOW.isoformat(),
+    }
+
+
+def apply_quarterly_financials(profile, snapshot):
+    txt = profile.setdefault("text", {})
+    quarters = snapshot.get("quarters") or []
+    if len(quarters) != 4:
+        return False
+
+    for i, q in enumerate(quarters, 1):
+        txt[f"y{i}"] = q["label"]
+        txt[f"rev{i}"] = fmt_fin_100m(q.get("revenue"))
+        txt[f"op{i}a"] = fmt_fin_100m(q.get("op"))
+        txt[f"opm{i}"] = "—" if q.get("opm") is None else f"{q['opm']:.1f}% [AI]"
+        txt[f"ni{i}"] = fmt_fin_100m(q.get("net"))
+        txt[f"eps{i}"] = "—" if q.get("eps") is None else f"{q['eps']:,.0f}원"
+        txt[f"yoy{i}"] = "—" if q.get("qoq") is None else f"매출 QoQ {q['qoq']:+.1f}% [AI]"
+
+    next_est = next((q for q in quarters if q.get("estimate")), None)
+    if next_est and next_est.get("eps") is not None:
+        txt["valEps"] = f"{next_est['eps']:,.0f}원 · {next_est['label']}"
+        fper = fin_number(str(txt.get("fper2", "")).lower().replace("x", ""))
+        if fper is not None:
+            txt["valTargetPer"] = f"{fper:.2f}x · Forward PER"
+            fair = next_est["eps"] * 4 * fper
+            txt["fairValueA"] = f"{fmt_price(fair)}원 [AI]"
+        else:
+            txt["valTargetPer"] = "[검증 필요]"
+            txt["fairValueA"] = "[검증 필요]"
+    else:
+        txt["valEps"] = "[검증 필요]"
+        txt["valTargetPer"] = "[검증 필요]"
+        txt["fairValueA"] = "[검증 필요]"
+
+    labels = " · ".join(q["label"] for q in quarters)
+    txt["financialNote"] = (
+        f"분기 기준: {labels}. 최근 실제 분기와 다음 분기(E) Consensus를 함께 표시합니다. "
+        f"출처: {snapshot.get('source')}. OPM·QoQ·연환산 적정주가는 자체계산 [AI]."
+    )
+    profile["financial_basis"] = "quarterly"
+    profile["quarterly_financials"] = snapshot
+    return True
 
 
 def update_market_text(d, market):
