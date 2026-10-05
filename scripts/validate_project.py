@@ -64,6 +64,14 @@ for p in all_profiles:
     for k in ("currentPriceText","fairPriceText","price1","target1Display"):
         if not str(text.get(k,"")).strip() or str(text.get(k,"")).strip()=="—":
             fail(f"{name} visible profile data missing: {k}")
+    if p.get("market")=="KOSDAQ":
+        for k in ("bullPrice","bullProb","bullReturn","bullCond","basePrice","baseProb","baseReturn","baseCond","bearPrice","bearProb","bearReturn","bearCond"):
+            val=str(text.get(k,"")).strip()
+            if not val or val=="—":
+                fail(f"{name} KOSDAQ scenario missing: {k}")
+        ir=(p.get("links") or {}).get("ir","")
+        if "finance.naver.com/item/main.naver" in ir or not ir.startswith("http"):
+            fail(f"{name} KOSDAQ IR link not connected: {ir}")
     links=p.get("links") or {}
     for lk in ("disclosure","ir","consensus","news"):
         u=str(links.get(lk,""))
