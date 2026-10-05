@@ -22,9 +22,11 @@ if len(profiles)!=5:
     fail(f"TOP5 profile count={len(profiles)}")
 
 financial_keys=[]
-for y in ("fy24","fy25","fy26","fy27"):
-    for s in ("Revenue","Op","Opm","Net","Eps","Yoy"):
-        financial_keys.append(y+s)
+for i in range(1,5):
+    financial_keys += [
+        f"y{i}", f"rev{i}", f"op{i}a", f"opm{i}",
+        f"ni{i}", f"eps{i}", f"yoy{i}"
+    ]
 
 for p in profiles:
     name=p.get("name","?")
@@ -65,6 +67,17 @@ if meta.get("status")=="ok":
         fail("live stock coverage below 80%")
     if float(cov.get("market_fresh_ratio",0))<0.60:
         fail("live market coverage below 60%")
+
+    # When a live refresh is accepted, every Theme Radar pick must have a price.
+    # This prevents a successful deployment with blank cards.
+    for c in cards:
+        for p in c.get("picks") or []:
+            try:
+                price=float(p.get("price"))
+            except Exception:
+                price=0
+            if price<=0:
+                fail(f"theme {c.get('code')} missing live price: {p.get('name')}")
 
 html=(ROOT/"index.html").read_text(encoding="utf-8")
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
