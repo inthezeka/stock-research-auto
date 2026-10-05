@@ -281,7 +281,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
         <div><b>Protected Low · 5</b><br>Internal / H1 Major / Daily 구분</div>
         <div><b>Risk / Reward · 10</b><br>실제 Liquidity Target 기준 최소 1:2</div>
       </div>
-      <p class="note">90~100 S · 80~89 A · 70~79 B · 60~69 Watch · 60 미만 제외. 예상수익률이 아니라 현재 ICT Setup의 완성도 순으로 랭킹합니다.</p>
+      <p class="note">90~100 S · 80~89 A · 70~79 B · 60~69 Watch · 60 미만 제외. KOSPI·KOSDAQ 전체에서 거래대금 50억원 이상·시가총액 1,000억원 이상 종목을 먼저 추린 뒤, Weekly/Daily 전체 스크리닝 → 상위 60개 1H/4H 상세검증 → ICT Score 60점 이상 중 TOP10을 선정합니다. 예상수익률이 아니라 현재 ICT Setup의 완성도 순으로 랭킹합니다.</p>
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="ictScanBtn">ICT Trading TOP10 스캔</button>
@@ -1543,11 +1543,11 @@ function initScreeningModes(){
   });
 }
 
-function srLiquidityCandidates(limit=50){
-  return fullStockUniverse
+function srLiquidityCandidates(limit=null){
+  const arr=fullStockUniverse
     .filter(x=>(x.turnover||0)>=5e9&&(x.marketcap||0)>=1e11)
-    .sort((a,b)=>(b.turnover||0)-(a.turnover||0))
-    .slice(0,limit);
+    .sort((a,b)=>(b.turnover||0)-(a.turnover||0));
+  return Number.isFinite(limit)&&limit>0?arr.slice(0,limit):arr;
 }
 async function srKosaiCached(item){
   if(srKosaiCache.has(item.code))return srKosaiCache.get(item.code);
@@ -1678,12 +1678,23 @@ function srIctPd(rows){
   const recent=rows.slice(-80),hi=Math.max(...recent.map(x=>x.high)),lo=Math.min(...recent.map(x=>x.low)),price=rows.at(-1).close,eq=(hi+lo)/2;
   const pos=(price-lo)/(hi-lo||1);return{hi,lo,eq,pos,zone:pos<.5?'Discount':pos<=.55?'Equilibrium':'Premium'};
 }
+const srMinuteRowsCache=new Map();
 function srLoadMinuteRows(item){
+  if(srMinuteRowsCache.has(item.code))return srMinuteRowsCache.get(item.code);
   const d=new Date();d.setDate(d.getDate()-30);
   const start=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'090000';
   const url='https://api.stock.naver.com/chart/domestic/item/'+item.code+'/minute?periodType=60&startDateTime='+start;
-  return srFetchJson(url).then(a=>(Array.isArray(a)?a:[]).map(x=>({date:String(x.localDateTime||''),open:srNum(x.openPrice),high:srNum(x.highPrice),low:srNum(x.lowPrice),close:srNum(x.currentPrice??x.closePrice),volume:srNum(x.accumulatedTradingVolume)||0})).filter(x=>[x.open,x.high,x.low,x.close].every(Number.isFinite))).catch(()=>[]);
+  const p=srFetchJson(url)
+    .then(a=>(Array.isArray(a)?a:[]).map(x=>({
+      date:String(x.localDateTime||''),
+      open:srNum(x.openPrice),high:srNum(x.highPrice),low:srNum(x.lowPrice),
+      close:srNum(x.currentPrice??x.closePrice),volume:srNum(x.accumulatedTradingVolume)||0
+    })).filter(x=>[x.open,x.high,x.low,x.close].every(Number.isFinite)))
+    .catch(()=>[]);
+  srMinuteRowsCache.set(item.code,p);
+  return p;
 }
+
 function srIctScore(res,item){
   let score=0,parts={};
   const wb=res.weekly.bias,db=res.daily.bias;
@@ -1713,8 +1724,12 @@ function srEntryQuality(res){
   if(res.score>=70)return'B';
   return'C';
 }
-async function srIctAnalyzeItem(item,dailyOverride=null){
-  const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item),weekly=srAggregateWeekly(daily),minute=await srLoadMinuteRows(item),h1=minute.length>=12?minute:daily.slice(-60),h4=minute.length>=12?srAggregateFixed(minute,4):daily.slice(-60);
+async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
+  const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item);
+  const weekly=srAggregateWeekly(daily);
+  const minute=useIntraday?await srLoadMinuteRows(item):[];
+  const h1=minute.length>=12?minute:daily.slice(-60);
+  const h4=minute.length>=12?srAggregateFixed(minute,4):daily.slice(-60);
   const price=daily.at(-1).close,ws=srIctStructure(weekly),ds=srIctStructure(daily),s4=srIctStructure(h4),s1=srIctStructure(h1);
   const liq=srIctLiquidity(daily),event=srIctEvent(h1),disp=srIctDisplacement(h1,event),fvgs=srIctFvg(h1),bullFvg=fvgs.filter(x=>x.type==='Bullish FVG'&&x.low<price).at(-1)||null,pd=srIctPd(daily);
   const protectedLow=srNearestBelow(s1.lows.slice(-6),price)||srNearestBelow(ds.lows.slice(-6),price)||liq.externalSSL;
@@ -1733,6 +1748,31 @@ function srRenderIctTop10(list){
   const el=document.getElementById('ictTop10Body');if(!el)return;
   el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" style="cursor:pointer"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td>'+srFmtPx(x.price)+'</td><td><b>'+x.score+'</b></td><td>'+x.weekly.bias+' / '+x.daily.bias+'</td><td>'+srFmtPx(x.liq.externalBSL)+'</td><td>'+srFmtPx(x.liq.internalBSL)+'</td><td>'+srFmtPx(x.protectedLow)+'</td><td>'+x.setup+'</td><td>'+srFmtPx(x.entry)+'</td><td>'+srFmtPx(x.stop)+'</td><td>'+srFmtPx(x.target1)+'</td><td>'+srFmtPx(x.target2)+'</td><td>'+x.rr.toFixed(2)+':1</td></tr>').join('');
 }
+async function srRunTradingUniverse(status){
+  const candidates=srLiquidityCandidates();
+  const totalUniverse=fullStockUniverse.length;
+  if(status)status.textContent='전체 '+totalUniverse.toLocaleString('ko-KR')+'개 → 유동성 기준 '+candidates.length.toLocaleString('ko-KR')+'개 · 일봉 구조 조회 중...';
+
+  // One set of KRX daily files is parsed for every liquid candidate at once.
+  const dailyMap=await srKrxBatchHistory(candidates,status);
+
+  if(status)status.textContent='유동성 '+candidates.length.toLocaleString('ko-KR')+'개 · Weekly/Daily ICT 1차 스크리닝 중...';
+  const coarse=(await srMapLimit(candidates,12,item=>{
+    const rows=dailyMap.get(item.code);
+    return rows?.length>=65?srIctAnalyzeItem(item,rows,false):null;
+  })).filter(Boolean);
+  coarse.sort((a,b)=>b.score-a.score||b.rr-a.rr);
+
+  // Intraday calls are expensive, so only the strongest Daily/Weekly candidates advance.
+  const shortlist=coarse.slice(0,60);
+  if(status)status.textContent='1차 '+coarse.length.toLocaleString('ko-KR')+'개 분석 완료 → 상위 '+shortlist.length+'개 1H/4H 상세검증 중...';
+  const detailed=(await srMapLimit(shortlist,6,x=>srIctAnalyzeItem(x.item,dailyMap.get(x.item.code),true))).filter(Boolean);
+  detailed.sort((a,b)=>b.score-a.score||b.rr-a.rr);
+
+  const passed=detailed.filter(x=>x.score>=60);
+  const top10=passed.slice(0,10);
+  return{candidates,coarse,shortlist,detailed,passed,top10,dailyMap,totalUniverse};
+}
 function srRenderIctDetails(list){
   const el=document.getElementById('ictTop5Details');if(!el)return;
   el.innerHTML=list.map((x,i)=>'<div class="card ict-detail-card"><h3>'+(i+1)+'. '+srEsc(x.item.name)+' · ICT '+x.score+'/100 · '+x.entryQuality+'</h3><div class="ict-detail-grid">'+
@@ -1749,24 +1789,23 @@ function srRenderIctDetails(list){
 async function runIctTradingScan(){
   const status=document.getElementById('ictScanStatus'),btn=document.getElementById('ictScanBtn');if(btn)btn.disabled=true;
   try{
-    status.textContent='유동성 상위 후보 선정 중...';
     await loadStockUniverse();
-    const candidates=srLiquidityCandidates(20);
-    status.textContent='ICT 일봉 데이터 일괄 조회 중...';
-    const dailyMap=await srKrxBatchHistory(candidates,status);
-    status.textContent='ICT 구조 분석 중 · Weekly/Daily/4H/1H best-effort...';
-    const analyzed=(await srMapLimit(candidates,4,item=>srIctAnalyzeItem(item,dailyMap.get(item.code)))).filter(Boolean);
-    analyzed.sort((a,b)=>b.score-a.score||b.rr-a.rr);
-    const top10=analyzed.filter(x=>x.score>=60).slice(0,10);
+    const result=await srRunTradingUniverse(status);
+    const top10=result.top10;
     ictTradingResults={top10,top5:top10.slice(0,5)};
     srRenderIctTop10(top10);srRenderIctDetails(ictTradingResults.top5);
     const best=top10[0],notNow=top10.find(x=>x.entryQuality==='A'||x.entryQuality==='B');
     const note=document.getElementById('ictBestNote');
-    if(note){note.style.display='block';note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+'<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음')+' [AI]'}
-    status.textContent='ICT TOP10 완료 · '+top10.length+'개 종목 · 1H/4H 데이터가 차단된 종목은 일봉 구조로 대체 표시됩니다. [AI]';
+    if(note){
+      note.style.display='block';
+      note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
+        '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음');
+    }
+    status.textContent='전체 '+result.totalUniverse.toLocaleString('ko-KR')+'개 → 유동성 '+result.candidates.length+'개 → 상세검증 '+result.shortlist.length+'개 → ICT 60점 이상 '+result.passed.length+'개 → TOP10 '+top10.length+'개';
   }catch(e){console.error(e);status.textContent='ICT 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
 }
+
 async function runFundamentalPipeline(){
   const status=document.getElementById('fundamentalScanStatus'),btn=document.getElementById('fundamentalScanBtn');if(btn)btn.disabled=true;
   try{
@@ -1810,16 +1849,16 @@ async function runAutomaticScreenings(){
     srRenderFundTop20(top20);srRenderFundTop10(top10);
     if(fStatus)fStatus.textContent='자동 조회 2/4 · Fundamental TOP10 완료 · ICT 가격구조 준비 중...';
 
-    const tradingCandidates=srLiquidityCandidates(20);
+    const tradingCandidates=srLiquidityCandidates();
     const unionMap=new Map();
     [...tradingCandidates,...top10.map(x=>x.item)].forEach(item=>unionMap.set(item.code,item));
     const union=[...unionMap.values()];
-    if(iStatus)iStatus.textContent='자동 조회 2/4 · KRX 일봉 '+union.length+'개 종목 일괄 조회 중...';
+    if(iStatus)iStatus.textContent='자동 조회 2/4 · 전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 중 유동성 '+tradingCandidates.length+'개 KRX 일봉 일괄 조회 중...';
     const dailyMap=await srKrxBatchHistory(union,iStatus||fStatus);
 
     if(fStatus)fStatus.textContent='자동 조회 3/4 · Fundamental TOP10 ICT Screening 중...';
     const fundWithIct=(await srMapLimit(top10,4,async x=>{
-      const ict=await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code));
+      const ict=await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code),true);
       const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';
       return{...x,ict,catalystText};
     })).filter(Boolean);
@@ -1827,12 +1866,20 @@ async function runAutomaticScreenings(){
     fundWithIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.score-a.ict.score||b.f.total-a.f.total);
     const final5=fundWithIct.filter(x=>x.ict.entryQuality!=='C').slice(0,5);
     fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
-    if(fStatus)fStatus.textContent='자동 조회 완료 · Fundamental TOP20 → TOP10 → ICT → 최종 TOP5 [AI]';
+    if(fStatus)fStatus.textContent='자동 조회 완료 · Fundamental TOP20 → TOP10 → ICT → 최종 TOP5';
 
-    if(iStatus)iStatus.textContent='자동 조회 4/4 · ICT Trading 후보 20개 구조 분석 중...';
-    const analyzed=(await srMapLimit(tradingCandidates,4,item=>srIctAnalyzeItem(item,dailyMap.get(item.code)))).filter(Boolean);
+    if(iStatus)iStatus.textContent='자동 조회 4/4 · 유동성 '+tradingCandidates.length+'개 Weekly/Daily 1차 ICT 스크리닝 중...';
+    const coarse=(await srMapLimit(tradingCandidates,12,item=>{
+      const rows=dailyMap.get(item.code);
+      return rows?.length>=65?srIctAnalyzeItem(item,rows,false):null;
+    })).filter(Boolean);
+    coarse.sort((a,b)=>b.score-a.score||b.rr-a.rr);
+    const shortlist=coarse.slice(0,60);
+    if(iStatus)iStatus.textContent='1차 '+coarse.length+'개 완료 → 상위 '+shortlist.length+'개 1H/4H 상세검증 중...';
+    const analyzed=(await srMapLimit(shortlist,6,x=>srIctAnalyzeItem(x.item,dailyMap.get(x.item.code),true))).filter(Boolean);
     analyzed.sort((a,b)=>b.score-a.score||b.rr-a.rr);
-    const ictTop10=analyzed.filter(x=>x.score>=60).slice(0,10);
+    const passed=analyzed.filter(x=>x.score>=60);
+    const ictTop10=passed.slice(0,10);
     ictTradingResults={top10:ictTop10,top5:ictTop10.slice(0,5)};
     srRenderIctTop10(ictTop10);srRenderIctDetails(ictTradingResults.top5);
     const best=ictTop10[0],notNow=ictTop10.find(x=>x.entryQuality==='A'||x.entryQuality==='B');
@@ -1840,9 +1887,9 @@ async function runAutomaticScreenings(){
     if(note){
       note.style.display='block';
       note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
-        '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음')+' [AI]';
+        '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음');
     }
-    if(iStatus)iStatus.textContent='자동 조회 완료 · ICT TOP10 '+ictTop10.length+'개 · 1H/4H 차단 시 일봉 대체 표시 [AI]';
+    if(iStatus)iStatus.textContent='전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 → 유동성 '+tradingCandidates.length+'개 → 상세 '+shortlist.length+'개 → 60점 이상 '+passed.length+'개 → TOP10 '+ictTop10.length+'개';
   }catch(e){
     console.error('automatic screening failed',e);
     if(fStatus)fStatus.textContent='자동 조회 일부 실패 · 수동 새로고침 가능: '+e.message;
