@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-05T16:33:58.692208+09:00",
+    "generated_at": "2026-10-05T16:36:56.700623+09:00",
     "market_date": "2026-10-05",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -1482,7 +1482,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -1817,7 +1817,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2152,7 +2152,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2487,7 +2487,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2822,7 +2822,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2846,18 +2846,18 @@
       "score": 31.2,
       "rating": "공포",
       "rating_en": "fear",
-      "previous_close": 28.0857142857143,
-      "previous_1_week": 36.9428571428571,
-      "previous_1_month": 46.057142857142864,
-      "timestamp": "2026-10-02T23:59:58+00:00",
+      "previous_close": 31.1714285714286,
+      "previous_1_week": 34.3714285714286,
+      "previous_1_month": 45.228571428571435,
+      "timestamp": "2026-10-05T07:20:46+00:00",
       "source": "CNN Fear & Greed"
     },
     "kr": {
       "available": true,
       "fresh": true,
-      "score": 57.4,
+      "score": 57.3,
       "rating": "탐욕",
-      "timestamp": "2026-10-05T16:33:58.692208+09:00",
+      "timestamp": "2026-10-05T16:36:56.700623+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
       "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
       "components": [
@@ -2899,22 +2899,22 @@
         {
           "key": "safe_haven",
           "label": "안전자산/FX proxy",
-          "score": 50.6,
+          "score": 50.2,
           "weight": 5,
-          "value": "USD/KRW 20D -0.11%"
+          "value": "USD/KRW 20D -0.05%"
         }
       ]
     },
     "blended_score": 45.6,
     "blended_rating": "중립",
-    "kr_us_gap": 26.2,
+    "kr_us_gap": 26.1,
     "regime": "NEUTRAL · SELECTIVE",
     "recommendation": {
       "base_modifier": 0,
       "note": "심리가 중립권입니다. 시장보다 종목별 Catalyst와 Risk/Reward 비중을 높입니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-05T16:33:58.692208+09:00"
+    "updated_at": "2026-10-05T16:36:56.700623+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3237,7 +3237,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -3572,7 +3572,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -3907,7 +3907,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -4242,7 +4242,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -4577,7 +4577,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -4884,7 +4884,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/108490/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "valuation_snapshot": {
           "per": null,
@@ -5188,7 +5188,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/277810/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "valuation_snapshot": {
           "per": 5096.59,
@@ -5492,7 +5492,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/189300/finance/quarter",
-          "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+          "fetched_at": "2026-10-05T16:36:56.700623+09:00"
         },
         "valuation_snapshot": {
           "per": 18.0,
@@ -5799,7 +5799,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/108490/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "valuation_snapshot": {
         "per": null,
@@ -6103,7 +6103,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/277810/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "valuation_snapshot": {
         "per": 5096.59,
@@ -6407,7 +6407,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/189300/finance/quarter",
-        "fetched_at": "2026-10-05T16:33:58.692208+09:00"
+        "fetched_at": "2026-10-05T16:36:56.700623+09:00"
       },
       "valuation_snapshot": {
         "per": 18.0,
@@ -6434,13 +6434,13 @@
       "priority": "<60 제외"
     },
     {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 69.0,
-      "trading_score": 71.0,
-      "final_score": 69.8,
+      "code": "277810",
+      "name": "레인보우로보틱스",
+      "fundamental_score": 72.0,
+      "trading_score": 68.0,
+      "final_score": 70.4,
       "eligible": true,
-      "priority": "70+"
+      "priority": "60~69"
     },
     {
       "code": "083650",
@@ -6452,22 +6452,13 @@
       "priority": "<60 제외"
     },
     {
-      "code": "277810",
-      "name": "레인보우로보틱스",
-      "fundamental_score": 72.0,
-      "trading_score": 68.0,
-      "final_score": 70.4,
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 69.0,
+      "trading_score": 71.0,
+      "final_score": 69.8,
       "eligible": true,
-      "priority": "60~69"
-    },
-    {
-      "code": "189300",
-      "name": "인텔리안테크",
-      "fundamental_score": 68.0,
-      "trading_score": 63.0,
-      "final_score": 66.0,
-      "eligible": true,
-      "priority": "60~69"
+      "priority": "70+"
     },
     {
       "code": "054930",
@@ -6486,6 +6477,15 @@
       "final_score": 51.0,
       "eligible": false,
       "priority": "<60 제외"
+    },
+    {
+      "code": "189300",
+      "name": "인텔리안테크",
+      "fundamental_score": 68.0,
+      "trading_score": 63.0,
+      "final_score": 66.0,
+      "eligible": true,
+      "priority": "60~69"
     }
   ]
 }
