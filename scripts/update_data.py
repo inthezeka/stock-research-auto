@@ -364,14 +364,24 @@ def update_theme_cards(d, live_by_code):
 
 
 def validate_financial_snapshot(d):
-    prefixes = ("fy24", "fy25", "fy26", "fy27")
-    suffixes = ("Revenue", "Op", "Opm", "Net", "Eps", "Yoy")
+    """Validate the financial keys that the HTML/profile renderer actually uses.
+
+    Each profile stores four annual rows as:
+    y1/rev1/op1a/opm1/ni1/eps1/yoy1 ... y4/rev4/op4a/opm4/ni4/eps4/yoy4.
+    The previous validator incorrectly checked non-existent fy24Revenue-style keys,
+    which rejected otherwise valid live market updates before prices could be saved.
+    """
     bad = []
+    row_suffixes = ("rev", "op", "opm", "ni", "eps", "yoy")
     for p in d.get("stock_profiles") or []:
         txt = p.get("text") or {}
-        for pre in prefixes:
-            for suf in suffixes:
-                k = pre + suf
+        for i in range(1, 5):
+            year_key = f"y{i}"
+            yv = str(txt.get(year_key, "")).strip()
+            if not yv or "[검증 필요]" in yv:
+                bad.append(f"{p.get('name')}:{year_key}")
+            for base in row_suffixes:
+                k = f"{base}{i}" if base != "op" else f"op{i}a"
                 v = str(txt.get(k, "")).strip()
                 if not v or "[검증 필요]" in v:
                     bad.append(f"{p.get('name')}:{k}")
