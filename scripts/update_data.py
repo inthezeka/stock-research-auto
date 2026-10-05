@@ -8,6 +8,7 @@ from urllib.parse import quote
 import xml.etree.ElementTree as ET
 
 import requests
+from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config/watchlist.json").read_text(encoding="utf-8"))
@@ -78,12 +79,13 @@ def yahoo_chart(symbol, range_="1y", interval="1d"):
                 c = adj[i] if i < len(adj) else None
                 if c is None:
                     continue
+                op = (q.get("open") or [c] * len(ts))[i] or c
                 hi = (q.get("high") or [c] * len(ts))[i] or c
                 lo = (q.get("low") or [c] * len(ts))[i] or c
                 vol = (q.get("volume") or [0] * len(ts))[i] or 0
                 rows.append({
                     "date": datetime.fromtimestamp(t, tz=timezone.utc).astimezone(KST).date().isoformat(),
-                    "close": float(c), "high": float(hi), "low": float(lo), "volume": float(vol)
+                    "open": float(op), "close": float(c), "high": float(hi), "low": float(lo), "volume": float(vol)
                 })
             if len(rows) >= 20:
                 return rows, "Yahoo Finance"
@@ -108,7 +110,7 @@ def naver_stock_chart(code, count=320):
         if len(ds) == 8:
             ds = f"{ds[:4]}-{ds[4:6]}-{ds[6:8]}"
         rows.append({
-            "date": ds, "close": cv,
+            "date": ds, "open": n(o) or cv, "close": cv,
             "high": n(h) or cv, "low": n(l) or cv, "volume": n(v) or 0
         })
     if len(rows) < 20:
@@ -188,39 +190,456 @@ def quantile(vals, q):
     return s[lo] * (hi - pos) + s[hi] * (pos - lo)
 
 
+def atr(rows, p=14):
+    if len(rows) <= p:
+        return None
+    trs = []
+    prev_close = rows[-(p + 1)]["close"]
+    for row in rows[-p:]:
+        tr = max(
+            row["high"] - row["low"],
+            abs(row["high"] - prev_close),
+            abs(row["low"] - prev_close),
+        )
+        trs.append(tr)
+        prev_close = row["close"]
+    return statistics.mean(trs) if trs else None
+
+
+def moving_average_at(vals, p, offset=0):
+    end = len(vals) - offset
+    start = end - p
+    if start < 0 or end <= 0:
+        return None
+    return statistics.mean(vals[start:end])
+
+
+def rsi_series(vals, p=14):
+    out = [None] * len(vals)
+    for i in range(p, len(vals)):
+        out[i] = rsi(vals[: i + 1], p)
+    return out
+
+
+def find_pivots(vals, kind="low", lookback=60, wing=2):
+    start = max(wing, len(vals) - lookback)
+    out = []
+    for i in range(start, len(vals) - wing):
+        x = vals[i]
+        window = vals[i - wing:i + wing + 1]
+        if kind == "low" and x == min(window):
+            out.append(i)
+        elif kind == "high" and x == max(window):
+            out.append(i)
+    return out
+
+
+def detect_divergence(closes, rsi_vals, macd_vals):
+    labels = []
+    lows = find_pivots(closes, "low")
+    highs = find_pivots(closes, "high")
+    if len(lows) >= 2:
+        a, b = lows[-2], lows[-1]
+        if closes[b] < closes[a]:
+            if rsi_vals[a] is not None and rsi_vals[b] is not None and rsi_vals[b] > rsi_vals[a]:
+                labels.append("Bullish Divergence · RSI")
+            if macd_vals[b] > macd_vals[a]:
+                labels.append("Bullish Divergence · MACD")
+    if len(highs) >= 2:
+        a, b = highs[-2], highs[-1]
+        if closes[b] > closes[a]:
+            if rsi_vals[a] is not None and rsi_vals[b] is not None and rsi_vals[b] < rsi_vals[a]:
+                labels.append("Bearish Divergence · RSI")
+            if macd_vals[b] < macd_vals[a]:
+                labels.append("Bearish Divergence · MACD")
+    return labels
+
+
+def score_macd(macd, signal, hist, prev_macd, prev_signal, prev_hist):
+    if None in (macd, signal, hist, prev_macd, prev_signal, prev_hist):
+        return 0, "데이터 확인 필요"
+    macd_up = macd > prev_macd
+    signal_up = signal > prev_signal
+    hist_up = hist > prev_hist
+    golden = macd > signal and prev_macd <= prev_signal
+    dead = macd < signal and prev_macd >= prev_signal
+
+    if dead and hist < 0 and not hist_up:
+        return 3, "Dead Cross · 음수 Histogram 확대"
+    if macd < signal and hist < 0 and not hist_up:
+        return 7, "Signal 하회 · 하락 모멘텀"
+    if macd > signal and macd_up and signal_up and hist > 0 and hist_up:
+        if macd >= 0:
+            return 29, "0선 위 · 상승 모멘텀 강화"
+        return 25, "0선 아래 · Golden 구간 회복"
+    if golden and hist_up:
+        return (28 if macd >= 0 else 24), "Golden Cross · Histogram 개선"
+    if macd > signal and hist_up:
+        return 22, "상승 우위 · Histogram 개선"
+    if macd_up and hist_up:
+        return 18, "상승 전환 가능성"
+    if hist < prev_hist:
+        return 12, "Histogram 둔화"
+    return 15, "방향성 혼조"
+
+
+def score_ma(price, m5, m20, m60, m120, m20_slope, m60_slope):
+    if None in (price, m5, m20, m60):
+        return 0, "데이터 확인 필요", None, None, 0
+    gap20 = pct(price, m20)
+    gap60 = pct(price, m60)
+    ordered = m5 > m20 > m60
+    reverse = m5 < m20 < m60
+    slope20_up = (m20_slope or 0) > 0
+    slope60_up = (m60_slope or 0) > 0
+
+    if ordered and slope20_up and slope60_up and gap20 is not None and 1 <= gap20 <= 6:
+        base, state = 29, "정배열 · 상승기울기 · 적정 괴리"
+    elif ordered and slope20_up:
+        base, state = 26, "정배열 · 상승 추세"
+    elif price > m20 and slope20_up and gap20 is not None and gap20 <= 8:
+        base, state = 24, "MA20 상단 · 추세 개선"
+    elif price > m20 and price >= m60:
+        base, state = 20, "MA20 위 · MA60 지지권"
+    elif reverse and (m20_slope or 0) < 0 and (m60_slope or 0) < 0:
+        base, state = 4, "역배열 · 주요 이평 하락"
+    elif price < m20 and price < m60:
+        base, state = 9, "MA20·60 하회"
+    else:
+        base, state = 15, "이동평균선 혼조"
+
+    penalty = 0
+    if gap20 is not None:
+        if gap20 >= 15:
+            penalty = 10
+        elif gap20 >= 12:
+            penalty = 7
+        elif gap20 >= 8:
+            penalty = 4
+        elif gap20 >= 5:
+            penalty = 1
+    score = int(clamp(base - penalty, 0, 30))
+    if penalty:
+        state += f" · 괴리과열 -{penalty}"
+    return score, state, gap20, gap60, penalty
+
+
+def score_rsi(rv, prev_rv, price, m20):
+    if rv is None:
+        return 0, "데이터 확인 필요"
+    rising = prev_rv is not None and rv > prev_rv
+    if 50 <= rv <= 65:
+        score = 20 if rising else 18
+        state = "건강한 상승구간"
+    elif 40 <= rv < 50:
+        score = 17 if rising else 14
+        state = "50선 돌파 시도" if rising else "중립 하단"
+    elif 30 <= rv < 40:
+        score = 13 if rising else 9
+        state = "과매도 탈출" if rising else "약세 지속 확인"
+    elif 65 < rv <= 70:
+        score, state = 10, "상승 강함 · 과열 주의"
+    elif 70 < rv < 80:
+        score, state = 6, "과매수 영역"
+    elif rv >= 80:
+        score, state = 2, "심한 과열"
+    else:
+        if rising and m20 is not None and price > m20:
+            score, state = 12, "과매도 반등 확인"
+        else:
+            score, state = 5, "과매도 · 하락추세 여부 확인"
+    if prev_rv is not None and rv - prev_rv <= -6:
+        score = max(0, score - 2)
+        state += " · RSI 급락"
+    return score, state
+
+
+def score_stochastic(k, d, prev_k, prev_d):
+    if None in (k, d, prev_k, prev_d):
+        return 0, "데이터 확인 필요"
+    golden = k > d and prev_k <= prev_d
+    dead = k < d and prev_k >= prev_d
+    if 20 <= k <= 50 and golden:
+        return 20, "20~50 Golden Cross"
+    if k < 20 and golden:
+        return 16, "과매도 Golden Cross"
+    if 50 < k <= 70 and k > d:
+        return 13, "50~70 상승 우위"
+    if 70 < k <= 80 and k > d:
+        return 10, "단기 과열 시작"
+    if k > 80 and dead:
+        return 2, "과매수 Dead Cross"
+    if k > 80:
+        return 6, "과매수 영역"
+    if golden:
+        return 15, "Golden Cross"
+    if dead:
+        return 5, "Dead Cross"
+    if k > d:
+        return 12, "K>D · 단기 우위"
+    return 8, "방향 확인 필요"
+
+
+def trading_grade(total):
+    if total >= 90:
+        return "S", "Strong Buy"
+    if total >= 80:
+        return "A", "Buy"
+    if total >= 70:
+        return "B", "Positive"
+    if total >= 60:
+        return "C", "Neutral"
+    if total >= 50:
+        return "D", "Caution"
+    if total >= 40:
+        return "E", "Weak"
+    return "F", "Avoid"
+
+
+def format_amount(v):
+    if v is None:
+        return "—"
+    av = abs(v)
+    if av >= 1_000_000_000_000:
+        return f"{v/1_000_000_000_000:.2f}조원"
+    if av >= 100_000_000:
+        return f"{v/100_000_000:.0f}억원"
+    return f"{v:,.0f}원"
+
+
+def price_strategy(tech):
+    price = tech.get("price")
+    m20, m60 = tech.get("m20"), tech.get("m60")
+    support, resistance = tech.get("support"), tech.get("resistance")
+    low20, high20, high52, atr14 = tech.get("low20"), tech.get("high20"), tech.get("high52"), tech.get("atr14")
+    if price is None:
+        return {}
+
+    below = []
+    for value, reason in (
+        (m20, "MA20"),
+        (support, "지지선"),
+        (m60, "MA60"),
+        (low20, "직전 20일 저점"),
+    ):
+        if value is not None and value < price:
+            below.append((value, reason))
+    below.sort(key=lambda x: x[0], reverse=True)
+
+    def uniq_pick(index):
+        unique = []
+        seen = set()
+        for value, reason in below:
+            key = round(value, -2)
+            if key in seen:
+                continue
+            seen.add(key)
+            unique.append((value, reason))
+        return unique[index] if len(unique) > index else (None, "확인 필요")
+
+    entry1, entry1_reason = uniq_pick(0)
+    entry2, entry2_reason = uniq_pick(1)
+    add, add_reason = uniq_pick(2)
+
+    above = []
+    for value, reason in (
+        (resistance, "저항선"),
+        (high20, "직전 20일 고점"),
+        (high52, "52주 고점"),
+    ):
+        if value is not None and value > price:
+            above.append((value, reason))
+    above.sort(key=lambda x: x[0])
+    target1, target1_reason = (above[0] if above else (None, "확인 필요"))
+    target2, target2_reason = (above[1] if len(above) > 1 else (None, "확인 필요"))
+
+    if target1 is None and atr14 is not None:
+        target1, target1_reason = price + 1.5 * atr14, "ATR 1.5배"
+    if target2 is None and atr14 is not None:
+        target2, target2_reason = price + 3.0 * atr14, "ATR 3배"
+
+    base_stop = support if support is not None else (m60 if m60 is not None else low20)
+    stop = None
+    stop_reason = "확인 필요"
+    if base_stop is not None:
+        if atr14 is not None:
+            stop = max(0, base_stop - 0.5 * atr14)
+            stop_reason = "지지 기준 - 0.5 ATR"
+        else:
+            stop = base_stop
+            stop_reason = "지지선"
+
+    return {
+        "current": {"price": price, "reason": "현재 종가"},
+        "entry1": {"price": entry1, "reason": entry1_reason},
+        "entry2": {"price": entry2, "reason": entry2_reason},
+        "add": {"price": add, "reason": add_reason},
+        "target1": {"price": target1, "reason": target1_reason},
+        "target2": {"price": target2, "reason": target2_reason},
+        "stop": {"price": stop, "reason": stop_reason},
+    }
+
+
 def technicals(rows):
     closes = [x["close"] for x in rows]
     price = closes[-1]
     e12, e26 = ema_series(closes, 12), ema_series(closes, 26)
     macd_series = [a - b for a, b in zip(e12, e26)]
-    sig = ema_series(macd_series, 9)
+    sig_series = ema_series(macd_series, 9)
+    hist_series = [m - s for m, s in zip(macd_series, sig_series)]
+
     sk, sd = stochastic(rows)
+    psk, psd = stochastic(rows[:-1]) if len(rows) > 15 else (None, None)
+    rv = rsi(closes, 14)
+    prev_rv = rsi(closes[:-1], 14) if len(closes) > 15 else None
+    rsi_vals = rsi_series(closes, 14)
+
     last60 = closes[-60:] if len(closes) >= 60 else closes
     support = quantile(last60, 0.20)
     resistance = quantile(last60, 0.80)
-    rv = rsi(closes, 14)
-    m5, m20, m60 = sma(closes, 5), sma(closes, 20), sma(closes, 60)
-    if m5 and m20 and m60 and m5 > m20 > m60:
-        state = "상승 추세"
-    elif m5 and m20 and m60 and m5 < m20 < m60:
-        state = "하락 추세"
+    m5, m20, m60, m120 = sma(closes, 5), sma(closes, 20), sma(closes, 60), sma(closes, 120)
+    m20_prev = moving_average_at(closes, 20, 5)
+    m60_prev = moving_average_at(closes, 60, 5)
+    m20_slope = None if m20 is None or m20_prev is None else m20 - m20_prev
+    m60_slope = None if m60 is None or m60_prev is None else m60 - m60_prev
+
+    macd = macd_series[-1] if macd_series else None
+    signal = sig_series[-1] if sig_series else None
+    hist = hist_series[-1] if hist_series else None
+    prev_macd = macd_series[-2] if len(macd_series) > 1 else None
+    prev_signal = sig_series[-2] if len(sig_series) > 1 else None
+    prev_hist = hist_series[-2] if len(hist_series) > 1 else None
+
+    macd_score, macd_state = score_macd(macd, signal, hist, prev_macd, prev_signal, prev_hist)
+    ma_score, ma_state, gap20, gap60, heat_penalty = score_ma(price, m5, m20, m60, m120, m20_slope, m60_slope)
+    rsi_score, rsi_state = score_rsi(rv, prev_rv, price, m20)
+    stoch_score, stoch_state = score_stochastic(sk, sd, psk, psd)
+    total = macd_score + ma_score + rsi_score + stoch_score
+    grade, grade_label = trading_grade(total)
+
+    ordered = all(x is not None for x in (m5, m20, m60)) and m5 > m20 > m60
+    reverse = all(x is not None for x in (m5, m20, m60)) and m5 < m20 < m60
+    if ordered and (m20_slope or 0) > 0:
+        trend = "상승"
+    elif m20 is not None and price > m20 and (m20_slope or 0) > 0:
+        trend = "상승초기"
+    elif reverse and (m20_slope or 0) < 0:
+        trend = "하락"
+    elif m20 is not None and price < m20:
+        trend = "조정"
     else:
-        state = "관망"
-    return {
+        trend = "횡보"
+
+    overheat_hits = sum([
+        1 if rv is not None and rv > 70 else 0,
+        1 if sk is not None and sk > 80 else 0,
+        1 if gap20 is not None and gap20 > 10 else 0,
+    ])
+    overheat = "높음" if overheat_hits >= 2 else ("주의" if overheat_hits == 1 else "보통")
+
+    if total >= 85 and overheat_hits == 0:
+        action = "신규진입"
+    elif total >= 75:
+        action = "눌림목 대기"
+    elif total >= 60:
+        action = "관망"
+    elif total >= 45:
+        action = "일부매도" if trend in ("조정", "하락") else "관망"
+    else:
+        action = "손절검토"
+
+    confirmations = []
+    if (
+        macd is not None and signal is not None and prev_macd is not None and prev_signal is not None
+        and macd > signal and prev_macd <= prev_signal
+        and rv is not None and prev_rv is not None and rv >= 50 > prev_rv
+        and sk is not None and sd is not None and psk is not None and psd is not None
+        and sk > sd and psk <= psd
+        and m20 is not None and price > m20
+    ):
+        confirmations.append("강한 매수 Confirmation")
+    if hist is not None and prev_hist is not None and hist > prev_hist and rv is not None and 50 <= rv <= 65 and ordered:
+        confirmations.append("강한 상승 지속")
+    if overheat_hits >= 2:
+        confirmations.append("과열 경고")
+    if (
+        macd is not None and signal is not None and prev_macd is not None and prev_signal is not None
+        and macd < signal and prev_macd >= prev_signal
+        and rv is not None and rv < 50
+        and m20 is not None and price < m20
+    ):
+        confirmations.append("하락 전환 경고")
+
+    divergence = detect_divergence(closes, rsi_vals, macd_series)
+    atr14 = atr(rows, 14)
+    avg_vol20 = statistics.mean([x["volume"] for x in rows[-20:]]) if len(rows) >= 20 else None
+    volume_ratio = (rows[-1]["volume"] / avg_vol20) if avg_vol20 else None
+    turnover = price * rows[-1]["volume"]
+    gap_pct = None
+    if len(rows) >= 2 and rows[-1].get("open") is not None:
+        gap_pct = pct(rows[-1]["open"], rows[-2]["close"])
+    high20 = max(closes[-20:]) if closes else None
+    low20 = min(closes[-20:]) if closes else None
+    high52 = max(closes[-252:]) if closes else None
+    new_high = bool(len(closes) >= 20 and price >= max(closes[-252:]))
+
+    state = "상승 추세" if trend == "상승" else ("하락 추세" if trend == "하락" else trend)
+    out = {
         "price": price,
         "date": rows[-1]["date"],
         "r20": pct(price, closes[-21]) if len(closes) >= 21 else None,
         "r60": pct(price, closes[-61]) if len(closes) >= 61 else None,
-        "rsi": rv, "stoch_k": sk, "stoch_d": sd,
-        "macd": macd_series[-1] if macd_series else None,
-        "macd_signal": sig[-1] if sig else None,
-        "macd_hist": (macd_series[-1] - sig[-1]) if macd_series and sig else None,
-        "m5": m5, "m20": m20, "m60": m60,
-        "support": support, "resistance": resistance,
-        "high52": max(closes[-252:]) if closes else None,
+        "rsi": rv,
+        "rsi_prev": prev_rv,
+        "stoch_k": sk,
+        "stoch_d": sd,
+        "stoch_prev_k": psk,
+        "stoch_prev_d": psd,
+        "macd": macd,
+        "macd_signal": signal,
+        "macd_hist": hist,
+        "macd_prev": prev_macd,
+        "macd_signal_prev": prev_signal,
+        "macd_hist_prev": prev_hist,
+        "m5": m5,
+        "m20": m20,
+        "m60": m60,
+        "m120": m120,
+        "m20_slope": m20_slope,
+        "m60_slope": m60_slope,
+        "gap20": gap20,
+        "gap60": gap60,
+        "support": support,
+        "resistance": resistance,
+        "high20": high20,
+        "low20": low20,
+        "high52": high52,
+        "new_high": new_high,
+        "atr14": atr14,
+        "volume_ratio": volume_ratio,
+        "avg_volume20": avg_vol20,
+        "turnover": turnover,
+        "gap_pct": gap_pct,
         "state": state,
+        "trading_score": {
+            "total": total,
+            "grade": grade,
+            "grade_label": grade_label,
+            "trend": trend,
+            "action": action,
+            "overheat": overheat,
+            "confirmation": confirmations,
+            "divergence": divergence,
+            "components": {
+                "macd": {"score": macd_score, "max": 30, "state": macd_state},
+                "ma": {"score": ma_score, "max": 30, "state": ma_state, "heat_penalty": heat_penalty},
+                "rsi": {"score": rsi_score, "max": 20, "state": rsi_state},
+                "stochastic": {"score": stoch_score, "max": 20, "state": stoch_state},
+            },
+        },
     }
-
+    out["price_strategy"] = price_strategy(out)
+    return out
 
 def market_series():
     syms = CFG.get("settings", {}).get("market_symbols", {})
