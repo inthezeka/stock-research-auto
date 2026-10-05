@@ -20,7 +20,7 @@ permissions:
 
 concurrency:
   group: stock-research-daily
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   update-and-deploy:
