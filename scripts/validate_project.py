@@ -175,6 +175,10 @@ for i in range(1,6):
         fail(f"selected-market TOP5 price/target binding missing: row {i}")
 if "trendStateCard" not in html or "actionStateCard" not in html or "heatStateCard" not in html:
     fail("colored trading state cards missing")
+if 'id="stockSearchInput"' not in html or 'id="stockSearchMarket"' not in html or 'function buildSearchProfile' not in html:
+    fail("KOSPI/KOSDAQ live stock search UI missing")
+if "front-api/search/autoComplete" not in html or "chart/domestic/item/" not in html:
+    fail("live stock search data endpoints missing")
 
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
 if not m:
