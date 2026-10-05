@@ -1,0 +1,59 @@
+name: Daily stock research update
+
+on:
+  schedule:
+    - cron: "0 22 * * *" # 07:00 KST
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/**"
+      - "config/**"
+      - ".github/workflows/daily-update.yml"
+      - "netlify.toml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stock-research-daily
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Smoke test
+        run: python scripts/smoke_test.py
+
+      - name: Update market data
+        run: python scripts/update_data.py
+
+      - name: Sync embedded fallback
+        run: python scripts/embed_fallback.py
+
+      - name: Validate project
+        run: python scripts/validate_project.py
+
+      - name: Commit verified data
+        run: |
+          if git diff --quiet; then
+            echo "No verified changes"
+            exit 0
+          fi
+          git config user.name "stock-research-bot"
+          git config user.email "stock-research-bot@users.noreply.github.com"
+          git add data/market-data.json index.html QA_REPORT.md
+          git commit -m "chore: daily verified market data"
+          git push
