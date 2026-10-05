@@ -530,11 +530,22 @@ function applyTradingStateColors(){
   paint('actionStateCard',document.querySelector('#actionStateCard [data-key="tradingAction"]')?.textContent||'','action');
   paint('heatStateCard',document.querySelector('#heatStateCard [data-key="tradingOverheat"]')?.textContent||'','heat');
 }
+const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','technical','strategy','scenario','blueprint','sources'];
 function applyProfileText(profile){
   if(!profile)return;
   const t=profile.text||{};
-  document.querySelectorAll('[data-key]').forEach(el=>{const k=el.dataset.key;if(t[k]!=null)el.innerHTML=t[k]});
-  const inp=profile.inputs||{};tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
+  // 종목 선택/검색은 상세분석 영역만 변경한다.
+  // ③ 추천 종목 TOP5(screening) 표와 ①~② 상단 대시보드는 절대 덮어쓰지 않는다.
+  PROFILE_DETAIL_SECTIONS.forEach(id=>{
+    const root=document.getElementById(id);
+    if(!root)return;
+    root.querySelectorAll('[data-key]').forEach(el=>{
+      const k=el.dataset.key;
+      if(t[k]!=null)el.innerHTML=t[k];
+    });
+  });
+  const inp=profile.inputs||{};
+  tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
   updateProfileLinks(profile);calcRR();applyTradingStateColors();
 }
 function updateProfileLinks(profile){
@@ -1253,7 +1264,7 @@ async function analyzeSearchItem(item,status,box){
     const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
     const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
     document.getElementById('stockSearchBadge')?.classList.add('show');
-    status.textContent=p.name+' 분석 완료 · 전체 상장종목 검색 결과입니다. [AI]';
+    status.textContent=p.name+' 분석 완료 · 추천 TOP5 표는 유지하고 아래 상세분석만 검색 종목으로 전환했습니다. [AI]';
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
