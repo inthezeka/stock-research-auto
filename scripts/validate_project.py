@@ -35,6 +35,27 @@ for p in profiles:
         v=str(text.get(k,"")).strip()
         if not v or "[검증 필요]" in v:
             fail(f"{name} financial missing: {k}")
+
+    if p.get("financial_basis")!="quarterly":
+        fail(f"{name} financial basis is not quarterly")
+    qlabels=[str(text.get(f"y{i}","")) for i in range(1,5)]
+    if not all("Q" in x for x in qlabels):
+        fail(f"{name} quarterly labels invalid: {qlabels}")
+    if not any(x.endswith("E") for x in qlabels):
+        fail(f"{name} next-quarter estimate missing")
+    if "adjusted_score" in p or "sentiment_modifier" in p:
+        fail(f"{name} stock sentiment adjustment must be removed")
+    ts=str(text.get("tradingScore","")).strip()
+    m=re.search(r"(\d+)\s*/\s*100",ts)
+    if not m:
+        fail(f"{name} Trading Score missing")
+    else:
+        score=int(m.group(1))
+        if not 0<=score<=100:
+            fail(f"{name} Trading Score out of range")
+    for k in ("macdScore","maScore","rsiScore","stochScore","tradingGrade","tradingTrend","tradingAction","divergence"):
+        if not str(text.get(k,"")).strip():
+            fail(f"{name} technical field missing: {k}")
     links=p.get("links") or {}
     for lk in ("disclosure","ir","consensus","news"):
         u=str(links.get(lk,""))
@@ -104,6 +125,11 @@ if meta.get("status")=="ok":
         fail("blended sentiment score missing/invalid")
 
 html=(ROOT/"index.html").read_text(encoding="utf-8")
+if "TOP5 추천점수 시장심리 조정" in html or "심리 0 [AI]" in html:
+    fail("stock sentiment score wording remains in HTML")
+if "Trading Score" not in html or "다음 분기 EPS(E)" not in html:
+    fail("new Trading Score / quarterly valuation UI missing")
+
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
 if not m:
     fail("embedded fallback missing")
