@@ -471,7 +471,11 @@ function renderTopPickTabs(profiles=[]){
 function setProfileMarket(market,selectFirst=true){
   if(!profileGroups[market]||!profileGroups[market].length)return;
   activeProfileMarket=market;activeProfileIndex=0;
-  renderTopPickTabs(profileGroups[market]);
+  const group=profileGroups[market];
+  renderTopPickTabs(group);
+  document.querySelectorAll('.stock-pick-row').forEach((row,i)=>{
+    row.style.display=i<group.length?'':'none';
+  });
   if(selectFirst)selectStockProfile(0,false);
 }
 function applyTradingStateColors(){
@@ -604,7 +608,9 @@ function applyAutoData(d){
   if(!profileGroups[activeProfileMarket]?.length)activeProfileMarket='KOSPI';
   const profiles=profileGroups[activeProfileMarket]||[];
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
-  renderTopPickTabs(profiles);if(profiles.length)selectStockProfile(activeProfileIndex,false);
+  renderTopPickTabs(profiles);
+  document.querySelectorAll('.stock-pick-row').forEach((row,i)=>{row.style.display=i<profiles.length?'':'none'});
+  if(profiles.length)selectStockProfile(activeProfileIndex,false);
   renderThemeSection(d);renderSentiment(d.sentiment||{});
   if(d.meta){
     const uts=fmtDateKST(d.meta.generated_at);
