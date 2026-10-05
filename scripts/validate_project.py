@@ -17,9 +17,15 @@ try:
 except Exception as e:
     raise SystemExit("watchlist.json invalid: "+str(e))
 
-profiles=data.get("stock_profiles") or []
-if len(profiles)!=5:
-    fail(f"TOP5 profile count={len(profiles)}")
+groups=data.get("stock_profile_groups") or {}
+kospi_profiles=groups.get("KOSPI") or data.get("stock_profiles") or []
+kosdaq_profiles=groups.get("KOSDAQ") or data.get("stock_profiles_kosdaq") or []
+profiles=kospi_profiles
+if len(kospi_profiles)!=5:
+    fail(f"KOSPI TOP5 profile count={len(kospi_profiles)}")
+if len(kosdaq_profiles)!=5:
+    fail(f"KOSDAQ TOP5 profile count={len(kosdaq_profiles)}")
+all_profiles=kospi_profiles+kosdaq_profiles
 
 financial_keys=[]
 for i in range(1,5):
@@ -28,7 +34,7 @@ for i in range(1,5):
         f"ni{i}", f"eps{i}", f"yoy{i}"
     ]
 
-for p in profiles:
+for p in all_profiles:
     name=p.get("name","?")
     text=p.get("text") or {}
     for k in financial_keys:
@@ -46,11 +52,10 @@ for p in profiles:
     if "adjusted_score" in p or "sentiment_modifier" in p:
         fail(f"{name} stock sentiment adjustment must be removed")
     ts=str(text.get("tradingScore","")).strip()
-    m=re.search(r"(\d+)\s*/\s*100",ts)
-    if not m:
-        fail(f"{name} Trading Score missing")
+    if not re.fullmatch(r"\d{1,3}",ts):
+        fail(f"{name} Trading Score must be numeric only")
     else:
-        score=int(m.group(1))
+        score=int(ts)
         if not 0<=score<=100:
             fail(f"{name} Trading Score out of range")
     for k in ("macdScore","maScore","rsiScore","stochScore","tradingGrade","tradingTrend","tradingAction","divergence"):
@@ -129,6 +134,12 @@ if "TOP5 추천점수 시장심리 조정" in html or "심리 0 [AI]" in html:
     fail("stock sentiment score wording remains in HTML")
 if "Trading Score" not in html or "다음 분기 EPS(E)" not in html:
     fail("new Trading Score / quarterly valuation UI missing")
+if "Trading Indicators" in html:
+    fail("duplicate Trading Indicators block remains")
+if "data-profile-market=\"KOSPI\"" not in html or "data-profile-market=\"KOSDAQ\"" not in html:
+    fail("KOSPI/KOSDAQ TOP5 selector missing")
+if "trendStateCard" not in html or "actionStateCard" not in html or "heatStateCard" not in html:
+    fail("colored trading state cards missing")
 
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
 if not m:
@@ -159,7 +170,8 @@ report=[
     f"- passed: **{not errors}**",
     f"- errors: **{len(errors)}**",
     f"- warnings: **{len(warnings)}**",
-    f"- TOP5: **{len(profiles)}**",
+    f"- KOSPI TOP5: **{len(kospi_profiles)}**",
+    f"- KOSDAQ TOP5: **{len(kosdaq_profiles)}**",
     f"- themes: **{len(cards)}**",
     f"- watchlist stocks: **{len(cfg.get('stocks') or [])}**",
 ]
