@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-05T12:25:57.883061+09:00",
+    "generated_at": "2026-10-05T12:26:26.053180+09:00",
     "market_date": "2026-10-05",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -2241,7 +2241,7 @@
       "fresh": true,
       "score": 57.3,
       "rating": "탐욕",
-      "timestamp": "2026-10-05T12:25:57.883061+09:00",
+      "timestamp": "2026-10-05T12:26:26.053180+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
       "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
       "components": [
@@ -2285,7 +2285,7 @@
           "label": "안전자산/FX proxy",
           "score": 50.2,
           "weight": 5,
-          "value": "USD/KRW 20D -0.05%"
+          "value": "USD/KRW 20D -0.06%"
         }
       ]
     },
@@ -2334,6 +2334,6 @@
         }
       ]
     },
-    "updated_at": "2026-10-05T12:25:57.883061+09:00"
+    "updated_at": "2026-10-05T12:26:26.053180+09:00"
   }
 }
