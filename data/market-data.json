@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-05T12:28:54.920344+09:00",
+    "generated_at": "2026-10-05T12:29:46.961036+09:00",
     "market_date": "2026-10-05",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -103,7 +103,7 @@
     "thesis": "“이 종목을 지금 투자해야 하는 가장 중요한 이유는 AI 서버용 MLCC와 FCBGA의 고부가 매출 비중 확대가 중기 이익 체력을 높이는 구간 때문이다.” [AI]",
     "currentPriceText": "1,577,000원",
     "fairPriceText": "2,280,000원 Cons.",
-    "upsideText": "+44.6% [AI]",
+    "upsideText": "+14.6% [AI]",
     "fper": "43.94x",
     "roe": "15.18% (2026E)",
     "topRR": "3.51 : 1 [AI]",
@@ -146,9 +146,9 @@
     "pbr": "12.52x (2025A)",
     "evebitda": "24.68x (Fwd.12M)",
     "valEps": "6,270원 · 2026Q3E",
-    "targetPer": "[검증 필요]",
-    "fairA": "[검증 필요]",
-    "calcA": "Forward EPS와 Target PER 최신 검증값 연결 전까지 [검증 필요]입니다.",
+    "targetPer": "43.94x · Forward PER",
+    "fairA": "1,102,015원 [AI]",
+    "calcA": "2026Q3E EPS 6,270원 × 4 × Forward PER 43.94x = 1,102,015원. 분기 EPS 연환산 방식 [AI]",
     "peerMultiple": "Consensus 기준일 2026-10-02",
     "discount": "45일 초과 시 최신성 경고",
     "fairB": "2,280,000원",
@@ -1228,7 +1228,7 @@
         "thesis": "“이 종목을 지금 투자해야 하는 가장 중요한 이유는 AI 서버용 MLCC와 FCBGA의 고부가 매출 비중 확대가 중기 이익 체력을 높이는 구간 때문이다.” [AI]",
         "currentPriceText": "1,577,000원",
         "fairPriceText": "2,280,000원 Cons.",
-        "upsideText": "+44.6% [AI]",
+        "upsideText": "+14.6% [AI]",
         "fper": "43.94x",
         "roe": "15.18% (2026E)",
         "topRR": "3.51 : 1 [AI]",
@@ -1271,9 +1271,9 @@
         "pbr": "12.52x (2025A)",
         "evebitda": "24.68x (Fwd.12M)",
         "valEps": "6,270원 · 2026Q3E",
-        "targetPer": "[검증 필요]",
-        "fairA": "[검증 필요]",
-        "calcA": "Forward EPS와 Target PER 최신 검증값 연결 전까지 [검증 필요]입니다.",
+        "targetPer": "43.94x · Forward PER",
+        "fairA": "1,102,015원 [AI]",
+        "calcA": "2026Q3E EPS 6,270원 × 4 × Forward PER 43.94x = 1,102,015원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "2,280,000원",
@@ -1455,7 +1455,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-        "fetched_at": "2026-10-05T12:28:54.920344+09:00"
+        "fetched_at": "2026-10-05T12:29:46.961036+09:00"
       }
     },
     {
@@ -1540,7 +1540,7 @@
         "thesis": "“이 종목을 지금 투자해야 하는 가장 중요한 이유는 HBM 세대 전환과 고부가 DRAM 믹스가 실적 상향을 견인하는 구간 때문이다.” [AI]",
         "currentPriceText": "1,842,000원",
         "fairPriceText": "3,141,025원 Cons.",
-        "upsideText": "+70.5% [AI]",
+        "upsideText": "+2.0% [AI]",
         "fper": "4.25x",
         "roe": "101.97% (2026E)",
         "topRR": "5.60 : 1 [AI]",
@@ -1583,9 +1583,9 @@
         "pbr": "10.72x (2025A)",
         "evebitda": "2.45x (Fwd.12M)",
         "valEps": "77,469원 · 2026Q3E",
-        "targetPer": "[검증 필요]",
-        "fairA": "[검증 필요]",
-        "calcA": "Forward EPS와 Target PER 최신 검증값 연결 전까지 [검증 필요]입니다.",
+        "targetPer": "4.25x · Forward PER",
+        "fairA": "1,316,973원 [AI]",
+        "calcA": "2026Q3E EPS 77,469원 × 4 × Forward PER 4.25x = 1,316,973원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "3,141,025원",
@@ -1767,7 +1767,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-        "fetched_at": "2026-10-05T12:28:54.920344+09:00"
+        "fetched_at": "2026-10-05T12:29:46.961036+09:00"
       }
     },
     {
@@ -1852,7 +1852,7 @@
         "thesis": "“이 종목을 지금 투자해야 하는 가장 중요한 이유는 AI 데이터센터와 북미 전력망 투자가 수주와 마진을 동시에 지지하는 구간 때문이다.” [AI]",
         "currentPriceText": "209,000원",
         "fairPriceText": "275,813원 Cons.",
-        "upsideText": "+32.0% [AI]",
+        "upsideText": "+52.4% [AI]",
         "fper": "42.36x",
         "roe": "23.77% (2026E)",
         "topRR": "2.50 : 1 [AI]",
@@ -1895,9 +1895,9 @@
         "pbr": "15.05x (2025A)",
         "evebitda": "28.34x (Fwd.12M)",
         "valEps": "947원 · 2026Q3E",
-        "targetPer": "[검증 필요]",
-        "fairA": "[검증 필요]",
-        "calcA": "Forward EPS와 Target PER 최신 검증값 연결 전까지 [검증 필요]입니다.",
+        "targetPer": "42.36x · Forward PER",
+        "fairA": "160,460원 [AI]",
+        "calcA": "2026Q3E EPS 947원 × 4 × Forward PER 42.36x = 160,460원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "275,813원",
@@ -2079,7 +2079,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-        "fetched_at": "2026-10-05T12:28:54.920344+09:00"
+        "fetched_at": "2026-10-05T12:29:46.961036+09:00"
       }
     },
     {
@@ -2164,7 +2164,7 @@
         "thesis": "“이 종목을 지금 투자해야 하는 가장 중요한 이유는 메모리 업사이클과 HBM 경쟁력 회복이 실적 레버리지를 높일 수 있는 구간 때문이다.” [AI]",
         "currentPriceText": "276,000원",
         "fairPriceText": "477,517원 Cons.",
-        "upsideText": "+73.0% [AI]",
+        "upsideText": "+31.3% [AI]",
         "fper": "4.34x",
         "roe": "56.36% (2026E)",
         "topRR": "5.76 : 1 [AI]",
@@ -2207,9 +2207,9 @@
         "pbr": "4.31x (2025A)",
         "evebitda": "2.15x (Fwd.12M)",
         "valEps": "13,504원 · 2026Q3E",
-        "targetPer": "[검증 필요]",
-        "fairA": "[검증 필요]",
-        "calcA": "Forward EPS와 Target PER 최신 검증값 연결 전까지 [검증 필요]입니다.",
+        "targetPer": "4.34x · Forward PER",
+        "fairA": "234,429원 [AI]",
+        "calcA": "2026Q3E EPS 13,504원 × 4 × Forward PER 4.34x = 234,429원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "477,517원",
@@ -2391,7 +2391,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-        "fetched_at": "2026-10-05T12:28:54.920344+09:00"
+        "fetched_at": "2026-10-05T12:29:46.961036+09:00"
       }
     },
     {
@@ -2476,7 +2476,7 @@
         "thesis": "“이 종목을 지금 투자해야 하는 가장 중요한 이유는 대규모 해외 수주잔고가 장기간 매출 가시성을 제공하는 구간 때문이다.” [AI]",
         "currentPriceText": "1,069,000원",
         "fairPriceText": "1,634,762원 Cons.",
-        "upsideText": "+52.9% [AI]",
+        "upsideText": "+6.0% [AI]",
         "fper": "20.05x",
         "roe": "21.41% (2026E)",
         "topRR": "4.17 : 1 [AI]",
@@ -2519,9 +2519,9 @@
         "pbr": "5.69x (2025A)",
         "evebitda": "9.03x (Fwd.12M)",
         "valEps": "12,488원 · 2026Q3E",
-        "targetPer": "[검증 필요]",
-        "fairA": "[검증 필요]",
-        "calcA": "Forward EPS와 Target PER 최신 검증값 연결 전까지 [검증 필요]입니다.",
+        "targetPer": "20.05x · Forward PER",
+        "fairA": "1,001,538원 [AI]",
+        "calcA": "2026Q3E EPS 12,488원 × 4 × Forward PER 20.05x = 1,001,538원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "1,634,762원",
@@ -2703,7 +2703,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-        "fetched_at": "2026-10-05T12:28:54.920344+09:00"
+        "fetched_at": "2026-10-05T12:29:46.961036+09:00"
       }
     }
   ],
@@ -2725,7 +2725,7 @@
       "fresh": true,
       "score": 57.4,
       "rating": "탐욕",
-      "timestamp": "2026-10-05T12:28:54.920344+09:00",
+      "timestamp": "2026-10-05T12:29:46.961036+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
       "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
       "components": [
@@ -2767,9 +2767,9 @@
         {
           "key": "safe_haven",
           "label": "안전자산/FX proxy",
-          "score": 50.6,
+          "score": 51.9,
           "weight": 5,
-          "value": "USD/KRW 20D -0.10%"
+          "value": "USD/KRW 20D -0.16%"
         }
       ]
     },
@@ -2782,6 +2782,6 @@
       "note": "심리가 중립권입니다. 시장보다 종목별 Catalyst와 Risk/Reward 비중을 높입니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-05T12:28:54.920344+09:00"
+    "updated_at": "2026-10-05T12:29:46.961036+09:00"
   }
 }
