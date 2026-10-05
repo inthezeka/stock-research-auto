@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, math, os, re, statistics, sys, time
+import copy, json, math, os, re, statistics, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -1130,6 +1130,159 @@ def apply_quarterly_financials(profile, snapshot):
 
 
 
+
+KOSDAQ_CANDIDATE_CODES = {
+    "196170",  # 알테오젠
+    "277810",  # 레인보우로보틱스
+    "083650",  # 비에이치아이
+    "035900",  # JYP Ent.
+    "108490",  # 로보티즈
+    "189300",  # 인텔리안테크
+    "054930",  # 유신
+}
+
+
+def recommendation_rating(score):
+    score = float(score or 0)
+    if score >= 80:
+        return "Buy"
+    if score >= 70:
+        return "Positive"
+    if score >= 60:
+        return "Neutral"
+    return "Caution"
+
+
+def build_kosdaq_profiles(d, base_profile):
+    stocks_by_code = {str(x.get("stock_code")): x for x in (CFG.get("stocks") or [])}
+    pick_by_code = {}
+    theme_by_code = {}
+    for card in d.get("theme_cards") or []:
+        for pick in card.get("picks") or []:
+            code = str(pick.get("ticker") or "").split(".")[0]
+            if code in KOSDAQ_CANDIDATE_CODES:
+                old = pick_by_code.get(code)
+                if old is None or float(pick.get("score") or 0) > float(old.get("score") or 0):
+                    pick_by_code[code] = pick
+                    theme_by_code[code] = card
+
+    ranked = []
+    for code in KOSDAQ_CANDIDATE_CODES:
+        stock = stocks_by_code.get(code)
+        pick = pick_by_code.get(code)
+        if not stock or not str(stock.get("ticker", "")).endswith(".KQ"):
+            continue
+        score = float((pick or {}).get("score") or 0)
+        ranked.append((score, code, stock, pick or {}, theme_by_code.get(code) or {}))
+    ranked.sort(key=lambda x: (-x[0], x[2].get("name") or ""))
+    ranked = ranked[:5]
+
+    base_text_keys = list((base_profile.get("text") or {}).keys())
+    base_input_keys = list((base_profile.get("inputs") or {}).keys())
+    profiles = []
+
+    for rank, (score, code, stock, pick, card) in enumerate(ranked, 1):
+        name = stock.get("name") or code
+        sector_name = card.get("theme") or stock.get("sector") or "KOSDAQ"
+        catalyst = str(pick.get("reason") or "섹터 Catalyst와 실적 추이를 확인합니다. [AI]")
+        rating = recommendation_rating(score)
+
+        text = {k: "—" for k in base_text_keys}
+        text.update({
+            "topPickName": name,
+            "topPickTicker": f"{code} · KOSDAQ · 자동 업데이트",
+            "topPickScore": f"{int(round(score))} / {rating} [AI]",
+            "thesis": f"“{catalyst.replace(' [AI]','')}를 핵심 투자 포인트로 보되, 분기 실적·Valuation·기술적 위치를 함께 확인합니다.” [AI]",
+            "fairPriceText": "Consensus 목표가 확인 필요",
+            "upsideText": "—",
+            "fper": "—",
+            "roe": "—",
+            "topRR": "—",
+            "metricSource": "분기 실적: Naver Stock/FnGuide · 가격/기술지표: Naver Stock/Yahoo fallback",
+            "business": f"{sector_name} 관련 사업 · 세부 사업구조는 공식 IR 확인",
+            "customers": "공식 IR/공시에서 주요 고객 및 매출처 확인",
+            "competitors": "동일 업종 국내외 Peer 비교 필요",
+            "moat": "기술·수주·시장점유율·진입장벽은 공식 IR 기준 추가 검증",
+            "barrier": "고객 인증·기술력·CAPEX·IP 등 업종별 진입장벽 확인",
+            "earningsReason": "최근 실제 3개 분기와 다음 분기 Consensus를 자동 연결해 실적 방향을 확인합니다.",
+            "per": "—",
+            "fper2": "—",
+            "pbr": "—",
+            "evebitda": "—",
+            "peerMultiple": "Consensus 확인 필요",
+            "discount": "Peer/과거 밴드 확인 필요",
+            "fairB": "Consensus 목표가 확인 필요",
+            "calcB": "Consensus 목표가가 검증되면 반영합니다.",
+            "histVal": "과거 Valuation Band 추가 검증 필요",
+            "domesticPeer": "동일 업종 국내 Peer 비교 필요",
+            "globalPeer": "동일 업종 해외 Peer 비교 필요",
+            "shortCat": catalyst,
+            "midCat": f"{sector_name} 업황·수주·제품 믹스 변화 확인 [AI]",
+            "longCat": "중장기 실적 성장과 Valuation 재평가 가능성 확인 [AI]",
+            "risk1": "실적 기대치 하향 / Consensus 미달",
+            "risk1P": "가능성 M",
+            "risk1I": "영향 H",
+            "risk2": "Valuation Multiple 압축",
+            "risk2P": "가능성 M",
+            "risk2I": "영향 H",
+            "risk3": "수급·변동성 확대",
+            "risk3P": "가능성 M",
+            "risk3I": "영향 M",
+            "risk4": "핵심 Catalyst 일정 지연",
+            "risk4P": "가능성 M",
+            "risk4I": "영향 M",
+            "disclosureTitle": f"{name} 최근 공시 확인",
+            "disclosureDesc": "네이버증권 공시 페이지에서 최신 공시를 직접 확인합니다.",
+            "irTitle": f"{name} IR / 실적자료",
+            "irDesc": "기업 공식 홈페이지 또는 네이버 종목페이지에서 IR 자료를 확인합니다.",
+            "consTitle": f"{name} Consensus 최신성",
+            "consDesc": "Forward 지표·이익 추정치·목표주가 최신성을 확인합니다.",
+            "newsTitle": f"{name} 최신 주요기사",
+            "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
+            "tradePeriod": "1~6개월",
+            "tradeOpinion": rating.upper(),
+            "finalOpinion": f"{rating.upper()} · KOSDAQ TOP5 후보",
+            "finalLine": "분기 실적·기술적 Trading Score·Catalyst를 함께 확인합니다. [AI]",
+        })
+
+        inputs = {k: "" for k in base_input_keys}
+        profile = {
+            "rank": rank,
+            "name": name,
+            "ticker": stock.get("ticker"),
+            "stock_code": code,
+            "market": "KOSDAQ",
+            "sector": stock.get("sector"),
+            "sector_name": sector_name,
+            "score": score,
+            "rating": rating,
+            "text": text,
+            "inputs": inputs,
+            "links": {
+                "disclosure": f"https://stock.naver.com/domestic/stock/{code}/notice",
+                "ir": f"https://finance.naver.com/item/main.naver?code={code}",
+                "consensus": f"https://finance.naver.com/item/coinfo.naver?code={code}",
+                "news": f"https://stock.naver.com/domestic/stock/{code}/news",
+            },
+        }
+        profiles.append(profile)
+
+    # Synchronize the group-level TOP5 labels carried by every profile.
+    for p in profiles:
+        txt = p["text"]
+        for i, q in enumerate(profiles, 1):
+            txt[f"stock{i}"] = q["name"]
+            txt[f"score{i}"] = f"{int(round(q['score']))} / 100"
+            txt[f"op{i}"] = q["rating"]
+            txt[f"period{i}"] = "1~6개월"
+            q_pick = pick_by_code.get(q["stock_code"]) or {}
+            txt[f"cat{i}"] = str(q_pick.get("reason") or "Catalyst 확인 [AI]")
+            txt[f"return{i}"] = "—"
+            txt[f"rr{i}"] = "—"
+
+    return profiles
+
+
 def reset_profile_scores(profiles):
     """Keep market sentiment separate from stock recommendation scores."""
     for p in profiles:
@@ -1230,7 +1383,7 @@ def profile_live_update(p, live):
     total = score.get("total")
     grade = score.get("grade")
     grade_label = score.get("grade_label")
-    txt["tradingScore"] = "—" if total is None else f"{total} / 100"
+    txt["tradingScore"] = "—" if total is None else f"{total}"
     txt["tradingGrade"] = "—" if total is None else f"{grade} / {grade_label}"
     txt["tradingTrend"] = score.get("trend") or "확인 필요"
     txt["tradingAction"] = score.get("action") or "관망"
@@ -1406,28 +1559,51 @@ def main():
         d.setdefault("text", {})["marketRegime"] = sentiment["regime"]
 
     profiles = d.get("stock_profiles") or []
+    for p in profiles:
+        p["market"] = "KOSPI"
+
+    if not profiles:
+        print(json.dumps({"status": "rejected", "reason": "KOSPI profiles missing"}, ensure_ascii=False))
+        return 4
+
+    kosdaq_profiles = build_kosdaq_profiles(d, profiles[0])
+    if len(kosdaq_profiles) != 5:
+        print(json.dumps({
+            "status": "rejected",
+            "reason": "KOSDAQ TOP5 profile build failed",
+            "count": len(kosdaq_profiles),
+        }, ensure_ascii=False))
+        return 4
+
+    all_profiles = profiles[:5] + kosdaq_profiles
 
     quarterly_ok = 0
-    for p in profiles[:5]:
+    for p in all_profiles:
         try:
             snap = fetch_quarterly_financials(p.get("stock_code"))
             if apply_quarterly_financials(p, snap):
                 quarterly_ok += 1
         except Exception as e:
             errors.append(f"{p.get('name')} quarterly: {e}")
-    if quarterly_ok < min(5, len(profiles)):
+
+    # KOSPI detailed profiles remain strict. KOSDAQ selector stays available even
+    # if a smaller stock temporarily lacks an analyst consensus quarter.
+    if quarterly_ok < 5:
         print(json.dumps({
             "status": "rejected",
-            "reason": "TOP5 quarterly finance incomplete",
+            "reason": "KOSPI TOP5 quarterly finance incomplete",
             "quarterly_ok": quarterly_ok,
-            "errors": errors[-10:],
+            "errors": errors[-12:],
         }, ensure_ascii=False))
         return 4
 
-    for p in profiles:
+    for p in all_profiles:
         profile_live_update(p, live_by_code.get(p.get("stock_code")))
 
     reset_profile_scores(profiles)
+    reset_profile_scores(kosdaq_profiles)
+    d["stock_profile_groups"] = {"KOSPI": profiles[:5], "KOSDAQ": kosdaq_profiles}
+    d["stock_profiles_kosdaq"] = kosdaq_profiles
     update_theme_cards(d, live_by_code)
 
     # Refresh TOP5 summary cards/bind without touching verified financial snapshot fields.
@@ -1463,7 +1639,7 @@ def main():
         "generated_at": NOW.isoformat(),
         "market_date": md,
         "status": "ok",
-        "ui_version": "v13-quarterly-trading-score",
+        "ui_version": "v14-kospi-kosdaq-trading-score",
         "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
         "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
         "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
