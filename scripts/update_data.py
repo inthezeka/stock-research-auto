@@ -1207,6 +1207,12 @@ def apply_valuation_snapshot(profile, snap):
 
 
 KOSDAQ_IR_LINKS = {
+    "189300": {
+        "url": "https://intelliantech.com/kr/ir",
+        "title": "인텔리안테크 공식 IR",
+        "desc": "인텔리안테크 공식 홈페이지의 Investor Relations·Financial Highlights 페이지로 연결합니다.",
+        "source": "official",
+    },
     "196170": {
         "url": "https://www.alteogen.com/kr/sub/ir/information.php",
         "title": "알테오젠 공식 IR / 투자정보",
