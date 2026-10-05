@@ -199,7 +199,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="stock-search-head">
       <div>
         <div class="stock-search-title">🔎 종목검색 · KOSPI / KOSDAQ</div>
-        <div class="stock-search-desc">KOSPI·KOSDAQ 전체 상장종목에서 종목명 또는 6자리 종목코드를 검색합니다. 검색 종목을 선택하면 아래 Deep Dive 전체가 해당 종목 기준으로 전환되며 가격·분기실적·Valuation·Trading Score를 공개 시장데이터로 계산합니다. [AI]</div>
+        <div class="stock-search-desc">KOSPI·KOSDAQ 전체 상장종목에서 검색합니다. 검색 종목의 차트는 Naver 조회를 우선하고 브라우저 차단 시 GitHub의 KRX 백업 일봉으로 자동 전환해 Trading Score를 계산합니다. [AI]</div>
       </div>
       <span class="tag blue search-result-badge" id="stockSearchBadge">SEARCH RESULT</span>
     </div>
@@ -740,6 +740,70 @@ function srSearchItems(payload){
   return flat.map(x=>({code:String(x.code||x.itemCode||'').replace(/\D/g,'').slice(0,6),name:x.name,typeName:x.typeName||x.marketName||x.market||'',reutersCode:x.reutersCode||''})).filter(x=>x.code.length===6&&/코스피|코스닥|KOSPI|KOSDAQ/i.test(x.typeName));
 }
 async function srFetchJson(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+async function srFetchText(url){const r=await fetch(url,{cache:'force-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}
+function srCsvLine(line){
+  const out=[];let cur='',q=false;
+  for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++}else q=!q}else if(ch===','&&!q){out.push(cur);cur=''}else cur+=ch}
+  out.push(cur);return out;
+}
+function srBusinessDates(endIso,count){
+  const out=[];let d=new Date((endIso||new Date().toISOString().slice(0,10))+'T00:00:00Z');
+  while(out.length<count){const w=d.getUTCDay();if(w!==0&&w!==6)out.push(d.toISOString().slice(0,10));d.setUTCDate(d.getUTCDate()-1)}
+  return out;
+}
+async function srKrxHistory(item){
+  const code=item.code,market=srMarketOf(item.typeName||item.market||item.reutersCode,'KOSPI');
+  const asOf=(stockUniverseMeta?.as_of)||'2026-10-05';
+  const cacheKey='krxhist:'+code+':'+asOf;
+  try{
+    const cached=JSON.parse(sessionStorage.getItem(cacheKey)||'null');
+    if(Array.isArray(cached)&&cached.length>=65)return cached;
+  }catch(_){}
+  const status=document.getElementById('stockSearchStatus');
+  if(status)status.textContent=(item.name||code)+' 차트 데이터를 KRX 백업소스에서 불러오는 중...';
+  const dates=srBusinessDates(asOf,78);
+  const dir=market==='KOSDAQ'?'kosdaq':'krx';
+  const base='https://raw.githubusercontent.com/FinanceData/fdr_krx_data_cache/master/data/listing/'+dir+'/';
+  let done=0;
+  async function one(date){
+    try{
+      const txt=await srFetchText(base+date+'.csv');
+      const lines=txt.replace(/^\uFEFF/,'').split(/\r?\n/);
+      if(lines.length<2)return null;
+      const h=srCsvLine(lines[0]),ix={};h.forEach((x,i)=>ix[x]=i);
+      let cols=null;
+      for(let i=1;i<lines.length;i++){
+        const line=lines[i];if(!line)continue;
+        if(!line.includes(','+code+','))continue;
+        const a=srCsvLine(line);
+        if(String(a[ix.Code]||'').padStart(6,'0')===code){cols=a;break}
+      }
+      if(!cols)return null;
+      const num=k=>srNum(cols[ix[k]]);
+      const row={date,open:num('Open'),high:num('High'),low:num('Low'),close:num('Close'),volume:num('Volume')||0};
+      return [row.high,row.low,row.close].every(Number.isFinite)?row:null;
+    }catch(_){return null}
+    finally{done++;if(status&&done%12===0)status.textContent=(item.name||code)+' KRX 차트 백업 '+done+'/'+dates.length+' 조회 중...'}
+  }
+  const rows=[];
+  const concurrency=8;
+  for(let i=0;i<dates.length;i+=concurrency){
+    const part=await Promise.all(dates.slice(i,i+concurrency).map(one));
+    rows.push(...part.filter(Boolean));
+  }
+  rows.sort((a,b)=>a.date.localeCompare(b.date));
+  if(rows.length<65)throw new Error('KRX 백업 차트도 충분한 일봉을 확보하지 못했습니다. ('+rows.length+'일)');
+  try{sessionStorage.setItem(cacheKey,JSON.stringify(rows))}catch(_){}
+  return rows;
+}
+async function srLoadChartRows(item){
+  try{
+    const j=await srFetchJson('https://api.stock.naver.com/chart/domestic/item/'+item.code+'?periodType=dayCandle');
+    const rows=srRows(j);
+    if(rows.length>=65)return rows;
+  }catch(_){}
+  return srKrxHistory(item);
+}
 function srBlankProfile(item){
   const template=profileGroups.KOSPI?.[0]||stockProfiles?.[0]||{},keys=Object.keys(template.text||{}),text={};keys.forEach(k=>text[k]='—');
   return{name:item.name,stock_code:item.code,ticker:item.reutersCode||'',market:/코스닥|KOSDAQ/i.test(item.typeName)?'KOSDAQ':'KOSPI',score:0,rating:'',sector_name:'검색 종목',text,inputs:{},links:{
@@ -752,12 +816,12 @@ function srBlankProfile(item){
 async function buildSearchProfile(item){
   const code=item.code,p=srBlankProfile(item),t=p.text;
   const [chartR,finR,intR]=await Promise.allSettled([
-    srFetchJson('https://api.stock.naver.com/chart/domestic/item/'+code+'?periodType=dayCandle'),
+    srLoadChartRows(item),
     srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/finance/quarter'),
     srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/integration')
   ]);
-  if(chartR.status!=='fulfilled')throw new Error('차트 데이터를 불러오지 못했습니다.');
-  const rows=srRows(chartR.value);if(rows.length<65)throw new Error('기술적 분석에 필요한 일봉 데이터가 부족합니다.');
+  if(chartR.status!=='fulfilled')throw new Error('차트 데이터를 불러오지 못했습니다: '+(chartR.reason?.message||'Naver/KRX 백업 모두 실패'));
+  const rows=chartR.value;if(rows.length<65)throw new Error('기술적 분석에 필요한 일봉 데이터가 부족합니다.');
   const tech=srTech(rows),m=intR.status==='fulfilled'?srMetricMap(intR.value):{},qs=finR.status==='fulfilled'?srFinance(finR.value):[];
   p.score=tech.total;p.rating=tech.label;
   t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · SEARCH RESULT';t.topPickScore=tech.total+' / '+tech.label+' [AI]';
