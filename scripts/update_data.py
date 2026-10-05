@@ -1261,7 +1261,16 @@ def recommendation_rating(score):
     return "Caution"
 
 
-def build_kosdaq_profiles(d, base_profile):
+def build_kosdaq_profiles(d, base_profile, live_by_code):
+    """Select KOSDAQ TOP5 for actual trading use.
+
+    Gate:
+      - Trading Score < 60: exclude from TOP5
+      - Trading Score >= 70: priority pool
+      - Trading Score 60~69: secondary pool
+    Rank inside each pool:
+      - Final selection score = Fundamental/Catalyst 60% + Trading Score 40%
+    """
     stocks_by_code = {str(x.get("stock_code")): x for x in (CFG.get("stocks") or [])}
     pick_by_code = {}
     theme_by_code = {}
@@ -1274,26 +1283,80 @@ def build_kosdaq_profiles(d, base_profile):
                     pick_by_code[code] = pick
                     theme_by_code[code] = card
 
-    ranked = []
+    eligible = []
+    diagnostics = []
     for code in KOSDAQ_CANDIDATE_CODES:
         stock = stocks_by_code.get(code)
         pick = pick_by_code.get(code)
+        live = live_by_code.get(code)
         if not stock or not str(stock.get("ticker", "")).endswith(".KQ"):
             continue
-        score = float((pick or {}).get("score") or 0)
-        ranked.append((score, code, stock, pick or {}, theme_by_code.get(code) or {}))
-    ranked.sort(key=lambda x: (-x[0], x[2].get("name") or ""))
-    ranked = ranked[:5]
+        if not live:
+            diagnostics.append({"code": code, "name": stock.get("name"), "reason": "live data missing"})
+            continue
+
+        fundamental_score = float((pick or {}).get("score") or 0)
+        trading_score = float((((live.get("tech") or {}).get("trading_score") or {}).get("total")) or 0)
+        final_score = fundamental_score * 0.60 + trading_score * 0.40
+        priority = 0 if trading_score >= 70 else 1
+
+        diagnostics.append({
+            "code": code,
+            "name": stock.get("name"),
+            "fundamental_score": round(fundamental_score, 2),
+            "trading_score": round(trading_score, 2),
+            "final_score": round(final_score, 2),
+            "eligible": trading_score >= 60,
+            "priority": "70+" if trading_score >= 70 else ("60~69" if trading_score >= 60 else "<60 제외"),
+        })
+
+        if trading_score < 60:
+            continue
+
+        eligible.append({
+            "priority": priority,
+            "final_score": final_score,
+            "fundamental_score": fundamental_score,
+            "trading_score": trading_score,
+            "code": code,
+            "stock": stock,
+            "pick": pick or {},
+            "card": theme_by_code.get(code) or {},
+        })
+
+    eligible.sort(key=lambda x: (
+        x["priority"],
+        -x["final_score"],
+        -x["trading_score"],
+        -x["fundamental_score"],
+        x["stock"].get("name") or "",
+    ))
+    ranked = eligible[:5]
+    d["kosdaq_selection_diagnostics"] = diagnostics
+
+    if len(ranked) < 5:
+        raise RuntimeError(
+            "KOSDAQ Trading Score>=60 candidates fewer than 5: "
+            + json.dumps(diagnostics, ensure_ascii=False)
+        )
 
     base_text_keys = list((base_profile.get("text") or {}).keys())
     base_input_keys = list((base_profile.get("inputs") or {}).keys())
     profiles = []
 
-    for rank, (score, code, stock, pick, card) in enumerate(ranked, 1):
+    for rank, item in enumerate(ranked, 1):
+        final_score = item["final_score"]
+        fundamental_score = item["fundamental_score"]
+        trading_score = item["trading_score"]
+        code = item["code"]
+        stock = item["stock"]
+        pick = item["pick"]
+        card = item["card"]
+
         name = stock.get("name") or code
         sector_name = card.get("theme") or stock.get("sector") or "KOSDAQ"
         catalyst = str(pick.get("reason") or "섹터 Catalyst와 실적 추이를 확인합니다. [AI]")
-        rating = recommendation_rating(score)
+        rating = recommendation_rating(final_score)
 
         text = {k: "—" for k in base_text_keys}
         for k in ["heroEyebrow","heroTitle","heroDesc","heroQuote","marketRegime","kospi","kospiDelta","nasdaq","nasdaqDelta","fx","fxDelta","us10y","us10yDelta","flowState","flowDesc","marketReason1","marketReason2","marketReason3","marketImpact","sector1","sector1Point","sector1Cycle","sector1Growth","sector2","sector2Point","sector2Cycle","sector2Growth","sector3","sector3Point","sector3Cycle","sector3Growth","sourceKR","sourceUS","sourceTopPick","sourceConsensus","footerDataNote","kospiFlow","kosdaqFlow"]:
@@ -1301,8 +1364,12 @@ def build_kosdaq_profiles(d, base_profile):
         text.update({
             "topPickName": name,
             "topPickTicker": f"{code} · KOSDAQ · 자동 업데이트",
-            "topPickScore": f"{int(round(score))} / {rating} [AI]",
-            "thesis": f"“{catalyst.replace(' [AI]','')}를 핵심 투자 포인트로 보되, 분기 실적·Valuation·기술적 위치를 함께 확인합니다.” [AI]",
+            "topPickScore": f"{int(round(final_score))} / {rating} [AI]",
+            "thesis": (
+                f"“{catalyst.replace(' [AI]','')}를 핵심 투자 포인트로 보고, "
+                f"Fundamental/Catalyst {fundamental_score:.0f}점 × 60% + "
+                f"Trading Score {trading_score:.0f}점 × 40%로 최종 선별했습니다.” [AI]"
+            ),
             "fairPriceText": "Consensus 목표가 확인 필요",
             "upsideText": "—",
             "fper": "—",
@@ -1351,8 +1418,14 @@ def build_kosdaq_profiles(d, base_profile):
             "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
             "tradePeriod": "1~6개월",
             "tradeOpinion": rating.upper(),
-            "finalOpinion": f"{rating.upper()} · KOSDAQ TOP5 후보",
-            "finalLine": "분기 실적·기술적 Trading Score·Catalyst를 함께 확인합니다. [AI]",
+            "finalOpinion": f"{rating.upper()} · KOSDAQ TOP5",
+            "finalLine": (
+                f"최종선정점수 {final_score:.1f}점 = Fundamental/Catalyst {fundamental_score:.0f}×60% "
+                f"+ Trading {trading_score:.0f}×40%. Trading Score 60 미만은 TOP5에서 제외합니다. [AI]"
+            ),
+            "kosdaqSelectionScore": f"{final_score:.1f} [AI]",
+            "kosdaqFundamentalScore": f"{fundamental_score:.0f} [AI]",
+            "kosdaqTradingGate": f"{trading_score:.0f} / 100",
         })
 
         inputs = {k: "" for k in base_input_keys}
@@ -1364,7 +1437,11 @@ def build_kosdaq_profiles(d, base_profile):
             "market": "KOSDAQ",
             "sector": stock.get("sector"),
             "sector_name": sector_name,
-            "score": score,
+            "score": round(final_score, 2),
+            "selection_score": round(final_score, 2),
+            "fundamental_score": round(fundamental_score, 2),
+            "selection_trading_score": round(trading_score, 2),
+            "selection_priority": "70+" if trading_score >= 70 else "60~69",
             "rating": rating,
             "text": text,
             "inputs": inputs,
@@ -1377,7 +1454,6 @@ def build_kosdaq_profiles(d, base_profile):
         }
         profiles.append(profile)
 
-    # Synchronize the group-level TOP5 labels carried by every profile.
     for p in profiles:
         txt = p["text"]
         for i, q in enumerate(profiles, 1):
@@ -1821,7 +1897,7 @@ def main():
         print(json.dumps({"status": "rejected", "reason": "KOSPI profiles missing"}, ensure_ascii=False))
         return 4
 
-    kosdaq_profiles = build_kosdaq_profiles(d, profiles[0])
+    kosdaq_profiles = build_kosdaq_profiles(d, profiles[0], live_by_code)
     if len(kosdaq_profiles) != 5:
         print(json.dumps({
             "status": "rejected",
@@ -1901,13 +1977,14 @@ def main():
         "generated_at": NOW.isoformat(),
         "market_date": md,
         "status": "ok",
-        "ui_version": "v14-kospi-kosdaq-trading-score",
+        "ui_version": "v15-kosdaq-gated-selection",
         "profile_count": 10,
         "profile_groups": {"KOSPI": 5, "KOSDAQ": 5},
         "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
         "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
         "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
         "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
+        "kosdaq_selection_policy": "Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading Score 40% [AI].",
         "coverage": {
             "stocks_fresh": len(live_by_code),
             "stocks_total": len(stocks),
