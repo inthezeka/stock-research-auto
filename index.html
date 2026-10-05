@@ -194,7 +194,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="screening" class="section-track" data-name="SCREENING">
-  <div class="section-head"><div><h2 class="section-title">③ 추천 종목 TOP 5</h2><p class="section-desc">KOSPI는 기존 종합평가, KOSDAQ은 Trading Score 60 미만을 제외하고 70점 이상을 우선한 뒤 Fundamental/Catalyst 60% + Trading Score 40%로 최종 순위를 산정합니다. [AI]</p></div><button class="btn secondary" onclick="openHelp()">종목명 / 수치 수정하기</button></div>
+  <div class="section-head"><div><h2 class="section-title">③ 추천 종목 TOP 5</h2><p class="section-desc">KOSPI·KOSDAQ 모두 Trading Score를 적용합니다. Trading Score 60 미만은 제외하고 70점 이상을 우선하며, ICT 기반 M&#39;s(HH 지속 + Discount 구간)를 최우선 기술항목으로 반영해 Fundamental/Catalyst 60% + Trading Score 40%로 최종 순위를 산정합니다. [AI]</p></div><button class="btn secondary" onclick="openHelp()">종목명 / 수치 수정하기</button></div>
   <div class="card stock-search-card">
     <div class="stock-search-head">
       <div>
@@ -215,14 +215,14 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div id="stockSearchResults" class="stock-search-results"></div>
     <div id="stockSearchStatus" class="stock-search-status">KOSPI·KOSDAQ 전체 상장종목 목록을 불러오는 중입니다...</div>
   </div>
-  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>투자점수</th><th>현재가</th><th>목표/적정가</th><th>예상수익률</th><th>Risk / Reward</th><th>투자기간</th><th>핵심 Catalyst</th><th>의견</th></tr></thead><tbody>
-    <tr class="stock-pick-row" data-profile-index="0"><td class="rank">🥇</td><td><b data-edit data-key="stock1">삼성전기</b></td><td><span class="score-pill" data-edit data-key="score1">92 / 100</span></td><td data-edit data-key="price1">—</td><td data-edit data-key="target1Display">—</td><td class="up" data-edit data-key="return1">+44% [AI]</td><td><b data-edit data-key="rr1">3.5 : 1 [AI]</b></td><td data-edit data-key="period1">3~12개월</td><td data-edit data-key="cat1">AI MLCC LTA + FCBGA 이익 상향</td><td><span class="rating buy" data-edit data-key="op1">Strong Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="1"><td class="rank">2</td><td><b data-edit data-key="stock2">SK하이닉스</b></td><td><span class="score-pill" data-edit data-key="score2">91 / 100</span></td><td data-edit data-key="price2">—</td><td data-edit data-key="target2Display">—</td><td class="up" data-edit data-key="return2">+70.6%</td><td><b data-edit data-key="rr2">3.0 : 1 [AI]</b></td><td data-edit data-key="period2">3~12개월</td><td data-edit data-key="cat2">HBM4 · AI 메모리 이익 레버리지</td><td><span class="rating buy" data-edit data-key="op2">Strong Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="2"><td class="rank">3</td><td><b data-edit data-key="stock3">LS ELECTRIC</b></td><td><span class="score-pill" data-edit data-key="score3">88 / 100</span></td><td data-edit data-key="price3">—</td><td data-edit data-key="target3Display">—</td><td class="up" data-edit data-key="return3">+31.7%</td><td><b data-edit data-key="rr3">2.3 : 1 [AI]</b></td><td data-edit data-key="period3">3~12개월</td><td data-edit data-key="cat3">북미 Grid · AI 데이터센터 전력 CAPEX</td><td><span class="rating buy" data-edit data-key="op3">Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="3"><td class="rank">4</td><td><b data-edit data-key="stock4">삼성전자</b></td><td><span class="score-pill" data-edit data-key="score4">87 / 100</span></td><td data-edit data-key="price4">—</td><td data-edit data-key="target4Display">—</td><td class="up" data-edit data-key="return4">+73.0%</td><td><b data-edit data-key="rr4">2.5 : 1 [AI]</b></td><td data-edit data-key="period4">3~12개월</td><td data-edit data-key="cat4">메모리 초호황 · HBM4 가격/출하</td><td><span class="rating buy" data-edit data-key="op4">Buy</span></td></tr>
-    <tr class="stock-pick-row" data-profile-index="4"><td class="rank">5</td><td><b data-edit data-key="stock5">한화에어로스페이스</b></td><td><span class="score-pill" data-edit data-key="score5">85 / 100</span></td><td data-edit data-key="price5">—</td><td data-edit data-key="target5Display">—</td><td class="up" data-edit data-key="return5">+52.5%</td><td><b data-edit data-key="rr5">2.4 : 1 [AI]</b></td><td data-edit data-key="period5">3~12개월</td><td data-edit data-key="cat5">방산 수출 + 누리호5 + 수주잔고</td><td><span class="rating buy" data-edit data-key="op5">Buy</span></td></tr>
+  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>최종점수</th><th>Trading</th><th>M&#39;s</th><th>현재가</th><th>목표/적정가</th><th>예상수익률</th><th>Risk / Reward</th><th>투자기간</th><th>핵심 Catalyst</th><th>의견</th></tr></thead><tbody>
+    <tr class="stock-pick-row" data-profile-index="0"><td class="rank">🥇</td><td><b data-edit data-key="stock1">삼성전기</b></td><td><span class="score-pill" data-edit data-key="score1">92 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price1">—</td><td data-edit data-key="target1Display">—</td><td class="up" data-edit data-key="return1">+44% [AI]</td><td><b data-edit data-key="rr1">3.5 : 1 [AI]</b></td><td data-edit data-key="period1">3~12개월</td><td data-edit data-key="cat1">AI MLCC LTA + FCBGA 이익 상향</td><td><span class="rating buy" data-edit data-key="op1">Strong Buy</span></td></tr>
+    <tr class="stock-pick-row" data-profile-index="1"><td class="rank">2</td><td><b data-edit data-key="stock2">SK하이닉스</b></td><td><span class="score-pill" data-edit data-key="score2">91 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price2">—</td><td data-edit data-key="target2Display">—</td><td class="up" data-edit data-key="return2">+70.6%</td><td><b data-edit data-key="rr2">3.0 : 1 [AI]</b></td><td data-edit data-key="period2">3~12개월</td><td data-edit data-key="cat2">HBM4 · AI 메모리 이익 레버리지</td><td><span class="rating buy" data-edit data-key="op2">Strong Buy</span></td></tr>
+    <tr class="stock-pick-row" data-profile-index="2"><td class="rank">3</td><td><b data-edit data-key="stock3">LS ELECTRIC</b></td><td><span class="score-pill" data-edit data-key="score3">88 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price3">—</td><td data-edit data-key="target3Display">—</td><td class="up" data-edit data-key="return3">+31.7%</td><td><b data-edit data-key="rr3">2.3 : 1 [AI]</b></td><td data-edit data-key="period3">3~12개월</td><td data-edit data-key="cat3">북미 Grid · AI 데이터센터 전력 CAPEX</td><td><span class="rating buy" data-edit data-key="op3">Buy</span></td></tr>
+    <tr class="stock-pick-row" data-profile-index="3"><td class="rank">4</td><td><b data-edit data-key="stock4">삼성전자</b></td><td><span class="score-pill" data-edit data-key="score4">87 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price4">—</td><td data-edit data-key="target4Display">—</td><td class="up" data-edit data-key="return4">+73.0%</td><td><b data-edit data-key="rr4">2.5 : 1 [AI]</b></td><td data-edit data-key="period4">3~12개월</td><td data-edit data-key="cat4">메모리 초호황 · HBM4 가격/출하</td><td><span class="rating buy" data-edit data-key="op4">Buy</span></td></tr>
+    <tr class="stock-pick-row" data-profile-index="4"><td class="rank">5</td><td><b data-edit data-key="stock5">한화에어로스페이스</b></td><td><span class="score-pill" data-edit data-key="score5">85 / 100</span></td><td class="screen-trading">—</td><td class="screen-ms">—</td><td data-edit data-key="price5">—</td><td data-edit data-key="target5Display">—</td><td class="up" data-edit data-key="return5">+52.5%</td><td><b data-edit data-key="rr5">2.4 : 1 [AI]</b></td><td data-edit data-key="period5">3~12개월</td><td data-edit data-key="cat5">방산 수출 + 누리호5 + 수주잔고</td><td><span class="rating buy" data-edit data-key="op5">Buy</span></td></tr>
   </tbody></table></div>
-  <div class="note" style="margin-top:12px">점수 배점: 산업 성장성 15 · 매출 성장 10 · 영업이익 성장 15 · 재무건전성 10 · Valuation 15 · Catalyst 15 · 수급 5 · 기술적 위치 10 · Risk 5. 투자점수와 R/R은 자체 평가 [AI], 예상수익률은 별도 표시가 없는 경우 최신 Consensus 목표가 기준.</div>
+  <div class="note" style="margin-top:12px">선정 로직: KOSPI·KOSDAQ 공통 Trading Score 60 미만 제외 · 70점 이상 우선 · M&#39;s 30점 이상이면서 HH 지속 + ICT Discount 구간 종목을 최우선. 최종점수 = Fundamental/Catalyst 60% + Trading Score 40% [AI].</div>
 </section>
 
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
@@ -230,7 +230,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="top5-selector-head">
       <div>
         <div class="top5-selector-title">추천종목 TOP 5 선택</div>
-        <div class="top5-selector-desc">KOSPI / KOSDAQ을 선택한 뒤 TOP 1~5를 클릭하면 상세 분석 전체가 변경됩니다. KOSDAQ은 Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading 40% 기준이며, 조건 충족 종목만 최대 5개 표시합니다. [AI]</div>
+        <div class="top5-selector-desc">KOSPI / KOSDAQ 모두 동일하게 Trading Score 60 미만 제외 · 70점 이상 우선 적용합니다. M&#39;s 30/40 이상 + HH 지속 + ICT Discount 구간은 ★ 우선순위이며, Final = Fundamental/Catalyst 60% + Trading 40%입니다. [AI]</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
         <div class="market-profile-toggle" id="profileMarketToggle">
@@ -296,7 +296,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 
 <section id="technical" class="section-track" data-name="TECHNICAL">
   <div class="section-head">
-    <div><h2 class="section-title">Technical & Market Structure · Trading Score</h2><p class="section-desc">일봉 스윙 기준으로 MACD 30점 · 이동평균/괴리율 30점 · RSI 20점 · Stochastic 20점을 합산합니다. 동일 지표는 점수표에서 상태·점수·판단을 한 번에 확인합니다. [AI]</p></div>
+    <div><h2 class="section-title">Technical & Market Structure · Trading Score</h2><p class="section-desc">일봉 스윙 기준 Trading Score 100점입니다. M&#39;s 40점(ICT: HH 지속·HL·Discount/OTE)으로 가장 높은 비중을 주고, MACD 20점 · 이동평균/괴리율 20점 · RSI 10점 · Stochastic 10점을 합산합니다. [AI]</p></div>
     <span class="score-pill" data-edit data-key="tradingScore">—</span>
   </div>
   <div class="trading-score-hero">
@@ -310,10 +310,11 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div class="table-wrap"><table class="table score-breakdown">
     <thead><tr><th>지표</th><th>현재 상태</th><th>점수</th><th>최대점수</th><th>판단</th></tr></thead>
     <tbody>
-      <tr><td><b>MACD</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="macdValue">—</span></div></td><td data-edit data-key="macdScore">—</td><td>30</td><td data-edit data-key="macdScoreState">—</td></tr>
-      <tr><td><b>MA / 괴리율</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="maValue">—</span><span class="score-sub" data-edit data-key="maGapInfo">—</span></div></td><td data-edit data-key="maScore">—</td><td>30</td><td data-edit data-key="maScoreState">—</td></tr>
-      <tr><td><b>RSI(14)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="rsiValue">—</span></div></td><td data-edit data-key="rsiScore">—</td><td>20</td><td data-edit data-key="rsiScoreState">—</td></tr>
-      <tr><td><b>Stochastic(14,3)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="stochValue">—</span></div></td><td data-edit data-key="stochScore">—</td><td>20</td><td data-edit data-key="stochScoreState">—</td></tr>
+      <tr><td><b>M&#39;s · ICT</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="msValue">—</span></div></td><td data-edit data-key="msScore">—</td><td>40</td><td data-edit data-key="msScoreState">—</td></tr>
+      <tr><td><b>MACD</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="macdValue">—</span></div></td><td data-edit data-key="macdScore">—</td><td>20</td><td data-edit data-key="macdScoreState">—</td></tr>
+      <tr><td><b>MA / 괴리율</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="maValue">—</span><span class="score-sub" data-edit data-key="maGapInfo">—</span></div></td><td data-edit data-key="maScore">—</td><td>20</td><td data-edit data-key="maScoreState">—</td></tr>
+      <tr><td><b>RSI(14)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="rsiValue">—</span></div></td><td data-edit data-key="rsiScore">—</td><td>10</td><td data-edit data-key="rsiScoreState">—</td></tr>
+      <tr><td><b>Stochastic(14,3)</b></td><td><div class="score-current"><span class="score-value" data-edit data-key="stochValue">—</span></div></td><td data-edit data-key="stochScore">—</td><td>10</td><td data-edit data-key="stochScoreState">—</td></tr>
       <tr class="total-row"><td><b>TOTAL</b></td><td data-edit data-key="tradingGrade">—</td><td data-edit data-key="tradingScore">—</td><td>100</td><td data-edit data-key="tradingAction">—</td></tr>
     </tbody>
   </table></div>
@@ -321,7 +322,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <h3 class="subhead">Price Structure</h3>
     <div class="spark"><svg viewBox="0 0 600 132" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1769E0" stop-opacity=".15"/><stop offset="100%" stop-color="#1769E0" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10 L600,132 L0,132 Z"/><path class="price" d="M0,104 C45,94 63,102 100,88 C140,73 166,82 205,66 C245,52 273,58 315,47 C350,38 374,62 410,45 C450,26 475,34 505,21 C545,12 566,23 600,10"/><line class="resist" x1="0" y1="24" x2="600" y2="24"/><line class="support" x1="0" y1="88" x2="600" y2="88"/><text class="spark-label" x="10" y="19">Resistance</text><text class="spark-label" x="10" y="84">Support</text></svg></div>
     <div class="grid-3" style="margin-top:10px"><div><div class="eyebrow">SUPPORT</div><b data-edit data-key="support">—</b></div><div><div class="eyebrow">RESISTANCE</div><b data-edit data-key="resistance">—</b></div><div><div class="eyebrow">DIVERGENCE</div><b data-edit data-key="divergence">—</b></div></div>
-    <div class="technical-legend" style="margin-top:12px"><b>Confirmation</b> · <span data-edit data-key="technicalConfirmation">4개 지표 동조 여부를 확인합니다. [AI]</span></div>
+    <div class="technical-legend" style="margin-top:12px"><b>Confirmation</b> · <span data-edit data-key="technicalConfirmation">M&#39;s와 4개 보조지표의 동조 여부를 확인합니다. [AI]</span></div>
     <p class="section-desc" style="margin-top:12px" data-edit data-key="technicalComment">가격 데이터 갱신 시 자동 계산됩니다.</p>
   </div>
   <div class="tech-analysis-grid">
@@ -495,6 +496,59 @@ let profileGroups={KOSPI:[],KOSDAQ:[]};
 let activeProfileMarket='KOSPI';
 let activeProfileIndex=0;
 function profileRating(score){score=Number(score)||0;return score>=90?'Strong Buy':score>=80?'Buy':score>=70?'Positive':score>=60?'Neutral':'Avoid'}
+function srTextNum(v){const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null}
+function srScorePart(v,maxOld,maxNew){const n=srTextNum(v);return n==null?0:Math.max(0,Math.min(maxNew,Math.round(n*maxNew/maxOld)))}
+function srProfileMsApprox(p){
+  const t=p?.text||{},trend=String(t.tradingTrend||''),ma=String(t.maScoreState||t.maSignal||'');
+  const cur=srTextNum(t.currentPriceText),sup=srTextNum(t.support),res=srTextNum(t.resistance);
+  let hh=trend.includes('상승'),hhPts=trend==='상승'?20:(trend.includes('상승초기')?14:(hh?12:5));
+  const hl=ma.includes('정배열')||ma.includes('상승'),hlPts=ma.includes('정배열')?5:(hl?3:0);
+  let discPts=0,discount=false,retr=null,zone='Premium/확인필요';
+  if(cur!=null&&sup!=null&&res!=null&&res>sup){
+    retr=(res-cur)/(res-sup);
+    discount=cur<=((sup+res)/2);
+    if(discount){
+      if(retr>=0.62&&retr<=0.79){discPts=15;zone='Discount · OTE'}
+      else if(retr>=0.50){discPts=12;zone='Discount'}
+      else{discPts=7;zone='Discount'}
+    }else if(retr>=0.40){discPts=4;zone='EQ 근접'}
+  }else if(trend.includes('조정')&&hh){discPts=8;discount=true;zone='상승구조 조정 · Discount 추정'}
+  const score=Math.min(40,hhPts+hlPts+discPts),preferred=hh&&discount&&score>=30;
+  return{score,preferred,hh,discount,state:(hh?'HH 지속/우위':'HH 미확인')+' · '+(hl?'HL 동반':'HL 확인필요')+' · '+zone,retr};
+}
+function srReweightProfile(p){
+  if(!p)return p;
+  const t=p.text||{},ms=srProfileMsApprox(p);
+  const macd=srScorePart(t.macdScore,30,20),ma=srScorePart(t.maScore,30,20),rsi=srScorePart(t.rsiScore,20,10),stoch=srScorePart(t.stochScore,20,10);
+  const trading=ms.score+macd+ma+rsi+stoch;
+  const base=Number(p.fundamental_score??p.score)||0,finalScore=Math.round((base*0.60+trading*0.40)*10)/10;
+  p.fundamental_score=base;p.trading_score=trading;p.ms_score=ms.score;p.ms_preferred=ms.preferred;p.selection_score=finalScore;p.score=finalScore;p.rating=profileRating(finalScore);
+  t.tradingScore=String(trading);t.tradingGrade=srGrade(trading).join(' / ');t.msScore=ms.score+' / 40';t.msScoreState=ms.state;t.msValue=(ms.discount?'Discount':'Premium/확인필요')+(ms.retr!=null?' · Retrace '+(ms.retr*100).toFixed(1)+'%':'')+' [AI]';
+  t.macdScore=macd+' / 20';t.maScore=ma+' / 20';t.rsiScore=rsi+' / 10';t.stochScore=stoch+' / 10';
+  t.technicalConfirmation='M\'s 40 + MACD 20 + MA 20 + RSI 10 + Stochastic 10 = 100 [AI]';
+  t.technicalComment='Trading Score '+trading+'/100 · M\'s '+ms.score+'/40 ('+ms.state+'). 기존 기술지표 스냅샷을 새 배점으로 재산정했습니다. [AI]';
+  return p;
+}
+function srRankMarketProfiles(arr){
+  const enriched=(Array.isArray(arr)?arr:[]).map(srReweightProfile);
+  const eligible=enriched.filter(p=>(p.trading_score||0)>=60);
+  const pool=eligible.length?eligible:enriched;
+  return pool.sort((a,b)=>(Number(b.ms_preferred)-Number(a.ms_preferred))||((b.selection_score||0)-(a.selection_score||0))||((b.ms_score||0)-(a.ms_score||0))).slice(0,5);
+}
+function renderScreeningTable(profiles=[]){
+  const rows=[...document.querySelectorAll('.stock-pick-row[data-profile-index]')];
+  rows.forEach((row,i)=>{
+    const p=profiles[i];
+    if(!p){row.style.display='none';return}
+    row.style.display='';
+    const t=p.text||{},n=i+1,set=(key,val)=>{const el=row.querySelector('[data-key="'+key+'"]');if(el)el.textContent=val??'—'};
+    set('stock'+n,p.name||'—');set('score'+n,Math.round(p.selection_score??p.score??0)+' / 100');
+    set('price'+n,t.currentPriceText||'—');set('target'+n+'Display',t.fairPriceText||'—');set('return'+n,t.upsideText||'—');set('rr'+n,t.topRR||'—');
+    set('period'+n,p.inputs?.tradePeriod||'1~6개월');set('cat'+n,t.shortCat||t.earningsReason||'Catalyst 확인');set('op'+n,p.rating||profileRating(p.selection_score||p.score));
+    const tr=row.querySelector('.screen-trading');if(tr)tr.textContent=(p.trading_score??'—')+'/100';
+    const ms=row.querySelector('.screen-ms');if(ms)ms.textContent=(p.ms_score??'—')+'/40'+(p.ms_preferred?' ★':'');
+  });
+}
 function renderTopPickTabs(profiles=[]){
   stockProfiles=Array.isArray(profiles)?profiles.slice(0,5):[];
   const el=document.getElementById('topPickTabs');if(!el)return;
@@ -511,6 +565,7 @@ function setProfileMarket(market,selectFirst=true){
   activeProfileMarket=market;activeProfileIndex=0;
   const group=profileGroups[market];
   renderTopPickTabs(group);
+  renderScreeningTable(group);
   document.querySelectorAll('.stock-pick-row').forEach((row,i)=>{
     row.style.display=i<group.length?'':'none';
   });
@@ -705,23 +760,69 @@ function srStochScore(k,d,pk,pd){
   if(k>=20&&k<=50&&g)return[20,'20~50 Golden Cross'];if(k<20&&g)return[16,'과매도 Golden Cross'];if(k>50&&k<=70&&k>d)return[13,'50~70 상승 우위'];
   if(k>70&&k<=80&&k>d)return[10,'단기 과열 시작'];if(k>80&&dead)return[2,'과매수 Dead Cross'];if(k>80)return[6,'과매수 영역'];if(g)return[15,'Golden Cross'];if(dead)return[5,'Dead Cross'];return[k>d?12:8,k>d?'K>D · 단기 우위':'방향 확인 필요'];
 }
+function srPivotPoints(rows,span=3,lookback=120){
+  const a=rows.slice(-lookback),off=Math.max(0,rows.length-a.length),highs=[],lows=[];
+  for(let i=span;i<a.length-span;i++){
+    let isH=true,isL=true;
+    for(let j=i-span;j<=i+span;j++){
+      if(j===i)continue;
+      if(a[j].high>=a[i].high)isH=false;
+      if(a[j].low<=a[i].low)isL=false;
+    }
+    if(isH)highs.push({i:off+i,v:a[i].high,date:a[i].date});
+    if(isL)lows.push({i:off+i,v:a[i].low,date:a[i].date});
+  }
+  return{highs,lows};
+}
+function srMsScore(rows){
+  const price=rows.at(-1)?.close??null;
+  if(price==null||rows.length<25)return[0,'데이터 확인 필요',{hh:false,hl:false,discount:false,eq:null,retracement:null}];
+  const piv=srPivotPoints(rows,3,120),hs=piv.highs.slice(-3),ls=piv.lows.slice(-3);
+  let hhPts=4,hh=false;
+  if(hs.length>=3&&hs[0].v<hs[1].v&&hs[1].v<hs[2].v){hhPts=20;hh=true}
+  else if(hs.length>=2&&hs.at(-2).v<hs.at(-1).v){hhPts=14;hh=true}
+  else if(hs.length>=1){hhPts=7}
+  let hlPts=0,hl=false;
+  if(ls.length>=3&&ls[0].v<ls[1].v&&ls[1].v<ls[2].v){hlPts=5;hl=true}
+  else if(ls.length>=2&&ls.at(-2).v<ls.at(-1).v){hlPts=3;hl=true}
+  const recent=rows.slice(-60),rangeHigh=Math.max(...recent.map(x=>x.high)),rangeLow=Math.min(...recent.map(x=>x.low));
+  const width=rangeHigh-rangeLow,eq=width>0?rangeLow+width*0.5:null;
+  const retr=width>0?(rangeHigh-price)/width:null;
+  const discount=eq!=null&&price<=eq&&price>=rangeLow;
+  let discPts=0,zone='Premium';
+  if(discount){
+    if(retr>=0.62&&retr<=0.79){discPts=15;zone='Discount · OTE 62~79%'}
+    else if(retr>=0.50&&retr<0.62){discPts=12;zone='Discount · 50~62%'}
+    else if(retr>0.79&&retr<=0.90){discPts=9;zone='Deep Discount'}
+    else{discPts=7;zone='Discount'}
+  }else if(retr!=null&&retr>=0.40){discPts=4;zone='EQ 근접'}
+  const score=Math.min(40,hhPts+hlPts+discPts);
+  const hhState=hh?(hs.length>=3?'HH 지속':'최근 HH'):'HH 미확인';
+  const hlState=hl?'HL 동반':'HL 확인 필요';
+  const state=hhState+' · '+hlState+' · '+zone;
+  return[score,state,{hh,hl,discount,eq,retracement:retr,rangeHigh,rangeLow,zone}];
+}
 function srGrade(t){if(t>=90)return['S','Strong Buy'];if(t>=80)return['A','Buy'];if(t>=70)return['B','Positive'];if(t>=60)return['C','Neutral'];if(t>=50)return['D','Caution'];if(t>=40)return['E','Weak'];return['F','Avoid']}
 function srTech(rows){
   const c=rows.map(x=>x.close),price=c.at(-1),e12=srEma(c,12),e26=srEma(c,26),m=e12.map((x,i)=>x-e26[i]),sig=srEma(m,9),hist=m.map((x,i)=>x-sig[i]);
   const [k,d]=srStoch(rows),[pk,pd]=srStoch(rows.slice(0,-1)),rv=srRsi(c),prv=srRsi(c.slice(0,-1));
   const m5=srSma(c,5),m20=srSma(c,20),m60=srSma(c,60),m120=srSma(c,120),m20p=srSma(c,20,5),m60p=srSma(c,60,5),s20=m20!=null&&m20p!=null?m20-m20p:null,s60=m60!=null&&m60p!=null?m60-m60p:null;
-  const [ms,mstate]=srMacdScore(m.at(-1),sig.at(-1),hist.at(-1),m.at(-2),sig.at(-2),hist.at(-2));
-  const [mas,mastate,g20,g60]=srMaScore(price,m5,m20,m60,m120,s20,s60),[rs,rstate]=srRsiScore(rv,prv,price,m20),[ss,sstate]=srStochScore(k,d,pk,pd);
-  const total=ms+mas+rs+ss,[grade,label]=srGrade(total),ord=m5>m20&&m20>m60,rev=m5<m20&&m20<m60;
+  const [macdRaw,mstate]=srMacdScore(m.at(-1),sig.at(-1),hist.at(-1),m.at(-2),sig.at(-2),hist.at(-2));
+  const [maRaw,mastate,g20,g60]=srMaScore(price,m5,m20,m60,m120,s20,s60),[rsiRaw,rstate]=srRsiScore(rv,prv,price,m20),[stochRaw,sstate]=srStochScore(k,d,pk,pd);
+  const [msScore,msState,msMeta]=srMsScore(rows);
+  const macdScore=Math.round(macdRaw*20/30),maScore=Math.round(maRaw*20/30),rsiScore=Math.round(rsiRaw*10/20),stochScore=Math.round(stochRaw*10/20);
+  const total=msScore+macdScore+maScore+rsiScore+stochScore,[grade,label]=srGrade(total),ord=m5>m20&&m20>m60,rev=m5<m20&&m20<m60;
   const trend=ord&&s20>0?'상승':(price>m20&&s20>0?'상승초기':(rev&&s20<0?'하락':(price<m20?'조정':'횡보')));
   const heatHits=(rv>70?1:0)+(k>80?1:0)+(g20>10?1:0),heat=heatHits>=2?'높음':heatHits===1?'주의':'보통';
-  const action=total>=85&&heatHits===0?'신규진입':total>=75?'눌림목 대기':total>=60?'관망':total>=45&&(trend==='조정'||trend==='하락')?'일부매도':total<45?'손절검토':'관망';
+  const msPreferred=msMeta.hh&&msMeta.discount&&msScore>=30;
+  const action=total>=80&&msPreferred&&heatHits===0?'신규진입':total>=70&&msPreferred?'ICT Discount 관심':total>=70?'눌림목 대기':total>=60?'관망':total>=45&&(trend==='조정'||trend==='하락')?'일부매도':total<45?'손절검토':'관망';
   const support=srQuantile(c.slice(-60),.2),resistance=srQuantile(c.slice(-60),.8),atr14=srAtr(rows),high20=Math.max(...c.slice(-20)),low20=Math.min(...c.slice(-20)),high52=Math.max(...c.slice(-252));
   let target1=[resistance,high20,high52].filter(v=>v>price).sort((a,b)=>a-b)[0]??(atr14?price+1.5*atr14:null);
   let target2=[resistance,high20,high52].filter(v=>v>price&&v!==target1).sort((a,b)=>a-b)[0]??(atr14?price+3*atr14:null);
   const below=[m20,support,m60,low20].filter(v=>v!=null&&v<price).sort((a,b)=>b-a),entry1=below[0]??null,entry2=below[1]??null,add=below[2]??null,stop=(support??m60??low20)!=null?Math.max(0,(support??m60??low20)-(atr14?0.5*atr14:0)):null;
-  return{price,total,grade,label,trend,heat,action,rv,k,d,macd:m.at(-1),signal:sig.at(-1),hist:hist.at(-1),m5,m20,m60,m120,g20,g60,support,resistance,atr14,target1,target2,entry1,entry2,add,stop,components:{macd:[ms,mstate],ma:[mas,mastate],rsi:[rs,rstate],stoch:[ss,sstate]}};
+  return{price,total,grade,label,trend,heat,action,rv,k,d,macd:m.at(-1),signal:sig.at(-1),hist:hist.at(-1),m5,m20,m60,m120,g20,g60,support,resistance,atr14,target1,target2,entry1,entry2,add,stop,msPreferred,msMeta,components:{ms:[msScore,msState],macd:[macdScore,mstate],ma:[maScore,mastate],rsi:[rsiScore,rstate],stoch:[stochScore,sstate]}};
 }
+
 function srNested(obj,keys){
   if(!obj)return null;const set=new Set(keys.map(x=>x.toLowerCase()));
   if(Array.isArray(obj)){for(const v of obj){const f=srNested(v,keys);if(f!=null)return f}}
@@ -1158,16 +1259,18 @@ async function buildSearchProfile(item){
   t.risk1='실적 Consensus 미달';t.risk1P='가능성 M';t.risk1I='영향 H';t.risk2='Valuation Multiple 압축';t.risk2P='가능성 M';t.risk2I='영향 H';t.risk3='수급·변동성 확대';t.risk3P='가능성 M';t.risk3I='영향 M';t.risk4='핵심 Catalyst 지연';t.risk4P='가능성 M';t.risk4I='영향 M';
   t.disclosureTitle=item.name+' 최근 공시';t.disclosureDesc='네이버페이 증권의 선택 종목 전자공시 페이지에서 공시 원문을 확인합니다.';t.irTitle=item.name+' IR / 실적자료';t.irDesc=(SR_OFFICIAL_IR_LINKS[code]?'기업 공식 IR 자료실':'IRGO 종목별 IR 아카이브')+'에서 기업설명회·실적발표·IR 자료를 확인합니다.';t.consTitle=item.name+' Consensus / Valuation';t.consDesc=cons?('네이버페이 증권 종목분석(FnGuide) · '+cons.asOf+' 스냅숏 · '+cons.analysts+'개 기관 · 목표가 '+srFmt(cons.targetPrice)+'원 · 2026E PER '+cons.forwardPer.toFixed(1)+'x · EV/EBITDA '+cons.evEbitda.toFixed(1)+'x'):'Analyst Consensus 미확보 시 DART/KRX 기반 Trailing·Run-rate 지표를 [AI]로 보완합니다. Consensus가 존재하지 않는 종목에는 임의 목표주가를 만들지 않습니다.';t.newsTitle=item.name+' 최신 주요기사';t.newsDesc='네이버페이 증권의 선택 종목 뉴스 페이지에서 최신 기사를 확인합니다.';
   t.tradingScore=String(tech.total);t.tradingGrade=tech.grade+' / '+tech.label;t.tradingTrend=tech.trend;t.tradingAction=tech.action;t.tradingOverheat=tech.heat;
+  t.msValue=(tech.msMeta.discount?'Discount':'Premium')+(tech.msMeta.retracement!=null?' · Retrace '+(tech.msMeta.retracement*100).toFixed(1)+'%':'')+(tech.msMeta.eq!=null?' · EQ '+srFmt(tech.msMeta.eq):'')+' [AI]';
+  t.msScore=tech.components.ms[0]+' / 40';t.msScoreState=tech.components.ms[1];
   t.macdValue='MACD '+Math.round(tech.macd).toLocaleString('ko-KR')+' / Signal '+Math.round(tech.signal).toLocaleString('ko-KR')+' / Hist '+Math.round(tech.hist).toLocaleString('ko-KR');
-  t.macdScore=tech.components.macd[0]+' / 30';t.macdScoreState=tech.components.macd[1];t.macdSignal=tech.components.macd[1];
-  t.maValue='5D '+srFmt(tech.m5)+' / 20D '+srFmt(tech.m20)+' / 60D '+srFmt(tech.m60)+(tech.m120?' / 120D '+srFmt(tech.m120):'');t.maGapInfo='MA20 괴리 '+(tech.g20>=0?'+':'')+tech.g20.toFixed(1)+'% · MA60 괴리 '+(tech.g60>=0?'+':'')+tech.g60.toFixed(1)+'% [AI]';t.maScore=tech.components.ma[0]+' / 30';t.maScoreState=tech.components.ma[1];t.maSignal=tech.components.ma[1];
-  t.rsiValue=tech.rv.toFixed(1);t.rsiScore=tech.components.rsi[0]+' / 20';t.rsiScoreState=tech.components.rsi[1];t.rsiSignal=tech.components.rsi[1];t.stochValue='%K '+tech.k.toFixed(1)+' / %D '+tech.d.toFixed(1);t.stochScore=tech.components.stoch[0]+' / 20';t.stochScoreState=tech.components.stoch[1];t.stochSignal=tech.components.stoch[1];
-  t.support=srFmt(tech.support)+'원 [AI]';t.resistance=srFmt(tech.resistance)+'원 [AI]';t.divergence='자동 검색 분석에서는 피벗 Divergence 정밀검증 생략 [검증 필요]';t.technicalConfirmation='4개 지표 합산 Trading Score 기준 [AI]';
+  t.macdScore=tech.components.macd[0]+' / 20';t.macdScoreState=tech.components.macd[1];t.macdSignal=tech.components.macd[1];
+  t.maValue='5D '+srFmt(tech.m5)+' / 20D '+srFmt(tech.m20)+' / 60D '+srFmt(tech.m60)+(tech.m120?' / 120D '+srFmt(tech.m120):'');t.maGapInfo='MA20 괴리 '+(tech.g20>=0?'+':'')+tech.g20.toFixed(1)+'% · MA60 괴리 '+(tech.g60>=0?'+':'')+tech.g60.toFixed(1)+'% [AI]';t.maScore=tech.components.ma[0]+' / 20';t.maScoreState=tech.components.ma[1];t.maSignal=tech.components.ma[1];
+  t.rsiValue=tech.rv.toFixed(1);t.rsiScore=tech.components.rsi[0]+' / 10';t.rsiScoreState=tech.components.rsi[1];t.rsiSignal=tech.components.rsi[1];t.stochValue='%K '+tech.k.toFixed(1)+' / %D '+tech.d.toFixed(1);t.stochScore=tech.components.stoch[0]+' / 10';t.stochScoreState=tech.components.stoch[1];t.stochSignal=tech.components.stoch[1];
+  t.support=srFmt(tech.support)+'원 [AI]';t.resistance=srFmt(tech.resistance)+'원 [AI]';t.divergence='자동 검색 분석에서는 피벗 Divergence 정밀검증 생략 [검증 필요]';t.technicalConfirmation='M\'s 40 + MACD 20 + MA 20 + RSI 10 + Stochastic 10 = 100 [AI]';
   t.volumeInfo='검색 분석 시 가격·기술지표 중심';t.atrInfo='ATR14 '+srFmt(tech.atr14)+'원 [AI]';t.gapInfo='—';t.turnoverInfo='—';t.high52Info='52주 고점 '+srFmt(Math.max(...rows.map(x=>x.close)))+'원 [AI]';
   const ps=[['tpCurrent',tech.price,'현재 종가'],['tpEntry1',tech.entry1,'MA20/지지선'],['tpEntry2',tech.entry2,'지지선/MA60'],['tpAdd',tech.add,'하단 지지'],['tpTarget1',tech.target1,'저항/직전 고점/ATR'],['tpTarget2',tech.target2,'상단 저항/ATR'],['tpStop',tech.stop,'지지 기준 - 0.5 ATR']];
   ps.forEach(([k,v,b])=>{t[k]=v==null?'—':srFmt(v)+'원 [AI]';t[k+'Basis']=b+(k==='tpCurrent'?'':' [AI]')});
   if(tech.entry1)p.inputs.buy1=String(Math.round(tech.entry1));if(tech.entry2)p.inputs.buy2=String(Math.round(tech.entry2));if(tech.stop)p.inputs.stopPrice=String(Math.round(tech.stop));if(tech.target1)p.inputs.target1=String(Math.round(tech.target1));if(tech.target2)p.inputs.target2=String(Math.round(tech.target2));
-  t.technicalComment='Trading Score '+tech.total+'/100 ('+tech.grade+'/'+tech.label+'), 추세 '+tech.trend+', 과열도 '+tech.heat+'. [AI]';t.tradingConclusion='Trading Score '+tech.total+'/100 | 추세: '+tech.trend+' | 과열도: '+tech.heat+' | 전략: '+tech.action+' [AI]';t.tradingEntryCondition=tech.g20>8?'추격매수보다 MA20 괴리 축소 후 재진입 신호 확인이 우선입니다. [AI]':'MA20 방향과 MACD·Stochastic 동조를 확인해 분할 진입합니다. [AI]';
+  t.technicalComment='Trading Score '+tech.total+'/100 ('+tech.grade+'/'+tech.label+'), M\'s '+tech.components.ms[0]+'/40 · '+tech.components.ms[1]+', 추세 '+tech.trend+', 과열도 '+tech.heat+'. [AI]';t.tradingConclusion='Trading Score '+tech.total+'/100 | M\'s '+tech.components.ms[0]+'/40 | 추세: '+tech.trend+' | 과열도: '+tech.heat+' | 전략: '+tech.action+' [AI]';t.tradingEntryCondition=tech.g20>8?'추격매수보다 MA20 괴리 축소 후 재진입 신호 확인이 우선입니다. [AI]':'MA20 방향과 MACD·Stochastic 동조를 확인해 분할 진입합니다. [AI]';
   const probs=tech.total>=80?[40,45,15]:tech.total>=70?[35,45,20]:tech.total>=60?[30,45,25]:tech.total>=50?[25,45,30]:[15,35,50],bull=tech.target2,base=tech.target1,bear=tech.stop;
   [['bull',bull,probs[0],'2차 기술목표 돌파 시나리오 [AI]'],['base',base,probs[1],'1차 기술목표/저항 테스트 시나리오 [AI]'],['bear',bear,probs[2],'기술적 지지 이탈 시나리오 [AI]']].forEach(([k,v,pr,c])=>{t[k+'Price']=v==null?'—':srFmt(v)+'원 [AI]';t[k+'Prob']=pr+'% [AI]';t[k+'Return']=v==null?'—':(srPct(v,tech.price)>=0?'+':'')+srPct(v,tech.price).toFixed(1)+'% [AI]';t[k+'Cond']=c});
   t.finalOpinion=tech.label.toUpperCase()+' · '+tech.action;t.finalLine='검색 종목은 Trading Score와 기술적 가격전략 중심 분석입니다. 정성적 Fundamental/Catalyst 점수는 TOP5 선정점수와 별개입니다. [AI]';
@@ -1374,14 +1477,14 @@ function applyAutoData(d){
   if(d.inputs){tradeIds.forEach(id=>{if(d.inputs[id]!=null)setTradeValue(id,d.inputs[id])})}
   const kospi=(Array.isArray(d.stock_profile_groups?.KOSPI)&&d.stock_profile_groups.KOSPI.length)?d.stock_profile_groups.KOSPI:((Array.isArray(d.stock_profiles)&&d.stock_profiles.length)?d.stock_profiles:synthesizeProfiles(d));
   const kosdaq=(Array.isArray(d.stock_profile_groups?.KOSDAQ)&&d.stock_profile_groups.KOSDAQ.length)?d.stock_profile_groups.KOSDAQ:((Array.isArray(d.stock_profiles_kosdaq)&&d.stock_profiles_kosdaq.length)?d.stock_profiles_kosdaq:[]);
-  profileGroups={KOSPI:kospi.slice(0,5),KOSDAQ:kosdaq.slice(0,5)};
+  profileGroups={KOSPI:srRankMarketProfiles(kospi),KOSDAQ:srRankMarketProfiles(kosdaq)};
   const kqBtn=document.querySelector('[data-profile-market="KOSDAQ"]');
   if(kqBtn)kqBtn.textContent='KOSDAQ '+profileGroups.KOSDAQ.length+'/5';
   if(!profileGroups[activeProfileMarket]?.length)activeProfileMarket='KOSPI';
   const profiles=profileGroups[activeProfileMarket]||[];
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
   renderTopPickTabs(profiles);
-  document.querySelectorAll('.stock-pick-row').forEach((row,i)=>{row.style.display=i<profiles.length?'':'none'});
+  renderScreeningTable(profiles);
   if(profiles.length)selectStockProfile(activeProfileIndex,false);
   renderThemeSection(d);renderSentiment(d.sentiment||{});
   if(d.meta){
