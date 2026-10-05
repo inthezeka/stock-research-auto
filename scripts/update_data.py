@@ -1464,6 +1464,10 @@ def main():
         "market_date": md,
         "status": "ok",
         "ui_version": "v13-quarterly-trading-score",
+        "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
+        "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
+        "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
+        "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
         "coverage": {
             "stocks_fresh": len(live_by_code),
             "stocks_total": len(stocks),
