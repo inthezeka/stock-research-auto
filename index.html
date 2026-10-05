@@ -192,7 +192,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="top5-selector-head">
       <div>
         <div class="top5-selector-title">추천종목 TOP 5 선택</div>
-        <div class="top5-selector-desc">KOSPI / KOSDAQ을 선택한 뒤 TOP 1~5를 클릭하면 상세 분석 전체가 변경됩니다. KOSDAQ은 Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading 40% 기준입니다. [AI]</div>
+        <div class="top5-selector-desc">KOSPI / KOSDAQ을 선택한 뒤 TOP 1~5를 클릭하면 상세 분석 전체가 변경됩니다. KOSDAQ은 Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading 40% 기준이며, 조건 충족 종목만 최대 5개 표시합니다. [AI]</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
         <div class="market-profile-toggle" id="profileMarketToggle">
@@ -599,6 +599,8 @@ function applyAutoData(d){
   const kospi=(Array.isArray(d.stock_profile_groups?.KOSPI)&&d.stock_profile_groups.KOSPI.length)?d.stock_profile_groups.KOSPI:((Array.isArray(d.stock_profiles)&&d.stock_profiles.length)?d.stock_profiles:synthesizeProfiles(d));
   const kosdaq=(Array.isArray(d.stock_profile_groups?.KOSDAQ)&&d.stock_profile_groups.KOSDAQ.length)?d.stock_profile_groups.KOSDAQ:((Array.isArray(d.stock_profiles_kosdaq)&&d.stock_profiles_kosdaq.length)?d.stock_profiles_kosdaq:[]);
   profileGroups={KOSPI:kospi.slice(0,5),KOSDAQ:kosdaq.slice(0,5)};
+  const kqBtn=document.querySelector('[data-profile-market="KOSDAQ"]');
+  if(kqBtn)kqBtn.textContent='KOSDAQ '+profileGroups.KOSDAQ.length+'/5';
   if(!profileGroups[activeProfileMarket]?.length)activeProfileMarket='KOSPI';
   const profiles=profileGroups[activeProfileMarket]||[];
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
