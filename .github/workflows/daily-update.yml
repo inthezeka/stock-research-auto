@@ -1,4 +1,4 @@
-name: Daily stock research update
+name: Daily stock research update + GitHub Pages
 
 on:
   schedule:
@@ -8,20 +8,27 @@ on:
     paths:
       - "scripts/**"
       - "config/**"
+      - "index.html"
+      - "data/**"
       - ".github/workflows/daily-update.yml"
-      - "netlify.toml"
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: stock-research-daily
   cancel-in-progress: false
 
 jobs:
-  update:
+  update-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,21 +57,24 @@ jobs:
         run: |
           if git diff --quiet; then
             echo "No verified changes"
-            exit 0
-          fi
-          git config user.name "stock-research-bot"
-          git config user.email "stock-research-bot@users.noreply.github.com"
-          git add data/market-data.json index.html QA_REPORT.md
-          git commit -m "chore: daily verified market data"
-          git push
-
-      - name: Trigger Netlify deploy
-        env:
-          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-        run: |
-          if [ -n "$NETLIFY_BUILD_HOOK" ]; then
-            curl -fsS -X POST "$NETLIFY_BUILD_HOOK"
-            echo "Netlify deploy hook triggered"
           else
-            echo "NETLIFY_BUILD_HOOK not configured; relying on Git-connected Netlify auto-deploy."
+            git config user.name "stock-research-bot"
+            git config user.email "stock-research-bot@users.noreply.github.com"
+            git add data/market-data.json index.html QA_REPORT.md
+            git commit -m "chore: daily verified market data"
+            git push
           fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
