@@ -57,3 +57,14 @@ jobs:
           git add data/market-data.json index.html QA_REPORT.md
           git commit -m "chore: daily verified market data"
           git push
+
+      - name: Trigger Netlify deploy
+        env:
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -n "$NETLIFY_BUILD_HOOK" ]; then
+            curl -fsS -X POST "$NETLIFY_BUILD_HOOK"
+            echo "Netlify deploy hook triggered"
+          else
+            echo "NETLIFY_BUILD_HOOK not configured; relying on Git-connected Netlify auto-deploy."
+          fi
