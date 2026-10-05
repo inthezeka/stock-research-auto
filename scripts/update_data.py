@@ -1097,15 +1097,27 @@ def apply_quarterly_financials(profile, snapshot):
         fper = fin_number(str(txt.get("fper2", "")).lower().replace("x", ""))
         if fper is not None:
             txt["valTargetPer"] = f"{fper:.2f}x · Forward PER"
+            txt["targetPer"] = f"{fper:.2f}x · Forward PER"
             fair = next_est["eps"] * 4 * fper
             txt["fairValueA"] = f"{fmt_price(fair)}원 [AI]"
+            txt["fairA"] = f"{fmt_price(fair)}원 [AI]"
+            txt["calcA"] = (
+                f"{next_est['label']} EPS {next_est['eps']:,.0f}원 × 4 × Forward PER {fper:.2f}x "
+                f"= {fmt_price(fair)}원. 분기 EPS 연환산 방식 [AI]"
+            )
         else:
             txt["valTargetPer"] = "[검증 필요]"
+            txt["targetPer"] = "[검증 필요]"
             txt["fairValueA"] = "[검증 필요]"
+            txt["fairA"] = "[검증 필요]"
+            txt["calcA"] = "다음 분기 EPS(E)와 Forward PER 검증값이 모두 필요합니다."
     else:
         txt["valEps"] = "[검증 필요]"
         txt["valTargetPer"] = "[검증 필요]"
+        txt["targetPer"] = "[검증 필요]"
         txt["fairValueA"] = "[검증 필요]"
+        txt["fairA"] = "[검증 필요]"
+        txt["calcA"] = "다음 분기 Consensus EPS가 확인되지 않았습니다."
 
     labels = " · ".join(q["label"] for q in quarters)
     txt["financialNote"] = (
