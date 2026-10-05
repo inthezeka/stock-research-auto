@@ -3,6 +3,7 @@
 - passed: **True**
 - errors: **0**
 - warnings: **0**
-- TOP5: **5**
+- KOSPI TOP5: **5**
+- KOSDAQ TOP5: **5**
 - themes: **19**
 - watchlist stocks: **54**
