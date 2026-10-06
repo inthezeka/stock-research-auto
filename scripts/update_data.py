@@ -641,22 +641,17 @@ def technicals(rows):
     out["price_strategy"] = price_strategy(out)
     return out
 
-def naver_world_index_snapshot(reuters_code=".IXIC"):
-    """Latest overseas index quote from Naver Stock polling API.
-
-    Yahoo daily candles can occasionally lag one U.S. session immediately after
-    the close.  Naver's world-index polling endpoint exposes the latest close,
-    change rate and the source trade timestamp, so use it as the primary source
-    for Nasdaq and keep Yahoo only as a historical/fallback source.
-    """
-    url = f"https://polling.finance.naver.com/api/realtime/worldstock/index/{reuters_code}"
+def _naver_world_index_item(url):
     headers = {
         "User-Agent": SESSION.headers.get("User-Agent"),
         "Accept": "application/json,text/plain,*/*",
         "Referer": "https://stock.naver.com/",
     }
     j = req(url, 2, headers=headers).json()
-    item = (j.get("datas") or [None])[0] or {}
+    if isinstance(j, dict) and isinstance(j.get("datas"), list):
+        item = (j.get("datas") or [None])[0] or {}
+    else:
+        item = j or {}
     value = n(str(item.get("closePrice") or "").replace(",", ""))
     change_pct = n(item.get("fluctuationsRatio"))
     direction = str((item.get("compareToPreviousPrice") or {}).get("code") or "")
@@ -668,35 +663,76 @@ def naver_world_index_snapshot(reuters_code=".IXIC"):
     traded_at = str(item.get("localTradedAt") or "")
     trade_date = traded_at[:10] if len(traded_at) >= 10 else ""
     if value is None or not trade_date:
-        raise RuntimeError(f"Naver world index incomplete: keys={list(item)[:12]}")
+        raise RuntimeError(f"Naver world index incomplete: {url} keys={list(item)[:12]}")
     return {
         "value": value,
         "change_pct": change_pct,
         "date": trade_date,
         "fresh": True,
-        "source": "Naver Stock world index",
         "market_status": item.get("marketStatus"),
         "local_traded_at": traded_at,
     }
+
+
+def naver_world_index_basic_snapshot(reuters_code=".IXIC"):
+    x = _naver_world_index_item(f"https://api.stock.naver.com/index/{reuters_code}/basic")
+    x["source"] = "Naver Stock index basic"
+    return x
+
+
+def naver_world_index_polling_snapshot(reuters_code=".IXIC"):
+    x = _naver_world_index_item(f"https://polling.finance.naver.com/api/realtime/worldstock/index/{reuters_code}")
+    x["source"] = "Naver Finance world-index polling"
+    return x
 
 
 def market_series():
     syms = CFG.get("settings", {}).get("market_symbols", {})
     out, errors = {}, []
     for key, symbol in syms.items():
-        # Nasdaq: Naver latest quote first. Yahoo is retained only for rows/history
-        # and as a fallback if the polling endpoint is temporarily unavailable.
         if key == "nasdaq":
-            try:
-                snap = naver_world_index_snapshot(".IXIC")
+            candidates = []
+            # Query more than one upstream because a successful HTTP response can
+            # still carry a stale previous-session quote.
+            for label, fn in (
+                ("Naver basic", lambda: naver_world_index_basic_snapshot(".IXIC")),
+                ("Naver polling", lambda: naver_world_index_polling_snapshot(".IXIC")),
+            ):
                 try:
-                    rows, _ = yahoo_chart(symbol)
-                except Exception:
-                    rows = []
-                out[key] = {**snap, "rows": rows}
-                continue
+                    candidates.append(fn())
+                except Exception as e:
+                    errors.append(f"nasdaq {label}: {e}")
+            yahoo_rows = []
+            try:
+                yahoo_rows, yahoo_source = yahoo_chart(symbol)
+                if yahoo_rows:
+                    vals = [x["close"] for x in yahoo_rows]
+                    candidates.append({
+                        "value": vals[-1],
+                        "change_pct": pct(vals[-1], vals[-2]) if len(vals) > 1 else None,
+                        "date": yahoo_rows[-1]["date"],
+                        "fresh": True,
+                        "source": yahoo_source,
+                    })
             except Exception as e:
-                errors.append(f"nasdaq Naver: {e}")
+                errors.append(f"nasdaq Yahoo: {e}")
+
+            if candidates:
+                # Freshest trade date wins; for the same date prefer Naver basic,
+                # then polling, then Yahoo.
+                priority = {
+                    "Naver Stock index basic": 3,
+                    "Naver Finance world-index polling": 2,
+                    "Yahoo Finance": 1,
+                }
+                snap = max(
+                    candidates,
+                    key=lambda x: (str(x.get("date") or ""), priority.get(x.get("source"), 0))
+                )
+                out[key] = {**snap, "rows": yahoo_rows}
+                continue
+            out[key] = {"fresh": False}
+            continue
 
         try:
             rows, source = yahoo_chart(symbol)
