@@ -92,6 +92,12 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .ict-best-note{margin-top:12px;padding:12px;border-radius:10px;background:#F5F9FF;border-left:4px solid var(--blue);font-size:11px;line-height:1.6}
 @media(max-width:1000px){.pipeline-grid{grid-template-columns:1fr 1fr}.ict-detail-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.pipeline-grid,.ict-detail-grid{grid-template-columns:1fr}}
+
+.screening-stock-link{cursor:pointer;border:1px solid #DCE5F0;font-family:inherit;transition:.15s ease}
+.screening-stock-link:hover,.screening-stock-link:focus-visible{border-color:#2563EB;box-shadow:0 0 0 2px rgba(37,99,235,.10);transform:translateY(-1px);outline:none}
+.screening-stock-row{cursor:pointer;transition:.12s ease}
+.screening-stock-row:hover td,.screening-stock-row:focus-visible td{background:#F4F8FF}
+.screening-stock-row:focus-visible{outline:2px solid #2563EB;outline-offset:-2px}
 </style>
 </head>
 <body>
@@ -1201,7 +1207,7 @@ async function buildSearchProfile(item){
   let kosaiReport=null;
   if(!qs.length||m.per==null||m.pbr==null||m.roe==null){
     try{
-      kosaiReport=await srKosaiReport(item);
+      kosaiReport=await srKosaiCached(item);
       const kb=srKosaiBundle(kosaiReport,tech.price);
       if(!qs.length&&kb.qs.length)qs=kb.qs;
       for(const k of ['per','pbr','roe','bps'])if(m[k]==null&&kb.metrics[k]!=null)m[k]=kb.metrics[k];
@@ -1520,6 +1526,45 @@ let fundamentalScanResults={top20:[],top10:[],final5:[]};
 let ictTradingResults={top10:[],top5:[]};
 const srKosaiCache=new Map();
 
+function srScreeningItemByCode(code){
+  const direct=fullStockUniverse.find(x=>x.code===code);
+  if(direct)return direct;
+  const pools=[
+    ...(fundamentalScanResults.top20||[]),
+    ...(fundamentalScanResults.top10||[]),
+    ...(fundamentalScanResults.final5||[]),
+    ...(ictTradingResults.top10||[])
+  ];
+  return pools.find(x=>(x.item||x)?.code===code)?.item||null;
+}
+async function srOpenScreeningStock(code,statusId='fundamentalScanStatus'){
+  const status=document.getElementById(statusId)||document.getElementById('stockSearchStatus');
+  try{
+    await loadStockUniverse();
+    const item=srScreeningItemByCode(code);
+    if(!item)throw new Error('종목코드 '+code+'를 전체 종목 DB에서 찾지 못했습니다.');
+    if(status)status.textContent=item.name+' 상세 데이터를 연결하는 중...';
+    const input=document.getElementById('stockSearchInput');
+    if(input)input.value=item.name;
+    await analyzeSearchItem(item,status||{textContent:''},{classList:{remove(){}}});
+  }catch(e){
+    console.error('screening stock open failed',e);
+    if(status)status.textContent='상세 데이터 연결 실패: '+e.message;
+  }
+}
+function srBindScreeningList(containerId,statusId){
+  const el=document.getElementById(containerId);if(!el)return;
+  const activate=e=>{
+    const node=e.target.closest('[data-code]');if(!node||!el.contains(node))return;
+    srOpenScreeningStock(node.dataset.code,statusId);
+  };
+  el.addEventListener('click',activate);
+  el.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'&&e.key!==' ')return;
+    const node=e.target.closest('[data-code]');if(!node||!el.contains(node))return;
+    e.preventDefault();srOpenScreeningStock(node.dataset.code,statusId);
+  });
+}
 function initScreeningModes(){
   document.querySelectorAll('[data-screening-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     document.querySelectorAll('[data-screening-mode]').forEach(b=>b.classList.toggle('active',b===btn));
@@ -1529,18 +1574,10 @@ function initScreeningModes(){
   }));
   document.getElementById('fundamentalScanBtn')?.addEventListener('click',runFundamentalPipeline);
   document.getElementById('ictScanBtn')?.addEventListener('click',runIctTradingScan);
-  document.getElementById('fundFinalBody')?.addEventListener('click',async e=>{
-    const tr=e.target.closest('tr[data-code]');if(!tr)return;
-    const item=fullStockUniverse.find(x=>x.code===tr.dataset.code);if(!item)return;
-    const status=document.getElementById('fundamentalScanStatus');
-    await analyzeSearchItem(item,status,{classList:{remove(){}}});
-  });
-  document.getElementById('ictTop10Body')?.addEventListener('click',async e=>{
-    const tr=e.target.closest('tr[data-code]');if(!tr)return;
-    const item=fullStockUniverse.find(x=>x.code===tr.dataset.code);if(!item)return;
-    const status=document.getElementById('ictScanStatus');
-    await analyzeSearchItem(item,status,{classList:{remove(){}}});
-  });
+  srBindScreeningList('fundTop20List','fundamentalScanStatus');
+  srBindScreeningList('fundTop10Body','fundamentalScanStatus');
+  srBindScreeningList('fundFinalBody','fundamentalScanStatus');
+  srBindScreeningList('ictTop10Body','ictScanStatus');
 }
 
 function srLiquidityCandidates(limit=null){
@@ -1588,16 +1625,25 @@ async function srMapLimit(arr,limit,fn){
 }
 function srRenderFundTop20(list){
   const el=document.getElementById('fundTop20List');if(!el)return;
-  el.innerHTML=list.map((x,i)=>'<span class="compact-chip">'+(i+1)+'. '+srEsc(x.item.name)+' · '+x.f.total+'</span>').join('');
+  el.innerHTML=list.map((x,i)=>
+    '<button type="button" class="compact-chip screening-stock-link" data-code="'+x.item.code+'" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="상세분석 보기">'+
+    (i+1)+'. '+srEsc(x.item.name)+' · '+x.f.total+'</button>'
+  ).join('');
 }
 function srRenderFundTop10(list){
   const el=document.getElementById('fundTop10Body');if(!el)return;
-  el.innerHTML=list.map((x,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td>'+x.item.market+'</td><td><b>'+x.f.total+'</b></td><td>'+x.f.growth+'</td><td>'+x.f.earnings+'</td><td>'+x.f.valuation+'</td><td>'+x.f.catalyst+'</td></tr>').join('');
+  el.innerHTML=list.map((x,i)=>
+    '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
+    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td>'+x.item.market+'</td><td><b>'+x.f.total+'</b></td><td>'+x.f.growth+'</td><td>'+x.f.earnings+'</td><td>'+x.f.valuation+'</td><td>'+x.f.catalyst+'</td></tr>'
+  ).join('');
 }
 function srEntryClass(g){return g==='S'?'entry-s':g==='A'?'entry-a':g==='B'?'entry-b':'entry-c'}
 function srRenderFundFinal(list){
   const el=document.getElementById('fundFinalBody');if(!el)return;
-  el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" style="cursor:pointer"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+x.item.market+'</span></td><td>'+x.f.total+'</td><td>'+x.ict.score+'</td><td><span class="tag '+srEntryClass(x.ict.entryQuality)+'">'+x.ict.entryQuality+'</span></td><td>'+srFmt(x.ict.price)+'원</td><td>'+srEsc(x.catalystText||'공시·실적 Catalyst 확인')+'</td><td>'+srEsc(x.ict.finalOpinion)+'</td></tr>').join('');
+  el.innerHTML=list.map((x,i)=>
+    '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
+    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+x.item.market+'</span></td><td>'+x.f.total+'</td><td>'+x.ict.score+'</td><td><span class="tag '+srEntryClass(x.ict.entryQuality)+'">'+x.ict.entryQuality+'</span></td><td>'+srFmt(x.ict.price)+'원</td><td>'+srEsc(x.catalystText||'공시·실적 Catalyst 확인')+'</td><td>'+srEsc(x.ict.finalOpinion)+'</td></tr>'
+  ).join('');
 }
 
 function srAggregateWeekly(rows){
