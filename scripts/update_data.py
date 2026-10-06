@@ -674,6 +674,58 @@ def _naver_world_index_item(url):
     }
 
 
+def nasdaq_official_snapshot():
+    """Latest official Nasdaq Composite daily close.
+
+    Uses Nasdaq's public historical index endpoint as the authoritative close.
+    This prevents a stale Yahoo/Naver response from overwriting a newer U.S.
+    session in the generated dashboard data.
+    """
+    end = NOW.date() + timedelta(days=1)
+    start = NOW.date() - timedelta(days=12)
+    url = (
+        "https://api.nasdaq.com/api/quote/COMP/historical"
+        f"?assetclass=index&fromdate={start.isoformat()}&todate={end.isoformat()}&limit=30"
+    )
+    headers = {
+        "User-Agent": SESSION.headers.get("User-Agent"),
+        "Accept": "application/json,text/plain,*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.nasdaq.com/",
+        "Origin": "https://www.nasdaq.com",
+    }
+    j = req(url, 2, headers=headers).json()
+    rows = (((j.get("data") or {}).get("tradesTable") or {}).get("rows") or [])
+    parsed = []
+    for row in rows:
+        raw_date = str(row.get("date") or "").strip()
+        raw_close = str(row.get("close") or "").replace("$", "").replace(",", "").strip()
+        close = n(raw_close)
+        if close is None or not raw_date:
+            continue
+        dt = None
+        for fmt in ("%m/%d/%Y", "%Y-%m-%d"):
+            try:
+                dt = datetime.strptime(raw_date, fmt).date()
+                break
+            except Exception:
+                pass
+        if dt is not None:
+            parsed.append((dt, close))
+    if not parsed:
+        raise RuntimeError("Nasdaq official historical rows missing")
+    parsed.sort(key=lambda x: x[0])
+    latest_date, latest_close = parsed[-1]
+    prev_close = parsed[-2][1] if len(parsed) >= 2 else None
+    return {
+        "value": latest_close,
+        "change_pct": pct(latest_close, prev_close) if prev_close else None,
+        "date": latest_date.isoformat(),
+        "fresh": True,
+        "source": "Nasdaq official COMP historical",
+    }
+
+
 def naver_world_index_basic_snapshot(reuters_code=".IXIC"):
     x = _naver_world_index_item(f"https://api.stock.naver.com/index/{reuters_code}/basic")
     x["source"] = "Naver Stock index basic"
@@ -695,6 +747,7 @@ def market_series():
             # Query more than one upstream because a successful HTTP response can
             # still carry a stale previous-session quote.
             for label, fn in (
+                ("Nasdaq official", nasdaq_official_snapshot),
                 ("Naver basic", lambda: naver_world_index_basic_snapshot(".IXIC")),
                 ("Naver polling", lambda: naver_world_index_polling_snapshot(".IXIC")),
             ):
@@ -721,6 +774,7 @@ def market_series():
                 # Freshest trade date wins; for the same date prefer Naver basic,
                 # then polling, then Yahoo.
                 priority = {
+                    "Nasdaq official COMP historical": 4,
                     "Naver Stock index basic": 3,
                     "Naver Finance world-index polling": 2,
                     "Yahoo Finance": 1,
