@@ -783,6 +783,24 @@ def market_series():
                     candidates,
                     key=lambda x: (str(x.get("date") or ""), priority.get(x.get("source"), 0))
                 )
+
+                # Never let a stale upstream response overwrite a newer verified
+                # Nasdaq session already stored in market-data.json.
+                prev_text = PREV.get("text") or {}
+                prev_date = str(prev_text.get("nasdaqDataDate") or "")
+                prev_value = n(str(prev_text.get("nasdaq") or "").replace(",", ""))
+                prev_delta_text = str(prev_text.get("nasdaqDelta") or "")
+                prev_delta_match = re.search(r"([+-]?\d+(?:\.\d+)?)%", prev_delta_text)
+                prev_change_pct = n(prev_delta_match.group(1)) if prev_delta_match else None
+                if prev_date and prev_value is not None and str(snap.get("date") or "") < prev_date:
+                    snap = {
+                        "value": prev_value,
+                        "change_pct": prev_change_pct,
+                        "date": prev_date,
+                        "fresh": True,
+                        "source": "Previous verified Nasdaq close · anti-regression",
+                    }
+
                 out[key] = {**snap, "rows": yahoo_rows}
                 continue
             out[key] = {"fresh": False}
@@ -1685,6 +1703,8 @@ def update_market_text(d, market):
         t[delta_key] = (signed(cp, 2) if cp is not None else "—") + (f" · {x.get('date','')[-5:]}" if x.get("date") else "")
         if x.get("date"):
             latest_dates.append(x["date"])
+            if key == "nasdaq":
+                t["nasdaqDataDate"] = x["date"]
     set_market("kospi", "kospi", "kospiDelta")
     set_market("kosdaq", "kosdaq", "kosdaqDelta")
     set_market("nasdaq", "nasdaq", "nasdaqDelta")
