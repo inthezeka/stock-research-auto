@@ -641,10 +641,63 @@ def technicals(rows):
     out["price_strategy"] = price_strategy(out)
     return out
 
+def naver_world_index_snapshot(reuters_code=".IXIC"):
+    """Latest overseas index quote from Naver Stock polling API.
+
+    Yahoo daily candles can occasionally lag one U.S. session immediately after
+    the close.  Naver's world-index polling endpoint exposes the latest close,
+    change rate and the source trade timestamp, so use it as the primary source
+    for Nasdaq and keep Yahoo only as a historical/fallback source.
+    """
+    url = f"https://polling.finance.naver.com/api/realtime/worldstock/index/{reuters_code}"
+    headers = {
+        "User-Agent": SESSION.headers.get("User-Agent"),
+        "Accept": "application/json,text/plain,*/*",
+        "Referer": "https://stock.naver.com/",
+    }
+    j = req(url, 2, headers=headers).json()
+    item = (j.get("datas") or [None])[0] or {}
+    value = n(str(item.get("closePrice") or "").replace(",", ""))
+    change_pct = n(item.get("fluctuationsRatio"))
+    direction = str((item.get("compareToPreviousPrice") or {}).get("code") or "")
+    if change_pct is not None:
+        if direction == "5":
+            change_pct = -abs(change_pct)
+        elif direction == "2":
+            change_pct = abs(change_pct)
+    traded_at = str(item.get("localTradedAt") or "")
+    trade_date = traded_at[:10] if len(traded_at) >= 10 else ""
+    if value is None or not trade_date:
+        raise RuntimeError(f"Naver world index incomplete: keys={list(item)[:12]}")
+    return {
+        "value": value,
+        "change_pct": change_pct,
+        "date": trade_date,
+        "fresh": True,
+        "source": "Naver Stock world index",
+        "market_status": item.get("marketStatus"),
+        "local_traded_at": traded_at,
+    }
+
+
 def market_series():
     syms = CFG.get("settings", {}).get("market_symbols", {})
     out, errors = {}, []
     for key, symbol in syms.items():
+        # Nasdaq: Naver latest quote first. Yahoo is retained only for rows/history
+        # and as a fallback if the polling endpoint is temporarily unavailable.
+        if key == "nasdaq":
+            try:
+                snap = naver_world_index_snapshot(".IXIC")
+                try:
+                    rows, _ = yahoo_chart(symbol)
+                except Exception:
+                    rows = []
+                out[key] = {**snap, "rows": rows}
+                continue
+            except Exception as e:
+                errors.append(f"nasdaq Naver: {e}")
+
         try:
             rows, source = yahoo_chart(symbol)
             vals = [x["close"] for x in rows]
