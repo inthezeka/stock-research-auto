@@ -108,10 +108,149 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .screening-stock-row{cursor:pointer;transition:.12s ease}
 .screening-stock-row:hover td,.screening-stock-row:focus-visible td{background:#F4F8FF}
 .screening-stock-row:focus-visible{outline:2px solid #2563EB;outline-offset:-2px}
+
+
+/* v25 · Visual hierarchy: supporting text smaller, decision values stronger */
+.section-desc,
+.note,
+.reason,
+.market-flow,
+.technical-legend,
+.indicator-help,
+.top5-selector-desc,
+.theme-cycle,
+.theme-stock-sub,
+.theme-stock-reason,
+.theme-grid-note,
+.pipeline-step p,
+.scan-status,
+.stock-search-status,
+.source-action-card .section-desc,
+.update-strip,
+.flow span,
+.ict-best-note{
+  font-size:10px;
+  line-height:1.5;
+  color:#667085;
+}
+
+.section-title{font-size:28px}
+.subhead{font-size:16px;margin-bottom:10px}
+.card{padding:18px}
+
+/* KPI: label quiet, number dominant */
+.kpi .label{font-size:9px;font-weight:800;color:#7A8699;letter-spacing:.05em}
+.kpi .value{font-size:30px;font-weight:950;line-height:1.05;margin-top:7px;color:#0B1F3A}
+.kpi .delta{font-size:10px;font-weight:850;margin-top:7px}
+.regime strong{font-size:29px;font-weight:950}
+
+/* Key/value rows */
+.fact-row{font-size:11px;padding:8px 0;align-items:center}
+.fact-row span:first-child{
+  font-size:9.5px;
+  font-weight:750;
+  color:#7A8699;
+  letter-spacing:.01em
+}
+.fact-row b{
+  font-size:14px;
+  line-height:1.35;
+  font-weight:950;
+  color:#101828;
+  text-align:right
+}
+.fact-row .tag{font-size:9px}
+
+/* Core metric cards */
+.metric{padding:12px}
+.metric .m-label{font-size:9px;font-weight:800;color:#7A8699}
+.metric .m-val{font-size:21px;font-weight:950;line-height:1.15;margin-top:6px;color:#0B1F3A}
+.indicator-card{padding:12px}
+.indicator-name{font-size:9px}
+.indicator-value{font-size:21px;font-weight:950;color:#101828}
+.indicator-signal{font-size:10px;line-height:1.4}
+
+/* Tables: headers/metadata compact, values clearer */
+.table th{
+  font-size:9px;
+  font-weight:900;
+  padding:10px 12px;
+  color:#667085;
+  letter-spacing:.04em
+}
+.table td{
+  font-size:11px;
+  padding:11px 12px;
+  color:#475467;
+  line-height:1.35
+}
+.table td b,
+.table td strong{
+  font-size:13px;
+  font-weight:950;
+  color:#101828
+}
+.table td .tag{font-size:9px}
+.rank{font-size:13px}
+.score-pill{font-size:11px;font-weight:950}
+
+/* Screening / ICT */
+.pipeline-step{padding:11px;min-height:100px}
+.pipeline-step .num{font-size:9px}
+.pipeline-step h4{font-size:12px;margin:5px 0}
+.compact-chip{font-size:9.5px}
+.ict-score-card>div{font-size:9px;line-height:1.45}
+.ict-score-card>div b{font-size:10.5px;color:#101828}
+.ict-detail-card h3{font-size:14px}
+.ict-detail-grid>div{font-size:9.5px;line-height:1.55}
+.ict-detail-grid>div b{font-size:10.5px;color:#101828}
+
+/* Catalyst / Risk */
+.risk-row{font-size:10px;padding:9px 0}
+.risk-row> b{font-size:13px;line-height:1.35;color:#101828}
+.risk-level{font-size:9.5px;font-weight:950}
+
+/* Theme radar */
+.theme-sector-kicker{font-size:9px}
+.theme-sector-title{font-size:14px}
+.theme-sector-score{font-size:11px;font-weight:950}
+.theme-stock-rank{font-size:9px}
+.theme-stock-name{font-size:13px}
+.theme-stock-price{font-size:14px;font-weight:950;color:#101828}
+.theme-stock-mom{font-size:9.5px}
+
+/* Valuation / R:R / scenarios */
+.rr .r-label{font-size:9px}
+.rr .r-val{font-size:25px;font-weight:950;color:#0B1F3A}
+.scenario-card .s-name{font-size:9.5px}
+.scenario-card .s-price{font-size:29px;font-weight:950}
+.scenario-card .s-prob{font-size:10px}
+
+/* Source / action cards */
+.source-action-card h3{font-size:14px;line-height:1.35}
+.source-action-card .source-link{font-size:10.5px;padding:9px 11px}
+
+/* Top-pick hierarchy */
+.company-name{font-size:34px}
+.ticker{font-size:10px}
+.thesis{font-size:12px;line-height:1.6;padding:14px;margin-top:14px}
+.top5-tab-rank{font-size:8.5px}
+.top5-tab-name{font-size:13px}
+.top5-tab-meta{font-size:9px}
+
+/* Keep mobile readable without restoring visual clutter */
+@media(max-width:760px){
+  .section-title{font-size:25px}
+  .kpi .value{font-size:27px}
+  .fact-row b{font-size:13px}
+  .metric .m-val,.indicator-value{font-size:19px}
+  .table td{font-size:10.5px}
+  .table td b,.table td strong{font-size:12px}
+}
 </style>
 </head>
 <body>
-<!-- BUILD: dynamic-catalyst-risk-v24-20261017 -->
+<!-- BUILD: visual-hierarchy-v25-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
