@@ -172,7 +172,7 @@ required_ui=[
     "③ 종목 선정 · Fundamental / ICT Trading",
     "① Fundamental TOP 20",
     "② Fundamental TOP 10",
-    "⑤ Fundamental 최종 TOP 5",
+    "⑤ Fundamental 최종 TOP 2",
     "ICT Trading TOP 10",
     'id="fundamentalScanBtn"',
     'id="ictScanBtn"',
