@@ -472,7 +472,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div class="sector-factor-strip">
     <span>수요 20</span><span>공급/재고 15</span><span>ASP/Margin 15</span><span>CAPEX/수주 15</span><span>Revision 15</span><span>구조적 성장 10</span><span>정책/Catalyst 10</span>
   </div>
-  <div class="sector-universe-head"><b>Sector Universe · Fundamental Theme 연동</b><span id="sectorUpdateStatus">23개 Sector 데이터 확인 중...</span></div>
+  <div class="sector-universe-head"><b>Sector Universe · Fundamental Sector 연동</b><span id="sectorUpdateStatus">36개 Sector 데이터 확인 중...</span></div>
   <div id="sectorUniverseList" class="sector-universe-grid"></div>
   <div class="table-wrap sector-ranking-wrap">
     <table class="table sector-ranking-table">
@@ -539,7 +539,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div class="card">
       <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / 메모리 / AI Chip · Fundamental TOP 20</h3>
-      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>15</th><th>수익성/ROIC<br>15</th><th>재무/FCF<br>15</th><th>Valuation<br>10</th><th>경쟁우위<br>10</th><th>Revision<br>5</th><th>Sector KPI<br>20</th><th>Cycle/Visibility<br>10</th><th>점수 기반 투자매력</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="12">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>15</th><th>수익성/ROIC<br>15</th><th>재무/FCF<br>15</th><th>Valuation<br>10</th><th>경쟁우위<br>10</th><th>Revision<br>5</th><th>Sector KPI<br>20</th><th>Cycle/Visibility<br>10</th><th>점수 기반 투자매력</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="12">선택 Sector Fundamental 분석 중입니다...</td></tr></tbody></table></div>
       <p class="note" style="margin:10px 2px 0">Sector 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 투자매력은 최종 Fundamental Score만으로 구분합니다: <b>95+ Best · 90~94 매력 · 75~89 관심 · 65~74 중립 · 60~64 주의 · 50~59 경고 · 50 미만 위험</b>.</p>
     </div>
   </div>
@@ -3716,7 +3716,7 @@ async function runFundamentalPipeline(){
     await srRunFundTheme(activeFundThemeKey,status);
   }catch(e){
     console.error(e);
-    if(status)status.textContent='Fundamental 테마 분석 실패: '+e.message;
+    if(status)status.textContent='Fundamental Sector 분석 실패: '+e.message;
   }finally{
     if(btn)btn.disabled=false;
   }
@@ -3736,7 +3736,7 @@ async function runAutomaticScreenings(){
   if(fBtn)fBtn.disabled=true;if(iBtn)iBtn.disabled=true;
   try{
     await loadStockUniverse();
-    if(fStatus)fStatus.textContent='Fundamental 테마 자동 분석 중...';
+    if(fStatus)fStatus.textContent='Fundamental Sector 자동 분석 중...';
     if(iStatus)iStatus.textContent='자동 조회 대기 · ICT 유동성 후보를 준비합니다.';
     await srRunFundTheme(activeFundThemeKey,fStatus);
 
