@@ -184,7 +184,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   margin-top:8px;
 }
 
-/* BUILD v31 · M's Stock Room + Sector TOP5 + Fundamental Theme 20 */
+/* BUILD v32 · M's Stock Room + Sector TOP5 + Extensible Fundamental Themes */
 .hero.hero-room{
   display:flex;
   grid-template-columns:none;
@@ -232,7 +232,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-theme20-sector5-v31-20261017 -->
+<!-- BUILD: stock-room-extensible-themes-sector5-v32-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -248,8 +248,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <a href="#valuation"><span class="nav-num">06</span>VALUATION</a>
     <a href="#catalyst"><span class="nav-num">07</span>CATALYST / RISK</a>
     <div class="nav-group">FRAMEWORK</div>
-    <a href="#blueprint"><span class="nav-num">08</span>THEME RADAR</a>
-    <a href="#sources"><span class="nav-num">09</span>SOURCE RULE</a>
+    <a href="#sources"><span class="nav-num">08</span>SOURCE RULE</a>
   </nav>
 </aside>
 
@@ -382,8 +381,8 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card fund-theme-card">
       <div class="fund-theme-head">
         <div>
-          <h3 class="subhead" style="margin:0">① Fundamental Theme 20</h3>
-          <p class="note" style="margin:6px 0 0">먼저 산업/테마를 선택합니다. 선택한 테마의 대표 KOSPI·KOSDAQ 종목을 Forward 실적·수익성·재무·Valuation·산업 경쟁력 기준으로 다시 점수화합니다.</p>
+          <h3 class="subhead" style="margin:0">① Fundamental Theme</h3>
+          <p class="note" style="margin:6px 0 0">먼저 산업/테마를 선택합니다. 테마 수는 고정하지 않으며 필요할 때 언제든 추가할 수 있습니다. 선택한 테마의 대표 KOSPI·KOSDAQ 종목을 Forward 실적·수익성·재무·Valuation·산업 경쟁력 기준으로 다시 점수화합니다.</p>
         </div>
         <span class="tag blue" id="fundThemeSelected">반도체 / AI</span>
       </div>
@@ -496,12 +495,6 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 
 </section>
 
-<section id="blueprint" class="section-track" data-name="THEME RADAR">
-  <div class="section-head"><div><h2 class="section-title">Theme Radar · 테마별 추천 3종목</h2><p class="section-desc">시장 전체를 19개 테마로 나누고, 각 테마 안에서 Fundamental/Catalyst·Trading Score·20D/60D Momentum을 종합해 <b>테마별 상위 3종목</b>을 월 종가 확정 후 월 1회 재평가합니다. 가격·추세 정보는 매일 최신화됩니다.</p></div><span class="score-pill">19 THEMES · 3 PICKS EACH</span></div>
-  <div class="theme-card-grid" id="themeCards"></div>
-  <p class="note theme-grid-note">각 카드의 1~3위와 테마 점수는 월 종가 확정 후 월 1회 다시 계산됩니다. 월중에는 추천 순위를 고정하고 현재가·20D/60D 수익률·추세 상태만 매일 갱신합니다.</p>
-</section>
-
 <section id="sources" class="section-track" data-name="SOURCE RULE">
   <div class="section-head"><div><h2 class="section-title">Evidence / Source Rule</h2><p class="section-desc">최신성과 신뢰도를 기준으로 근거의 우선순위를 고정합니다.</p></div></div>
   <div class="grid-2">
@@ -509,7 +502,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card"><h3 class="subhead">표시 규칙</h3><div class="facts"><div class="fact-row"><span>확인 불가</span><b>[검증 필요]</b></div><div class="fact-row"><span>자체 계산 / 추정</span><b>자체 산출</b></div><div class="fact-row"><span>오래된 정보</span><b>최신 자료와 혼합 금지</b></div><div class="fact-row"><span>블로그 / 카페 / SNS</span><b>분석 근거 제외</b></div></div><p class="note" style="margin:12px 0 0">실제 투자 분석을 수행할 때는 각 핵심 수치 옆에 출처와 기준일을 함께 기록하는 형태가 가장 안전합니다.</p></div>
   </div>
   <div class="card" style="margin-top:14px"><h3 class="subhead">이번 업데이트에 사용한 핵심 데이터</h3><div class="facts"><div class="fact-row"><span>시장 기준일</span><b data-edit data-key="sourceMarketDate">2026-10-02 종가</b></div><div class="fact-row"><span>한국 시장</span><b data-edit data-key="sourceKR">KOSPI 7,003.74 · KOSDAQ 893.29 · USD/KRW 1,350.6</b></div><div class="fact-row"><span>미국 시장</span><b data-edit data-key="sourceUS">Nasdaq 27,190.86 · S&amp;P500 7,722.72 · US10Y ≈5.27%</b></div><div class="fact-row"><span>TOP PICK 데이터</span><b data-edit data-key="sourceTopPick">가격·모멘텀·뉴스·공시 연결</b></div><div class="fact-row"><span>Consensus</span><b data-edit data-key="sourceConsensus">검증일 기반 · 오래되면 [검증 필요]</b></div></div><p class="note" style="margin:12px 0 0">시장·가격·기술지표는 매일 최신 데이터 기준으로 반영됩니다. 증권사 Consensus/IR 세부 추정치는 최신 검증일을 확인하세요.</p></div>
-  <div class="card" style="margin-top:14px"><h3 class="subhead">데이터 갱신 정보</h3><div class="facts"><div class="fact-row"><span>마지막 데이터 생성</span><b id="lastUpdatedText">-</b></div><div class="fact-row"><span>갱신 주기</span><b>시장/검색/Fundamental/ICT: 매일 · 테마추천: 월 종가 후 월 1회</b></div><div class="fact-row"><span>가격/지수</span><b>Naver 증권 우선 · Yahoo 보조</b></div><div class="fact-row"><span>공시</span><b id="dartStatus">DART API 선택 연결</b></div></div><div id="autoSourceList" class="note" style="margin-top:12px">출처를 확인하는 중입니다.</div></div>
+  <div class="card" style="margin-top:14px"><h3 class="subhead">데이터 갱신 정보</h3><div class="facts"><div class="fact-row"><span>마지막 데이터 생성</span><b id="lastUpdatedText">-</b></div><div class="fact-row"><span>갱신 주기</span><b>시장/검색/Fundamental/ICT: 매일</b></div><div class="fact-row"><span>가격/지수</span><b>Naver 증권 우선 · Yahoo 보조</b></div><div class="fact-row"><span>공시</span><b id="dartStatus">DART API 선택 연결</b></div></div><div id="autoSourceList" class="note" style="margin-top:12px">출처를 확인하는 중입니다.</div></div>
 </section>
 
 
@@ -729,7 +722,7 @@ function applyTradingStateColors(){
   paint('actionStateCard',document.querySelector('#actionStateCard [data-key="tradingAction"]')?.textContent||'','action');
   paint('heatStateCard',document.querySelector('#heatStateCard [data-key="tradingOverheat"]')?.textContent||'','heat');
 }
-const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','blueprint','sources'];
+const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','sources'];
 
 function srFundGroupLabel(k){
   return({growth:'실적 성장성',profitability:'수익성',financial:'재무건전성 / FCF',quality:'이익의 질 / 실적 가시성',valuation:'Valuation',industry:'산업 / 경쟁우위'})[k]||k;
@@ -2016,6 +2009,9 @@ const srKosaiCache=new Map();
 
 const FUNDAMENTAL_THEMES=[
   {key:'semi_ai',label:'반도체 / AI',codes:['005930','000660','042700','058470','403870','240810','039030','036930','095340','089030','166090','131970','356860']},
+  {key:'semi_materials',label:'반도체 소재',codes:['357780','005290','104830','014680','102710','281740','093370','317330','121600','036830']},
+  {key:'semi_parts',label:'반도체 부품',codes:['095340','058470','356860','222800','353200','007810','195870','166090','101160','252990','067310','131970']},
+  {key:'semi_equipment',label:'반도체 장비',codes:['042700','403870','240810','036930','039030','089030','084370','319660','003160','079370','095610','031980']},
   {key:'power_grid',label:'전력망 / 전선',codes:['267260','010120','298040','006260','103590','001440','000500','062040','033100','006340','006910','388050']},
   {key:'auto',label:'자동차 / 부품',codes:['005380','000270','012330','161390','204320','011210','018880','011070','005850','123040','064960']},
   {key:'shipbuilding',label:'조선 / 기자재',codes:['009540','010140','042660','329180','443060','082740','071970','017960','033500','075580']},
@@ -3041,7 +3037,7 @@ function applyAutoData(d){
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
   renderTopPickTabs(profiles);
   if(profiles.length)selectStockProfile(activeProfileIndex,false);
-  renderThemeSection(d);renderSentiment(d.sentiment||{});
+  renderSentiment(d.sentiment||{});
   if(d.meta){
     const uts=fmtDateKST(d.meta.generated_at);
     const lut=document.getElementById('lastUpdatedText');if(lut)lut.textContent=uts;
