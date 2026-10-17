@@ -47,6 +47,11 @@ jobs:
       - name: Smoke test
         run: python scripts/smoke_test.py
 
+      - name: Refresh sector membership
+        env:
+          THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
+        run: python scripts/refresh_sector_membership.py
+
       - name: Update market data
         env:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
@@ -72,6 +77,7 @@ jobs:
           if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
             echo "main advanced during data generation; regenerating on latest main"
             git reset --hard origin/main
+            python scripts/refresh_sector_membership.py
             python scripts/update_data.py
             python scripts/embed_fallback.py
             python scripts/validate_project.py
@@ -80,7 +86,7 @@ jobs:
           if git diff --quiet; then
             echo "No verified changes"
           else
-            git add data/market-data.json stock-universe.json index.html QA_REPORT.md
+            git add config/fundamental_themes.json data/market-data.json stock-universe.json index.html QA_REPORT.md
             git commit -m "chore: daily verified market data [skip ci]"
             git push origin HEAD:main
           fi
