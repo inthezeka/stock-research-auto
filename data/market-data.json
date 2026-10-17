@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generated_at": "2026-10-17T17:10:33.734916+09:00",
-    "market_date": "2026-10-17",
+    "generated_at": "2026-10-17T17:14:17.304297+09:00",
+    "market_date": "2026-10-16",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
     "sources": [
@@ -28,7 +28,9 @@
       "market_total": 5,
       "market_fresh_ratio": 1.0
     },
-    "errors": [],
+    "errors": [
+      "usdkrw Naver: 400 Client Error: Bad Request for url: https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=120"
+    ],
     "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
     "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
     "profile_groups": {
@@ -154,9 +156,9 @@
     "pbr": "8.74x",
     "evebitda": "24.68x (Fwd.12M)",
     "valEps": "6,535원 · 2026Q3E",
-    "targetPer": "75.30x · Forward PER",
-    "fairA": "1,968,342원 [AI]",
-    "calcA": "2026Q3E EPS 6,535원 × 4 × Forward PER 75.30x = 1,968,342원. 분기 EPS 연환산 방식 [AI]",
+    "targetPer": "57.19x · Forward PER",
+    "fairA": "1,494,947원 [AI]",
+    "calcA": "2026Q3E EPS 6,535원 × 4 × Forward PER 57.19x = 1,494,947원. 분기 EPS 연환산 방식 [AI]",
     "peerMultiple": "Consensus 기준일 2026-10-02",
     "discount": "45일 초과 시 최신성 경고",
     "fairB": "2,280,000원",
@@ -232,8 +234,8 @@
     "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
     "newsTitle": "삼성전기 최신뉴스",
     "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
-    "valTargetPer": "75.30x · Forward PER",
-    "fairValueA": "1,968,342원 [AI]",
+    "valTargetPer": "57.19x · Forward PER",
+    "fairValueA": "1,494,947원 [AI]",
     "tradingScore": "45",
     "tradingGrade": "E / Weak",
     "tradingTrend": "조정",
@@ -1290,9 +1292,9 @@
         "pbr": "8.74x",
         "evebitda": "24.68x (Fwd.12M)",
         "valEps": "6,535원 · 2026Q3E",
-        "targetPer": "75.30x · Forward PER",
-        "fairA": "1,968,342원 [AI]",
-        "calcA": "2026Q3E EPS 6,535원 × 4 × Forward PER 75.30x = 1,968,342원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "57.19x · Forward PER",
+        "fairA": "1,494,947원 [AI]",
+        "calcA": "2026Q3E EPS 6,535원 × 4 × Forward PER 57.19x = 1,494,947원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "2,280,000원",
@@ -1366,8 +1368,8 @@
         "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
         "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
         "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-        "valTargetPer": "75.30x · Forward PER",
-        "fairValueA": "1,968,342원 [AI]",
+        "valTargetPer": "57.19x · Forward PER",
+        "fairValueA": "1,494,947원 [AI]",
         "tradingScore": "45",
         "tradingGrade": "E / Weak",
         "tradingTrend": "조정",
@@ -1484,7 +1486,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-        "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+        "fetched_at": "2026-10-17T17:14:17.304297+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -1625,9 +1627,9 @@
         "pbr": "3.43x",
         "evebitda": "2.45x (Fwd.12M)",
         "valEps": "79,478원 · 2026Q3E",
-        "targetPer": "4.75x · Forward PER",
-        "fairA": "1,510,082원 [AI]",
-        "calcA": "2026Q3E EPS 79,478원 × 4 × Forward PER 4.75x = 1,510,082원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "3.57x · Forward PER",
+        "fairA": "1,134,946원 [AI]",
+        "calcA": "2026Q3E EPS 79,478원 × 4 × Forward PER 3.57x = 1,134,946원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "3,141,025원",
@@ -1701,8 +1703,8 @@
         "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
         "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
         "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-        "valTargetPer": "4.75x · Forward PER",
-        "fairValueA": "1,510,082원 [AI]",
+        "valTargetPer": "3.57x · Forward PER",
+        "fairValueA": "1,134,946원 [AI]",
         "tradingScore": "37",
         "tradingGrade": "F / Avoid",
         "tradingTrend": "조정",
@@ -1819,7 +1821,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-        "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+        "fetched_at": "2026-10-17T17:14:17.304297+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -1960,9 +1962,9 @@
         "pbr": "11.11x",
         "evebitda": "28.34x (Fwd.12M)",
         "valEps": "963원 · 2026Q3E",
-        "targetPer": "54.78x · Forward PER",
-        "fairA": "211,013원 [AI]",
-        "calcA": "2026Q3E EPS 963원 × 4 × Forward PER 54.78x = 211,013원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "44.25x · Forward PER",
+        "fairA": "170,451원 [AI]",
+        "calcA": "2026Q3E EPS 963원 × 4 × Forward PER 44.25x = 170,451원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "275,813원",
@@ -2036,8 +2038,8 @@
         "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
         "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
         "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-        "valTargetPer": "54.78x · Forward PER",
-        "fairValueA": "211,013원 [AI]",
+        "valTargetPer": "44.25x · Forward PER",
+        "fairValueA": "170,451원 [AI]",
         "tradingScore": "32",
         "tradingGrade": "F / Avoid",
         "tradingTrend": "하락",
@@ -2154,7 +2156,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-        "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+        "fetched_at": "2026-10-17T17:14:17.304297+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2295,9 +2297,9 @@
         "pbr": "2.52x",
         "evebitda": "2.15x (Fwd.12M)",
         "valEps": "13,504원 · 2026Q3E",
-        "targetPer": "5.79x · Forward PER",
-        "fairA": "312,753원 [AI]",
-        "calcA": "2026Q3E EPS 13,504원 × 4 × Forward PER 5.79x = 312,753원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "4.77x · Forward PER",
+        "fairA": "257,656원 [AI]",
+        "calcA": "2026Q3E EPS 13,504원 × 4 × Forward PER 4.77x = 257,656원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "477,517원",
@@ -2371,8 +2373,8 @@
         "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
         "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
         "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-        "valTargetPer": "5.79x · Forward PER",
-        "fairValueA": "312,753원 [AI]",
+        "valTargetPer": "4.77x · Forward PER",
+        "fairValueA": "257,656원 [AI]",
         "tradingScore": "37",
         "tradingGrade": "F / Avoid",
         "tradingTrend": "조정",
@@ -2489,7 +2491,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-        "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+        "fetched_at": "2026-10-17T17:14:17.304297+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2630,9 +2632,9 @@
         "pbr": "3.86x",
         "evebitda": "9.03x (Fwd.12M)",
         "valEps": "11,144원 · 2026Q3E",
-        "targetPer": "19.97x · Forward PER",
-        "fairA": "890,183원 [AI]",
-        "calcA": "2026Q3E EPS 11,144원 × 4 × Forward PER 19.97x = 890,183원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "20.18x · Forward PER",
+        "fairA": "899,544원 [AI]",
+        "calcA": "2026Q3E EPS 11,144원 × 4 × Forward PER 20.18x = 899,544원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 기준일 2026-10-02",
         "discount": "45일 초과 시 최신성 경고",
         "fairB": "1,634,762원",
@@ -2706,8 +2708,8 @@
         "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
         "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
         "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-        "valTargetPer": "19.97x · Forward PER",
-        "fairValueA": "890,183원 [AI]",
+        "valTargetPer": "20.18x · Forward PER",
+        "fairValueA": "899,544원 [AI]",
         "tradingScore": "55",
         "tradingGrade": "D / Caution",
         "tradingTrend": "하락",
@@ -2824,7 +2826,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-        "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+        "fetched_at": "2026-10-17T17:14:17.304297+09:00"
       },
       "market": "KOSPI",
       "valuation_snapshot": {
@@ -2857,44 +2859,44 @@
     "kr": {
       "available": true,
       "fresh": true,
-      "score": 64.0,
+      "score": 69.9,
       "rating": "탐욕",
-      "timestamp": "2026-10-17T17:10:33.734916+09:00",
+      "timestamp": "2026-10-17T17:14:17.304297+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
       "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
       "components": [
         {
           "key": "volatility",
           "label": "변동성 · 20D RV",
-          "score": 58.7,
+          "score": 81.9,
           "weight": 30,
           "value": "40.3%"
         },
         {
           "key": "momentum",
           "label": "KOSPI 모멘텀",
-          "score": 76.2,
+          "score": 72.6,
           "weight": 25,
           "value": "+2.05%"
         },
         {
           "key": "strength",
           "label": "주가 강도",
-          "score": 84.4,
+          "score": 81.3,
           "weight": 15,
           "value": "+3.26%"
         },
         {
           "key": "trend",
           "label": "KOSPI 20D 추세",
-          "score": 8.4,
+          "score": 11.9,
           "weight": 15,
           "value": "-15.20%"
         },
         {
           "key": "kosdaq",
           "label": "KOSDAQ 모멘텀",
-          "score": 92.6,
+          "score": 89.9,
           "weight": 10,
           "value": "+4.46%"
         },
@@ -2907,16 +2909,16 @@
         }
       ]
     },
-    "blended_score": 43.3,
-    "blended_rating": "공포",
-    "kr_us_gap": 46.1,
-    "regime": "SELECTIVE RISK-OFF",
+    "blended_score": 46.5,
+    "blended_rating": "중립",
+    "kr_us_gap": 52.0,
+    "regime": "NEUTRAL · SELECTIVE",
     "recommendation": {
-      "base_modifier": -1,
-      "note": "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]",
+      "base_modifier": 0,
+      "note": "심리가 중립권입니다. 시장보다 종목별 Catalyst와 Risk/Reward 비중을 높입니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-17T17:10:33.734916+09:00"
+    "updated_at": "2026-10-17T17:14:17.304297+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3045,9 +3047,9 @@
           "pbr": "8.74x",
           "evebitda": "24.68x (Fwd.12M)",
           "valEps": "6,535원 · 2026Q3E",
-          "targetPer": "75.30x · Forward PER",
-          "fairA": "1,968,342원 [AI]",
-          "calcA": "2026Q3E EPS 6,535원 × 4 × Forward PER 75.30x = 1,968,342원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "57.19x · Forward PER",
+          "fairA": "1,494,947원 [AI]",
+          "calcA": "2026Q3E EPS 6,535원 × 4 × Forward PER 57.19x = 1,494,947원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 기준일 2026-10-02",
           "discount": "45일 초과 시 최신성 경고",
           "fairB": "2,280,000원",
@@ -3121,8 +3123,8 @@
           "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
           "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
           "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-          "valTargetPer": "75.30x · Forward PER",
-          "fairValueA": "1,968,342원 [AI]",
+          "valTargetPer": "57.19x · Forward PER",
+          "fairValueA": "1,494,947원 [AI]",
           "tradingScore": "45",
           "tradingGrade": "E / Weak",
           "tradingTrend": "조정",
@@ -3239,7 +3241,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/009150/finance/quarter",
-          "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+          "fetched_at": "2026-10-17T17:14:17.304297+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -3380,9 +3382,9 @@
           "pbr": "3.43x",
           "evebitda": "2.45x (Fwd.12M)",
           "valEps": "79,478원 · 2026Q3E",
-          "targetPer": "4.75x · Forward PER",
-          "fairA": "1,510,082원 [AI]",
-          "calcA": "2026Q3E EPS 79,478원 × 4 × Forward PER 4.75x = 1,510,082원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "3.57x · Forward PER",
+          "fairA": "1,134,946원 [AI]",
+          "calcA": "2026Q3E EPS 79,478원 × 4 × Forward PER 3.57x = 1,134,946원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 기준일 2026-10-02",
           "discount": "45일 초과 시 최신성 경고",
           "fairB": "3,141,025원",
@@ -3456,8 +3458,8 @@
           "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
           "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
           "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-          "valTargetPer": "4.75x · Forward PER",
-          "fairValueA": "1,510,082원 [AI]",
+          "valTargetPer": "3.57x · Forward PER",
+          "fairValueA": "1,134,946원 [AI]",
           "tradingScore": "37",
           "tradingGrade": "F / Avoid",
           "tradingTrend": "조정",
@@ -3574,7 +3576,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/000660/finance/quarter",
-          "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+          "fetched_at": "2026-10-17T17:14:17.304297+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -3715,9 +3717,9 @@
           "pbr": "11.11x",
           "evebitda": "28.34x (Fwd.12M)",
           "valEps": "963원 · 2026Q3E",
-          "targetPer": "54.78x · Forward PER",
-          "fairA": "211,013원 [AI]",
-          "calcA": "2026Q3E EPS 963원 × 4 × Forward PER 54.78x = 211,013원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "44.25x · Forward PER",
+          "fairA": "170,451원 [AI]",
+          "calcA": "2026Q3E EPS 963원 × 4 × Forward PER 44.25x = 170,451원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 기준일 2026-10-02",
           "discount": "45일 초과 시 최신성 경고",
           "fairB": "275,813원",
@@ -3791,8 +3793,8 @@
           "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
           "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
           "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-          "valTargetPer": "54.78x · Forward PER",
-          "fairValueA": "211,013원 [AI]",
+          "valTargetPer": "44.25x · Forward PER",
+          "fairValueA": "170,451원 [AI]",
           "tradingScore": "32",
           "tradingGrade": "F / Avoid",
           "tradingTrend": "하락",
@@ -3909,7 +3911,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/010120/finance/quarter",
-          "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+          "fetched_at": "2026-10-17T17:14:17.304297+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -4050,9 +4052,9 @@
           "pbr": "2.52x",
           "evebitda": "2.15x (Fwd.12M)",
           "valEps": "13,504원 · 2026Q3E",
-          "targetPer": "5.79x · Forward PER",
-          "fairA": "312,753원 [AI]",
-          "calcA": "2026Q3E EPS 13,504원 × 4 × Forward PER 5.79x = 312,753원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "4.77x · Forward PER",
+          "fairA": "257,656원 [AI]",
+          "calcA": "2026Q3E EPS 13,504원 × 4 × Forward PER 4.77x = 257,656원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 기준일 2026-10-02",
           "discount": "45일 초과 시 최신성 경고",
           "fairB": "477,517원",
@@ -4126,8 +4128,8 @@
           "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
           "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
           "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-          "valTargetPer": "5.79x · Forward PER",
-          "fairValueA": "312,753원 [AI]",
+          "valTargetPer": "4.77x · Forward PER",
+          "fairValueA": "257,656원 [AI]",
           "tradingScore": "37",
           "tradingGrade": "F / Avoid",
           "tradingTrend": "조정",
@@ -4244,7 +4246,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/005930/finance/quarter",
-          "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+          "fetched_at": "2026-10-17T17:14:17.304297+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -4385,9 +4387,9 @@
           "pbr": "3.86x",
           "evebitda": "9.03x (Fwd.12M)",
           "valEps": "11,144원 · 2026Q3E",
-          "targetPer": "19.97x · Forward PER",
-          "fairA": "890,183원 [AI]",
-          "calcA": "2026Q3E EPS 11,144원 × 4 × Forward PER 19.97x = 890,183원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "20.18x · Forward PER",
+          "fairA": "899,544원 [AI]",
+          "calcA": "2026Q3E EPS 11,144원 × 4 × Forward PER 20.18x = 899,544원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 기준일 2026-10-02",
           "discount": "45일 초과 시 최신성 경고",
           "fairB": "1,634,762원",
@@ -4461,8 +4463,8 @@
           "newsDesc": "네이버증권 종목 뉴스 페이지에서 최신 기사를 확인합니다.",
           "kospiFlow": "외국인 -1,367억 · 기관 +3,814억",
           "kosdaqFlow": "외국인 -1,742억 · 기관 +937억",
-          "valTargetPer": "19.97x · Forward PER",
-          "fairValueA": "890,183원 [AI]",
+          "valTargetPer": "20.18x · Forward PER",
+          "fairValueA": "899,544원 [AI]",
           "tradingScore": "55",
           "tradingGrade": "D / Caution",
           "tradingTrend": "하락",
@@ -4579,7 +4581,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/012450/finance/quarter",
-          "fetched_at": "2026-10-17T17:10:33.734916+09:00"
+          "fetched_at": "2026-10-17T17:14:17.304297+09:00"
         },
         "market": "KOSPI",
         "valuation_snapshot": {
@@ -4601,20 +4603,11 @@
   "stock_profiles_kosdaq": [],
   "kosdaq_selection_diagnostics": [
     {
-      "code": "196170",
-      "name": "알테오젠",
-      "fundamental_score": 74.0,
-      "trading_score": 59.0,
-      "final_score": 68.0,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "277810",
-      "name": "레인보우로보틱스",
-      "fundamental_score": 72.0,
-      "trading_score": 40.0,
-      "final_score": 59.2,
+      "code": "083650",
+      "name": "비에이치아이",
+      "fundamental_score": 69.0,
+      "trading_score": 49.0,
+      "final_score": 61.0,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -4637,11 +4630,29 @@
       "priority": "<60 제외"
     },
     {
-      "code": "083650",
-      "name": "비에이치아이",
+      "code": "108490",
+      "name": "로보티즈",
       "fundamental_score": 69.0,
-      "trading_score": 49.0,
-      "final_score": 61.0,
+      "trading_score": 57.0,
+      "final_score": 64.2,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "277810",
+      "name": "레인보우로보틱스",
+      "fundamental_score": 72.0,
+      "trading_score": 40.0,
+      "final_score": 59.2,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "196170",
+      "name": "알테오젠",
+      "fundamental_score": 74.0,
+      "trading_score": 59.0,
+      "final_score": 68.0,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -4651,15 +4662,6 @@
       "fundamental_score": 62.0,
       "trading_score": 59.0,
       "final_score": 60.8,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 69.0,
-      "trading_score": 57.0,
-      "final_score": 64.2,
       "eligible": false,
       "priority": "<60 제외"
     }
