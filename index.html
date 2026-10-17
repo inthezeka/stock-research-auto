@@ -111,7 +111,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: search-ict-total-v23.1-20261017 -->
+<!-- BUILD: search-ict-total-v23.2-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -259,12 +259,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div id="stockSearchResults" class="stock-search-results"></div>
     <div id="stockSearchStatus" class="stock-search-status">KOSPI·KOSDAQ 전체 상장종목 목록을 불러오는 중입니다...</div>
-    <div id="searchIctSummary" class="search-ict-summary">
-      <div class="search-ict-summary-head">
-        <div class="search-ict-summary-title">검색 종목 ICT 총점</div>
-        <b id="searchIctTotal" style="font-size:18px;color:#0B1F3A">—</b>
-      </div>
-    </div>
+    <div id="searchIctSummary" class="search-ict-summary" style="display:none"><b id="searchIctTotal">—</b></div>
   </div>
 
   <div class="screening-mode-tabs">
@@ -1263,7 +1258,12 @@ async function buildSearchProfile(item){
   try{
     searchIct=await srIctAnalyzeItem(item,rows,true);
   }catch(e){
-    console.warn('검색 종목 ICT 분석 실패',e);
+    console.warn('검색 종목 1H ICT 분석 실패 · Daily fallback 재시도',e);
+    try{
+      searchIct=await srIctAnalyzeItem(item,rows,false);
+    }catch(e2){
+      console.warn('검색 종목 Daily ICT fallback 실패',e2);
+    }
   }
   p.searchIct=searchIct;
   let m=intR.status==='fulfilled'?srMetricMap(intR.value):{};
@@ -1301,7 +1301,7 @@ async function buildSearchProfile(item){
   p.score=tech.total;p.rating=tech.label;
   const searchDataDate=String(rows.at(-1)?.date||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
   t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · 기준일 '+searchDataDate+' · SEARCH RESULT';
-  t.topPickScore=searchIct?('ICT '+searchIct.adjustedScore+'/100'):('Trading '+tech.total+'/100');
+  t.topPickScore=searchIct?('ICT '+searchIct.adjustedScore+'/100'):'ICT 계산 확인 필요';
   t.thesis=searchIct
     ?('“검색 종목 ICT: Raw '+searchIct.rawScore+'점 → Penalty '+searchIct.penalty+'점 → Adjusted '+searchIct.adjustedScore+'점 · '+searchIct.setupType+' · Entry Quality '+searchIct.entryQuality+' · R:R '+searchIct.rr.toFixed(2)+':1. 좋은 구조와 현재 진입 준비도를 분리해 판단합니다.” [AI]')
     :'“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. ICT 세부 데이터는 확인이 필요합니다.” [AI]';
@@ -1552,9 +1552,9 @@ async function analyzeSearchItem(item,status,box){
     applyProfileText(p);
     srRenderSearchIctSummary(p.searchIct);
     const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
-    const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
+    const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name+(p.searchIct?' · ICT '+p.searchIct.adjustedScore+'/100':'');
     document.getElementById('stockSearchBadge')?.classList.add('show');
-    status.textContent=p.name+' 분석 완료 · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신')+(p.searchIct?' · ICT '+p.searchIct.adjustedScore+'/100':'')+' · 아래 상세분석을 검색 종목으로 전환했습니다.';
+    status.textContent=p.name+' 분석 완료'+(p.searchIct?' · ICT 총점 '+p.searchIct.adjustedScore+'/100':' · ICT 총점 계산 확인 필요')+' · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신');
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
