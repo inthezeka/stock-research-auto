@@ -101,7 +101,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: daily-search-fundamental-ict-v20-20261017 -->
+<!-- BUILD: monthly-close-theme-v21-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -354,9 +354,9 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="blueprint" class="section-track" data-name="THEME RADAR">
-  <div class="section-head"><div><h2 class="section-title">Theme Radar · 테마별 추천 3종목</h2><p class="section-desc">시장 전체를 19개 테마로 나누고, 각 테마 안에서 가격 모멘텀·산업 구조·Catalyst·기술적 위치를 다시 점수화하여 <b>테마별 상위 3종목</b>을 매일 최신 데이터 기준으로 재평가합니다.</p></div><span class="score-pill">19 THEMES · 3 PICKS EACH</span></div>
+  <div class="section-head"><div><h2 class="section-title">Theme Radar · 테마별 추천 3종목</h2><p class="section-desc">시장 전체를 19개 테마로 나누고, 각 테마 안에서 Fundamental/Catalyst·Trading Score·20D/60D Momentum을 종합해 <b>테마별 상위 3종목</b>을 월 종가 확정 후 월 1회 재평가합니다. 가격·추세 정보는 매일 최신화됩니다.</p></div><span class="score-pill">19 THEMES · 3 PICKS EACH</span></div>
   <div class="theme-card-grid" id="themeCards"></div>
-  <p class="note theme-grid-note">각 카드의 1~3위는 고정 추천이 아니라 매일 수집된 가격·모멘텀·산업점수로 다시 계산됩니다. EVENT 테마는 전체 후보군에서 모멘텀과 종합점수가 강한 3종목을 별도로 표시합니다.</p>
+  <p class="note theme-grid-note">각 카드의 1~3위와 테마 점수는 월 종가 확정 후 월 1회 다시 계산됩니다. 월중에는 추천 순위를 고정하고 현재가·20D/60D 수익률·추세 상태만 매일 갱신합니다.</p>
 </section>
 
 <section id="sources" class="section-track" data-name="SOURCE RULE">
@@ -366,7 +366,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card"><h3 class="subhead">표시 규칙</h3><div class="facts"><div class="fact-row"><span>확인 불가</span><b>[검증 필요]</b></div><div class="fact-row"><span>자체 계산 / 추정</span><b>자체 산출</b></div><div class="fact-row"><span>오래된 정보</span><b>최신 자료와 혼합 금지</b></div><div class="fact-row"><span>블로그 / 카페 / SNS</span><b>분석 근거 제외</b></div></div><p class="note" style="margin:12px 0 0">실제 투자 분석을 수행할 때는 각 핵심 수치 옆에 출처와 기준일을 함께 기록하는 형태가 가장 안전합니다.</p></div>
   </div>
   <div class="card" style="margin-top:14px"><h3 class="subhead">이번 업데이트에 사용한 핵심 데이터</h3><div class="facts"><div class="fact-row"><span>시장 기준일</span><b data-edit data-key="sourceMarketDate">2026-10-02 종가</b></div><div class="fact-row"><span>한국 시장</span><b data-edit data-key="sourceKR">KOSPI 7,003.74 · KOSDAQ 893.29 · USD/KRW 1,350.6</b></div><div class="fact-row"><span>미국 시장</span><b data-edit data-key="sourceUS">Nasdaq 27,190.86 · S&amp;P500 7,722.72 · US10Y ≈5.27%</b></div><div class="fact-row"><span>TOP PICK 데이터</span><b data-edit data-key="sourceTopPick">가격·모멘텀·뉴스·공시 연결</b></div><div class="fact-row"><span>Consensus</span><b data-edit data-key="sourceConsensus">검증일 기반 · 오래되면 [검증 필요]</b></div></div><p class="note" style="margin:12px 0 0">시장·가격·기술지표는 매일 최신 데이터 기준으로 반영됩니다. 증권사 Consensus/IR 세부 추정치는 최신 검증일을 확인하세요.</p></div>
-  <div class="card" style="margin-top:14px"><h3 class="subhead">데이터 갱신 정보</h3><div class="facts"><div class="fact-row"><span>마지막 데이터 생성</span><b id="lastUpdatedText">-</b></div><div class="fact-row"><span>갱신 주기</span><b>매일 07:00 KST · 배포 시 즉시</b></div><div class="fact-row"><span>가격/지수</span><b>Naver 증권 우선 · Yahoo 보조</b></div><div class="fact-row"><span>공시</span><b id="dartStatus">DART API 선택 연결</b></div></div><div id="autoSourceList" class="note" style="margin-top:12px">출처를 확인하는 중입니다.</div></div>
+  <div class="card" style="margin-top:14px"><h3 class="subhead">데이터 갱신 정보</h3><div class="facts"><div class="fact-row"><span>마지막 데이터 생성</span><b id="lastUpdatedText">-</b></div><div class="fact-row"><span>갱신 주기</span><b>시장/검색/Fundamental/ICT: 매일 · 테마추천: 월 종가 후 월 1회</b></div><div class="fact-row"><span>가격/지수</span><b>Naver 증권 우선 · Yahoo 보조</b></div><div class="fact-row"><span>공시</span><b id="dartStatus">DART API 선택 연결</b></div></div><div id="autoSourceList" class="note" style="margin-top:12px">출처를 확인하는 중입니다.</div></div>
 </section>
 
 
