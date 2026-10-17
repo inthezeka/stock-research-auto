@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-17T22:56:25.030008+09:00",
+    "generated_at": "2026-10-17T23:08:36.498089+09:00",
     "market_date": "2026-10-16",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -72,7 +72,7 @@
     "korea_sentiment_policy": "20D/60D 추세 우선 · 절대 변동성 패널티 · 외인/기관 수급 포함 · 20D 급락 Regime Gate [AI].",
     "stock_universe": {
       "as_of": "2026-10-16",
-      "generated_at": "2026-10-17T22:56:25.030008+09:00",
+      "generated_at": "2026-10-17T23:08:36.498089+09:00",
       "count": 2676,
       "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop"
     },
@@ -80,7 +80,14 @@
     "theme_selection_month": "2026-10",
     "theme_selection_as_of": "2026-10-16",
     "theme_selection_updated_at": "2026-10-17T17:48:49.708045+09:00",
-    "theme_selection_refreshed_this_run": false
+    "theme_selection_refreshed_this_run": false,
+    "sector_cycle": {
+      "as_of": "2026-10-16",
+      "generated_at": "2026-10-17T23:08:36.498089+09:00",
+      "sector_count": 36,
+      "theme_count": 36,
+      "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
+    }
   },
   "text": {
     "heroEyebrow": "AI INVESTMENT WORKFLOW",
@@ -1793,7 +1800,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-        "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+        "fetched_at": "2026-10-17T23:08:36.498089+09:00"
       },
       "valuation_snapshot": {
         "per": 20.54,
@@ -2121,7 +2128,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-        "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+        "fetched_at": "2026-10-17T23:08:36.498089+09:00"
       },
       "valuation_snapshot": {
         "per": 18.26,
@@ -2449,7 +2456,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-        "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+        "fetched_at": "2026-10-17T23:08:36.498089+09:00"
       },
       "valuation_snapshot": {
         "per": 29.52,
@@ -2777,7 +2784,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-        "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+        "fetched_at": "2026-10-17T23:08:36.498089+09:00"
       },
       "valuation_snapshot": {
         "per": 33.37,
@@ -3105,7 +3112,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-        "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+        "fetched_at": "2026-10-17T23:08:36.498089+09:00"
       },
       "valuation_snapshot": {
         "per": 15.86,
@@ -3140,7 +3147,7 @@
       "score": 31.0,
       "raw_score": 31.0,
       "rating": "공포",
-      "timestamp": "2026-10-17T22:56:25.030008+09:00",
+      "timestamp": "2026-10-17T23:08:36.498089+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW·수급 · 자체 정규화 [AI]",
       "method": "KOSPI 20D 추세 30% + 60D 추세 15% + 20D 변동성 20% + KOSPI 5D 10% + KOSDAQ 5D 10% + 수급 10% + FX 5% · 추세 Regime Gate 적용",
       "regime_gate": "KOSPI 20D ≤ -15% → 상단 44",
@@ -3205,7 +3212,7 @@
       "note": "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-17T22:56:25.030008+09:00"
+    "updated_at": "2026-10-17T23:08:36.498089+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3522,7 +3529,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-          "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+          "fetched_at": "2026-10-17T23:08:36.498089+09:00"
         },
         "valuation_snapshot": {
           "per": 20.54,
@@ -3850,7 +3857,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-          "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+          "fetched_at": "2026-10-17T23:08:36.498089+09:00"
         },
         "valuation_snapshot": {
           "per": 18.26,
@@ -4178,7 +4185,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-          "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+          "fetched_at": "2026-10-17T23:08:36.498089+09:00"
         },
         "valuation_snapshot": {
           "per": 29.52,
@@ -4506,7 +4513,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-          "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+          "fetched_at": "2026-10-17T23:08:36.498089+09:00"
         },
         "valuation_snapshot": {
           "per": 33.37,
@@ -4834,7 +4841,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-          "fetched_at": "2026-10-17T22:56:25.030008+09:00"
+          "fetched_at": "2026-10-17T23:08:36.498089+09:00"
         },
         "valuation_snapshot": {
           "per": 15.86,
@@ -4855,29 +4862,11 @@
   "stock_profiles_kosdaq": [],
   "kosdaq_selection_diagnostics": [
     {
-      "code": "189300",
-      "name": "인텔리안테크",
-      "fundamental_score": 55.1,
-      "trading_score": 45.0,
-      "final_score": 51.06,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 58.2,
-      "trading_score": 57.0,
-      "final_score": 57.72,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "054930",
-      "name": "유신",
-      "fundamental_score": 64.8,
-      "trading_score": 59.0,
-      "final_score": 62.48,
+      "code": "083650",
+      "name": "비에이치아이",
+      "fundamental_score": 55.4,
+      "trading_score": 49.0,
+      "final_score": 52.84,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -4891,11 +4880,11 @@
       "priority": "<60 제외"
     },
     {
-      "code": "083650",
-      "name": "비에이치아이",
-      "fundamental_score": 55.4,
-      "trading_score": 49.0,
-      "final_score": 52.84,
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 58.2,
+      "trading_score": 57.0,
+      "final_score": 57.72,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -4909,11 +4898,29 @@
       "priority": "<60 제외"
     },
     {
+      "code": "054930",
+      "name": "유신",
+      "fundamental_score": 64.8,
+      "trading_score": 59.0,
+      "final_score": 62.48,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
       "code": "196170",
       "name": "알테오젠",
       "fundamental_score": 64.1,
       "trading_score": 59.0,
       "final_score": 62.06,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "189300",
+      "name": "인텔리안테크",
+      "fundamental_score": 55.1,
+      "trading_score": 45.0,
+      "final_score": 51.06,
       "eligible": false,
       "priority": "<60 제외"
     }
@@ -5343,5 +5350,3694 @@
       "priority": "70+"
     }
   ],
-  "kospi_selection_updated_at": "2026-10-17T22:56:25.030008+09:00"
+  "kospi_selection_updated_at": "2026-10-17T23:08:36.498089+09:00",
+  "sector_cycle": {
+    "as_of": "2026-10-16",
+    "generated_at": "2026-10-17T23:08:36.498089+09:00",
+    "sector_count": 36,
+    "theme_count": 36,
+    "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
+    "source_note": "Naver Stock price/quarterly/valuation + KOSAI qualitative evidence. 직접 산업 재고·ASP·수주 데이터가 없는 항목은 중립값에서 확인 가능한 실적/정성 Evidence만 반영.",
+    "sectors": [
+      {
+        "key": "pcb_packaging",
+        "name": "PCB / 기판 / 패키징",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "우호적 확장",
+        "cycle_score": 73.7,
+        "investment_score": 70.6,
+        "valuation_score": 54.0,
+        "relative_strength_score": 54.7,
+        "catalyst_score": 91.3,
+        "factors": {
+          "demand": {
+            "level": 67.4,
+            "momentum": 60.1,
+            "score": 63.0
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 63.6,
+            "score": 61.0
+          },
+          "price": {
+            "level": 65.1,
+            "momentum": 67.6,
+            "score": 66.6
+          },
+          "capex": {
+            "level": 76.0,
+            "momentum": 90.0,
+            "score": 84.4
+          },
+          "revision": {
+            "level": 63.1,
+            "momentum": 87.3,
+            "score": 77.6
+          },
+          "structural": {
+            "level": 91.0,
+            "momentum": 81.7,
+            "score": 85.4
+          },
+          "catalyst": {
+            "level": 100.0,
+            "momentum": 85.5,
+            "score": 91.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "Catalyst 91 · 구조적 성장 85 | 대표: 이수페타시스, 대덕전자, 심텍",
+        "growth": "SoCAMM · MR-DIMM · DDR5 · CXL · Server MLB · FCBGA",
+        "subsectors": [
+          "Memory Module PCB",
+          "Server MLB",
+          "Package Substrate",
+          "FC-BGA",
+          "FC-CSP",
+          "SSD PCB",
+          "HDI"
+        ],
+        "themes": [
+          "SoCAMM",
+          "MR-DIMM",
+          "DDR5",
+          "CXL",
+          "AI Server",
+          "FCBGA",
+          "High Layer Count PCB"
+        ],
+        "representatives": [
+          {
+            "code": "007660",
+            "name": "이수페타시스"
+          },
+          {
+            "code": "353200",
+            "name": "대덕전자"
+          },
+          {
+            "code": "222800",
+            "name": "심텍"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "007660": 3737.0,
+            "353200": 4503.0,
+            "222800": 5203.0
+          },
+          "median_fper_or_pbr": 26.49,
+          "median_r20": 3.5188216039279796,
+          "median_r60": 7.608695652173902,
+          "median_rev_qoq": 15.795552988738093,
+          "median_fwd_rev_growth": 8.744656043528964,
+          "median_opm": 17.531172069825438,
+          "median_opm_delta": 2.7174267622886195,
+          "median_revision_pct": 18.64548494983278
+        }
+      },
+      {
+        "key": "semi_memory_ai",
+        "name": "반도체 / 메모리 / AI Chip",
+        "actual_cycle": "Peak",
+        "cycle_attractiveness": "우호적 확장",
+        "cycle_score": 70.3,
+        "investment_score": 69.9,
+        "valuation_score": 92.0,
+        "relative_strength_score": 36.1,
+        "catalyst_score": 67.7,
+        "factors": {
+          "demand": {
+            "level": 100.0,
+            "momentum": 73.5,
+            "score": 84.1
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 76.3,
+            "score": 68.6
+          },
+          "price": {
+            "level": 100.0,
+            "momentum": 64.0,
+            "score": 78.4
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 45.2,
+            "momentum": 36.4,
+            "score": 39.9
+          },
+          "structural": {
+            "level": 95.0,
+            "momentum": 81.9,
+            "score": 87.1
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 64.2,
+            "score": 67.7
+          }
+        },
+        "peak_warning": true,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복"
+        ],
+        "reason": "구조적 성장 87 · 수요 84 | 대표: 삼성전자, SK하이닉스, 한미반도체",
+        "growth": "HBM4 · AI Accelerator · CXL · DDR5 · Advanced Packaging",
+        "subsectors": [
+          "DRAM",
+          "NAND",
+          "HBM",
+          "Logic",
+          "GPU / AI Accelerator",
+          "ASIC",
+          "Foundry",
+          "Advanced Packaging"
+        ],
+        "themes": [
+          "HBM",
+          "HBM4",
+          "AI Accelerator",
+          "GPU",
+          "ASIC",
+          "CXL",
+          "DDR5",
+          "AI Server",
+          "Advanced Packaging"
+        ],
+        "representatives": [
+          {
+            "code": "005930",
+            "name": "삼성전자"
+          },
+          {
+            "code": "000660",
+            "name": "SK하이닉스"
+          },
+          {
+            "code": "042700",
+            "name": "한미반도체"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "005930": 45521.0,
+            "000660": 353888.0
+          },
+          "median_fper_or_pbr": 4.77,
+          "median_r20": -12.676056338028175,
+          "median_r60": -14.901960784313728,
+          "median_rev_qoq": 50.86398244075754,
+          "median_fwd_rev_growth": 20.450819560905586,
+          "median_opm": 52.18230956941565,
+          "median_opm_delta": 9.430874258143952,
+          "median_revision_pct": -6.815539295309058
+        }
+      },
+      {
+        "key": "shipping_logistics",
+        "name": "해운 / 물류",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 64.8,
+        "investment_score": 68.6,
+        "valuation_score": 92.0,
+        "relative_strength_score": 62.5,
+        "catalyst_score": 64.8,
+        "factors": {
+          "demand": {
+            "level": 77.6,
+            "momentum": 47.9,
+            "score": 59.8
+          },
+          "supply": {
+            "level": 43.0,
+            "momentum": 48.0,
+            "score": 46.0
+          },
+          "price": {
+            "level": 50.2,
+            "momentum": 57.7,
+            "score": 54.7
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 71.0,
+            "score": 68.2
+          },
+          "revision": {
+            "level": 100.0,
+            "momentum": 100.0,
+            "score": 100.0
+          },
+          "structural": {
+            "level": 60.0,
+            "momentum": 59.7,
+            "score": 59.8
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 63.4,
+            "score": 64.8
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "Revision 100 · CAPEX/수주 68 | 대표: HMM, 팬오션, CJ대한통운",
+        "growth": "SCFI/BDI · 홍해 · 물류 자동화 · 공급조절",
+        "subsectors": [
+          "Container",
+          "Bulk",
+          "Tanker",
+          "Logistics",
+          "택배"
+        ],
+        "themes": [
+          "운임",
+          "SCFI",
+          "BDI",
+          "홍해",
+          "물류 자동화"
+        ],
+        "representatives": [
+          {
+            "code": "011200",
+            "name": "HMM"
+          },
+          {
+            "code": "028670",
+            "name": "팬오션"
+          },
+          {
+            "code": "000120",
+            "name": "CJ대한통운"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "011200": 2282.0,
+            "028670": 905.0,
+            "000120": 9119.0
+          },
+          "median_fper_or_pbr": 7.64,
+          "median_r20": 10.08264462809918,
+          "median_r60": 17.70573566084788,
+          "median_rev_qoq": 25.133335785485713,
+          "median_fwd_rev_growth": -1.8372781065088772,
+          "median_opm": 10.121753670899306,
+          "median_opm_delta": 0.5104701176148723,
+          "median_revision_pct": 71.87088274044795
+        }
+      },
+      {
+        "key": "semi_parts",
+        "name": "반도체 부품",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "우호적 확장",
+        "cycle_score": 71.4,
+        "investment_score": 67.5,
+        "valuation_score": 54.0,
+        "relative_strength_score": 55.4,
+        "catalyst_score": 74.1,
+        "factors": {
+          "demand": {
+            "level": 74.0,
+            "momentum": 60.1,
+            "score": 65.6
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 68.0,
+            "score": 63.6
+          },
+          "price": {
+            "level": 88.4,
+            "momentum": 78.8,
+            "score": 82.6
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 63.1,
+            "momentum": 87.3,
+            "score": 77.6
+          },
+          "structural": {
+            "level": 84.0,
+            "momentum": 76.8,
+            "score": 79.7
+          },
+          "catalyst": {
+            "level": 79.0,
+            "momentum": 70.8,
+            "score": 74.1
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "ASP/Margin 83 · 구조적 성장 80 | 대표: 리노공업, 심텍, ISC",
+        "growth": "HBM Test · 고사양 Probe · 소모품 · 국산화",
+        "subsectors": [
+          "Probe Card",
+          "Test Socket",
+          "Ceramic",
+          "Chamber Part",
+          "Quartz",
+          "Consumable Part",
+          "RF Component"
+        ],
+        "themes": [
+          "HBM Test",
+          "고사양 Probe",
+          "소모품",
+          "국산화",
+          "미세공정"
+        ],
+        "representatives": [
+          {
+            "code": "058470",
+            "name": "리노공업"
+          },
+          {
+            "code": "222800",
+            "name": "심텍"
+          },
+          {
+            "code": "095340",
+            "name": "ISC"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "058470": 2476.0,
+            "222800": 5203.0,
+            "095340": 4234.0
+          },
+          "median_fper_or_pbr": 28.63,
+          "median_r20": 3.5188216039279796,
+          "median_r60": 10.344827586206895,
+          "median_rev_qoq": 21.827651515151516,
+          "median_fwd_rev_growth": 8.744656043528964,
+          "median_opm": 29.218106995884774,
+          "median_opm_delta": 3.932026063299787,
+          "median_revision_pct": 18.64548494983278
+        }
+      },
+      {
+        "key": "energy_lng_refining",
+        "name": "에너지 / LNG / 정유 / 신재생",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 61.9,
+        "investment_score": 65.8,
+        "valuation_score": 92.0,
+        "relative_strength_score": 57.7,
+        "catalyst_score": 59.6,
+        "factors": {
+          "demand": {
+            "level": 72.5,
+            "momentum": 49.1,
+            "score": 58.5
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 60.9,
+            "score": 56.5
+          },
+          "price": {
+            "level": 53.9,
+            "momentum": 31.1,
+            "score": 40.2
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 99.0,
+            "momentum": 100.0,
+            "score": 99.6
+          },
+          "structural": {
+            "level": 72.0,
+            "momentum": 68.0,
+            "score": 69.6
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 58.6,
+            "score": 59.6
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "EPS Revision 상향"
+        ],
+        "reason": "Revision 100 · 구조적 성장 70 | 대표: SK이노베이션, S-Oil, GS",
+        "growth": "LNG · Refining Margin · 태양광/풍력 · 수소 · Energy Security",
+        "subsectors": [
+          "정유",
+          "LNG",
+          "Gas",
+          "태양광",
+          "풍력",
+          "수소",
+          "연료전지"
+        ],
+        "themes": [
+          "LNG",
+          "유가",
+          "Refining Margin",
+          "태양광",
+          "풍력",
+          "수소",
+          "Energy Security"
+        ],
+        "representatives": [
+          {
+            "code": "096770",
+            "name": "SK이노베이션"
+          },
+          {
+            "code": "010950",
+            "name": "S-Oil"
+          },
+          {
+            "code": "078930",
+            "name": "GS"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "096770": 20461.0,
+            "010950": 27139.0,
+            "078930": 26669.0
+          },
+          "median_fper_or_pbr": 5.68,
+          "median_r20": 5.9106529209622005,
+          "median_r60": 11.714975845410635,
+          "median_rev_qoq": 20.424085477922205,
+          "median_fwd_rev_growth": -0.7459767168930709,
+          "median_opm": 11.960339127213862,
+          "median_opm_delta": 3.0300935062227037,
+          "median_revision_pct": 70.02039428959893
+        }
+      },
+      {
+        "key": "it_hardware",
+        "name": "전자부품 / IT Hardware",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 63.6,
+        "investment_score": 65.1,
+        "valuation_score": 84.0,
+        "relative_strength_score": 34.7,
+        "catalyst_score": 77.3,
+        "factors": {
+          "demand": {
+            "level": 49.8,
+            "momentum": 62.0,
+            "score": 57.2
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 50.5,
+            "score": 50.3
+          },
+          "price": {
+            "level": 49.1,
+            "momentum": 39.9,
+            "score": 43.6
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 85.0,
+            "score": 76.6
+          },
+          "revision": {
+            "level": 61.8,
+            "momentum": 83.7,
+            "score": 74.9
+          },
+          "structural": {
+            "level": 82.0,
+            "momentum": 72.6,
+            "score": 76.3
+          },
+          "catalyst": {
+            "level": 85.0,
+            "momentum": 72.2,
+            "score": 77.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "Catalyst 77 · CAPEX/수주 77 | 대표: 삼성전기, LG이노텍, 자화전자",
+        "growth": "AI Server MLCC · 전장 · XR · 자율주행",
+        "subsectors": [
+          "MLCC",
+          "카메라모듈",
+          "광학",
+          "모바일부품",
+          "커넥터",
+          "센서",
+          "전장부품"
+        ],
+        "themes": [
+          "AI Server MLCC",
+          "전장",
+          "스마트폰",
+          "XR",
+          "자율주행"
+        ],
+        "representatives": [
+          {
+            "code": "009150",
+            "name": "삼성전기"
+          },
+          {
+            "code": "011070",
+            "name": "LG이노텍"
+          },
+          {
+            "code": "033240",
+            "name": "자화전자"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "009150": 20704.0,
+            "011070": 34068.0
+          },
+          "median_fper_or_pbr": 11.9,
+          "median_r20": -15.547024952015354,
+          "median_r60": -11.468812877263579,
+          "median_rev_qoq": -0.1373130013731294,
+          "median_fwd_rev_growth": 10.45013750180923,
+          "median_opm": 9.566326530612244,
+          "median_opm_delta": 0.1301930438458445,
+          "median_revision_pct": 16.831683168316825
+        }
+      },
+      {
+        "key": "power_grid",
+        "name": "전력기기 / 전력망 / 전선",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "우호적 확장",
+        "cycle_score": 70.9,
+        "investment_score": 64.7,
+        "valuation_score": 64.0,
+        "relative_strength_score": 18.6,
+        "catalyst_score": 71.1,
+        "factors": {
+          "demand": {
+            "level": 66.0,
+            "momentum": 57.1,
+            "score": 60.7
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 61.5,
+            "score": 59.7
+          },
+          "price": {
+            "level": 61.3,
+            "momentum": 55.7,
+            "score": 58.0
+          },
+          "capex": {
+            "level": 70.0,
+            "momentum": 98.0,
+            "score": 86.8
+          },
+          "revision": {
+            "level": 65.3,
+            "momentum": 93.8,
+            "score": 82.4
+          },
+          "structural": {
+            "level": 95.0,
+            "momentum": 80.0,
+            "score": 86.0
+          },
+          "catalyst": {
+            "level": 79.0,
+            "momentum": 65.8,
+            "score": 71.1
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "CAPEX/수주 87 · 구조적 성장 86 | 대표: LS ELECTRIC, HD현대일렉트릭, 효성중공업",
+        "growth": "AI Data Center Grid · 북미 Grid · HVDC · 초고압",
+        "subsectors": [
+          "변압기",
+          "차단기",
+          "배전",
+          "전력자동화",
+          "전선",
+          "HVDC",
+          "초고압"
+        ],
+        "themes": [
+          "AI Data Center Grid",
+          "북미 Grid 교체",
+          "HVDC",
+          "초고압 변압기",
+          "전력망 병목"
+        ],
+        "representatives": [
+          {
+            "code": "010120",
+            "name": "LS ELECTRIC"
+          },
+          {
+            "code": "267260",
+            "name": "HD현대일렉트릭"
+          },
+          {
+            "code": "298040",
+            "name": "효성중공업"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "010120": 3593.0,
+            "267260": 25677.0,
+            "298040": 81269.0
+          },
+          "median_fper_or_pbr": 23.92,
+          "median_r20": -29.726027397260268,
+          "median_r60": -30.297597705270707,
+          "median_rev_qoq": 14.557605695191045,
+          "median_fwd_rev_growth": 6.201648700063411,
+          "median_opm": 15.666864256075874,
+          "median_opm_delta": 2.122388788198359,
+          "median_revision_pct": 21.898734177215196
+        }
+      },
+      {
+        "key": "security_quantum",
+        "name": "보안 / 양자",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 66.3,
+        "investment_score": 63.6,
+        "valuation_score": 28.0,
+        "relative_strength_score": 87.4,
+        "catalyst_score": 76.1,
+        "factors": {
+          "demand": {
+            "level": 72.7,
+            "momentum": 79.2,
+            "score": 76.6
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 65.7,
+            "score": 59.4
+          },
+          "price": {
+            "level": 45.1,
+            "momentum": 89.2,
+            "score": 71.6
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 50.0,
+            "momentum": 50.0,
+            "score": 50.0
+          },
+          "structural": {
+            "level": 84.0,
+            "momentum": 84.0,
+            "score": 84.0
+          },
+          "catalyst": {
+            "level": 79.0,
+            "momentum": 74.1,
+            "score": 76.1
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "주가 Momentum이 이익 Revision을 상회"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "가격/Margin 바닥 통과",
+          "수요 Momentum 회복"
+        ],
+        "reason": "구조적 성장 84 · 수요 77 | 대표: 안랩, 엑스게이트, 우리로",
+        "growth": "Cyber Security · Quantum Encryption · Zero Trust",
+        "subsectors": [
+          "Cyber Security",
+          "Authentication",
+          "Network Security",
+          "Quantum Security"
+        ],
+        "themes": [
+          "Cyber Security",
+          "Quantum Encryption",
+          "Zero Trust",
+          "국방 IT"
+        ],
+        "representatives": [
+          {
+            "code": "053800",
+            "name": "안랩"
+          },
+          {
+            "code": "356680",
+            "name": "엑스게이트"
+          },
+          {
+            "code": "046970",
+            "name": "우리로"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {},
+          "median_fper_or_pbr": 80.0,
+          "median_r20": 25.42134831460674,
+          "median_r60": 68.3206106870229,
+          "median_rev_qoq": 20.642978003384105,
+          "median_fwd_rev_growth": null,
+          "median_opm": 7.5736325385694245,
+          "median_opm_delta": 4.358742521648951,
+          "median_revision_pct": null
+        }
+      },
+      {
+        "key": "robot",
+        "name": "로봇 / 자동화",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "우호적 확장",
+        "cycle_score": 72.8,
+        "investment_score": 63.3,
+        "valuation_score": 28.0,
+        "relative_strength_score": 35.5,
+        "catalyst_score": 82.3,
+        "factors": {
+          "demand": {
+            "level": 83.6,
+            "momentum": 100.0,
+            "score": 93.4
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 54.8,
+            "score": 52.9
+          },
+          "price": {
+            "level": 0.0,
+            "momentum": 67.0,
+            "score": 40.2
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 81.1,
+            "momentum": 100.0,
+            "score": 92.4
+          },
+          "structural": {
+            "level": 95.0,
+            "momentum": 82.4,
+            "score": 87.5
+          },
+          "catalyst": {
+            "level": 91.0,
+            "momentum": 76.5,
+            "score": 82.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "수요 93 · Revision 92 | 대표: 레인보우로보틱스, 두산로보틱스, 로보티즈",
+        "growth": "Humanoid · Physical AI · Smart Factory · 물류자동화",
+        "subsectors": [
+          "산업용 로봇",
+          "협동로봇",
+          "물류자동화",
+          "감속기",
+          "액추에이터",
+          "휴머노이드"
+        ],
+        "themes": [
+          "Humanoid",
+          "Physical AI",
+          "Smart Factory",
+          "물류자동화",
+          "AI Robotics"
+        ],
+        "representatives": [
+          {
+            "code": "277810",
+            "name": "레인보우로보틱스"
+          },
+          {
+            "code": "454910",
+            "name": "두산로보틱스"
+          },
+          {
+            "code": "108490",
+            "name": "로보티즈"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "108490": -82.0
+          },
+          "median_fper_or_pbr": 4039.77,
+          "median_r20": -14.850299401197608,
+          "median_r60": -10.453400503778344,
+          "median_rev_qoq": 30.508474576271194,
+          "median_fwd_rev_growth": 43.56984478935698,
+          "median_opm": -16.260162601626014,
+          "median_opm_delta": 1.3222549807915698,
+          "median_revision_pct": 44.44444444444444
+        }
+      },
+      {
+        "key": "medical_device",
+        "name": "의료기기 / 헬스케어",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 63.3,
+        "investment_score": 63.3,
+        "valuation_score": 84.0,
+        "relative_strength_score": 28.8,
+        "catalyst_score": 67.2,
+        "factors": {
+          "demand": {
+            "level": 73.1,
+            "momentum": 51.8,
+            "score": 60.3
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 46.2,
+            "score": 47.7
+          },
+          "price": {
+            "level": 100.0,
+            "momentum": 67.7,
+            "score": 80.6
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 53.0,
+            "momentum": 58.5,
+            "score": 56.3
+          },
+          "structural": {
+            "level": 81.0,
+            "momentum": 70.0,
+            "score": 74.4
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 63.4,
+            "score": 67.2
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "ASP/Margin 81 · 구조적 성장 74 | 대표: 파마리서치, 휴젤, 클래시스",
+        "growth": "K-Medical · 미용의료 · AI Diagnostics · 고령화",
+        "subsectors": [
+          "미용의료",
+          "임플란트",
+          "진단",
+          "AI 의료",
+          "영상기기",
+          "수술기기"
+        ],
+        "themes": [
+          "K-Medical",
+          "미용의료",
+          "AI Diagnostics",
+          "고령화"
+        ],
+        "representatives": [
+          {
+            "code": "214450",
+            "name": "파마리서치"
+          },
+          {
+            "code": "145020",
+            "name": "휴젤"
+          },
+          {
+            "code": "214150",
+            "name": "클래시스"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "214450": 19253.0,
+            "145020": 12248.0,
+            "214150": 2309.0
+          },
+          "median_fper_or_pbr": 14.43,
+          "median_r20": -18.301610541727676,
+          "median_r60": -26.221294363256785,
+          "median_rev_qoq": 20.9862385321101,
+          "median_fwd_rev_growth": 1.5668718522663605,
+          "median_opm": 40.609137055837564,
+          "median_opm_delta": -1.0491760511326547,
+          "median_revision_pct": 4.272281275551926
+        }
+      },
+      {
+        "key": "bio",
+        "name": "바이오 / 제약",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 64.9,
+        "investment_score": 61.8,
+        "valuation_score": 54.0,
+        "relative_strength_score": 46.7,
+        "catalyst_score": 68.2,
+        "factors": {
+          "demand": {
+            "level": 55.6,
+            "momentum": 54.7,
+            "score": 55.1
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 43.5,
+            "score": 46.1
+          },
+          "price": {
+            "level": 100.0,
+            "momentum": 74.4,
+            "score": 84.7
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 57.1,
+            "momentum": 70.3,
+            "score": 65.0
+          },
+          "structural": {
+            "level": 82.0,
+            "momentum": 75.2,
+            "score": 77.9
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 65.0,
+            "score": 68.2
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "ASP/Margin 85 · 구조적 성장 78 | 대표: 삼성바이오로직스, 셀트리온, 알테오젠",
+        "growth": "비만치료제 · ADC · CDMO · 기술수출",
+        "subsectors": [
+          "신약",
+          "바이오시밀러",
+          "CDMO",
+          "항체",
+          "ADC",
+          "세포치료",
+          "유전자치료"
+        ],
+        "themes": [
+          "비만치료제",
+          "ADC",
+          "항암",
+          "알츠하이머",
+          "CDMO",
+          "기술수출"
+        ],
+        "representatives": [
+          {
+            "code": "207940",
+            "name": "삼성바이오로직스"
+          },
+          {
+            "code": "068270",
+            "name": "셀트리온"
+          },
+          {
+            "code": "196170",
+            "name": "알테오젠"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "207940": 40575.0,
+            "068270": 6822.0,
+            "196170": 4346.0
+          },
+          "median_fper_or_pbr": 31.82,
+          "median_r20": -7.202882101657049,
+          "median_r60": 9.986698189919775,
+          "median_rev_qoq": 5.075173017261947,
+          "median_fwd_rev_growth": 4.082657673817902,
+          "median_opm": 44.39397380573851,
+          "median_opm_delta": -1.807601247956498,
+          "median_revision_pct": 10.125786163522022
+        }
+      },
+      {
+        "key": "food",
+        "name": "음식료 / 소비재",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 57.5,
+        "investment_score": 61.5,
+        "valuation_score": 84.0,
+        "relative_strength_score": 46.6,
+        "catalyst_score": 68.5,
+        "factors": {
+          "demand": {
+            "level": 53.9,
+            "momentum": 55.0,
+            "score": 54.6
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 43.1,
+            "score": 45.9
+          },
+          "price": {
+            "level": 59.7,
+            "momentum": 58.3,
+            "score": 58.9
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 50.7,
+            "momentum": 52.0,
+            "score": 51.5
+          },
+          "structural": {
+            "level": 73.0,
+            "momentum": 67.4,
+            "score": 69.6
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 65.4,
+            "score": 68.5
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 70 · Catalyst 68 | 대표: 삼양식품, 오리온, CJ제일제당",
+        "growth": "K-Food · 해외유통 · 원재료 가격 안정",
+        "subsectors": [
+          "식품",
+          "음료",
+          "생활용품",
+          "패션"
+        ],
+        "themes": [
+          "K-Food",
+          "불닭",
+          "해외유통",
+          "원재료 가격 안정"
+        ],
+        "representatives": [
+          {
+            "code": "003230",
+            "name": "삼양식품"
+          },
+          {
+            "code": "271560",
+            "name": "오리온"
+          },
+          {
+            "code": "097950",
+            "name": "CJ제일제당"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "003230": 74722.0,
+            "271560": 11807.0,
+            "097950": 17488.0
+          },
+          "median_fper_or_pbr": 10.66,
+          "median_r20": -4.481546572934969,
+          "median_r60": 0.9199134199134207,
+          "median_rev_qoq": 3.529693015145341,
+          "median_fwd_rev_growth": 4.364368845120858,
+          "median_opm": 14.838854073410923,
+          "median_opm_delta": -1.9158287393736586,
+          "median_revision_pct": 1.0101010101010166
+        }
+      },
+      {
+        "key": "software_cloud_ai",
+        "name": "소프트웨어 / Cloud / AI SW",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 65.0,
+        "investment_score": 61.0,
+        "valuation_score": 54.0,
+        "relative_strength_score": 48.5,
+        "catalyst_score": 58.4,
+        "factors": {
+          "demand": {
+            "level": 54.9,
+            "momentum": 54.8,
+            "score": 54.8
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 59.8,
+            "score": 55.9
+          },
+          "price": {
+            "level": 45.3,
+            "momentum": 49.3,
+            "score": 47.7
+          },
+          "capex": {
+            "level": 70.0,
+            "momentum": 77.0,
+            "score": 74.2
+          },
+          "revision": {
+            "level": 69.1,
+            "momentum": 100.0,
+            "score": 87.7
+          },
+          "structural": {
+            "level": 88.0,
+            "momentum": 80.5,
+            "score": 83.5
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 56.6,
+            "score": 58.4
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "Revision 88 · 구조적 성장 84 | 대표: 포스코DX, NHN, 가비아",
+        "growth": "AI Agent · Enterprise AI · Cloud Migration · SaaS",
+        "subsectors": [
+          "SaaS",
+          "ERP",
+          "Cloud",
+          "AI Software",
+          "Enterprise Software"
+        ],
+        "themes": [
+          "AI Agent",
+          "Enterprise AI",
+          "Cloud Migration",
+          "SaaS"
+        ],
+        "representatives": [
+          {
+            "code": "022100",
+            "name": "포스코DX"
+          },
+          {
+            "code": "181710",
+            "name": "NHN"
+          },
+          {
+            "code": "079940",
+            "name": "가비아"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "181710": 3237.0
+          },
+          "median_fper_or_pbr": 29.24,
+          "median_r20": -7.052441229656415,
+          "median_r60": 16.371681415929196,
+          "median_rev_qoq": 4.470588235294115,
+          "median_fwd_rev_growth": 4.170847809209888,
+          "median_opm": 7.639530281039715,
+          "median_opm_delta": 2.724142780593489,
+          "median_revision_pct": 27.353497566263517
+        }
+      },
+      {
+        "key": "defense_space",
+        "name": "방산 / 우주항공",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 61.3,
+        "investment_score": 60.4,
+        "valuation_score": 64.0,
+        "relative_strength_score": 32.4,
+        "catalyst_score": 76.8,
+        "factors": {
+          "demand": {
+            "level": 100.0,
+            "momentum": 28.6,
+            "score": 57.2
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 62.9,
+            "score": 57.7
+          },
+          "price": {
+            "level": 57.0,
+            "momentum": 59.3,
+            "score": 58.4
+          },
+          "capex": {
+            "level": 70.0,
+            "momentum": 84.0,
+            "score": 78.4
+          },
+          "revision": {
+            "level": 40.1,
+            "momentum": 21.8,
+            "score": 29.2
+          },
+          "structural": {
+            "level": 93.0,
+            "momentum": 81.7,
+            "score": 86.2
+          },
+          "catalyst": {
+            "level": 85.0,
+            "momentum": 71.4,
+            "score": 76.8
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 86 · CAPEX/수주 78 | 대표: 한화에어로스페이스, 한화오션, 한화시스템",
+        "growth": "유럽 재무장 · 중동 방산수출 · 우주/위성 · MRO",
+        "subsectors": [
+          "항공기",
+          "미사일",
+          "탄약",
+          "장갑차",
+          "레이더",
+          "위성",
+          "MRO"
+        ],
+        "themes": [
+          "유럽 재무장",
+          "중동 방산수출",
+          "K-방산",
+          "우주",
+          "위성",
+          "드론",
+          "MRO"
+        ],
+        "representatives": [
+          {
+            "code": "012450",
+            "name": "한화에어로스페이스"
+          },
+          {
+            "code": "042660",
+            "name": "한화오션"
+          },
+          {
+            "code": "272210",
+            "name": "한화시스템"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "012450": 44607.0,
+            "042660": 6404.0,
+            "272210": 746.0
+          },
+          "median_fper_or_pbr": 20.18,
+          "median_r20": -20.5648720211827,
+          "median_r60": -4.559915164369032,
+          "median_rev_qoq": 61.58754999130587,
+          "median_fwd_rev_growth": -18.616363029839988,
+          "median_opm": 13.523295120517343,
+          "median_opm_delta": 3.5846414263098367,
+          "median_revision_pct": -14.084507042253524
+        }
+      },
+      {
+        "key": "entertainment",
+        "name": "엔터 / 미디어",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 60.2,
+        "investment_score": 60.2,
+        "valuation_score": 74.0,
+        "relative_strength_score": 45.7,
+        "catalyst_score": 54.0,
+        "factors": {
+          "demand": {
+            "level": 77.8,
+            "momentum": 49.5,
+            "score": 60.8
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 54.7,
+            "score": 52.8
+          },
+          "price": {
+            "level": 60.3,
+            "momentum": 46.3,
+            "score": 51.9
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 64.7,
+            "momentum": 91.9,
+            "score": 81.0
+          },
+          "structural": {
+            "level": 75.0,
+            "momentum": 66.9,
+            "score": 70.1
+          },
+          "catalyst": {
+            "level": 55.0,
+            "momentum": 53.4,
+            "score": 54.0
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "EPS Revision 상향"
+        ],
+        "reason": "Revision 81 · 구조적 성장 70 | 대표: 하이브, 에스엠, JYP Ent.",
+        "growth": "K-Pop · 글로벌 투어 · OTT · K-Content",
+        "subsectors": [
+          "엔터",
+          "콘텐츠 제작",
+          "방송",
+          "영화",
+          "광고"
+        ],
+        "themes": [
+          "K-Pop",
+          "글로벌 투어",
+          "OTT",
+          "웹툰",
+          "K-Content"
+        ],
+        "representatives": [
+          {
+            "code": "352820",
+            "name": "하이브"
+          },
+          {
+            "code": "041510",
+            "name": "에스엠"
+          },
+          {
+            "code": "035900",
+            "name": "JYP Ent."
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "352820": 4203.0,
+            "041510": 5294.0,
+            "035900": 3294.0
+          },
+          "median_fper_or_pbr": 16.07,
+          "median_r20": -0.7633587786259555,
+          "median_r60": -14.868105515587526,
+          "median_rev_qoq": 25.25976352561805,
+          "median_fwd_rev_growth": -0.47586206896551575,
+          "median_opm": 15.131578947368421,
+          "median_opm_delta": 1.3014105489449186,
+          "median_revision_pct": 20.93513058129739
+        }
+      },
+      {
+        "key": "nuclear_smr",
+        "name": "원전 / SMR",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 66.3,
+        "investment_score": 58.7,
+        "valuation_score": 42.0,
+        "relative_strength_score": 26.1,
+        "catalyst_score": 66.6,
+        "factors": {
+          "demand": {
+            "level": 62.0,
+            "momentum": 53.0,
+            "score": 56.6
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 58.1,
+            "score": 57.6
+          },
+          "price": {
+            "level": 52.6,
+            "momentum": 52.3,
+            "score": 52.5
+          },
+          "capex": {
+            "level": 70.0,
+            "momentum": 98.0,
+            "score": 86.8
+          },
+          "revision": {
+            "level": 58.0,
+            "momentum": 73.0,
+            "score": 67.0
+          },
+          "structural": {
+            "level": 96.0,
+            "momentum": 82.5,
+            "score": 87.9
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 62.4,
+            "score": 66.6
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "EPS Revision 상향"
+        ],
+        "reason": "구조적 성장 88 · CAPEX/수주 87 | 대표: 두산에너빌리티, LS ELECTRIC, HD현대일렉트릭",
+        "growth": "원전 수출 · SMR · 원전 재가동 · AI Data Center 전력",
+        "subsectors": [
+          "원전 주기기",
+          "원전 기자재",
+          "EPC",
+          "유지보수",
+          "SMR"
+        ],
+        "themes": [
+          "원전 수출",
+          "SMR",
+          "원전 재가동",
+          "전력수요 증가",
+          "AI Data Center 전력"
+        ],
+        "representatives": [
+          {
+            "code": "034020",
+            "name": "두산에너빌리티"
+          },
+          {
+            "code": "010120",
+            "name": "LS ELECTRIC"
+          },
+          {
+            "code": "267260",
+            "name": "HD현대일렉트릭"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "034020": 529.0,
+            "010120": 3593.0,
+            "267260": 25677.0
+          },
+          "median_fper_or_pbr": 44.25,
+          "median_r20": -24.766355140186914,
+          "median_r60": -16.315789473684205,
+          "median_rev_qoq": 10.882166576705554,
+          "median_fwd_rev_growth": 2.5661236643895524,
+          "median_opm": 11.318960050729231,
+          "median_opm_delta": 1.1723277396586642,
+          "median_revision_pct": 11.479413817166773
+        }
+      },
+      {
+        "key": "semi_materials",
+        "name": "반도체 소재",
+        "actual_cycle": "Peak",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 52.1,
+        "investment_score": 58.3,
+        "valuation_score": 84.0,
+        "relative_strength_score": 45.5,
+        "catalyst_score": 73.3,
+        "factors": {
+          "demand": {
+            "level": 67.3,
+            "momentum": 54.3,
+            "score": 59.5
+          },
+          "supply": {
+            "level": 43.0,
+            "momentum": 68.7,
+            "score": 58.4
+          },
+          "price": {
+            "level": 51.1,
+            "momentum": 28.8,
+            "score": 37.7
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 71.0,
+            "score": 68.2
+          },
+          "revision": {
+            "level": 0.8,
+            "momentum": 0.0,
+            "score": 0.3
+          },
+          "structural": {
+            "level": 87.0,
+            "momentum": 77.5,
+            "score": 81.3
+          },
+          "catalyst": {
+            "level": 79.0,
+            "momentum": 69.6,
+            "score": 73.3
+          }
+        },
+        "peak_warning": true,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 81 · Catalyst 73 | 대표: LG화학, OCI홀딩스, 금호석유화학",
+        "growth": "EUV · HBM 소재 · Advanced Packaging · 국산화",
+        "subsectors": [
+          "포토레지스트",
+          "Wet Chemical",
+          "특수가스",
+          "CMP",
+          "Silicon Wafer",
+          "CCL",
+          "동박",
+          "Glass Cloth",
+          "패키징 소재"
+        ],
+        "themes": [
+          "국산화",
+          "HBM 소재",
+          "EUV",
+          "Advanced Packaging",
+          "AI Semiconductor Supply Chain"
+        ],
+        "representatives": [
+          {
+            "code": "051910",
+            "name": "LG화학"
+          },
+          {
+            "code": "010060",
+            "name": "OCI홀딩스"
+          },
+          {
+            "code": "011780",
+            "name": "금호석유화학"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "051910": -2662.0,
+            "010060": 8848.0,
+            "011780": 19213.0
+          },
+          "median_fper_or_pbr": 14.185,
+          "median_r20": -4.859813084112153,
+          "median_r60": -2.303262955854124,
+          "median_rev_qoq": 15.751869876212554,
+          "median_fwd_rev_growth": 3.776832511516015,
+          "median_opm": 10.564894448788117,
+          "median_opm_delta": 9.343469078998785,
+          "median_revision_pct": -70.24770125727153
+        }
+      },
+      {
+        "key": "environment",
+        "name": "환경 / 폐기물 / 수처리",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 59.4,
+        "investment_score": 57.6,
+        "valuation_score": 54.0,
+        "relative_strength_score": 45.2,
+        "catalyst_score": 63.4,
+        "factors": {
+          "demand": {
+            "level": 78.7,
+            "momentum": 100.0,
+            "score": 91.5
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 76.3,
+            "score": 68.6
+          },
+          "price": {
+            "level": 46.4,
+            "momentum": 52.2,
+            "score": 49.9
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 19.3,
+            "momentum": 0.0,
+            "score": 7.7
+          },
+          "structural": {
+            "level": 68.0,
+            "momentum": 63.4,
+            "score": 65.3
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 61.0,
+            "score": 63.4
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복"
+        ],
+        "reason": "수요 92 · 공급/재고 69 | 대표: 아이에스동서, 성일하이텍, 에코아이",
+        "growth": "폐배터리 · 재활용 · 수처리 · 환경규제",
+        "subsectors": [
+          "폐기물",
+          "재활용",
+          "수처리",
+          "환경설비"
+        ],
+        "themes": [
+          "폐배터리",
+          "재활용",
+          "물 부족",
+          "환경규제"
+        ],
+        "representatives": [
+          {
+            "code": "010780",
+            "name": "아이에스동서"
+          },
+          {
+            "code": "365340",
+            "name": "성일하이텍"
+          },
+          {
+            "code": "448280",
+            "name": "에코아이"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "010780": 5028.0
+          },
+          "median_fper_or_pbr": 26.555,
+          "median_r20": -5.893782383419688,
+          "median_r60": -0.4672897196261627,
+          "median_rev_qoq": 26.108374384236456,
+          "median_fwd_rev_growth": 75.17963715582896,
+          "median_opm": 8.203125,
+          "median_opm_delta": 8.203125,
+          "median_revision_pct": -43.888964323296776
+        }
+      },
+      {
+        "key": "telecom_network",
+        "name": "통신 / 네트워크",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 50.5,
+        "investment_score": 57.5,
+        "valuation_score": 92.0,
+        "relative_strength_score": 45.0,
+        "catalyst_score": 63.5,
+        "factors": {
+          "demand": {
+            "level": 48.4,
+            "momentum": 54.7,
+            "score": 52.2
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 61.6,
+            "score": 59.8
+          },
+          "price": {
+            "level": 49.4,
+            "momentum": 34.7,
+            "score": 40.6
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 59.0,
+            "score": 56.2
+          },
+          "revision": {
+            "level": 37.6,
+            "momentum": 14.5,
+            "score": 23.7
+          },
+          "structural": {
+            "level": 70.0,
+            "momentum": 64.5,
+            "score": 66.7
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 61.1,
+            "score": 63.5
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "ASP/Margin Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 67 · Catalyst 64 | 대표: SK텔레콤, KT, LG유플러스",
+        "growth": "5G/6G · AI Network · Data Center Network · 광통신",
+        "subsectors": [
+          "통신사",
+          "네트워크 장비",
+          "광통신"
+        ],
+        "themes": [
+          "5G",
+          "6G",
+          "AI Network",
+          "Data Center Network",
+          "광통신"
+        ],
+        "representatives": [
+          {
+            "code": "017670",
+            "name": "SK텔레콤"
+          },
+          {
+            "code": "030200",
+            "name": "KT"
+          },
+          {
+            "code": "032640",
+            "name": "LG유플러스"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "017670": 6272.0,
+            "030200": 5675.0,
+            "032640": 1732.0
+          },
+          "median_fper_or_pbr": 8.95,
+          "median_r20": -5.0847457627118615,
+          "median_r60": -3.8167938931297662,
+          "median_rev_qoq": -1.4531452850230164,
+          "median_fwd_rev_growth": 4.05844398868247,
+          "median_opm": 9.705235108310005,
+          "median_opm_delta": 2.164843300780549,
+          "median_revision_pct": -17.754868270332192
+        }
+      },
+      {
+        "key": "auto",
+        "name": "자동차 / 부품",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 51.2,
+        "investment_score": 57.3,
+        "valuation_score": 92.0,
+        "relative_strength_score": 34.7,
+        "catalyst_score": 67.9,
+        "factors": {
+          "demand": {
+            "level": 57.8,
+            "momentum": 46.1,
+            "score": 50.8
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 51.7,
+            "score": 51.0
+          },
+          "price": {
+            "level": 41.9,
+            "momentum": 48.0,
+            "score": 45.6
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 41.9,
+            "momentum": 26.9,
+            "score": 32.9
+          },
+          "structural": {
+            "level": 76.0,
+            "momentum": 66.2,
+            "score": 70.1
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 64.5,
+            "score": 67.9
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [],
+        "reason": "구조적 성장 70 · Catalyst 68 | 대표: 현대차, 기아, 현대모비스",
+        "growth": "HEV · SDV · 자율주행 · 전장 · 북미 생산",
+        "subsectors": [
+          "완성차",
+          "파워트레인",
+          "전장",
+          "샤시",
+          "열관리",
+          "타이어",
+          "자율주행 부품"
+        ],
+        "themes": [
+          "HEV",
+          "EV",
+          "SDV",
+          "자율주행",
+          "전장",
+          "북미 생산",
+          "신차 Cycle"
+        ],
+        "representatives": [
+          {
+            "code": "005380",
+            "name": "현대차"
+          },
+          {
+            "code": "000270",
+            "name": "기아"
+          },
+          {
+            "code": "012330",
+            "name": "현대모비스"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "005380": 35367.0,
+            "000270": 20713.0,
+            "012330": 44555.0
+          },
+          "median_fper_or_pbr": 7.93,
+          "median_r20": -10.957178841309823,
+          "median_r60": -26.117647058823536,
+          "median_rev_qoq": 7.13208196103956,
+          "median_fwd_rev_growth": -3.4058679484579413,
+          "median_opm": 5.973769808939827,
+          "median_opm_delta": 0.4820756499026233,
+          "median_revision_pct": -11.54858406148016
+        }
+      },
+      {
+        "key": "industrial",
+        "name": "기계 / 산업재",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 57.5,
+        "investment_score": 56.7,
+        "valuation_score": 74.0,
+        "relative_strength_score": 25.7,
+        "catalyst_score": 56.8,
+        "factors": {
+          "demand": {
+            "level": 62.0,
+            "momentum": 44.4,
+            "score": 51.4
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 54.2,
+            "score": 52.5
+          },
+          "price": {
+            "level": 47.2,
+            "momentum": 51.0,
+            "score": 49.5
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 78.0,
+            "score": 72.4
+          },
+          "revision": {
+            "level": 52.4,
+            "momentum": 57.0,
+            "score": 55.2
+          },
+          "structural": {
+            "level": 76.0,
+            "momentum": 67.3,
+            "score": 70.8
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 54.0,
+            "score": 56.8
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "CAPEX/수주 72 · 구조적 성장 71 | 대표: 삼성물산, 두산에너빌리티, HD현대일렉트릭",
+        "growth": "미국 Re-shoring · 산업 CAPEX · 스마트팩토리",
+        "subsectors": [
+          "공작기계",
+          "굴삭기",
+          "농기계",
+          "Compressor",
+          "Industrial Equipment"
+        ],
+        "themes": [
+          "미국 Re-shoring",
+          "산업 CAPEX",
+          "스마트팩토리",
+          "광산 CAPEX"
+        ],
+        "representatives": [
+          {
+            "code": "028260",
+            "name": "삼성물산"
+          },
+          {
+            "code": "034020",
+            "name": "두산에너빌리티"
+          },
+          {
+            "code": "267260",
+            "name": "HD현대일렉트릭"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "028260": 16678.0,
+            "034020": 529.0,
+            "267260": 25677.0
+          },
+          "median_fper_or_pbr": 19.98,
+          "median_r20": -24.766355140186914,
+          "median_r60": -17.919075144508668,
+          "median_rev_qoq": 10.882166576705554,
+          "median_fwd_rev_growth": -4.8894965444223,
+          "median_opm": 8.601012079932639,
+          "median_opm_delta": 1.1723277396586642,
+          "median_revision_pct": 3.4899697719153577
+        }
+      },
+      {
+        "key": "nonferrous",
+        "name": "비철금속 / 구리 / 희토류",
+        "actual_cycle": "둔화",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 51.4,
+        "investment_score": 56.7,
+        "valuation_score": 92.0,
+        "relative_strength_score": 32.6,
+        "catalyst_score": 62.2,
+        "factors": {
+          "demand": {
+            "level": 55.4,
+            "momentum": 49.0,
+            "score": 51.6
+          },
+          "supply": {
+            "level": 64.0,
+            "momentum": 46.6,
+            "score": 53.6
+          },
+          "price": {
+            "level": 47.0,
+            "momentum": 33.2,
+            "score": 38.7
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 37.8,
+            "momentum": 15.1,
+            "score": 24.2
+          },
+          "structural": {
+            "level": 79.0,
+            "momentum": 70.8,
+            "score": 74.1
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 59.0,
+            "score": 62.2
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "ASP/Margin Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 74 · CAPEX/수주 66 | 대표: 고려아연, 풍산, 영풍",
+        "growth": "AI Grid Copper · 희토류 · 공급망 재편 · 전략광물",
+        "subsectors": [
+          "구리",
+          "아연",
+          "알루미늄",
+          "니켈",
+          "희토류",
+          "전략광물"
+        ],
+        "themes": [
+          "AI Grid Copper",
+          "전기차 Copper",
+          "희토류",
+          "공급망 재편",
+          "전략광물"
+        ],
+        "representatives": [
+          {
+            "code": "010130",
+            "name": "고려아연"
+          },
+          {
+            "code": "103140",
+            "name": "풍산"
+          },
+          {
+            "code": "000670",
+            "name": "영풍"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "010130": 59438.0,
+            "103140": 10624.0
+          },
+          "median_fper_or_pbr": 6.03,
+          "median_r20": -19.329896907216494,
+          "median_r60": -7.692307692307687,
+          "median_rev_qoq": 4.950592885375493,
+          "median_fwd_rev_growth": -0.8801420304817951,
+          "median_opm": 8.515268992722573,
+          "median_opm_delta": -3.0746692640019226,
+          "median_revision_pct": -17.46078002861506
+        }
+      },
+      {
+        "key": "construction",
+        "name": "건설 / 인프라 / 플랜트",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 55.8,
+        "investment_score": 56.4,
+        "valuation_score": 74.0,
+        "relative_strength_score": 32.9,
+        "catalyst_score": 57.3,
+        "factors": {
+          "demand": {
+            "level": 66.1,
+            "momentum": 47.9,
+            "score": 55.2
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 56.2,
+            "score": 53.7
+          },
+          "price": {
+            "level": 47.2,
+            "momentum": 44.0,
+            "score": 45.3
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 71.0,
+            "score": 68.2
+          },
+          "revision": {
+            "level": 52.4,
+            "momentum": 57.0,
+            "score": 55.2
+          },
+          "structural": {
+            "level": 59.0,
+            "momentum": 56.0,
+            "score": 57.2
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 54.8,
+            "score": 57.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "CAPEX/수주 68 · Catalyst 57 | 대표: 삼성물산, 현대건설, 삼성E&A",
+        "growth": "중동 플랜트 · AI Data Center · 재건 · 대형 EPC",
+        "subsectors": [
+          "주택",
+          "해외건설",
+          "EPC",
+          "산업플랜트",
+          "데이터센터",
+          "인프라"
+        ],
+        "themes": [
+          "중동 플랜트",
+          "AI Data Center",
+          "재건",
+          "원전건설",
+          "대형 EPC"
+        ],
+        "representatives": [
+          {
+            "code": "028260",
+            "name": "삼성물산"
+          },
+          {
+            "code": "000720",
+            "name": "현대건설"
+          },
+          {
+            "code": "028050",
+            "name": "삼성E&A"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "028260": 16678.0,
+            "000720": 4514.0,
+            "028050": 3768.0
+          },
+          "median_fper_or_pbr": 17.03,
+          "median_r20": -19.54674220963173,
+          "median_r60": -5.757575757575761,
+          "median_rev_qoq": 14.612356437157214,
+          "median_fwd_rev_growth": -1.785949169139034,
+          "median_opm": 8.601012079932639,
+          "median_opm_delta": 1.7176395713809756,
+          "median_revision_pct": 3.4899697719153577
+        }
+      },
+      {
+        "key": "beauty",
+        "name": "화장품 / 뷰티",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 54.5,
+        "investment_score": 56.1,
+        "valuation_score": 64.0,
+        "relative_strength_score": 47.0,
+        "catalyst_score": 63.3,
+        "factors": {
+          "demand": {
+            "level": 55.6,
+            "momentum": 49.0,
+            "score": 51.6
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 47.0,
+            "score": 48.2
+          },
+          "price": {
+            "level": 50.0,
+            "momentum": 50.8,
+            "score": 50.5
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 59.0,
+            "score": 56.2
+          },
+          "revision": {
+            "level": 46.9,
+            "momentum": 41.1,
+            "score": 43.4
+          },
+          "structural": {
+            "level": 85.0,
+            "momentum": 77.6,
+            "score": 80.6
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 60.8,
+            "score": 63.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 81 · Catalyst 63 | 대표: 에이피알, 아모레퍼시픽, LG생활건강",
+        "growth": "K-Beauty · 북미/일본 · 인디브랜드 · ODM",
+        "subsectors": [
+          "브랜드",
+          "ODM / OEM",
+          "원료",
+          "미용기기"
+        ],
+        "themes": [
+          "K-Beauty",
+          "북미",
+          "일본",
+          "인디브랜드",
+          "ODM"
+        ],
+        "representatives": [
+          {
+            "code": "278470",
+            "name": "에이피알"
+          },
+          {
+            "code": "090430",
+            "name": "아모레퍼시픽"
+          },
+          {
+            "code": "051900",
+            "name": "LG생활건강"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "278470": 15212.0,
+            "090430": 5435.0,
+            "051900": 12301.0
+          },
+          "median_fper_or_pbr": 22.4,
+          "median_r20": -7.239057239057233,
+          "median_r60": 11.093247588424425,
+          "median_rev_qoq": 5.124952429278196,
+          "median_fwd_rev_growth": -0.911065524315191,
+          "median_opm": 9.975338038948891,
+          "median_opm_delta": -0.8317793228224915,
+          "median_revision_pct": -4.47089947089947
+        }
+      },
+      {
+        "key": "semi_equipment",
+        "name": "반도체 장비",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 60.6,
+        "investment_score": 55.7,
+        "valuation_score": 28.0,
+        "relative_strength_score": 56.7,
+        "catalyst_score": 64.3,
+        "factors": {
+          "demand": {
+            "level": 62.1,
+            "momentum": 48.0,
+            "score": 53.7
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 76.3,
+            "score": 68.6
+          },
+          "price": {
+            "level": 91.2,
+            "momentum": 24.7,
+            "score": 51.3
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 50.0,
+            "momentum": 50.0,
+            "score": 50.0
+          },
+          "structural": {
+            "level": 92.0,
+            "momentum": 83.1,
+            "score": 86.6
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 62.6,
+            "score": 64.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 87 · 공급/재고 69 | 대표: 한미반도체, 주성엔지니어링, 이오테크닉스",
+        "growth": "HBM CAPEX · Hybrid Bonding · 미세공정 · 검사/테스트",
+        "subsectors": [
+          "증착",
+          "식각",
+          "세정",
+          "검사",
+          "테스트",
+          "패키징",
+          "Bonding",
+          "Metrology"
+        ],
+        "themes": [
+          "HBM CAPEX",
+          "Advanced Packaging",
+          "Hybrid Bonding",
+          "미세공정",
+          "검사/테스트"
+        ],
+        "representatives": [
+          {
+            "code": "042700",
+            "name": "한미반도체"
+          },
+          {
+            "code": "036930",
+            "name": "주성엔지니어링"
+          },
+          {
+            "code": "039030",
+            "name": "이오테크닉스"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {},
+          "median_fper_or_pbr": 90.34,
+          "median_r20": 4.444444444444451,
+          "median_r60": 12.55987227248536,
+          "median_rev_qoq": 11.033883579496084,
+          "median_fwd_rev_growth": -1.7214397496087663,
+          "median_opm": 30.59467918622848,
+          "median_opm_delta": 15.0876840879304,
+          "median_revision_pct": null
+        }
+      },
+      {
+        "key": "platform",
+        "name": "인터넷 / 플랫폼",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 53.2,
+        "investment_score": 55.6,
+        "valuation_score": 74.0,
+        "relative_strength_score": 40.5,
+        "catalyst_score": 58.3,
+        "factors": {
+          "demand": {
+            "level": 55.0,
+            "momentum": 50.9,
+            "score": 52.5
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 58.3,
+            "score": 55.0
+          },
+          "price": {
+            "level": 60.7,
+            "momentum": 41.3,
+            "score": 49.1
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 44.5,
+            "momentum": 34.4,
+            "score": 38.5
+          },
+          "structural": {
+            "level": 83.0,
+            "momentum": 73.3,
+            "score": 77.2
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 56.5,
+            "score": 58.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "ASP/Margin Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선"
+        ],
+        "reason": "구조적 성장 77 · Catalyst 58 | 대표: NAVER, 카카오, 카카오뱅크",
+        "growth": "AI Search · Commerce · Advertising · Super App",
+        "subsectors": [
+          "Search",
+          "Commerce",
+          "광고",
+          "Platform"
+        ],
+        "themes": [
+          "AI Search",
+          "Commerce",
+          "Advertising",
+          "Super App"
+        ],
+        "representatives": [
+          {
+            "code": "035420",
+            "name": "NAVER"
+          },
+          {
+            "code": "035720",
+            "name": "카카오"
+          },
+          {
+            "code": "323410",
+            "name": "카카오뱅크"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "035420": 12190.0,
+            "035720": 1255.0,
+            "323410": 1247.0
+          },
+          "median_fper_or_pbr": 16.32,
+          "median_r20": -8.248914616497826,
+          "median_r60": -11.521739130434783,
+          "median_rev_qoq": 4.557094813489249,
+          "median_fwd_rev_growth": 0.7729236821660657,
+          "median_opm": 15.35351746931067,
+          "median_opm_delta": 2.3147803438984393,
+          "median_revision_pct": -7.796610169491524
+        }
+      },
+      {
+        "key": "shipbuilding",
+        "name": "조선 / 조선기자재",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 52.0,
+        "investment_score": 55.4,
+        "valuation_score": 84.0,
+        "relative_strength_score": 23.5,
+        "catalyst_score": 66.6,
+        "factors": {
+          "demand": {
+            "level": 60.6,
+            "momentum": 44.6,
+            "score": 51.0
+          },
+          "supply": {
+            "level": 43.0,
+            "momentum": 50.2,
+            "score": 47.3
+          },
+          "price": {
+            "level": 62.8,
+            "momentum": 53.6,
+            "score": 57.3
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 34.3,
+            "momentum": 5.2,
+            "score": 16.9
+          },
+          "structural": {
+            "level": 83.0,
+            "momentum": 71.6,
+            "score": 76.1
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 62.3,
+            "score": 66.6
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 76 · Catalyst 67 | 대표: HD현대중공업, 한화오션, HD한국조선해양",
+        "growth": "LNG · 암모니아선 · 친환경선박 · 고선가 수주잔고",
+        "subsectors": [
+          "LNG선",
+          "컨테이너선",
+          "탱커",
+          "엔진",
+          "기자재",
+          "해양플랜트"
+        ],
+        "themes": [
+          "LNG",
+          "암모니아선",
+          "친환경선박",
+          "고선가 선박",
+          "조선 Super Cycle"
+        ],
+        "representatives": [
+          {
+            "code": "329180",
+            "name": "HD현대중공업"
+          },
+          {
+            "code": "042660",
+            "name": "한화오션"
+          },
+          {
+            "code": "009540",
+            "name": "HD한국조선해양"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "329180": 30364.0,
+            "042660": 6404.0,
+            "009540": 56043.0
+          },
+          "median_fper_or_pbr": 10.09,
+          "median_r20": -25.212765957446802,
+          "median_r60": -25.49019607843137,
+          "median_rev_qoq": 9.656180520581259,
+          "median_fwd_rev_growth": -4.680837623574741,
+          "median_opm": 16.422412431698305,
+          "median_opm_delta": 1.1189288355317828,
+          "median_revision_pct": -22.383465259454706
+        }
+      },
+      {
+        "key": "retail",
+        "name": "유통 / 리테일 / 커머스",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 51.5,
+        "investment_score": 55.4,
+        "valuation_score": 92.0,
+        "relative_strength_score": 19.5,
+        "catalyst_score": 61.6,
+        "factors": {
+          "demand": {
+            "level": 47.0,
+            "momentum": 53.8,
+            "score": 51.1
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 45.2,
+            "score": 47.1
+          },
+          "price": {
+            "level": 37.0,
+            "momentum": 57.9,
+            "score": 49.6
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 48.9,
+            "momentum": 46.9,
+            "score": 47.7
+          },
+          "structural": {
+            "level": 61.0,
+            "momentum": 53.4,
+            "score": 56.4
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 58.0,
+            "score": 61.6
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [],
+        "reason": "Catalyst 62 · 구조적 성장 56 | 대표: 신세계, 롯데쇼핑, BGF리테일",
+        "growth": "내수회복 · 관광객 · 소비회복 · 온라인 Commerce",
+        "subsectors": [
+          "백화점",
+          "편의점",
+          "홈쇼핑",
+          "면세",
+          "E-Commerce"
+        ],
+        "themes": [
+          "내수회복",
+          "관광객",
+          "소비회복",
+          "온라인 Commerce"
+        ],
+        "representatives": [
+          {
+            "code": "004170",
+            "name": "신세계"
+          },
+          {
+            "code": "023530",
+            "name": "롯데쇼핑"
+          },
+          {
+            "code": "282330",
+            "name": "BGF리테일"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "004170": 43508.0,
+            "023530": 11802.0,
+            "282330": 13248.0
+          },
+          "median_fper_or_pbr": 7.28,
+          "median_r20": -25.906040268456376,
+          "median_r60": -38.99147727272727,
+          "median_rev_qoq": -2.6971186062095143,
+          "median_fwd_rev_growth": 3.2826398852223715,
+          "median_opm": 3.498434151969672,
+          "median_opm_delta": -1.3231471276797055,
+          "median_revision_pct": -1.5507124895222102
+        }
+      },
+      {
+        "key": "materials",
+        "name": "철강 / 소재 / 화학",
+        "actual_cycle": "둔화",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 47.9,
+        "investment_score": 54.3,
+        "valuation_score": 84.0,
+        "relative_strength_score": 42.7,
+        "catalyst_score": 63.3,
+        "factors": {
+          "demand": {
+            "level": 58.5,
+            "momentum": 46.3,
+            "score": 51.2
+          },
+          "supply": {
+            "level": 64.0,
+            "momentum": 58.8,
+            "score": 60.9
+          },
+          "price": {
+            "level": 38.5,
+            "momentum": 35.0,
+            "score": 36.4
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 24.0,
+            "momentum": 0.0,
+            "score": 9.6
+          },
+          "structural": {
+            "level": 62.0,
+            "momentum": 58.4,
+            "score": 59.9
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 60.8,
+            "score": 63.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "Catalyst 63 · CAPEX/수주 62 | 대표: POSCO홀딩스, 고려아연, LG화학",
+        "growth": "중국 공급감축 · Spread 개선 · 공급과잉 해소",
+        "subsectors": [
+          "철강",
+          "석유화학",
+          "정밀화학",
+          "산업소재"
+        ],
+        "themes": [
+          "중국 공급감축",
+          "Spread 개선",
+          "원재료 가격",
+          "공급과잉 해소"
+        ],
+        "representatives": [
+          {
+            "code": "005490",
+            "name": "POSCO홀딩스"
+          },
+          {
+            "code": "010130",
+            "name": "고려아연"
+          },
+          {
+            "code": "051910",
+            "name": "LG화학"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "005490": 24120.0,
+            "010130": 59438.0,
+            "051910": -2662.0
+          },
+          "median_fper_or_pbr": 14.120000000000001,
+          "median_r20": -7.620528771384139,
+          "median_r60": -4.65489566613162,
+          "median_rev_qoq": 7.734349214873482,
+          "median_fwd_rev_growth": -3.2156895325229584,
+          "median_opm": 4.252623489643641,
+          "median_opm_delta": 0.2987409313675071,
+          "median_revision_pct": -37.09061451220923
+        }
+      },
+      {
+        "key": "travel",
+        "name": "여행 / 레저 / 항공",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 51.2,
+        "investment_score": 54.3,
+        "valuation_score": 74.0,
+        "relative_strength_score": 41.5,
+        "catalyst_score": 58.1,
+        "factors": {
+          "demand": {
+            "level": 53.0,
+            "momentum": 56.1,
+            "score": 54.9
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 30.2,
+            "score": 38.1
+          },
+          "price": {
+            "level": 55.3,
+            "momentum": 99.5,
+            "score": 81.9
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 0.0,
+            "momentum": 0.0,
+            "score": 0.0
+          },
+          "structural": {
+            "level": 67.0,
+            "momentum": 62.8,
+            "score": 64.5
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 56.1,
+            "score": 58.1
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "재고/가동률 Balance 악화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "가격/Margin 바닥 통과",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "ASP/Margin 82 · CAPEX/수주 66 | 대표: 대한항공, 한진칼, 강원랜드",
+        "growth": "인바운드 · 중국/일본 관광 · 카지노 · 항공수요",
+        "subsectors": [
+          "여행",
+          "호텔",
+          "카지노",
+          "항공"
+        ],
+        "themes": [
+          "인바운드",
+          "중국 관광객",
+          "일본 관광",
+          "카지노",
+          "항공수요"
+        ],
+        "representatives": [
+          {
+            "code": "003490",
+            "name": "대한항공"
+          },
+          {
+            "code": "180640",
+            "name": "한진칼"
+          },
+          {
+            "code": "035250",
+            "name": "강원랜드"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "003490": 959.0,
+            "035250": 1326.0
+          },
+          "median_fper_or_pbr": 19.195,
+          "median_r20": -10.623946037099497,
+          "median_r60": 0.0,
+          "median_rev_qoq": 2.7298850574712707,
+          "median_fwd_rev_growth": 5.305214837456784,
+          "median_opm": 12.67361111111111,
+          "median_opm_delta": -5.510606360517286,
+          "median_revision_pct": -155.30572540300165
+        }
+      },
+      {
+        "key": "holding_conglomerate",
+        "name": "지주 / 복합기업",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 50.0,
+        "investment_score": 53.8,
+        "valuation_score": 74.0,
+        "relative_strength_score": 30.1,
+        "catalyst_score": 72.0,
+        "factors": {
+          "demand": {
+            "level": 66.1,
+            "momentum": 44.4,
+            "score": 53.1
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 56.2,
+            "score": 53.7
+          },
+          "price": {
+            "level": 47.5,
+            "momentum": 51.0,
+            "score": 49.6
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 78.0,
+            "score": 72.4
+          },
+          "revision": {
+            "level": 4.3,
+            "momentum": 0.0,
+            "score": 1.7
+          },
+          "structural": {
+            "level": 58.0,
+            "momentum": 53.8,
+            "score": 55.5
+          },
+          "catalyst": {
+            "level": 79.0,
+            "momentum": 67.4,
+            "score": 72.0
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "CAPEX/수주 72 · Catalyst 72 | 대표: 삼성물산, SK, 두산",
+        "growth": "SOTP · 자회사 IPO · 지분가치 · 주주환원 · 사업재편",
+        "subsectors": [
+          "순수지주",
+          "사업지주",
+          "복합기업"
+        ],
+        "themes": [
+          "SOTP",
+          "자회사 IPO",
+          "지분가치",
+          "주주환원",
+          "사업재편"
+        ],
+        "representatives": [
+          {
+            "code": "028260",
+            "name": "삼성물산"
+          },
+          {
+            "code": "034730",
+            "name": "SK"
+          },
+          {
+            "code": "000150",
+            "name": "두산"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "028260": 16678.0,
+            "034730": 160174.0,
+            "000150": 25856.0
+          },
+          "median_fper_or_pbr": 17.03,
+          "median_r20": -19.265232974910397,
+          "median_r60": -17.919075144508668,
+          "median_rev_qoq": 14.612356437157214,
+          "median_fwd_rev_growth": -4.8894965444223,
+          "median_opm": 8.743130269776769,
+          "median_opm_delta": 1.7176395713809756,
+          "median_revision_pct": -65.25126797834024
+        }
+      },
+      {
+        "key": "battery_ess",
+        "name": "2차전지 / ESS",
+        "actual_cycle": "초기회복",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 52.4,
+        "investment_score": 53.7,
+        "valuation_score": 42.0,
+        "relative_strength_score": 55.1,
+        "catalyst_score": 78.7,
+        "factors": {
+          "demand": {
+            "level": 66.0,
+            "momentum": 58.2,
+            "score": 61.3
+          },
+          "supply": {
+            "level": 43.0,
+            "momentum": 63.9,
+            "score": 55.5
+          },
+          "price": {
+            "level": 38.5,
+            "momentum": 44.0,
+            "score": 41.8
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 0.0,
+            "momentum": 0.0,
+            "score": 0.0
+          },
+          "structural": {
+            "level": 80.0,
+            "momentum": 75.1,
+            "score": 77.1
+          },
+          "catalyst": {
+            "level": 85.0,
+            "momentum": 74.5,
+            "score": 78.7
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": true,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복"
+        ],
+        "reason": "Catalyst 79 · 구조적 성장 77 | 대표: LG에너지솔루션, 삼성SDI, LG화학",
+        "growth": "ESS · LFP · 전고체 · 4680 · AI Data Center ESS",
+        "subsectors": [
+          "Battery Cell",
+          "양극재",
+          "음극재",
+          "전해질",
+          "Separator",
+          "동박",
+          "Battery Equipment",
+          "ESS"
+        ],
+        "themes": [
+          "ESS",
+          "LFP",
+          "전고체",
+          "4680",
+          "AI Data Center ESS",
+          "북미 배터리"
+        ],
+        "representatives": [
+          {
+            "code": "373220",
+            "name": "LG에너지솔루션"
+          },
+          {
+            "code": "006400",
+            "name": "삼성SDI"
+          },
+          {
+            "code": "051910",
+            "name": "LG화학"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "373220": -1035.0,
+            "006400": 11978.0,
+            "051910": -2662.0
+          },
+          "median_fper_or_pbr": 44.25,
+          "median_r20": -0.18832391713747842,
+          "median_r60": 20.808383233532936,
+          "median_rev_qoq": 14.535219399538102,
+          "median_fwd_rev_growth": 7.164084058586284,
+          "median_opm": 4.229713810057915,
+          "median_opm_delta": 4.919193249488766,
+          "median_revision_pct": -146.8071915685059
+        }
+      },
+      {
+        "key": "finance",
+        "name": "금융 / 증권",
+        "actual_cycle": "둔화",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 48.4,
+        "investment_score": 52.3,
+        "valuation_score": 82.0,
+        "relative_strength_score": 37.0,
+        "catalyst_score": 48.0,
+        "factors": {
+          "demand": {
+            "level": 51.6,
+            "momentum": 35.5,
+            "score": 41.9
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 50.5,
+            "score": 50.3
+          },
+          "price": {
+            "level": 47.1,
+            "momentum": 51.3,
+            "score": 49.6
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 46.4,
+            "momentum": 39.6,
+            "score": 42.3
+          },
+          "structural": {
+            "level": 63.0,
+            "momentum": 58.3,
+            "score": 60.2
+          },
+          "catalyst": {
+            "level": 49.0,
+            "momentum": 47.4,
+            "score": 48.0
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [],
+        "reason": "구조적 성장 60 · CAPEX/수주 52 | 대표: KB금융, 신한지주, 하나금융지주",
+        "growth": "주주환원 · Value-up · Brokerage · IB",
+        "subsectors": [
+          "은행",
+          "증권",
+          "카드",
+          "금융지주"
+        ],
+        "themes": [
+          "주주환원",
+          "Value-up",
+          "금리",
+          "Brokerage",
+          "IB"
+        ],
+        "representatives": [
+          {
+            "code": "105560",
+            "name": "KB금융"
+          },
+          {
+            "code": "055550",
+            "name": "신한지주"
+          },
+          {
+            "code": "086790",
+            "name": "하나금융지주"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "105560": 18407.0,
+            "055550": 12484.0,
+            "086790": 16022.0
+          },
+          "median_fper_or_pbr": 0.73,
+          "median_r20": -12.606837606837606,
+          "median_r60": -11.485367200441743,
+          "median_rev_qoq": 1.4458807249654093,
+          "median_fwd_rev_growth": null,
+          "median_opm": 8.5455141170318,
+          "median_opm_delta": 0.14795203796266776,
+          "median_revision_pct": -5.181536216018978
+        }
+      },
+      {
+        "key": "display_oled",
+        "name": "디스플레이 / OLED",
+        "actual_cycle": "초기회복",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 54.8,
+        "investment_score": 51.9,
+        "valuation_score": 28.0,
+        "relative_strength_score": 56.7,
+        "catalyst_score": 64.3,
+        "factors": {
+          "demand": {
+            "level": 60.0,
+            "momentum": 100.0,
+            "score": 84.0
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 33.5,
+            "score": 40.1
+          },
+          "price": {
+            "level": 26.2,
+            "momentum": 100.0,
+            "score": 70.5
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 0.0,
+            "momentum": 0.0,
+            "score": 0.0
+          },
+          "structural": {
+            "level": 74.0,
+            "momentum": 69.6,
+            "score": 71.3
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 62.6,
+            "score": 64.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "재고/가동률 Balance 악화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "가격/Margin 바닥 통과",
+          "수요 Momentum 회복"
+        ],
+        "reason": "수요 84 · 구조적 성장 71 | 대표: 주성엔지니어링, LG디스플레이, 선익시스템",
+        "growth": "IT OLED · Micro OLED · XR · 폴더블",
+        "subsectors": [
+          "OLED Panel",
+          "OLED Material",
+          "Display Equipment",
+          "Micro OLED",
+          "Micro LED"
+        ],
+        "themes": [
+          "OLED",
+          "폴더블",
+          "XR",
+          "IT OLED",
+          "Micro OLED"
+        ],
+        "representatives": [
+          {
+            "code": "036930",
+            "name": "주성엔지니어링"
+          },
+          {
+            "code": "034220",
+            "name": "LG디스플레이"
+          },
+          {
+            "code": "171090",
+            "name": "선익시스템"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "034220": -567.0
+          },
+          "median_fper_or_pbr": 717.6750000000001,
+          "median_r20": 4.444444444444451,
+          "median_r60": 12.55987227248536,
+          "median_rev_qoq": 9.107468123861562,
+          "median_fwd_rev_growth": 221.13797256670128,
+          "median_opm": -1.9190677286577216,
+          "median_opm_delta": -4.569953164147422,
+          "median_revision_pct": -104.20271940667492
+        }
+      },
+      {
+        "key": "insurance",
+        "name": "보험",
+        "actual_cycle": "둔화",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 46.6,
+        "investment_score": 51.9,
+        "valuation_score": 82.0,
+        "relative_strength_score": 35.4,
+        "catalyst_score": 57.8,
+        "factors": {
+          "demand": {
+            "level": 46.5,
+            "momentum": 35.0,
+            "score": 39.6
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 52.9,
+            "score": 51.7
+          },
+          "price": {
+            "level": 57.4,
+            "momentum": 57.2,
+            "score": 57.3
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 59.0,
+            "score": 56.2
+          },
+          "revision": {
+            "level": 32.6,
+            "momentum": 0.3,
+            "score": 13.3
+          },
+          "structural": {
+            "level": 65.0,
+            "momentum": 59.2,
+            "score": 61.5
+          },
+          "catalyst": {
+            "level": 61.0,
+            "momentum": 55.7,
+            "score": 57.8
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 62 · Catalyst 58 | 대표: 삼성생명, 삼성화재, DB손해보험",
+        "growth": "CSM · K-ICS · 배당 · 자사주",
+        "subsectors": [
+          "생명보험",
+          "손해보험"
+        ],
+        "themes": [
+          "CSM",
+          "K-ICS",
+          "배당",
+          "자사주"
+        ],
+        "representatives": [
+          {
+            "code": "032830",
+            "name": "삼성생명"
+          },
+          {
+            "code": "000810",
+            "name": "삼성화재"
+          },
+          {
+            "code": "005830",
+            "name": "DB손해보험"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "032830": 16260.0,
+            "000810": 50487.0,
+            "005830": 25122.0
+          },
+          "median_fper_or_pbr": 0.69,
+          "median_r20": -13.075780089153044,
+          "median_r60": -16.547788873038517,
+          "median_rev_qoq": -3.218848763536686,
+          "median_fwd_rev_growth": null,
+          "median_opm": 13.701365029250626,
+          "median_opm_delta": 0.803502440691096,
+          "median_revision_pct": -24.82718521868338
+        }
+      },
+      {
+        "key": "game",
+        "name": "게임",
+        "actual_cycle": "Peak",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 42.1,
+        "investment_score": 50.9,
+        "valuation_score": 92.0,
+        "relative_strength_score": 47.9,
+        "catalyst_score": 49.1,
+        "factors": {
+          "demand": {
+            "level": 66.5,
+            "momentum": 39.6,
+            "score": 50.4
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 58.1,
+            "score": 54.8
+          },
+          "price": {
+            "level": 75.1,
+            "momentum": 0.0,
+            "score": 30.1
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 0.0,
+            "momentum": 0.0,
+            "score": 0.0
+          },
+          "structural": {
+            "level": 69.0,
+            "momentum": 63.4,
+            "score": 65.7
+          },
+          "catalyst": {
+            "level": 49.0,
+            "momentum": 49.2,
+            "score": 49.1
+          }
+        },
+        "peak_warning": true,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화",
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선"
+        ],
+        "reason": "구조적 성장 66 · 공급/재고 55 | 대표: 크래프톤, NC, 넷마블",
+        "growth": "신작 · 중국 판호 · 글로벌 출시 · Console",
+        "subsectors": [
+          "PC",
+          "Mobile",
+          "Console",
+          "IP"
+        ],
+        "themes": [
+          "신작",
+          "중국 판호",
+          "글로벌 출시",
+          "Steam",
+          "Console"
+        ],
+        "representatives": [
+          {
+            "code": "259960",
+            "name": "크래프톤"
+          },
+          {
+            "code": "036570",
+            "name": "NC"
+          },
+          {
+            "code": "251270",
+            "name": "넷마블"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "259960": 17820.0,
+            "036570": 22179.0,
+            "251270": 6008.0
+          },
+          "median_fper_or_pbr": 9.4,
+          "median_r20": -0.5698005698005715,
+          "median_r60": -6.502242152466364,
+          "median_rev_qoq": 14.960871566671784,
+          "median_fwd_rev_growth": -9.020116807268009,
+          "median_opm": 22.56975989617132,
+          "median_opm_delta": 2.2432439291817268,
+          "median_revision_pct": -71.55887230514097
+        }
+      }
+    ]
+  }
 }
