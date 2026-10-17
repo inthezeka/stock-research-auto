@@ -139,99 +139,151 @@ def parse_korean_market_value(value):
     return total if matched else None
 
 
-def _naver_universe_page(start_idx=0, page_size=5000):
+def _naver_universe_page(order_type="marketSum", start_idx=0, page_size=5000):
     # Verified current Naver stock-list contract.
     url = (
         "https://stock.naver.com/api/domestic/market/stock/default"
-        f"?tradeType=KRX&marketType=ALL&orderType=marketSum"
+        f"?tradeType=KRX&marketType=ALL&orderType={order_type}"
         f"&startIdx={start_idx}&pageSize={page_size}"
     )
     payload = req(url, 2, headers={"Referer": "https://stock.naver.com/"}).json()
     return payload if isinstance(payload, list) else []
 
 
+def _list_code(x):
+    return str(x.get("itemcode") or x.get("itemCode") or "").strip()
+
+
+def _list_number(x, keys):
+    for key in keys:
+        value = n(x.get(key))
+        if value is not None:
+            return value
+    return None
+
+
 def refresh_stock_universe():
     """Refresh the KOSPI/KOSDAQ search/screening universe every workflow run."""
+    base_page = _naver_universe_page("marketSum", 0, 5000)
+    if len(base_page) < 1500:
+        sample_keys = sorted(list((base_page[0] if base_page else {}).keys()))[:30] if base_page else []
+        raise RuntimeError(f"Naver stock universe incomplete: {len(base_page)} keys={sample_keys}")
+
+    # Trading-value and volume rankings use the same all-market endpoint but
+    # expose liquidity-oriented fields/order. Merge them back into the base list.
+    try:
+        amount_page = _naver_universe_page("priceTop", 0, 5000)
+    except Exception:
+        amount_page = []
+    try:
+        volume_page = _naver_universe_page("quantTop", 0, 5000)
+    except Exception:
+        volume_page = []
+
+    amount_map = {}
+    amount_rank = {}
+    for rank, x in enumerate(amount_page, 1):
+        code = _list_code(x)
+        if not re.fullmatch(r"\d{6}", code):
+            continue
+        amount_rank[code] = rank
+        value = _list_number(x, (
+            "accAmount", "accumulatedTradingValue", "accumulatedTradingAmount",
+            "tradingValue", "tradeAmount", "amount", "dealAmount"
+        ))
+        if value is not None:
+            amount_map[code] = value
+
+    volume_map = {}
+    volume_rank = {}
+    for rank, x in enumerate(volume_page, 1):
+        code = _list_code(x)
+        if not re.fullmatch(r"\d{6}", code):
+            continue
+        volume_rank[code] = rank
+        value = _list_number(x, (
+            "accQuant", "accumulatedTradingVolume", "accumulatedVolume",
+            "tradingVolume", "tradeVolume", "quant", "volume"
+        ))
+        if value is not None:
+            volume_map[code] = value
+
     items = []
     seen = set()
-    page_size = 5000
+    for x in base_page:
+        code = _list_code(x)
+        name = str(x.get("itemname") or x.get("itemName") or "").strip()
+        if not re.fullmatch(r"\d{6}", code) or not name or code in seen:
+            continue
 
-    for page_no in range(3):
-        start_idx = page_no * page_size
-        page = _naver_universe_page(start_idx, page_size)
-        if not page:
-            break
-        first_code = str((page[0] or {}).get("itemcode") or "")
-        if page_no > 0 and first_code and any(x["code"] == first_code for x in items[:1]):
-            break
+        sosok = str(x.get("sosok") or "").strip()
+        market = "KOSPI" if sosok == "0" else ("KOSDAQ" if sosok == "1" else None)
+        if market is None:
+            continue
 
-        for x in page:
-            code = str(x.get("itemcode") or "").strip()
-            name = str(x.get("itemname") or "").strip()
-            if not re.fullmatch(r"\d{6}", code) or not name or code in seen:
-                continue
+        close = _list_number(x, ("nowVal", "nowPrice", "closePrice", "currentPrice"))
+        shares = _list_number(x, ("listedStockCnt", "listedStockCount", "listedShares"))
+        marketcap = _list_number(x, ("marketSum", "marketCap", "marketValue"))
+        if marketcap is None:
+            marketcap = parse_korean_market_value(x.get("marketValue"))
+        if marketcap is None and shares is not None and close is not None:
+            marketcap = shares * close
 
-            sosok = str(x.get("sosok") or "").strip()
-            market = "KOSPI" if sosok == "0" else ("KOSDAQ" if sosok == "1" else None)
-            if market is None:
-                continue
+        volume = volume_map.get(code)
+        if volume is None:
+            volume = _list_number(x, (
+                "accQuant", "accumulatedTradingVolume", "accumulatedVolume",
+                "tradingVolume", "volume"
+            )) or 0
 
-            close = n(x.get("nowVal") or x.get("nowPrice") or x.get("closePrice"))
-            shares = n(x.get("listedStockCnt") or x.get("listedStockCount"))
-            marketcap = n(x.get("marketSum"))
-            if marketcap is None:
-                marketcap = parse_korean_market_value(x.get("marketValue"))
-            if marketcap is None and shares is not None and close is not None:
-                marketcap = shares * close
+        turnover = amount_map.get(code)
+        if turnover is None:
+            turnover = _list_number(x, (
+                "accAmount", "accumulatedTradingValue", "accumulatedTradingAmount",
+                "tradingValue", "amount"
+            )) or 0
 
-            # Naver has used both old and new names for volume/trading-value fields.
-            volume = n(
-                x.get("accQuant") or x.get("accumulatedTradingVolume")
-                or x.get("accumulatedVolume") or x.get("volume")
-            ) or 0
-            turnover = n(
-                x.get("accAmount") or x.get("accumulatedTradingValue")
-                or x.get("accumulatedTradingAmount") or x.get("tradingValue")
-            ) or 0
+        # If the ranking endpoint only supplies ranking order but no explicit
+        # trading-value field, close*volume is a conservative liquidity proxy.
+        if not turnover and close is not None and volume:
+            turnover = close * volume
 
-            # If trading value is omitted from the market-cap list, the close*volume
-            # proxy is sufficient for liquidity pre-screening and is refreshed daily.
-            if not turnover and close is not None and volume:
-                turnover = close * volume
+        items.append({
+            "code": code,
+            "name": name,
+            "market": market,
+            "ticker": code + (".KQ" if market == "KOSDAQ" else ".KS"),
+            "shares": None if shares is None else int(round(shares)),
+            "close": close,
+            "marketcap": marketcap,
+            "volume": volume,
+            "turnover": turnover,
+            "trading_value_rank": amount_rank.get(code),
+            "volume_rank": volume_rank.get(code),
+        })
+        seen.add(code)
 
-            items.append({
-                "code": code,
-                "name": name,
-                "market": market,
-                "ticker": code + (".KQ" if market == "KOSDAQ" else ".KS"),
-                "shares": None if shares is None else int(round(shares)),
-                "close": close,
-                "marketcap": marketcap,
-                "volume": volume,
-                "turnover": turnover,
-            })
-            seen.add(code)
-
-        if len(page) < page_size:
-            break
-
-    # The full KOSPI+KOSDAQ common-stock universe is normally well above 2,000.
     if len(items) < 1500:
-        sample_keys = sorted(list((page[0] if page else {}).keys()))[:30] if page else []
-        raise RuntimeError(f"Naver stock universe incomplete: {len(items)} keys={sample_keys}")
+        raise RuntimeError(f"Naver stock universe parsed incomplete: {len(items)}")
 
-    # The market list itself does not expose a reliable trade date. Use the latest
-    # domestic index close date, which is the same KRX session used by the dashboard.
     try:
         as_of = naver_domestic_index_snapshot("KOSPI").get("date") or NOW.date().isoformat()
     except Exception:
         as_of = NOW.date().isoformat()
 
+    nonzero_turnover = sum(1 for x in items if (x.get("turnover") or 0) > 0)
+    nonzero_volume = sum(1 for x in items if (x.get("volume") or 0) > 0)
     payload = {
         "as_of": as_of,
         "generated_at": NOW.isoformat(),
-        "source": "Naver Stock domestic market API · marketSum",
+        "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop",
         "count": len(items),
+        "liquidity_coverage": {
+            "turnover_nonzero": nonzero_turnover,
+            "volume_nonzero": nonzero_volume,
+            "price_top_count": len(amount_page),
+            "quant_top_count": len(volume_page),
+        },
         "items": sorted(items, key=lambda x: (x["market"], x["name"], x["code"])),
     }
     tmp = UNIVERSE_PATH.with_suffix(".json.tmp")
