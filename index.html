@@ -3965,6 +3965,16 @@ function srIctRankCompare(a,b){
     ((q[b.entryQuality]||0)-(q[a.entryQuality]||0))||
     (b.coarseRank-a.coarseRank);
 }
+function srWatchRankCompare(a,b){
+  const q={A:3,B:2,C:0,S:4};
+  const bias={'STRONG BULLISH':5,'BULLISH':4,'BULLISH TRANSITION':3,'NEUTRAL':2,'BEARISH TRANSITION':1,'BEARISH':0};
+  const conf={HIGH:3,MEDIUM:2,LOW:1};
+  return ((q[b.entryQuality]||0)-(q[a.entryQuality]||0))||
+    (b.adjustedScore-a.adjustedScore)||
+    ((bias[b.htfBiasLong]||0)-(bias[a.htfBiasLong]||0))||
+    ((conf[b.dataConfidence]||0)-(conf[a.dataConfidence]||0))||
+    (b.coarseRank-a.coarseRank);
+}
 async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item);
   if(!daily?.length||daily.length<65)return null;
@@ -4108,7 +4118,7 @@ async function srRunTradingUniverse(status){
   const analyzed=coarse.map(x=>detailedMap.get(x.item.code)||x);analyzed.sort(srIctRankCompare);
   const topPool=analyzed.filter(x=>x.top10Eligible).sort(srIctRankCompare),top10=topPool.slice(0,10);
   const entryReady=analyzed.filter(x=>x.entryReady).sort(srIctRankCompare);
-  const watchList=analyzed.filter(x=>x.watchEligible).sort(srIctRankCompare).slice(0,20);
+  const watchList=analyzed.filter(x=>x.watchEligible).sort(srWatchRankCompare).slice(0,20);
   const stats={daily:coarse.length,h4:analyzed.filter(x=>x.h4Available).length,h1:analyzed.filter(x=>x.h1Available).length,scored:analyzed.length,adjusted60:analyzed.filter(x=>x.adjustedScore>=60).length,s:analyzed.filter(x=>x.entryQuality==='S').length,a:analyzed.filter(x=>x.entryQuality==='A').length,b:analyzed.filter(x=>x.entryQuality==='B').length};
   return{candidates,coarse,shortlist,detailed,analyzed,passed:topPool,top10,entryReady,watchList,dailyMap,totalUniverse,stats};
 }
