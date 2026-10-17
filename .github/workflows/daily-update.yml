@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "0 22 * * *" # 07:00 KST · overnight refresh
     - cron: "30 8 * * 1-5" # 17:30 KST · after Korea market close
+    - cron: "15 22 1 * *" # 07:15 KST on the 1st · monthly theme refresh using prior month close
   workflow_dispatch:
   push:
     paths:
@@ -47,6 +48,8 @@ jobs:
         run: python scripts/smoke_test.py
 
       - name: Update market data
+        env:
+          THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: python scripts/update_data.py
 
       - name: Sync embedded fallback
