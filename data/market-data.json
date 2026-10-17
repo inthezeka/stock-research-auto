@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-17T23:51:28.706179+09:00",
+    "generated_at": "2026-10-17T23:58:45.428298+09:00",
     "market_date": "2026-10-16",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -72,7 +72,7 @@
     "korea_sentiment_policy": "20D/60D 추세 우선 · 절대 변동성 패널티 · 외인/기관 수급 포함 · 20D 급락 Regime Gate [AI].",
     "stock_universe": {
       "as_of": "2026-10-16",
-      "generated_at": "2026-10-17T23:51:28.706179+09:00",
+      "generated_at": "2026-10-17T23:58:45.428298+09:00",
       "count": 2676,
       "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop"
     },
@@ -83,7 +83,7 @@
     "theme_selection_refreshed_this_run": false,
     "sector_cycle": {
       "as_of": "2026-10-16",
-      "generated_at": "2026-10-17T23:51:28.706179+09:00",
+      "generated_at": "2026-10-17T23:58:45.428298+09:00",
       "sector_count": 36,
       "theme_count": 36,
       "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
@@ -1800,7 +1800,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-        "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+        "fetched_at": "2026-10-17T23:58:45.428298+09:00"
       },
       "valuation_snapshot": {
         "per": 20.54,
@@ -2128,7 +2128,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-        "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+        "fetched_at": "2026-10-17T23:58:45.428298+09:00"
       },
       "valuation_snapshot": {
         "per": 18.26,
@@ -2456,7 +2456,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-        "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+        "fetched_at": "2026-10-17T23:58:45.428298+09:00"
       },
       "valuation_snapshot": {
         "per": 29.52,
@@ -2784,7 +2784,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-        "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+        "fetched_at": "2026-10-17T23:58:45.428298+09:00"
       },
       "valuation_snapshot": {
         "per": 33.37,
@@ -3112,7 +3112,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-        "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+        "fetched_at": "2026-10-17T23:58:45.428298+09:00"
       },
       "valuation_snapshot": {
         "per": 15.86,
@@ -3147,7 +3147,7 @@
       "score": 31.0,
       "raw_score": 31.0,
       "rating": "공포",
-      "timestamp": "2026-10-17T23:51:28.706179+09:00",
+      "timestamp": "2026-10-17T23:58:45.428298+09:00",
       "source": "KOSPI·KOSDAQ·USD/KRW·수급 · 자체 정규화 [AI]",
       "method": "KOSPI 20D 추세 30% + 60D 추세 15% + 20D 변동성 20% + KOSPI 5D 10% + KOSDAQ 5D 10% + 수급 10% + FX 5% · 추세 Regime Gate 적용",
       "regime_gate": "KOSPI 20D ≤ -15% → 상단 44",
@@ -3212,7 +3212,7 @@
       "note": "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-17T23:51:28.706179+09:00"
+    "updated_at": "2026-10-17T23:58:45.428298+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3529,7 +3529,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-          "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+          "fetched_at": "2026-10-17T23:58:45.428298+09:00"
         },
         "valuation_snapshot": {
           "per": 20.54,
@@ -3857,7 +3857,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-          "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+          "fetched_at": "2026-10-17T23:58:45.428298+09:00"
         },
         "valuation_snapshot": {
           "per": 18.26,
@@ -4185,7 +4185,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-          "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+          "fetched_at": "2026-10-17T23:58:45.428298+09:00"
         },
         "valuation_snapshot": {
           "per": 29.52,
@@ -4513,7 +4513,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-          "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+          "fetched_at": "2026-10-17T23:58:45.428298+09:00"
         },
         "valuation_snapshot": {
           "per": 33.37,
@@ -4841,7 +4841,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-          "fetched_at": "2026-10-17T23:51:28.706179+09:00"
+          "fetched_at": "2026-10-17T23:58:45.428298+09:00"
         },
         "valuation_snapshot": {
           "per": 15.86,
@@ -4862,15 +4862,6 @@
   "stock_profiles_kosdaq": [],
   "kosdaq_selection_diagnostics": [
     {
-      "code": "277810",
-      "name": "레인보우로보틱스",
-      "fundamental_score": 54.2,
-      "trading_score": 40.0,
-      "final_score": 48.52,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
       "code": "189300",
       "name": "인텔리안테크",
       "fundamental_score": 55.1,
@@ -4880,11 +4871,20 @@
       "priority": "<60 제외"
     },
     {
-      "code": "035900",
-      "name": "JYP Ent.",
-      "fundamental_score": 61.5,
-      "trading_score": 59.0,
-      "final_score": 60.5,
+      "code": "277810",
+      "name": "레인보우로보틱스",
+      "fundamental_score": 54.2,
+      "trading_score": 40.0,
+      "final_score": 48.52,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 58.2,
+      "trading_score": 57.0,
+      "final_score": 57.72,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -4907,20 +4907,20 @@
       "priority": "<60 제외"
     },
     {
+      "code": "035900",
+      "name": "JYP Ent.",
+      "fundamental_score": 61.5,
+      "trading_score": 59.0,
+      "final_score": 60.5,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
       "code": "054930",
       "name": "유신",
       "fundamental_score": 64.8,
       "trading_score": 59.0,
       "final_score": 62.48,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 58.2,
-      "trading_score": 57.0,
-      "final_score": 57.72,
       "eligible": false,
       "priority": "<60 제외"
     }
@@ -5350,10 +5350,10 @@
       "priority": "70+"
     }
   ],
-  "kospi_selection_updated_at": "2026-10-17T23:51:28.706179+09:00",
+  "kospi_selection_updated_at": "2026-10-17T23:58:45.428298+09:00",
   "sector_cycle": {
     "as_of": "2026-10-16",
-    "generated_at": "2026-10-17T23:51:28.706179+09:00",
+    "generated_at": "2026-10-17T23:58:45.428298+09:00",
     "sector_count": 36,
     "theme_count": 36,
     "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
@@ -5574,105 +5574,6 @@
           "median_opm": 17.531172069825438,
           "median_opm_delta": 2.7174267622886195,
           "median_revision_pct": 0.0
-        }
-      },
-      {
-        "key": "retail",
-        "name": "유통 / 리테일 / 커머스",
-        "actual_cycle": "성장",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 61.5,
-        "investment_score": 65.1,
-        "valuation_score": 84.0,
-        "relative_strength_score": 60.5,
-        "catalyst_score": 64.8,
-        "factors": {
-          "demand": {
-            "level": 59.3,
-            "momentum": 50.2,
-            "score": 53.9
-          },
-          "supply": {
-            "level": 64.0,
-            "momentum": 53.0,
-            "score": 57.4
-          },
-          "price": {
-            "level": 65.1,
-            "momentum": 56.2,
-            "score": 59.8
-          },
-          "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
-            "score": 62.2
-          },
-          "revision": {
-            "level": 62.0,
-            "momentum": 84.3,
-            "score": 75.4
-          },
-          "structural": {
-            "level": 61.0,
-            "momentum": 59.6,
-            "score": 60.2
-          },
-          "catalyst": {
-            "level": 67.0,
-            "momentum": 63.4,
-            "score": 64.8
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [],
-        "early_recovery": false,
-        "recovery_signals": [
-          "수주/CAPEX 회복",
-          "EPS Revision 상향"
-        ],
-        "reason": "Revision 75 · Catalyst 65 | 대표: 포스코인터내셔널, 코웨이, F&F",
-        "growth": "내수회복 · 관광객 · 소비회복 · 온라인 Commerce",
-        "subsectors": [
-          "백화점",
-          "편의점",
-          "홈쇼핑",
-          "면세",
-          "E-Commerce"
-        ],
-        "themes": [
-          "내수회복",
-          "관광객",
-          "소비회복",
-          "온라인 Commerce"
-        ],
-        "representatives": [
-          {
-            "code": "047050",
-            "name": "포스코인터내셔널"
-          },
-          {
-            "code": "021240",
-            "name": "코웨이"
-          },
-          {
-            "code": "383220",
-            "name": "F&F"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "047050": 5355.0,
-            "021240": 9946.0,
-            "383220": 12481.0
-          },
-          "median_fper_or_pbr": 10.55,
-          "median_r20": 9.729187562688058,
-          "median_r60": 11.001964636542239,
-          "median_rev_qoq": 8.460555012408811,
-          "median_fwd_rev_growth": 0.187213978643741,
-          "median_opm": 17.556510886146164,
-          "median_opm_delta": -1.3124069148615831,
-          "median_revision_pct": 17.16244878984222
         }
       },
       {
@@ -6181,6 +6082,104 @@
           "median_fwd_rev_growth": 10.45013750180923,
           "median_opm": 9.566326530612244,
           "median_opm_delta": 0.1301930438458445,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
+        "key": "retail",
+        "name": "유통 / 리테일 / 커머스",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 58.4,
+        "investment_score": 63.1,
+        "valuation_score": 84.0,
+        "relative_strength_score": 60.5,
+        "catalyst_score": 64.8,
+        "factors": {
+          "demand": {
+            "level": 59.3,
+            "momentum": 50.2,
+            "score": 53.9
+          },
+          "supply": {
+            "level": 64.0,
+            "momentum": 53.0,
+            "score": 57.4
+          },
+          "price": {
+            "level": 65.1,
+            "momentum": 56.2,
+            "score": 59.8
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 62.0,
+            "momentum": 50.0,
+            "score": 54.8
+          },
+          "structural": {
+            "level": 61.0,
+            "momentum": 59.6,
+            "score": 60.2
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 63.4,
+            "score": 64.8
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "Catalyst 65 · CAPEX/수주 62 | 대표: 포스코인터내셔널, 코웨이, F&F",
+        "growth": "내수회복 · 관광객 · 소비회복 · 온라인 Commerce",
+        "subsectors": [
+          "백화점",
+          "편의점",
+          "홈쇼핑",
+          "면세",
+          "E-Commerce"
+        ],
+        "themes": [
+          "내수회복",
+          "관광객",
+          "소비회복",
+          "온라인 Commerce"
+        ],
+        "representatives": [
+          {
+            "code": "047050",
+            "name": "포스코인터내셔널"
+          },
+          {
+            "code": "021240",
+            "name": "코웨이"
+          },
+          {
+            "code": "383220",
+            "name": "F&F"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "047050": 5355.0,
+            "021240": 9946.0,
+            "383220": 12481.0
+          },
+          "median_fper_or_pbr": 10.55,
+          "median_r20": 9.729187562688058,
+          "median_r60": 11.001964636542239,
+          "median_rev_qoq": 8.460555012408811,
+          "median_fwd_rev_growth": 0.187213978643741,
+          "median_opm": 17.556510886146164,
+          "median_opm_delta": -1.3124069148615831,
           "median_revision_pct": 0.0
         }
       },
@@ -7402,107 +7401,6 @@
         }
       },
       {
-        "key": "software_cloud_ai",
-        "name": "소프트웨어 / Cloud / AI SW",
-        "actual_cycle": "성장",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 58.4,
-        "investment_score": 58.6,
-        "valuation_score": 64.0,
-        "relative_strength_score": 42.1,
-        "catalyst_score": 68.1,
-        "factors": {
-          "demand": {
-            "level": 58.9,
-            "momentum": 47.6,
-            "score": 52.1
-          },
-          "supply": {
-            "level": 50.0,
-            "momentum": 58.3,
-            "score": 55.0
-          },
-          "price": {
-            "level": 56.4,
-            "momentum": 42.0,
-            "score": 47.8
-          },
-          "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
-          },
-          "revision": {
-            "level": 57.2,
-            "momentum": 70.5,
-            "score": 65.2
-          },
-          "structural": {
-            "level": 88.0,
-            "momentum": 77.9,
-            "score": 81.9
-          },
-          "catalyst": {
-            "level": 73.0,
-            "momentum": 64.9,
-            "score": 68.1
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [
-          "ASP/Margin Momentum 둔화"
-        ],
-        "early_recovery": false,
-        "recovery_signals": [
-          "재고/공급 Balance 개선",
-          "EPS Revision 상향"
-        ],
-        "reason": "구조적 성장 82 · Catalyst 68 | 대표: NAVER, 삼성에스디에스, 카카오",
-        "growth": "AI Agent · Enterprise AI · Cloud Migration · SaaS",
-        "subsectors": [
-          "SaaS",
-          "ERP",
-          "Cloud",
-          "AI Software",
-          "Enterprise Software"
-        ],
-        "themes": [
-          "AI Agent",
-          "Enterprise AI",
-          "Cloud Migration",
-          "SaaS"
-        ],
-        "representatives": [
-          {
-            "code": "035420",
-            "name": "NAVER"
-          },
-          {
-            "code": "018260",
-            "name": "삼성에스디에스"
-          },
-          {
-            "code": "035720",
-            "name": "카카오"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "035420": 12190.0,
-            "018260": 8916.0,
-            "035720": 1255.0
-          },
-          "median_fper_or_pbr": 22.29,
-          "median_r20": -8.248914616497826,
-          "median_r60": -5.1052631578947345,
-          "median_rev_qoq": 8.053138355388501,
-          "median_fwd_rev_growth": -2.0522889881112505,
-          "median_opm": 13.199904693828927,
-          "median_opm_delta": 2.3147803438984393,
-          "median_revision_pct": 10.242005185825409
-        }
-      },
-      {
         "key": "shipbuilding",
         "name": "조선 / 조선기자재",
         "actual_cycle": "성장",
@@ -7701,6 +7599,106 @@
           "median_fwd_rev_growth": 2.5661236643895524,
           "median_opm": 11.318960050729231,
           "median_opm_delta": 1.1723277396586642,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
+        "key": "software_cloud_ai",
+        "name": "소프트웨어 / Cloud / AI SW",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 56.6,
+        "investment_score": 57.4,
+        "valuation_score": 64.0,
+        "relative_strength_score": 42.1,
+        "catalyst_score": 68.1,
+        "factors": {
+          "demand": {
+            "level": 58.9,
+            "momentum": 47.6,
+            "score": 52.1
+          },
+          "supply": {
+            "level": 50.0,
+            "momentum": 58.3,
+            "score": 55.0
+          },
+          "price": {
+            "level": 56.4,
+            "momentum": 42.0,
+            "score": 47.8
+          },
+          "capex": {
+            "level": 52.0,
+            "momentum": 52.0,
+            "score": 52.0
+          },
+          "revision": {
+            "level": 57.2,
+            "momentum": 50.0,
+            "score": 52.9
+          },
+          "structural": {
+            "level": 88.0,
+            "momentum": 77.9,
+            "score": 81.9
+          },
+          "catalyst": {
+            "level": 73.0,
+            "momentum": 64.9,
+            "score": 68.1
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선"
+        ],
+        "reason": "구조적 성장 82 · Catalyst 68 | 대표: NAVER, 삼성에스디에스, 카카오",
+        "growth": "AI Agent · Enterprise AI · Cloud Migration · SaaS",
+        "subsectors": [
+          "SaaS",
+          "ERP",
+          "Cloud",
+          "AI Software",
+          "Enterprise Software"
+        ],
+        "themes": [
+          "AI Agent",
+          "Enterprise AI",
+          "Cloud Migration",
+          "SaaS"
+        ],
+        "representatives": [
+          {
+            "code": "035420",
+            "name": "NAVER"
+          },
+          {
+            "code": "018260",
+            "name": "삼성에스디에스"
+          },
+          {
+            "code": "035720",
+            "name": "카카오"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "035420": 12190.0,
+            "018260": 8916.0,
+            "035720": 1255.0
+          },
+          "median_fper_or_pbr": 22.29,
+          "median_r20": -8.248914616497826,
+          "median_r60": -5.1052631578947345,
+          "median_rev_qoq": 8.053138355388501,
+          "median_fwd_rev_growth": -2.0522889881112505,
+          "median_opm": 13.199904693828927,
+          "median_opm_delta": 2.3147803438984393,
           "median_revision_pct": 0.0
         }
       },
