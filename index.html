@@ -93,6 +93,14 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .compact-chips{display:flex;gap:6px;flex-wrap:wrap}
 .compact-chip{padding:6px 8px;border-radius:999px;background:#F2F4F7;font-size:10px;font-weight:800}
 .entry-s{color:#067647;background:#ECFDF3}.entry-a{color:#175CD3;background:#EFF8FF}.entry-b{color:#B54708;background:#FFFAEB}.entry-c{color:#B42318;background:#FEF3F2}
+.my-trading-score-details{margin:8px 0 12px;border:1px solid var(--border);border-radius:10px;background:#fff;overflow:hidden}
+.my-trading-score-details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;font-size:11px;font-weight:900;color:#344054;user-select:none}
+.my-trading-score-details>summary::-webkit-details-marker{display:none}
+.my-trading-score-toggle{font-size:10px;color:#667085;font-weight:850}
+.my-trading-score-arrow{display:inline-block;margin-left:3px;transition:transform .16s ease}
+.my-trading-score-details[open] .my-trading-score-arrow{transform:rotate(180deg)}
+.my-trading-score-details[open]>summary{border-bottom:1px solid var(--border);background:#FAFCFF}
+.my-trading-score-details .ict-score-card{margin:10px;padding:0}
 .ict-score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
 .ict-score-card>div{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:10px;font-size:10px}
 .ict-detail-card{margin-top:12px}
@@ -606,18 +614,21 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
         <span class="compact-chip entry-b"><b>B</b> · LONG BREAKOUT / RECLAIM WAIT</span>
         <span class="compact-chip entry-c"><b>C</b> · NO LONG TRADE</span>
       </div>
-      <div class="ict-score-card">
-        <div><b>① HTF Long Bias · 20</b><br>Strong Bullish → Bullish → Bullish Transition 우선</div>
-        <div><b>② Protected Low 유지 · 10</b><br>Protected Low 유지와 Structural Invalidation</div>
-        <div><b>③ Upward DOL · 10</b><br>Internal BSL → External BSL 상방 Liquidity 경로</div>
-        <div><b>④ Bullish Liquidity Event · 10</b><br>SSL Sweep → Reaction → Bullish MSS</div>
-        <div><b>⑤ Bullish MSS / BOS · 10</b><br>몸통 종가 돌파와 구조 회복/지속</div>
-        <div><b>⑥ Bullish Displacement · 10</b><br>Body · Structure Break · Follow-through</div>
-        <div><b>⑦ Bullish FVG / OB / Breaker · 10</b><br>Long Entry에 사용할 PD Array 품질</div>
-        <div><b>⑧ Discount / OTE · 5</b><br>Long은 Discount / OTE 우선</div>
-        <div><b>⑨ Risk / Reward · 10</b><br>확정 Entry와 상방 BSL Target 기준</div>
-        <div><b>⑩ Setup Freshness · 5</b><br>Mitigation 횟수와 PD Array 소모도</div>
-      </div>
+      <details class="my-trading-score-details">
+        <summary><span>배점 기준</span><span class="my-trading-score-toggle">상세보기 <span class="my-trading-score-arrow">▼</span></span></summary>
+        <div class="ict-score-card">
+          <div><b>① HTF Long Bias · 20</b><br>Strong Bullish → Bullish → Bullish Transition 우선</div>
+          <div><b>② Protected Low 유지 · 10</b><br>Protected Low 유지와 Structural Invalidation</div>
+          <div><b>③ Upward DOL · 10</b><br>Internal BSL → External BSL 상방 Liquidity 경로</div>
+          <div><b>④ Bullish Liquidity Event · 10</b><br>SSL Sweep → Reaction → Bullish MSS</div>
+          <div><b>⑤ Bullish MSS / BOS · 10</b><br>몸통 종가 돌파와 구조 회복/지속</div>
+          <div><b>⑥ Bullish Displacement · 10</b><br>Body · Structure Break · Follow-through</div>
+          <div><b>⑦ Bullish FVG / OB / Breaker · 10</b><br>Long Entry에 사용할 PD Array 품질</div>
+          <div><b>⑧ Discount / OTE · 5</b><br>Long은 Discount / OTE 우선</div>
+          <div><b>⑨ Risk / Reward · 10</b><br>확정 Entry와 상방 BSL Target 기준</div>
+          <div><b>⑩ Setup Freshness · 5</b><br>Mitigation 횟수와 PD Array 소모도</div>
+        </div>
+      </details>
       <p class="note"><b>국내주식 LONG ONLY.</b> MY Trading은 ① <b>MY Trading TOP10</b>(Long 관점 구조 우수 순위), ② <b>ENTRY READY</b>(S급 신규 Long 진입 준비 완료), ③ <b>WATCH LIST</b>(A Pullback / B Breakout·Reclaim 대기)로 분리합니다. Bearish Signal은 Long Risk 감점·신규 매수 제한·매수 제외 판단에만 사용합니다. Daily는 필수이며 4H/1H 누락은 0점 처리하지 않고 Data Confidence로 구분합니다.</p>
     </div>
     <div class="scan-toolbar">
