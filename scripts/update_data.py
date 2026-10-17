@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config/watchlist.json").read_text(encoding="utf-8"))
 DATA_PATH = ROOT / "data/market-data.json"
 UNIVERSE_PATH = ROOT / "stock-universe.json"
+THEME_CONFIG_PATH = ROOT / "config" / "fundamental_themes.json"
 PREV = json.loads(DATA_PATH.read_text(encoding="utf-8"))
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
@@ -2779,6 +2780,345 @@ def update_theme_cards(d, live_by_code, refresh_selection=False, selection_as_of
 
 
 
+
+def _sector_clamp(v, lo=0.0, hi=100.0):
+    try:
+        return max(lo, min(hi, float(v)))
+    except Exception:
+        return 50.0
+
+
+def _median(values, default=None):
+    vals = [float(x) for x in values if x is not None and math.isfinite(float(x))]
+    return statistics.median(vals) if vals else default
+
+
+def _signed_score(value, scale=1.0, base=50.0):
+    if value is None:
+        return base
+    return _sector_clamp(base + float(value) * scale)
+
+
+def _qualitative_score(text, positives, negatives, base=50.0, step=8.0):
+    s = str(text or "").lower()
+    pos = sum(1 for token in positives if token in s)
+    neg = sum(1 for token in negatives if token in s)
+    return _sector_clamp(base + (pos - neg) * step)
+
+
+def _fetch_kosai_qualitative(code):
+    url = f"https://raw.githubusercontent.com/kosairesearch/kosairesearch.github.io/main/data/reports_v2/{code}.json"
+    try:
+        j = req(url, 1).json()
+    except Exception:
+        return {"text": "", "source": None}
+    parts = [
+        str((j.get("business") or {}).get("ko") or ""),
+        str((j.get("industry") or {}).get("ko") or ""),
+        str((j.get("outlook") or {}).get("ko") or ""),
+        str((j.get("valuation_comment") or {}).get("ko") or ""),
+    ]
+    for row in j.get("keypoints") or []:
+        parts.append(str((row or {}).get("ko") or ""))
+    for row in j.get("risks") or []:
+        parts.append(str(((row or {}).get("cat") or {}).get("ko") or ""))
+        parts.append(str(((row or {}).get("body") or {}).get("ko") or ""))
+    return {"text": " ".join(parts), "source": url}
+
+
+def _sector_member_snapshot(stock):
+    code = str(stock.get("code") or "").zfill(6)
+    out = {
+        "code": code,
+        "name": stock.get("name") or code,
+        "marketcap": stock.get("marketcap") or 0,
+        "r20": None, "r60": None,
+        "rev_qoq": None, "fwd_rev_growth": None,
+        "opm": None, "opm_delta": None, "fwd_opm_delta": None,
+        "forward_eps": None, "eps_growth": None,
+        "fper": None, "pbr": None,
+        "qual_text": "",
+    }
+    try:
+        rows, _ = naver_stock_chart(code, 120)
+        tech = technicals(rows)
+        out["r20"], out["r60"] = tech.get("r20"), tech.get("r60")
+    except Exception:
+        pass
+    try:
+        q = fetch_quarterly_financials(code).get("quarters") or []
+        actual = [x for x in q if not x.get("estimate")]
+        latest = actual[-1] if actual else None
+        prev = actual[-2] if len(actual) >= 2 else None
+        est = next((x for x in q if x.get("estimate")), None)
+        if latest:
+            out["rev_qoq"] = latest.get("qoq")
+            out["opm"] = latest.get("opm")
+        if latest and prev and latest.get("opm") is not None and prev.get("opm") is not None:
+            out["opm_delta"] = latest["opm"] - prev["opm"]
+        if latest and est:
+            if latest.get("revenue") not in (None, 0) and est.get("revenue") is not None:
+                out["fwd_rev_growth"] = pct(est["revenue"], latest["revenue"])
+            if latest.get("opm") is not None and est.get("opm") is not None:
+                out["fwd_opm_delta"] = est["opm"] - latest["opm"]
+            if latest.get("eps") not in (None, 0) and est.get("eps") is not None:
+                out["eps_growth"] = pct(est["eps"], latest["eps"])
+    except Exception:
+        pass
+    try:
+        val = fetch_stock_valuation_snapshot(code)
+        out["forward_eps"] = val.get("forward_eps")
+        out["fper"] = val.get("forward_per") or val.get("per")
+        out["pbr"] = val.get("pbr")
+    except Exception:
+        pass
+    qual = _fetch_kosai_qualitative(code)
+    out["qual_text"] = qual.get("text") or ""
+    return out
+
+
+def _sector_cycle_label(score):
+    score = float(score or 0)
+    if score >= 88:
+        return "최상위 성장"
+    if score >= 78:
+        return "성장"
+    if score >= 68:
+        return "우호적 확장"
+    if score >= 55:
+        return "중립"
+    if score >= 42:
+        return "둔화"
+    if score >= 28:
+        return "하강"
+    return "침체"
+
+
+def _sector_actual_cycle(level, momentum, peak_warning=False, early_recovery=False):
+    if early_recovery:
+        return "초기회복"
+    if peak_warning:
+        return "Peak"
+    if level >= 75 and momentum >= 68:
+        return "호황"
+    if level < 48 and momentum >= 56:
+        return "초기회복"
+    if momentum >= 55:
+        return "성장"
+    if level >= 48 and momentum < 48:
+        return "둔화"
+    if level < 45 and momentum < 45:
+        return "침체"
+    return "성장"
+
+
+def _valuation_score(theme_key, members):
+    fpers = [x.get("fper") for x in members if x.get("fper") is not None and x.get("fper") > 0]
+    pbrs = [x.get("pbr") for x in members if x.get("pbr") is not None and x.get("pbr") > 0]
+    if theme_key in ("finance", "insurance"):
+        pbr = _median(pbrs)
+        if pbr is None:
+            return 50.0, None
+        score = 92 if pbr <= 0.6 else 82 if pbr <= 0.9 else 70 if pbr <= 1.2 else 58 if pbr <= 1.6 else 42 if pbr <= 2.2 else 28
+        return float(score), pbr
+    fper = _median(fpers)
+    if fper is None:
+        return 50.0, None
+    score = 92 if fper <= 10 else 84 if fper <= 15 else 74 if fper <= 20 else 64 if fper <= 25 else 54 if fper <= 35 else 42 if fper <= 50 else 28
+    return float(score), fper
+
+
+def build_sector_cycle_snapshot(universe_payload, previous=None):
+    cfg = json.loads(THEME_CONFIG_PATH.read_text(encoding="utf-8"))
+    themes = cfg.get("themes") or []
+    universe = (universe_payload or {}).get("items") or []
+    by_code = {str(x.get("code") or "").zfill(6): x for x in universe}
+    previous = previous or {}
+    prev_sectors = {x.get("key"): x for x in previous.get("sectors") or [] if x.get("key")}
+    sector_rows = []
+
+    for theme in themes:
+        key = str(theme.get("key") or "")
+        codes = [str(x).zfill(6) for x in theme.get("codes") or []]
+        candidates = [by_code[c] for c in codes if c in by_code]
+        candidates.sort(key=lambda x: (x.get("marketcap") or 0), reverse=True)
+        reps = candidates[:3]
+
+        members = []
+        if reps:
+            with ThreadPoolExecutor(max_workers=min(3, len(reps))) as ex:
+                futs = [ex.submit(_sector_member_snapshot, x) for x in reps]
+                for fut in as_completed(futs):
+                    try:
+                        members.append(fut.result())
+                    except Exception:
+                        pass
+
+        text = " ".join(x.get("qual_text") or "" for x in members).lower()
+        rev_qoq = _median([x.get("rev_qoq") for x in members])
+        fwd_rev = _median([x.get("fwd_rev_growth") for x in members])
+        opm = _median([x.get("opm") for x in members])
+        opm_delta = _median([x.get("opm_delta") for x in members])
+        fwd_opm_delta = _median([x.get("fwd_opm_delta") for x in members])
+        r20 = _median([x.get("r20") for x in members])
+        r60 = _median([x.get("r60") for x in members])
+
+        demand_level = _signed_score(rev_qoq, 1.1)
+        demand_momentum = _signed_score(fwd_rev if fwd_rev is not None else r20, 1.15)
+
+        supply_level = _qualitative_score(
+            text,
+            ["재고 감소", "재고 정상화", "공급 부족", "가동률 상승", "감산", "공급 타이트"],
+            ["재고 증가", "공급 과잉", "가동률 하락", "과잉 공급", "증설 급증"],
+            50, 7,
+        )
+        supply_momentum = _sector_clamp((supply_level * 0.55) + (_signed_score(opm_delta, 8) * 0.45))
+
+        price_level = _sector_clamp(50 + ((opm if opm is not None else 10) - 10) * 2.0)
+        price_momentum = _signed_score(fwd_opm_delta if fwd_opm_delta is not None else opm_delta, 9)
+
+        capex_level = _qualitative_score(
+            text,
+            ["수주잔고", "backlog", "capex 확대", "설비투자 확대", "증설", "장기계약", "신규수주", "수주 증가"],
+            ["수주 감소", "수주 공백", "capex 축소", "투자 지연", "증설 부담"],
+            52, 6,
+        )
+        capex_momentum = _qualitative_score(
+            text,
+            ["수주 증가", "수주 확대", "신규수주", "증설", "투자 확대", "계약 확대"],
+            ["수주 둔화", "수주 감소", "투자 지연", "capex 축소"],
+            capex_level, 7,
+        )
+
+        prev = prev_sectors.get(key) or {}
+        prev_eps = prev.get("raw", {}).get("member_forward_eps") or {}
+        revisions = []
+        current_eps = {}
+        eps_growth_proxy = []
+        for m in members:
+            code = m.get("code")
+            feps = m.get("forward_eps")
+            if feps is not None:
+                current_eps[code] = feps
+                old = prev_eps.get(code)
+                if old not in (None, 0):
+                    revisions.append(pct(feps, old))
+            if m.get("eps_growth") is not None:
+                eps_growth_proxy.append(m["eps_growth"])
+        revision_pct = _median(revisions)
+        if revision_pct is None:
+            revision_pct = _median(eps_growth_proxy)
+        revision_level = _signed_score(_median(eps_growth_proxy), 0.7)
+        revision_momentum = _signed_score(revision_pct, 2.0)
+
+        structural_level = float(theme.get("structural_base") or 70)
+        structural_momentum = _sector_clamp(structural_level * 0.75 + _signed_score(r60, 0.5) * 0.25)
+
+        catalyst_level = _qualitative_score(
+            text,
+            ["신제품", "신규 고객", "수주", "계약", "양산", "승인", "정책 지원", "수출", "점유율 확대", "국산화"],
+            ["규제", "소송", "계약 지연", "승인 지연", "고객 이탈", "정책 불확실"],
+            55, 6,
+        )
+        catalyst_momentum = _sector_clamp(catalyst_level * 0.7 + _signed_score(r20, 0.5) * 0.3)
+
+        factors = {
+            "demand": {"level": demand_level, "momentum": demand_momentum},
+            "supply": {"level": supply_level, "momentum": supply_momentum},
+            "price": {"level": price_level, "momentum": price_momentum},
+            "capex": {"level": capex_level, "momentum": capex_momentum},
+            "revision": {"level": revision_level, "momentum": revision_momentum},
+            "structural": {"level": structural_level, "momentum": structural_momentum},
+            "catalyst": {"level": catalyst_level, "momentum": catalyst_momentum},
+        }
+        factor_weights = {"demand": 20, "supply": 15, "price": 15, "capex": 15, "revision": 15, "structural": 10, "catalyst": 10}
+        scored = {}
+        cycle_score = 0.0
+        level_total = 0.0
+        momentum_total = 0.0
+        for k, w in factor_weights.items():
+            level = _sector_clamp(factors[k]["level"])
+            momentum = _sector_clamp(factors[k]["momentum"])
+            score = level * 0.4 + momentum * 0.6
+            scored[k] = {"level": round(level, 1), "momentum": round(momentum, 1), "score": round(score, 1)}
+            cycle_score += score * w / 100.0
+            level_total += level * w / 100.0
+            momentum_total += momentum * w / 100.0
+
+        peak_signals = []
+        if demand_level - demand_momentum >= 12: peak_signals.append("산업 성장/수요 Momentum 둔화")
+        if capex_level - capex_momentum >= 12: peak_signals.append("수주/CAPEX Momentum 둔화")
+        if price_level - price_momentum >= 12: peak_signals.append("ASP/Margin Momentum 둔화")
+        if supply_momentum <= 42: peak_signals.append("재고/가동률 Balance 악화")
+        if revision_momentum <= 42: peak_signals.append("EPS Revision 둔화/하향")
+        if r20 is not None and r20 >= 20 and revision_momentum < 55: peak_signals.append("주가 Momentum이 이익 Revision을 상회")
+
+        recovery_signals = []
+        if supply_momentum >= 58: recovery_signals.append("재고/공급 Balance 개선")
+        if price_momentum >= 58: recovery_signals.append("가격/Margin 바닥 통과")
+        if capex_momentum >= 58: recovery_signals.append("수주/CAPEX 회복")
+        if demand_momentum >= 58: recovery_signals.append("수요 Momentum 회복")
+        if revision_momentum >= 58: recovery_signals.append("EPS Revision 상향")
+
+        peak_warning = len(peak_signals) >= 3
+        early_recovery = level_total < 55 and len(recovery_signals) >= 3
+        actual_cycle = _sector_actual_cycle(level_total, momentum_total, peak_warning, early_recovery)
+        cycle_score = round(_sector_clamp(cycle_score), 1)
+        cycle_label = _sector_cycle_label(cycle_score)
+
+        valuation_score, valuation_raw = _valuation_score(key, members)
+        relative_strength = _sector_clamp(50 + (r20 or 0) * 0.8 + (r60 or 0) * 0.25)
+        catalyst_score = scored["catalyst"]["score"]
+        investment_score = round(_sector_clamp(cycle_score * 0.65 + valuation_score * 0.15 + relative_strength * 0.10 + catalyst_score * 0.10), 1)
+
+        strongest = sorted(scored.items(), key=lambda kv: kv[1]["score"], reverse=True)[:2]
+        factor_names = {"demand":"수요","supply":"공급/재고","price":"ASP/Margin","capex":"CAPEX/수주","revision":"Revision","structural":"구조적 성장","catalyst":"Catalyst"}
+        reason = " · ".join(f"{factor_names[k]} {v['score']:.0f}" for k, v in strongest)
+        if members:
+            reason += " | 대표: " + ", ".join(x.get("name") or x.get("code") for x in sorted(members, key=lambda x: x.get("marketcap") or 0, reverse=True))
+
+        sector_rows.append({
+            "key": key,
+            "name": theme.get("label"),
+            "actual_cycle": actual_cycle,
+            "cycle_attractiveness": cycle_label,
+            "cycle_score": cycle_score,
+            "investment_score": investment_score,
+            "valuation_score": round(valuation_score, 1),
+            "relative_strength_score": round(relative_strength, 1),
+            "catalyst_score": round(catalyst_score, 1),
+            "factors": scored,
+            "peak_warning": peak_warning,
+            "peak_signals": peak_signals,
+            "early_recovery": early_recovery,
+            "recovery_signals": recovery_signals,
+            "reason": reason or "대표 종목 데이터 추가 확인",
+            "growth": theme.get("growth") or "구조적 성장동력 확인",
+            "representatives": [{"code": x.get("code"), "name": x.get("name")} for x in members],
+            "raw": {
+                "member_forward_eps": current_eps,
+                "median_fper_or_pbr": valuation_raw,
+                "median_r20": r20,
+                "median_r60": r60,
+                "median_rev_qoq": rev_qoq,
+                "median_fwd_rev_growth": fwd_rev,
+                "median_opm": opm,
+                "median_opm_delta": opm_delta,
+                "median_revision_pct": revision_pct,
+            },
+        })
+
+    sector_rows.sort(key=lambda x: x.get("investment_score") or 0, reverse=True)
+    return {
+        "as_of": (universe_payload or {}).get("as_of") or NOW.date().isoformat(),
+        "generated_at": NOW.isoformat(),
+        "theme_count": len(themes),
+        "method": "23 Fundamental themes · representative stocks daily refresh · Level 40% + Momentum 60%",
+        "source_note": "Naver Stock price/quarterly/valuation + KOSAI qualitative evidence. 직접 산업 재고·ASP·수주 데이터가 없는 항목은 중립값에서 확인 가능한 실적/정성 Evidence만 반영.",
+        "sectors": sector_rows,
+    }
+
+
 def validate_financial_snapshot(d):
     """Validate the financial keys that the HTML/profile renderer actually uses.
 
@@ -2831,6 +3171,16 @@ def main():
 
     market, market_errors = market_series()
     errors.extend(market_errors)
+
+    try:
+        d["sector_cycle"] = build_sector_cycle_snapshot(universe_meta, d.get("sector_cycle") or {})
+    except Exception as e:
+        errors.append(f"sector cycle refresh: {e}")
+        old_sector = d.get("sector_cycle") or {}
+        if old_sector:
+            old_sector["refreshed_this_run"] = False
+            old_sector["refresh_error"] = str(e)
+            d["sector_cycle"] = old_sector
 
     stock_ratio = len(live_by_code) / max(1, len(stocks))
     market_fresh = sum(1 for x in market.values() if x.get("fresh"))
@@ -2987,6 +3337,12 @@ def main():
             "generated_at": (universe_meta or {}).get("generated_at"),
             "count": (universe_meta or {}).get("count"),
             "source": (universe_meta or {}).get("source"),
+        },
+        "sector_cycle": {
+            "as_of": (d.get("sector_cycle") or {}).get("as_of"),
+            "generated_at": (d.get("sector_cycle") or {}).get("generated_at"),
+            "theme_count": (d.get("sector_cycle") or {}).get("theme_count"),
+            "method": (d.get("sector_cycle") or {}).get("method"),
         },
         "coverage": {
             "stocks_fresh": len(live_by_code),
