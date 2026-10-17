@@ -738,15 +738,164 @@ def naver_world_index_polling_snapshot(reuters_code=".IXIC"):
     return x
 
 
+def _walk_dicts(obj):
+    if isinstance(obj, dict):
+        yield obj
+        for value in obj.values():
+            yield from _walk_dicts(value)
+    elif isinstance(obj, list):
+        for value in obj:
+            yield from _walk_dicts(value)
+
+
+def _naver_index_rows(index_code, count=180):
+    rows = []
+    seen = set()
+    page_size = 60
+    for page in range(1, max(2, math.ceil(count / page_size) + 1)):
+        url = f"https://m.stock.naver.com/api/index/{index_code}/price?pageSize={page_size}&page={page}"
+        payload = req(url, 2).json()
+        items = payload if isinstance(payload, list) else (payload.get("result") or [])
+        if not items:
+            break
+        for x in items:
+            ds = str(x.get("localTradedAt") or x.get("localDate") or "")[:10]
+            close = n(x.get("closePrice"))
+            if not ds or close is None or ds in seen:
+                continue
+            seen.add(ds)
+            rows.append({
+                "date": ds,
+                "open": n(x.get("openPrice")) or close,
+                "high": n(x.get("highPrice")) or close,
+                "low": n(x.get("lowPrice")) or close,
+                "close": close,
+                "volume": n(x.get("accumulatedTradingVolume")) or 0,
+            })
+        if len(rows) >= count:
+            break
+    rows.sort(key=lambda x: x["date"])
+    if len(rows) < 20:
+        raise RuntimeError(f"Naver index history insufficient: {index_code}")
+    return rows[-count:], "Naver Stock index history"
+
+
+def _naver_fx_rows(code="FX_USDKRW", count=120):
+    url = f"https://api.stock.naver.com/marketindex/exchange/{code}/prices?page=1&pageSize={count}"
+    payload = req(url, 2).json()
+    items = payload.get("result") if isinstance(payload, dict) else payload
+    if not isinstance(items, list):
+        raise RuntimeError("Naver FX history malformed")
+    rows = []
+    for x in items:
+        ds = str(x.get("localTradedAt") or x.get("localDate") or "")[:10]
+        close = n(x.get("closePrice"))
+        if not ds or close is None:
+            continue
+        rows.append({
+            "date": ds,
+            "open": n(x.get("openPrice")) or close,
+            "high": n(x.get("highPrice")) or close,
+            "low": n(x.get("lowPrice")) or close,
+            "close": close,
+            "volume": 0,
+        })
+    rows.sort(key=lambda x: x["date"])
+    if len(rows) < 20:
+        raise RuntimeError("Naver FX history insufficient")
+    return rows[-count:], "Naver Stock FX"
+
+
+def _naver_code_snapshot(url, accepted_codes, source, value_keys=("closePrice", "nowPrice", "value")):
+    payload = req(url, 2).json()
+    for x in _walk_dicts(payload):
+        code = str(x.get("reutersCode") or x.get("symbolCode") or x.get("code") or "")
+        if code not in accepted_codes:
+            continue
+        value = None
+        for key in value_keys:
+            value = n(x.get(key))
+            if value is not None:
+                break
+        if value is None:
+            continue
+        cp = n(x.get("fluctuationsRatio") or x.get("changeRate") or x.get("cr"))
+        ds = str(x.get("localTradedAt") or x.get("localDate") or x.get("date") or NOW.date().isoformat())[:10]
+        return {
+            "value": value,
+            "change_pct": cp,
+            "date": ds,
+            "fresh": True,
+            "source": source,
+        }
+    raise RuntimeError(f"Naver snapshot code not found: {accepted_codes}")
+
+
+def naver_world_index_current_snapshot(reuters_code=".IXIC"):
+    return _naver_code_snapshot(
+        f"https://stock.naver.com/api/polling/worldstock/index?reutersCodes={quote(reuters_code, safe='.')}",
+        {reuters_code, reuters_code.lstrip(".")},
+        "Naver Stock world-index polling v2",
+    )
+
+
+def naver_us10y_snapshot():
+    return _naver_code_snapshot(
+        "https://m.stock.naver.com/front-api/marketIndex/bondMain",
+        {"US10YT=RR", "US10YT"},
+        "Naver Stock US 10Y",
+    )
+
+
 def market_series():
     syms = CFG.get("settings", {}).get("market_symbols", {})
     out, errors = {}, []
+
     for key, symbol in syms.items():
+        if key in ("kospi", "kosdaq"):
+            try:
+                rows, source = _naver_index_rows("KOSPI" if key == "kospi" else "KOSDAQ")
+                vals = [x["close"] for x in rows]
+                out[key] = {
+                    "value": vals[-1],
+                    "change_pct": pct(vals[-1], vals[-2]) if len(vals) > 1 else None,
+                    "date": rows[-1]["date"],
+                    "fresh": True,
+                    "source": source,
+                    "rows": rows,
+                }
+                continue
+            except Exception as e:
+                errors.append(f"{key} Naver: {e}")
+
+        if key == "usdkrw":
+            try:
+                rows, source = _naver_fx_rows("FX_USDKRW")
+                vals = [x["close"] for x in rows]
+                out[key] = {
+                    "value": vals[-1],
+                    "change_pct": pct(vals[-1], vals[-2]) if len(vals) > 1 else None,
+                    "date": rows[-1]["date"],
+                    "fresh": True,
+                    "source": source,
+                    "rows": rows,
+                }
+                continue
+            except Exception as e:
+                errors.append(f"usdkrw Naver: {e}")
+
+        if key == "us10y":
+            try:
+                snap = naver_us10y_snapshot()
+                out[key] = {**snap, "rows": []}
+                continue
+            except Exception as e:
+                errors.append(f"us10y Naver: {e}")
+
         if key == "nasdaq":
             candidates = []
-            # Query more than one upstream because a successful HTTP response can
-            # still carry a stale previous-session quote.
             for label, fn in (
+                ("Naver polling v2", lambda: naver_world_index_current_snapshot(".IXIC")),
                 ("Nasdaq official", nasdaq_official_snapshot),
                 ("Naver basic", lambda: naver_world_index_basic_snapshot(".IXIC")),
                 ("Naver polling", lambda: naver_world_index_polling_snapshot(".IXIC")),
@@ -771,9 +920,8 @@ def market_series():
                 errors.append(f"nasdaq Yahoo: {e}")
 
             if candidates:
-                # Freshest trade date wins; for the same date prefer Naver basic,
-                # then polling, then Yahoo.
                 priority = {
+                    "Naver Stock world-index polling v2": 5,
                     "Nasdaq official COMP historical": 4,
                     "Naver Stock index basic": 3,
                     "Naver Finance world-index polling": 2,
@@ -783,9 +931,6 @@ def market_series():
                     candidates,
                     key=lambda x: (str(x.get("date") or ""), priority.get(x.get("source"), 0))
                 )
-
-                # Never let a stale upstream response overwrite a newer verified
-                # Nasdaq session already stored in market-data.json.
                 prev_text = PREV.get("text") or {}
                 prev_date = str(prev_text.get("nasdaqDataDate") or "")
                 prev_value = n(str(prev_text.get("nasdaq") or "").replace(",", ""))
@@ -800,7 +945,6 @@ def market_series():
                         "fresh": True,
                         "source": "Previous verified Nasdaq close · anti-regression",
                     }
-
                 out[key] = {**snap, "rows": yahoo_rows}
                 continue
             out[key] = {"fresh": False}
@@ -1689,34 +1833,59 @@ def reset_profile_scores(profiles):
 
 def update_market_text(d, market):
     t = d.setdefault("text", {})
-    latest_dates = []
-    def set_market(key, text_key, delta_key, suffix=""):
+    equity_dates = []
+
+    def set_market(key, text_key, delta_key):
         x = market.get(key) or {}
         if x.get("value") is None:
             return
         v = x["value"]
         if key == "us10y":
-            t[text_key] = f"{v:.1f}%"
+            t[text_key] = f"{v:.2f}%"
         else:
             t[text_key] = f"{int(round(v)):,}"
         cp = x.get("change_pct")
-        t[delta_key] = (signed(cp, 2) if cp is not None else "—") + (f" · {x.get('date','')[-5:]}" if x.get("date") else "")
-        if x.get("date"):
-            latest_dates.append(x["date"])
-            if key == "nasdaq":
-                t["nasdaqDataDate"] = x["date"]
+        date_text = f" · {x.get('date','')[-5:]}" if x.get("date") else ""
+        t[delta_key] = (signed(cp, 2) if cp is not None else "—") + date_text
+        if key in ("kospi", "kosdaq", "nasdaq") and x.get("date"):
+            equity_dates.append(x["date"])
+        if key == "nasdaq" and x.get("date"):
+            t["nasdaqDataDate"] = x["date"]
+
     set_market("kospi", "kospi", "kospiDelta")
     set_market("kosdaq", "kosdaq", "kosdaqDelta")
     set_market("nasdaq", "nasdaq", "nasdaqDelta")
     set_market("usdkrw", "fx", "fxDelta")
     set_market("us10y", "us10y", "us10yDelta")
-    if latest_dates:
-        md = max(latest_dates)
+
+    md = max(equity_dates) if equity_dates else d.get("meta", {}).get("market_date")
+    if md:
         t["sourceMarketDate"] = f"{md} 종가"
-        t["sourceKR"] = f"KOSPI {t.get('kospi','—')} · KOSDAQ {t.get('kosdaq','—')} · USD/KRW {t.get('fx','—')}"
-        t["sourceUS"] = f"Nasdaq {t.get('nasdaq','—')} · US10Y {t.get('us10y','—')}"
-        return md
-    return d.get("meta", {}).get("market_date")
+        t["heroDesc"] = (
+            f"{md} 최신 종가 기준으로 시장 환경부터 산업 사이클, 실적·밸류에이션·Catalyst·"
+            "기술적 위치까지 연결해 현재 가격의 기대수익과 하락위험을 판단합니다."
+        )
+
+    t["sourceKR"] = f"KOSPI {t.get('kospi','—')} · KOSDAQ {t.get('kosdaq','—')} · USD/KRW {t.get('fx','—')}"
+    t["sourceUS"] = f"Nasdaq {t.get('nasdaq','—')} · US10Y {t.get('us10y','—')}"
+    t["marketReason1"] = (
+        f"KOSPI {t.get('kospi','—')} ({t.get('kospiDelta','—')}), "
+        f"KOSDAQ {t.get('kosdaq','—')} ({t.get('kosdaqDelta','—')}), "
+        f"Nasdaq {t.get('nasdaq','—')} ({t.get('nasdaqDelta','—')})로 최신 종가를 반영했습니다."
+    )
+    t["marketReason2"] = (
+        f"USD/KRW {t.get('fx','—')} ({t.get('fxDelta','—')}), "
+        f"미 10년물 {t.get('us10y','—')} ({t.get('us10yDelta','—')})를 함께 확인합니다."
+    )
+    t["marketReason3"] = (
+        "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인 수급, "
+        "주요 지지·저항과 변동성 축소 여부를 함께 확인합니다."
+    )
+    t["marketImpact"] = (
+        "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 "
+        "진입 구조가 동시에 확인되는 후보를 우선합니다."
+    )
+    return md
 
 
 
