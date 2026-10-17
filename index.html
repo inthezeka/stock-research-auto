@@ -2959,6 +2959,12 @@ function srFundamentalScore(report,item,themeKey){
   f.downConditions=[...contribution].sort((a,b)=>b.ratio-a.ratio).slice(0,3).map(x=>x.label+' 둔화/훼손 시 점수 하락');
   return srRecalcFundamental(f);
 }
+async function srMapLimit(arr,limit,fn){
+  const out=new Array(arr.length);let idx=0;
+  async function worker(){while(true){const i=idx++;if(i>=arr.length)return;try{out[i]=await fn(arr[i],i)}catch(e){console.warn('srMapLimit item failed',e);out[i]=null}}}
+  await Promise.all(Array.from({length:Math.min(limit,arr.length)},worker));return out;
+}
+
 function srFundThemeByKey(key){return FUNDAMENTAL_THEMES.find(x=>x.key===key)||FUNDAMENTAL_THEMES[0]}
 function srRenderFundThemes(){
   const el=document.getElementById('fundThemeList');if(!el)return;
