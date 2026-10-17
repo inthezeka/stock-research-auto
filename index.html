@@ -1273,7 +1273,8 @@ async function buildSearchProfile(item){
     m.target=cons.targetPrice;
   }
   p.score=tech.total;p.rating=tech.label;
-  t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · SEARCH RESULT';t.topPickScore=tech.total+' / '+tech.label+' [AI]';
+  const searchDataDate=String(rows.at(-1)?.date||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
+  t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · 기준일 '+searchDataDate+' · SEARCH RESULT';t.topPickScore=tech.total+' / '+tech.label+' [AI]';
   t.thesis='“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. 정성적 투자 Thesis는 공식 IR·공시 확인이 필요합니다.” [AI]';
   t.currentPriceText=srFmt(tech.price)+'원';p.inputs.currentPrice=String(Math.round(tech.price));
   t.per=m.per!=null?m.per.toFixed(2)+'x'+(fundamentalSource.includes('KOSAI')?' [AI]':''):'N/A · 적자/TTM 확인';
@@ -1507,7 +1508,7 @@ async function analyzeSearchItem(item,status,box){
     const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
     const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
     document.getElementById('stockSearchBadge')?.classList.add('show');
-    status.textContent=p.name+' 분석 완료 · 추천 TOP5 표는 유지하고 아래 상세분석만 검색 종목으로 전환했습니다. [AI]';
+    status.textContent=p.name+' 분석 완료 · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신')+' · 아래 상세분석을 검색 종목으로 전환했습니다.';
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
