@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config/watchlist.json").read_text(encoding="utf-8"))
 DATA_PATH = ROOT / "data/market-data.json"
+UNIVERSE_PATH = ROOT / "stock-universe.json"
 PREV = json.loads(DATA_PATH.read_text(encoding="utf-8"))
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
@@ -117,6 +118,117 @@ def naver_stock_chart(code, count=320):
         raise RuntimeError(f"Naver history insufficient: {code}")
     return rows, "Naver Stock"
 
+
+
+def parse_korean_market_value(value):
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    text = str(value).replace(",", "").replace(" ", "").strip()
+    direct = n(text)
+    if direct is not None:
+        return direct
+    total = 0.0
+    matched = False
+    for pattern, mult in ((r"(-?\d+(?:\.\d+)?)조", 1e12), (r"(-?\d+(?:\.\d+)?)억", 1e8), (r"(-?\d+(?:\.\d+)?)만", 1e4)):
+        m = re.search(pattern, text)
+        if m:
+            total += float(m.group(1)) * mult
+            matched = True
+    return total if matched else None
+
+
+def _naver_universe_page(market_type, start_idx, page_size=500):
+    url = (
+        "https://stock.naver.com/api/domestic/market/stock/default"
+        f"?tradeType=KRX&marketType={market_type}&orderType=marketValueTop"
+        f"&startIdx={start_idx}&pageSize={page_size}"
+    )
+    payload = req(url, 2).json()
+    if isinstance(payload, list):
+        return payload
+    for key in ("stocks", "items", "result", "datas"):
+        arr = payload.get(key) if isinstance(payload, dict) else None
+        if isinstance(arr, list):
+            return arr
+    return []
+
+
+def refresh_stock_universe():
+    """Refresh the KOSPI/KOSDAQ search/screening universe every workflow run."""
+    items = []
+    seen = set()
+    observed_dates = []
+
+    for market in ("KOSPI", "KOSDAQ"):
+        for start in range(0, 4000, 500):
+            page = _naver_universe_page(market, start, 500)
+            if not page:
+                break
+            added = 0
+            for x in page:
+                code = str(
+                    x.get("itemcode") or x.get("itemCode") or x.get("stockCode")
+                    or x.get("code") or ""
+                ).replace("A", "").strip()
+                if not re.fullmatch(r"\d{6}", code) or code in seen:
+                    continue
+                name = str(x.get("itemname") or x.get("itemName") or x.get("stockName") or x.get("name") or "").strip()
+                if not name:
+                    continue
+
+                close = n(x.get("nowPrice") or x.get("currentPrice") or x.get("closePrice") or x.get("price"))
+                volume = n(x.get("accumulatedTradingVolume") or x.get("accumulatedVolume") or x.get("volume")) or 0
+                turnover = n(
+                    x.get("accumulatedTradingValue") or x.get("accumulatedTradingAmount")
+                    or x.get("tradingValue") or x.get("turnover")
+                ) or 0
+                shares = n(x.get("listedStockCount") or x.get("listedShares") or x.get("shares"))
+                marketcap = parse_korean_market_value(
+                    x.get("marketValue") or x.get("marketCap") or x.get("marketCapitalization")
+                )
+                if marketcap is None and shares is not None and close is not None:
+                    marketcap = shares * close
+
+                traded_at = str(x.get("localTradedAt") or x.get("localDate") or x.get("date") or "")[:10]
+                if re.fullmatch(r"\d{4}-\d{2}-\d{2}", traded_at):
+                    observed_dates.append(traded_at)
+
+                items.append({
+                    "code": code,
+                    "name": name,
+                    "market": market,
+                    "ticker": code + (".KQ" if market == "KOSDAQ" else ".KS"),
+                    "shares": None if shares is None else int(round(shares)),
+                    "close": close,
+                    "marketcap": marketcap,
+                    "volume": volume,
+                    "turnover": turnover,
+                })
+                seen.add(code)
+                added += 1
+
+            if len(page) < 500 or added == 0:
+                break
+
+    # Guard against silently replacing the full KRX universe with a partial API page.
+    if len(items) < 1500:
+        raise RuntimeError(f"Naver stock universe incomplete: {len(items)}")
+
+    as_of = max(observed_dates) if observed_dates else NOW.date().isoformat()
+    payload = {
+        "as_of": as_of,
+        "generated_at": NOW.isoformat(),
+        "source": "Naver Stock domestic market API · KRX",
+        "count": len(items),
+        "items": sorted(items, key=lambda x: (x["market"], x["name"], x["code"])),
+    }
+    tmp = UNIVERSE_PATH.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    json.loads(tmp.read_text(encoding="utf-8"))
+    tmp.replace(UNIVERSE_PATH)
+    return payload
 
 def fetch_stock(s):
     try:
@@ -2575,6 +2687,16 @@ def main():
     stocks = CFG.get("stocks") or []
     live_by_code, errors = {}, []
 
+    universe_meta = None
+    try:
+        universe_meta = refresh_stock_universe()
+    except Exception as e:
+        errors.append(f"stock universe refresh: {e}")
+        try:
+            universe_meta = json.loads(UNIVERSE_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            universe_meta = None
+
     with ThreadPoolExecutor(max_workers=8) as ex:
         futs = {ex.submit(fetch_stock, s): s for s in stocks}
         for fut in as_completed(futs):
@@ -2723,6 +2845,12 @@ def main():
         "kosdaq_selection_policy": "Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading Score 40% [AI].",
         "kospi_selection_policy": "Watchlist 전체 재스크리닝 · Fundamental/Catalyst 60% + Trading Score 40% · Trading 50 미만 기본 제외 · 70 이상 우선 [AI].",
         "korea_sentiment_policy": "20D/60D 추세 우선 · 절대 변동성 패널티 · 외인/기관 수급 포함 · 20D 급락 Regime Gate [AI].",
+        "stock_universe": {
+            "as_of": (universe_meta or {}).get("as_of"),
+            "generated_at": (universe_meta or {}).get("generated_at"),
+            "count": (universe_meta or {}).get("count"),
+            "source": (universe_meta or {}).get("source"),
+        },
         "coverage": {
             "stocks_fresh": len(live_by_code),
             "stocks_total": len(stocks),
