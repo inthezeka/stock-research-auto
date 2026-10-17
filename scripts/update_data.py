@@ -2065,13 +2065,8 @@ def main():
         return 4
 
     kosdaq_profiles = build_kosdaq_profiles(d, profiles[0], live_by_code)
-    if not kosdaq_profiles:
-        print(json.dumps({
-            "status": "rejected",
-            "reason": "No KOSDAQ candidate passed Trading Score >= 60",
-            "diagnostics": d.get("kosdaq_selection_diagnostics") or [],
-        }, ensure_ascii=False))
-        return 4
+    # Zero qualified KOSDAQ names is a valid market state.
+    # Keep updating KOSPI/market data and publish KOSDAQ 0/5 instead of aborting the whole site.
 
     all_profiles = profiles[:5] + kosdaq_profiles
 
