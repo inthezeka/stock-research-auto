@@ -16,6 +16,20 @@ try:
     cfg=json.loads((ROOT/"config/watchlist.json").read_text(encoding="utf-8"))
 except Exception as e:
     raise SystemExit("watchlist.json invalid: "+str(e))
+try:
+    sector_cfg=json.loads((ROOT/"config/fundamental_themes.json").read_text(encoding="utf-8"))
+except Exception as e:
+    raise SystemExit("fundamental_themes.json invalid: "+str(e))
+sectors=sector_cfg.get("sectors") or []
+if len(sectors)!=36:
+    fail(f"Sector taxonomy count={len(sectors)}; expected 36")
+for s in sectors:
+    if not s.get("key") or not s.get("label"):
+        fail("Sector taxonomy missing key/label")
+    if not (s.get("subsectors") or []):
+        fail(f"{s.get('label','?')} Sub-sector missing")
+    if not (s.get("themes") or []):
+        fail(f"{s.get('label','?')} Theme mapping missing")
 
 groups=data.get("stock_profile_groups") or {}
 kospi_profiles=groups.get("KOSPI") or data.get("stock_profiles") or []
@@ -172,8 +186,11 @@ if 'id="technical"' in html or "Technical & Market Structure · Trading Score" i
     fail("legacy Technical & Market Structure section must be removed")
 required_ui=[
     "③ 종목 선정 · Fundamental / ICT Trading",
-    "① Fundamental Theme",
+    "① Fundamental Sector",
     "Fundamental TOP 20",
+    'id="fundSubsectorList"',
+    'id="fundPrimaryThemeList"',
+    'id="sectorUniverseList"',
     "ICT Trading TOP 10",
     'id="fundThemeList"',
     'id="fundamentalScanBtn"',
@@ -190,6 +207,9 @@ if "front-api/search/autoComplete" not in html or "chart/domestic/item/" not in 
     fail("live stock search data endpoints missing")
 if "function runFundamentalPipeline" not in html or "function runIctTradingScan" not in html:
     fail("dual screening engine missing")
+if "Sub-sector</th>" not in html or "Sector > Sub-sector > Theme" not in html:
+    fail("3-level Sector/Sub-sector/Theme taxonomy UI missing")
+
 if "HTF Market Structure" not in html or "External Liquidity" not in html or "Protected Low" not in html:
     fail("ICT score framework missing")
 
