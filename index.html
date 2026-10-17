@@ -323,7 +323,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-sector-cycle-investment-v39-20261017 -->
+<!-- BUILD: stock-room-attractiveness-range-v40-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -509,7 +509,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card">
       <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / AI · Fundamental TOP 20</h3>
       <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>15</th><th>수익성/ROIC<br>15</th><th>재무/FCF<br>15</th><th>Valuation<br>10</th><th>경쟁우위<br>10</th><th>Revision<br>5</th><th>Sector KPI<br>20</th><th>Cycle/Visibility<br>10</th><th>점수 기반 투자매력</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="12">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
-      <p class="note" style="margin:10px 2px 0">테마 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 투자매력은 최종 Fundamental Score만으로 구분합니다: <b>90+ 매우 매력 · 80~89 매력 · 75~79 다소 매력 · 70~74 중립 · 65~69 다소 부담 · 60~64 부담 · 60 미만 매우 부담</b>.</p>
+      <p class="note" style="margin:10px 2px 0">테마 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 투자매력은 최종 Fundamental Score만으로 구분합니다: <b>95+ Best · 90~94 매력 · 75~89 관심 · 65~74 중립 · 60~64 주의 · 50~59 경고 · 50 미만 위험</b>.</p>
     </div>
   </div>
 
@@ -2808,24 +2808,24 @@ function srFundSnapshotPrice(item){
 }
 function srFundValClass(v){
   const s=String(v||'').trim();
-  if(s==='매우 매력')return'fund-val-violet';
+  if(s==='Best')return'fund-val-violet';
   if(s==='매력')return'fund-val-green';
-  if(s==='다소 매력')return'fund-val-blue';
+  if(s==='관심')return'fund-val-blue';
   if(s==='중립')return'fund-val-gray';
-  if(s==='다소 부담')return'fund-val-yellow';
-  if(s==='부담')return'fund-val-orange';
-  if(s==='매우 부담')return'fund-val-red';
+  if(s==='주의')return'fund-val-yellow';
+  if(s==='경고')return'fund-val-orange';
+  if(s==='위험')return'fund-val-red';
   return'fund-val-gray';
 }
 function srFundScoreAttractiveness(score){
   const s=Number(score)||0;
-  if(s>=90)return'매우 매력';
-  if(s>=80)return'매력';
-  if(s>=75)return'다소 매력';
-  if(s>=70)return'중립';
-  if(s>=65)return'다소 부담';
-  if(s>=60)return'부담';
-  return'매우 부담';
+  if(s>=95)return'Best';
+  if(s>=90)return'매력';
+  if(s>=75)return'관심';
+  if(s>=65)return'중립';
+  if(s>=60)return'주의';
+  if(s>=50)return'경고';
+  return'위험';
 }
 
 const SECTOR_CYCLE_WEIGHTS={demand:20,supply:15,price:15,capex:15,revision:15,structural:10,catalyst:10};
@@ -3076,7 +3076,7 @@ function srRenderFundTop20Rows(list){
     '<td><span class="fund-area-score">'+x.f.groups.revision.toFixed(1)+'/5</span></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.sector.toFixed(1)+'/20</span></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.cycleVisibility.toFixed(1)+'/10</span></td>'+
-    '<td><span class="fund-val-answer '+srFundValClass(srFundScoreAttractiveness(x.f.total))+'">'+srEsc(srFundScoreAttractiveness(x.f.total))+' · '+x.f.total.toFixed(1)+'</span></td></tr>'
+    '<td><span class="fund-val-answer '+srFundValClass(srFundScoreAttractiveness(x.f.total))+'">'+srEsc(srFundScoreAttractiveness(x.f.total))+'</span></td></tr>'
   ).join('');
 }
 
