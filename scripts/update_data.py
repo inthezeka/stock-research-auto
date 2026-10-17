@@ -2930,7 +2930,7 @@ def _valuation_score(theme_key, members):
 
 def build_sector_cycle_snapshot(universe_payload, previous=None):
     cfg = json.loads(THEME_CONFIG_PATH.read_text(encoding="utf-8"))
-    themes = cfg.get("themes") or []
+    themes = cfg.get("sectors") or cfg.get("themes") or []
     universe = (universe_payload or {}).get("items") or []
     by_code = {str(x.get("code") or "").zfill(6): x for x in universe}
     previous = previous or {}
@@ -3094,6 +3094,8 @@ def build_sector_cycle_snapshot(universe_payload, previous=None):
             "recovery_signals": recovery_signals,
             "reason": reason or "대표 종목 데이터 추가 확인",
             "growth": theme.get("growth") or "구조적 성장동력 확인",
+            "subsectors": theme.get("subsectors") or [],
+            "themes": theme.get("themes") or [],
             "representatives": [{"code": x.get("code"), "name": x.get("name")} for x in members],
             "raw": {
                 "member_forward_eps": current_eps,
@@ -3112,8 +3114,9 @@ def build_sector_cycle_snapshot(universe_payload, previous=None):
     return {
         "as_of": (universe_payload or {}).get("as_of") or NOW.date().isoformat(),
         "generated_at": NOW.isoformat(),
+        "sector_count": len(themes),
         "theme_count": len(themes),
-        "method": "23 Fundamental themes · representative stocks daily refresh · Level 40% + Momentum 60%",
+        "method": f"{len(themes)} Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
         "source_note": "Naver Stock price/quarterly/valuation + KOSAI qualitative evidence. 직접 산업 재고·ASP·수주 데이터가 없는 항목은 중립값에서 확인 가능한 실적/정성 Evidence만 반영.",
         "sectors": sector_rows,
     }
@@ -3341,6 +3344,7 @@ def main():
         "sector_cycle": {
             "as_of": (d.get("sector_cycle") or {}).get("as_of"),
             "generated_at": (d.get("sector_cycle") or {}).get("generated_at"),
+            "sector_count": (d.get("sector_cycle") or {}).get("sector_count"),
             "theme_count": (d.get("sector_cycle") or {}).get("theme_count"),
             "method": (d.get("sector_cycle") or {}).get("method"),
         },
