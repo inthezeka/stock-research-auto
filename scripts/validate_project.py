@@ -30,6 +30,14 @@ for s in sectors:
         fail(f"{s.get('label','?')} Sub-sector missing")
     if not (s.get("themes") or []):
         fail(f"{s.get('label','?')} Theme mapping missing")
+sector_cycle=data.get("sector_cycle") or {}
+sector_rows=sector_cycle.get("sectors") or []
+if len(sector_rows)!=36:
+    fail(f"daily Sector Cycle count={len(sector_rows)}; expected 36")
+sector_keys={str(x.get("key") or "") for x in sector_rows}
+missing_cycle=[s.get("key") for s in sectors if s.get("key") not in sector_keys]
+if missing_cycle:
+    fail("daily Sector Cycle missing taxonomy keys: "+", ".join(missing_cycle[:10]))
 
 groups=data.get("stock_profile_groups") or {}
 kospi_profiles=groups.get("KOSPI") or data.get("stock_profiles") or []
