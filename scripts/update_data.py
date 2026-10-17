@@ -1130,11 +1130,11 @@ def fetch_us_sentiment(previous=None):
 
 
 def compute_korea_sentiment(market):
-    """Keyless Korea sentiment score; own calculation [AI].
+    """Korea sentiment with medium-term trend dominance and anti-whipsaw gates [AI].
 
-    Volatility uses KOSPI 20-day realized volatility instead of scraping
-    VKOSPI. USD/KRW 20-day momentum is used as a safe-haven/FX proxy.
-    Component scores are trailing-percentile normalized.
+    The old formula over-weighted 1-day rebounds. This version emphasizes
+    20D/60D trend, penalizes absolute high volatility, includes KOSPI flow,
+    and caps the score when the 20D trend remains deeply negative.
     """
     try:
         k_rows = (market.get("kospi") or {}).get("rows") or []
@@ -1143,41 +1143,89 @@ def compute_korea_sentiment(market):
         kc = [x["close"] for x in k_rows]
         qc = [x["close"] for x in q_rows]
         fc = [x["close"] for x in fx_rows]
-        if len(kc) < 80 or len(qc) < 80 or len(fc) < 40:
+
+        if len(kc) < 100 or len(qc) < 100 or len(fc) < 40:
             raise RuntimeError("insufficient history")
 
-        k_daily = daily_returns(kc)
-        q_daily = daily_returns(qc)
+        k5 = rolling_returns(kc, 5)
+        q5 = rolling_returns(qc, 5)
         k20 = rolling_returns(kc, 20)
+        k60 = rolling_returns(kc, 60)
         fx20 = rolling_returns(fc, 20)
         vols = rolling_realized_vol(kc, 20)
-        if not (k_daily and q_daily and k20 and fx20 and vols):
+        if not (k5 and q5 and k20 and k60 and fx20 and vols):
             raise RuntimeError("indicator series empty")
 
-        momentum_score = percentile_rank(k_daily, k_daily[-1])
-        kosdaq_score = percentile_rank(q_daily, q_daily[-1])
-        strength_score = (momentum_score + kosdaq_score) / 2.0
-        trend_score = percentile_rank(k20, k20[-1])
+        # Relative scores.
+        k5_score = percentile_rank(k5, k5[-1])
+        q5_score = percentile_rank(q5, q5[-1])
+        trend20_score = percentile_rank(k20, k20[-1])
+        trend60_score = percentile_rank(k60, k60[-1])
         vol_score = 100.0 - percentile_rank(vols, vols[-1])
         fx_score = 100.0 - percentile_rank(fx20, fx20[-1])
 
+        # Absolute volatility guard: a 40% realized-volatility market should not
+        # receive a "greed" boost just because recent history was even more volatile.
+        current_vol = vols[-1]
+        if current_vol >= 35:
+            vol_score = min(vol_score, 35.0)
+        elif current_vol >= 30:
+            vol_score = min(vol_score, 50.0)
+        elif current_vol >= 25:
+            vol_score = min(vol_score, 65.0)
+
+        # Foreign/institutional KOSPI flow contributes 10%.
+        flow = (market.get("kospi") or {}).get("flow") or {}
+        foreign = n(flow.get("foreign"))
+        institution = n(flow.get("institution"))
+        if foreign is None or institution is None:
+            flow_score = 50.0
+            flow_value = "수급 확인 중"
+        else:
+            weighted_flow = foreign * 0.60 + institution * 0.40
+            flow_score = 50.0 + 40.0 * math.tanh(weighted_flow / 10000.0)
+            flow_value = f"외인 {foreign:+,.0f}억 · 기관 {institution:+,.0f}억"
+
         components = [
-            {"key": "volatility", "label": "변동성 · 20D RV", "score": round(clamp(vol_score), 1), "weight": 30, "value": f"{vols[-1]:.1f}%"},
-            {"key": "momentum", "label": "KOSPI 모멘텀", "score": round(clamp(momentum_score), 1), "weight": 25, "value": signed(k_daily[-1], 2)},
-            {"key": "strength", "label": "주가 강도", "score": round(clamp(strength_score), 1), "weight": 15, "value": signed((k_daily[-1] + q_daily[-1]) / 2.0, 2)},
-            {"key": "trend", "label": "KOSPI 20D 추세", "score": round(clamp(trend_score), 1), "weight": 15, "value": signed(k20[-1], 2)},
-            {"key": "kosdaq", "label": "KOSDAQ 모멘텀", "score": round(clamp(kosdaq_score), 1), "weight": 10, "value": signed(q_daily[-1], 2)},
-            {"key": "safe_haven", "label": "안전자산/FX proxy", "score": round(clamp(fx_score), 1), "weight": 5, "value": f"USD/KRW 20D {signed(fx20[-1], 2)}"},
+            {"key": "trend20", "label": "KOSPI 20D 추세", "score": round(clamp(trend20_score), 1), "weight": 30, "value": signed(k20[-1], 2)},
+            {"key": "trend60", "label": "KOSPI 60D 추세", "score": round(clamp(trend60_score), 1), "weight": 15, "value": signed(k60[-1], 2)},
+            {"key": "volatility", "label": "변동성 · 20D RV", "score": round(clamp(vol_score), 1), "weight": 20, "value": f"{current_vol:.1f}%"},
+            {"key": "momentum5", "label": "KOSPI 5D 모멘텀", "score": round(clamp(k5_score), 1), "weight": 10, "value": signed(k5[-1], 2)},
+            {"key": "kosdaq5", "label": "KOSDAQ 5D 모멘텀", "score": round(clamp(q5_score), 1), "weight": 10, "value": signed(q5[-1], 2)},
+            {"key": "flow", "label": "외국인·기관 수급", "score": round(clamp(flow_score), 1), "weight": 10, "value": flow_value},
+            {"key": "safe_haven", "label": "USD/KRW 20D", "score": round(clamp(fx_score), 1), "weight": 5, "value": signed(fx20[-1], 2)},
         ]
-        score = sum(x["score"] * x["weight"] for x in components) / 100.0
+
+        raw_score = sum(x["score"] * x["weight"] for x in components) / 100.0
+        score = raw_score
+        gate = "없음"
+
+        # Medium-term regime gates prevent a single rebound day from flipping
+        # a deeply damaged market straight into Greed.
+        if k20[-1] <= -15:
+            score = min(score, 44.0)
+            gate = "KOSPI 20D ≤ -15% → 상단 44"
+        elif k20[-1] <= -10:
+            score = min(score, 54.0)
+            gate = "KOSPI 20D ≤ -10% → 상단 54"
+        elif k20[-1] <= -5:
+            score = min(score, 64.0)
+            gate = "KOSPI 20D ≤ -5% → 상단 64"
+
+        if k60[-1] <= -20:
+            score = min(score, 49.0)
+            gate += " · KOSPI 60D ≤ -20% → 상단 49"
+
         return {
             "available": True,
             "fresh": True,
             "score": round(clamp(score), 1),
+            "raw_score": round(clamp(raw_score), 1),
             "rating": sentiment_label(score),
             "timestamp": NOW.isoformat(),
-            "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
-            "method": "20D 실현변동성 30% + KOSPI 모멘텀 25% + 주가강도 15% + KOSPI 20D 추세 15% + KOSDAQ 10% + FX proxy 5%",
+            "source": "KOSPI·KOSDAQ·USD/KRW·수급 · 자체 정규화 [AI]",
+            "method": "KOSPI 20D 추세 30% + 60D 추세 15% + 20D 변동성 20% + KOSPI 5D 10% + KOSDAQ 5D 10% + 수급 10% + FX 5% · 추세 Regime Gate 적용",
+            "regime_gate": gate,
             "components": components,
         }
     except Exception as e:
@@ -1187,7 +1235,7 @@ def compute_korea_sentiment(market):
             "score": None,
             "rating": "데이터 확인 중",
             "timestamp": NOW.isoformat(),
-            "source": "KOSPI·KOSDAQ·USD/KRW · 자체 정규화 [AI]",
+            "source": "KOSPI·KOSDAQ·USD/KRW·수급 · 자체 정규화 [AI]",
             "error": str(e)[:250],
             "components": [],
         }
@@ -1549,6 +1597,278 @@ def apply_valuation_snapshot(profile, snap):
         profile.setdefault("inputs", {})["target2"] = str(int(round(snap["target_price"])))
     profile["valuation_snapshot"] = snap
 
+
+
+def _theme_pick_maps(d):
+    pick_by_code = {}
+    theme_by_code = {}
+    for card in d.get("theme_cards") or []:
+        for pick in card.get("picks") or []:
+            code = str(pick.get("ticker") or "").split(".")[0]
+            if not code:
+                continue
+            old = pick_by_code.get(code)
+            if old is None or float(pick.get("score") or 0) > float(old.get("score") or 0):
+                pick_by_code[code] = pick
+                theme_by_code[code] = card
+    return pick_by_code, theme_by_code
+
+
+def _generic_profile(base_profile, stock, card, pick, rank, final_score, fundamental_score, trading_score, market):
+    code = str(stock.get("stock_code"))
+    name = stock.get("name") or code
+    sector_name = (card or {}).get("theme") or stock.get("sector") or market
+    catalyst = str((pick or {}).get("reason") or "실적·수급·Catalyst를 확인합니다. [AI]")
+    rating = recommendation_rating(final_score)
+
+    base_text_keys = list((base_profile.get("text") or {}).keys())
+    base_input_keys = list((base_profile.get("inputs") or {}).keys())
+    text = {k: "—" for k in base_text_keys}
+    for k in [
+        "heroEyebrow","heroTitle","heroDesc","heroQuote","marketRegime","kospi","kospiDelta",
+        "kosdaq","kosdaqDelta","nasdaq","nasdaqDelta","fx","fxDelta","us10y","us10yDelta",
+        "flowState","flowDesc","marketReason1","marketReason2","marketReason3","marketImpact",
+        "sector1","sector1Point","sector1Cycle","sector1Growth","sector2","sector2Point",
+        "sector2Cycle","sector2Growth","sector3","sector3Point","sector3Cycle","sector3Growth",
+        "sourceKR","sourceUS","sourceTopPick","sourceConsensus","footerDataNote","kospiFlow","kosdaqFlow"
+    ]:
+        text.pop(k, None)
+
+    text.update({
+        "topPickName": name,
+        "topPickTicker": f"{code} · {market} · 자동 업데이트",
+        "topPickScore": f"{int(round(final_score))} / {rating} [AI]",
+        "thesis": (
+            f"“{catalyst.replace(' [AI]','')}를 핵심 Catalyst로 보고, "
+            f"Fundamental/Catalyst {fundamental_score:.0f}점 × 60% + "
+            f"Trading Score {trading_score:.0f}점 × 40%로 선별했습니다.” [AI]"
+        ),
+        "fairPriceText": "Consensus 목표가 확인 필요",
+        "upsideText": "—",
+        "fper": "—",
+        "roe": "—",
+        "topRR": "—",
+        "metricSource": "분기 실적: Naver Stock/FnGuide · 가격/기술지표: Naver Stock/Yahoo fallback",
+        "business": f"{sector_name} 관련 사업 · 세부 사업구조는 공식 IR 확인",
+        "customers": "공식 IR/공시에서 주요 고객 및 매출처 확인",
+        "competitors": "동일 업종 국내외 Peer 비교 필요",
+        "moat": "기술·수주·시장점유율·진입장벽은 공식 IR 기준 추가 검증",
+        "barrier": "고객 인증·기술력·CAPEX·IP 등 업종별 진입장벽 확인",
+        "earningsReason": "최근 실제 3개 분기와 다음 분기 Consensus를 자동 연결해 실적 방향을 확인합니다.",
+        "per": "—",
+        "fper2": "—",
+        "pbr": "—",
+        "evebitda": "—",
+        "peerMultiple": "Consensus 확인 필요",
+        "discount": "Peer/과거 밴드 확인 필요",
+        "fairB": "Consensus 목표가 확인 필요",
+        "calcB": "Consensus 목표가가 검증되면 반영합니다.",
+        "histVal": "과거 Valuation Band 추가 검증 필요",
+        "domesticPeer": "동일 업종 국내 Peer 비교 필요",
+        "globalPeer": "동일 업종 해외 Peer 비교 필요",
+        "shortCat": catalyst,
+        "midCat": f"{sector_name} 업황·수주·제품 믹스 변화 확인 [AI]",
+        "longCat": "중장기 실적 성장과 Valuation 재평가 가능성 확인 [AI]",
+        "risk1": "실적 기대치 하향 / Consensus 미달",
+        "risk1P": "가능성 M",
+        "risk1I": "영향 H",
+        "risk2": "Valuation Multiple 압축",
+        "risk2P": "가능성 M",
+        "risk2I": "영향 H",
+        "risk3": "수급·변동성 확대",
+        "risk3P": "가능성 M",
+        "risk3I": "영향 M",
+        "risk4": "핵심 Catalyst 일정 지연",
+        "risk4P": "가능성 M",
+        "risk4I": "영향 M",
+        "disclosureTitle": f"{name} 최근 공시 확인",
+        "disclosureDesc": "네이버증권 공시 페이지에서 최신 공시를 직접 확인합니다.",
+        "irTitle": f"{name} IR / 실적자료",
+        "irDesc": "회사 IR 또는 네이버증권 기업정보에서 최신 자료를 확인합니다.",
+        "consTitle": f"{name} Consensus 최신성",
+        "consDesc": "Forward 지표·이익 추정치·목표주가 최신성을 확인합니다.",
+        "newsTitle": f"{name} 최신 주요기사",
+        "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
+        "tradePeriod": "1~6개월",
+        "tradeOpinion": rating.upper(),
+        "finalOpinion": f"{rating.upper()} · {market} TOP5",
+        "finalLine": (
+            f"최종선정점수 {final_score:.1f}점 = Fundamental/Catalyst {fundamental_score:.0f}×60% "
+            f"+ Trading {trading_score:.0f}×40%. [AI]"
+        ),
+        "selectionScore": f"{final_score:.1f} [AI]",
+        "selectionFundamentalScore": f"{fundamental_score:.0f} [AI]",
+        "selectionTradingScore": f"{trading_score:.0f} / 100",
+    })
+
+    return {
+        "rank": rank,
+        "name": name,
+        "ticker": stock.get("ticker"),
+        "stock_code": code,
+        "market": market,
+        "sector": stock.get("sector"),
+        "sector_name": sector_name,
+        "score": round(final_score, 2),
+        "selection_score": round(final_score, 2),
+        "fundamental_score": round(fundamental_score, 2),
+        "selection_trading_score": round(trading_score, 2),
+        "rating": rating,
+        "text": text,
+        "inputs": {k: "" for k in base_input_keys},
+        "links": {
+            "disclosure": f"https://stock.naver.com/domestic/stock/{code}/notice",
+            "ir": f"https://finance.naver.com/item/main.naver?code={code}",
+            "consensus": f"https://finance.naver.com/item/coinfo.naver?code={code}",
+            "news": f"https://stock.naver.com/domestic/stock/{code}/news",
+        },
+    }
+
+
+def build_kospi_profiles(d, previous_profiles, live_by_code):
+    """Re-screen the full KOSPI watchlist on every update.
+
+    Final score = Fundamental/Catalyst 60% + Trading Score 40%.
+    Basic entry gate = Fundamental >= 65 and Trading Score >= 50.
+    Trading >= 70 is the priority pool, followed by 60~69 and 50~59.
+    """
+    stocks = CFG.get("stocks") or []
+    stocks_by_code = {str(x.get("stock_code")): x for x in stocks}
+    previous_by_code = {str(x.get("stock_code")): x for x in (previous_profiles or [])}
+    pick_by_code, theme_by_code = _theme_pick_maps(d)
+
+    eligible = []
+    fallback = []
+    diagnostics = []
+
+    for code, stock in stocks_by_code.items():
+        if not str(stock.get("ticker", "")).endswith(".KS"):
+            continue
+        live = live_by_code.get(code)
+        pick = pick_by_code.get(code) or {}
+        card = theme_by_code.get(code) or {}
+        if not live:
+            diagnostics.append({"code": code, "name": stock.get("name"), "reason": "live data missing"})
+            continue
+
+        fundamental_score = float(pick.get("score") or 0)
+        trading_score = float((((live.get("tech") or {}).get("trading_score") or {}).get("total")) or 0)
+        final_score = fundamental_score * 0.60 + trading_score * 0.40
+
+        if trading_score >= 70:
+            priority = 0
+            band = "70+"
+        elif trading_score >= 60:
+            priority = 1
+            band = "60~69"
+        elif trading_score >= 50:
+            priority = 2
+            band = "50~59"
+        else:
+            priority = 3
+            band = "<50"
+
+        row = {
+            "priority": priority,
+            "band": band,
+            "final_score": final_score,
+            "fundamental_score": fundamental_score,
+            "trading_score": trading_score,
+            "code": code,
+            "stock": stock,
+            "pick": pick,
+            "card": card,
+        }
+        diagnostics.append({
+            "code": code,
+            "name": stock.get("name"),
+            "fundamental_score": round(fundamental_score, 2),
+            "trading_score": round(trading_score, 2),
+            "final_score": round(final_score, 2),
+            "eligible": fundamental_score >= 65 and trading_score >= 50,
+            "priority": band,
+        })
+
+        fallback.append(row)
+        if fundamental_score >= 65 and trading_score >= 50:
+            eligible.append(row)
+
+    keyfn = lambda x: (
+        x["priority"],
+        -x["final_score"],
+        -x["trading_score"],
+        -x["fundamental_score"],
+        x["stock"].get("name") or "",
+    )
+    eligible.sort(key=keyfn)
+
+    # Always publish five names. If the strict gate leaves fewer than five,
+    # fill from the next-highest combined scores but mark them as fallback.
+    ranked = eligible[:5]
+    if len(ranked) < 5:
+        used = {x["code"] for x in ranked}
+        fallback.sort(key=lambda x: (-x["final_score"], -x["trading_score"], -x["fundamental_score"]))
+        for row in fallback:
+            if row["code"] in used:
+                continue
+            ranked.append(row)
+            used.add(row["code"])
+            if len(ranked) >= 5:
+                break
+
+    d["kospi_selection_diagnostics"] = diagnostics
+    d["kospi_selection_updated_at"] = NOW.isoformat()
+
+    base_profile = (previous_profiles or [{}])[0] if previous_profiles else {}
+    profiles = []
+    for rank, item in enumerate(ranked[:5], 1):
+        code = item["code"]
+        old = previous_by_code.get(code)
+        if old:
+            profile = copy.deepcopy(old)
+            profile["rank"] = rank
+            profile["market"] = "KOSPI"
+            profile["score"] = round(item["final_score"], 2)
+            profile["selection_score"] = round(item["final_score"], 2)
+            profile["fundamental_score"] = round(item["fundamental_score"], 2)
+            profile["selection_trading_score"] = round(item["trading_score"], 2)
+            profile["rating"] = recommendation_rating(item["final_score"])
+            txt = profile.setdefault("text", {})
+            catalyst = str(item["pick"].get("reason") or "실적·수급·Catalyst 확인 [AI]")
+            txt["topPickScore"] = f"{int(round(item['final_score']))} / {profile['rating']} [AI]"
+            txt["thesis"] = (
+                f"“{catalyst.replace(' [AI]','')}를 핵심 Catalyst로 보고, "
+                f"Fundamental/Catalyst {item['fundamental_score']:.0f}점 × 60% + "
+                f"Trading Score {item['trading_score']:.0f}점 × 40%로 재선정했습니다.” [AI]"
+            )
+            txt["finalOpinion"] = f"{profile['rating'].upper()} · KOSPI TOP5"
+            txt["finalLine"] = (
+                f"최종선정점수 {item['final_score']:.1f}점 = Fundamental/Catalyst "
+                f"{item['fundamental_score']:.0f}×60% + Trading {item['trading_score']:.0f}×40%. [AI]"
+            )
+            txt["selectionScore"] = f"{item['final_score']:.1f} [AI]"
+            txt["selectionFundamentalScore"] = f"{item['fundamental_score']:.0f} [AI]"
+            txt["selectionTradingScore"] = f"{item['trading_score']:.0f} / 100"
+        else:
+            profile = _generic_profile(
+                base_profile, item["stock"], item["card"], item["pick"], rank,
+                item["final_score"], item["fundamental_score"], item["trading_score"], "KOSPI"
+            )
+        profiles.append(profile)
+
+    for p in profiles:
+        txt = p.setdefault("text", {})
+        for i, q in enumerate(profiles, 1):
+            txt[f"stock{i}"] = q["name"]
+            txt[f"score{i}"] = f"{int(round(q['score']))} / 100"
+            txt[f"op{i}"] = q["rating"]
+            txt[f"period{i}"] = "1~6개월"
+            q_pick = pick_by_code.get(q["stock_code"]) or {}
+            txt[f"cat{i}"] = str(q_pick.get("reason") or "Catalyst 확인 [AI]")
+            txt[f"return{i}"] = "—"
+            txt[f"rr{i}"] = "—"
+
+    return profiles
 
 
 KOSDAQ_IR_LINKS = {
@@ -2294,14 +2614,17 @@ def main():
     if sentiment.get("regime"):
         d.setdefault("text", {})["marketRegime"] = sentiment["regime"]
 
-    profiles = d.get("stock_profiles") or []
-    for p in profiles:
-        p["market"] = "KOSPI"
-
-    if not profiles:
-        print(json.dumps({"status": "rejected", "reason": "KOSPI profiles missing"}, ensure_ascii=False))
+    previous_profiles = d.get("stock_profiles") or []
+    if not previous_profiles:
+        print(json.dumps({"status": "rejected", "reason": "KOSPI profile template missing"}, ensure_ascii=False))
         return 4
 
+    profiles = build_kospi_profiles(d, previous_profiles, live_by_code)
+    if len(profiles) < 5:
+        print(json.dumps({"status": "rejected", "reason": "KOSPI dynamic TOP5 insufficient"}, ensure_ascii=False))
+        return 4
+
+    d["stock_profiles"] = profiles
     kosdaq_profiles = build_kosdaq_profiles(d, profiles[0], live_by_code)
     # Zero qualified KOSDAQ names is a valid market state.
     # Keep updating KOSPI/market data and publish KOSDAQ 0/5 instead of aborting the whole site.
@@ -2317,16 +2640,11 @@ def main():
         except Exception as e:
             errors.append(f"{p.get('name')} quarterly: {e}")
 
-    # KOSPI detailed profiles remain strict. KOSDAQ selector stays available even
-    # if a smaller stock temporarily lacks an analyst consensus quarter.
+    # Dynamic TOP5 must keep rotating even if one newly selected name temporarily
+    # lacks a next-quarter consensus column. Record the gap instead of freezing
+    # the entire recommendation list.
     if quarterly_ok < 5:
-        print(json.dumps({
-            "status": "rejected",
-            "reason": "KOSPI TOP5 quarterly finance incomplete",
-            "quarterly_ok": quarterly_ok,
-            "errors": errors[-12:],
-        }, ensure_ascii=False))
-        return 4
+        errors.append(f"KOSPI TOP5 quarterly finance partial: {quarterly_ok}/5")
 
     for p in all_profiles:
         try:
@@ -2395,7 +2713,7 @@ def main():
         "market_date": md,
         "financial_snapshot_date": NOW.date().isoformat(),
         "status": "ok",
-        "ui_version": "v15-kosdaq-gated-selection",
+        "ui_version": "v19-dynamic-kospi-sentiment-regime",
         "profile_count": 5 + len(kosdaq_profiles),
         "profile_groups": {"KOSPI": 5, "KOSDAQ": len(kosdaq_profiles)},
         "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
@@ -2403,6 +2721,8 @@ def main():
         "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
         "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
         "kosdaq_selection_policy": "Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading Score 40% [AI].",
+        "kospi_selection_policy": "Watchlist 전체 재스크리닝 · Fundamental/Catalyst 60% + Trading Score 40% · Trading 50 미만 기본 제외 · 70 이상 우선 [AI].",
+        "korea_sentiment_policy": "20D/60D 추세 우선 · 절대 변동성 패널티 · 외인/기관 수급 포함 · 20D 급락 Regime Gate [AI].",
         "coverage": {
             "stocks_fresh": len(live_by_code),
             "stocks_total": len(stocks),
