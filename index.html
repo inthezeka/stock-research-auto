@@ -247,10 +247,25 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   .table td{font-size:10.5px}
   .table td b,.table td strong{font-size:12px}
 }
+
+.fund-score-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
+.fund-score-total{font-size:26px;font-weight:950;color:#0B1F3A}
+.fund-score-grade{font-size:11px;font-weight:900;color:#1554AD;margin-top:3px}
+.fund-score-table{width:100%;border-collapse:collapse}
+.fund-score-table th,.fund-score-table td{padding:8px 10px;border-bottom:1px solid #EEF1F4;text-align:left}
+.fund-score-table th{font-size:9px;color:#667085;background:#F9FAFB}
+.fund-score-table td{font-size:10px;color:#475467}
+.fund-score-table td:nth-child(3){font-size:13px;font-weight:950;color:#101828}
+.fund-factor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.fund-factor-box{border:1px solid #EEF1F4;border-radius:10px;background:#FAFBFC;padding:11px}
+.fund-factor-box h4{font-size:11px;margin:0 0 7px}
+.fund-factor-box ol{margin:0;padding-left:18px;font-size:9.5px;line-height:1.55;color:#667085}
+.fund-valuation-answer{margin-top:12px;padding:10px 12px;border-left:4px solid #1769E0;background:#F5F9FF;border-radius:0 9px 9px 0;font-size:10.5px;line-height:1.55}
+@media(max-width:760px){.fund-factor-grid{grid-template-columns:1fr}.fund-score-head{display:block}.fund-score-total{margin-top:6px}}
 </style>
 </head>
 <body>
-<!-- BUILD: fundamental-forward-100-v26-20261017 -->
+<!-- BUILD: fundamental-detail-v26.1-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -454,6 +469,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
   <div class="note" style="margin-bottom:12px">상단 Fundamental / ICT 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
+  <div id="fundamentalScoreDetail" class="card fund-score-detail" style="display:none;margin-bottom:14px"></div>
   <div class="card top-pick">
     <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">🥇 TOP PICK</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
     <div class="thesis"><b>투자 Thesis</b><br><span data-edit data-key="thesis">“이 종목을 지금 투자해야 하는 가장 중요한 이유는 AI 서버용 MLCC 장기계약과 FCBGA 믹스 개선이 2027년 이익 추정치를 끌어올리는 가운데, 최근 주가 조정 후에도 실적 상향 흐름이 이어지고 있기 때문이다.”</span></div>
@@ -740,6 +756,37 @@ function applyTradingStateColors(){
   paint('heatStateCard',document.querySelector('#heatStateCard [data-key="tradingOverheat"]')?.textContent||'','heat');
 }
 const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','blueprint','sources'];
+
+function srFundGroupLabel(k){
+  return({growth:'실적 성장성',profitability:'수익성',financial:'재무건전성 / FCF',quality:'이익의 질 / 실적 가시성',valuation:'Valuation',industry:'산업 / 경쟁우위'})[k]||k;
+}
+function srFundGroupMax(k){return({growth:25,profitability:20,financial:15,quality:15,valuation:15,industry:10})[k]||0}
+function srFundGroupReason(f,k){
+  return(f?.detail||[]).filter(x=>x.group===k).sort((a,b)=>b.weight-a.weight).slice(0,2).map(x=>x.label+' '+x.score+'/5 · '+x.reason).join(' / ');
+}
+function srRenderFundamentalDetail(profile){
+  const el=document.getElementById('fundamentalScoreDetail');if(!el)return;
+  const f=profile?.fundamentalScore;
+  if(!f){el.style.display='none';el.innerHTML='';return}
+  const keys=['growth','profitability','financial','quality','valuation','industry'];
+  const rows=keys.map(k=>'<tr><td>'+srFundGroupLabel(k)+'</td><td>'+srFundGroupMax(k)+'</td><td>'+Number(f.groups[k]||0).toFixed(1)+'</td><td>'+srEsc(srFundGroupReason(f,k))+'</td></tr>').join('');
+  const list=a=>'<ol>'+((a||[]).slice(0,3).map(x=>'<li>'+srEsc(x)+'</li>').join('')||'<li>해당 없음</li>')+'</ol>';
+  el.innerHTML=
+    '<div class="fund-score-head"><div><div class="eyebrow">FUNDAMENTAL · FORWARD 100</div><h3 class="subhead" style="margin:4px 0 0">'+srEsc(profile.name||'선택 종목')+' 펀더멘탈 종합평가</h3></div><div><div class="fund-score-total">'+Number(f.total).toFixed(1)+' / 100</div><div class="fund-score-grade">'+srEsc(f.grade)+'</div></div></div>'+
+    '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>평가항목</th><th>배점</th><th>획득점수</th><th>판단 근거</th></tr></thead><tbody>'+rows+
+    '<tr><td><b>기본점수</b></td><td><b>100</b></td><td><b>'+Number(f.base).toFixed(1)+'</b></td><td>세부항목 0~5점 × 배점 환산 합계</td></tr>'+
+    '<tr><td>Risk Penalty</td><td>최대 -15</td><td><b>-'+Number(f.riskPenalty||0).toFixed(1)+'</b></td><td>'+srEsc((f.riskReasons||[]).map(x=>x.label+' -'+x.pts).join(' · ')||'중대 Risk Penalty 없음')+'</td></tr>'+
+    '<tr><td><b>최종점수</b></td><td><b>100</b></td><td><b>'+Number(f.total).toFixed(1)+'</b></td><td>'+srEsc(f.grade)+'</td></tr></tbody></table></div>'+
+    '<div class="fund-factor-grid">'+
+      '<div class="fund-factor-box"><h4>점수를 가장 많이 올린 요인 TOP 3</h4>'+list(f.topUp)+'</div>'+
+      '<div class="fund-factor-box"><h4>점수를 가장 많이 깎은 요인 TOP 3</h4>'+list(f.topDown)+'</div>'+
+      '<div class="fund-factor-box"><h4>향후 점수가 올라가기 위한 조건</h4>'+list(f.upConditions)+'</div>'+
+      '<div class="fund-factor-box"><h4>향후 점수가 떨어지는 조건</h4>'+list(f.downConditions)+'</div>'+
+    '</div>'+
+    '<div class="fund-valuation-answer"><b>Fundamental Score: '+Number(f.total).toFixed(1)+' / 100 — '+srEsc(f.grade)+'</b><br>'+
+    '<b>현재 주가에서도 성장률 대비 Valuation이 매력적인가?</b> '+srEsc(f.attractiveness)+' · '+srEsc(f.attractivenessReason)+'</div>';
+  el.style.display='block';
+}
 function applyProfileText(profile){
   if(!profile)return;
   const t=profile.text||{};
@@ -755,7 +802,7 @@ function applyProfileText(profile){
   });
   const inp=profile.inputs||{};
   tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
-  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);
+  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);
 }
 function updateProfileLinks(profile){
   const links=srCanonicalLinks(profile);
@@ -1586,6 +1633,7 @@ async function buildSearchProfile(item){
       if(kosaiReport)srApplyKosaiQualitative(t,kosaiReport);
     }catch(e){console.warn('검색 종목 정성 Catalyst 데이터 조회 실패',e)}
   }
+  p.fundamentalScore=kosaiReport?srFundamentalScore(kosaiReport,item):null;
   const cons=srConsensusSnapshot(code);
   if(cons){
     m.fper=cons.forwardPer;
