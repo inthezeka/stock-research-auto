@@ -1563,7 +1563,7 @@ function srResearchNormalize(row){
     date,
     broker:typeof broker==='object'?(broker.name||broker.brokerName||'증권사 확인 필요'):broker,
     analyst:typeof analyst==='object'?(analyst.name||''):analyst,
-    title:String(title).replace(/s+/g,' ').trim(),
+    title:String(title).replace(/\s+/g,' ').trim(),
     target:srResearchTarget(row),
     nid:row.nid||row.researchId||row.id||null
   };
@@ -1601,7 +1601,7 @@ function srAnalystResearchFromIntegration(integration){
 }
 async function srLoadAnalystResearch(profile){
   const code=String(profile?.stock_code||profile?.code||'').padStart(6,'0');
-  if(!/^d{6}$/.test(code))return{rows:[],target:null,recommMean:null,consensusDate:'',source:''};
+  if(!/^\d{6}$/.test(code))return{rows:[],target:null,recommMean:null,consensusDate:'',source:''};
   if(srAnalystResearchCache.has(code))return srAnalystResearchCache.get(code);
 
   const p=(async()=>{
