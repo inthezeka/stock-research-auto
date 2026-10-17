@@ -229,10 +229,49 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   .fund-theme-head{flex-direction:column}
 }
 
+
+/* v33 · Fundamental snapshot price / Valuation readability / Sector cycle palette */
+.fund-price-snapshot{
+  display:block;
+  margin-top:6px;
+  color:#667085;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.fund-val-answer{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:52px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:950;
+  line-height:1;
+}
+.fund-val-answer.fund-val-attractive{background:#ECFDF3;color:#067647;border:1px solid #ABEFC6}
+.fund-val-answer.fund-val-neutral{background:#EAF2FF;color:#1554AD;border:1px solid #B8D1F8}
+.fund-val-answer.fund-val-burden{background:#FEF3F2;color:#B42318;border:1px solid #FECDCA}
+.fund-val-answer.fund-val-unknown{background:#F2F4F7;color:#667085;border:1px solid #E4E7EC}
+
+#sector .cycle-status{
+  min-width:58px;
+  justify-content:center;
+  border:1px solid transparent;
+  font-weight:950;
+}
+#sector .cycle-recovery{background:#EAF2FF;color:#1554AD;border-color:#B8D1F8}
+#sector .cycle-growth{background:#ECFDF3;color:#067647;border-color:#ABEFC6}
+#sector .cycle-boom{background:#F4F3FF;color:#6938EF;border-color:#D9D6FE}
+#sector .cycle-peak{background:#FFF1F3;color:#C01048;border-color:#FECDD6}
+#sector .cycle-slow{background:#FFFAEB;color:#B54708;border-color:#FEDF89}
+#sector .cycle-down{background:#FEF3F2;color:#B42318;border-color:#FECDCA}
+
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-extensible-themes-sector5-v32-20261017 -->
+<!-- BUILD: stock-room-fund-price-cycle-val-earnings-v33-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -333,11 +372,11 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 <section id="sector" class="section-track" data-name="SECTOR">
   <div class="section-head"><div><h2 class="section-title">② 유망 Sector TOP 5</h2><p class="section-desc">산업 성장률, 수요·공급, CAPEX와 실적 방향을 함께 평가합니다. <b>현재 Cycle</b>은 업종의 수요·이익 국면을 초기회복 → 성장 → 호황 → Peak → 둔화 → 침체 중 어디에 위치하는지 보여주는 참고 지표입니다.</p></div></div>
   <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>Sector</th><th>투자포인트</th><th>현재 Cycle</th><th>1~3년 성장동력</th></tr></thead><tbody>
-    <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag green" data-edit data-key="sector1Cycle">성장 → 호황</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
-    <tr><td class="rank">2</td><td><b data-edit data-key="sector2">전력기기 / Data Center Grid</b></td><td data-edit data-key="sector2Point">AI 데이터센터 전력 수요·북미 송배전 투자·전력망 병목</td><td><span class="tag blue" data-edit data-key="sector2Cycle">성장</span></td><td data-edit data-key="sector2Growth">북미 전력망 교체 · 데이터센터 · HVDC/배전 자동화</td></tr>
-    <tr><td class="rank">3</td><td><b data-edit data-key="sector3">방산 / 항공우주</b></td><td data-edit data-key="sector3Point">수출 수주잔고·유럽/중동 재무장·우주 발사 이벤트</td><td><span class="tag amber" data-edit data-key="sector3Cycle">성장</span></td><td data-edit data-key="sector3Growth">유럽·중동 후속계약 · 생산능력 확대 · 우주사업</td></tr>
-    <tr><td class="rank">4</td><td><b>조선 / 조선기자재</b></td><td>LNG·친환경 선박 수요, 고선가 수주잔고, 제한적인 글로벌 공급능력</td><td><span class="tag green">호황</span></td><td>LNG·암모니아 추진선 · 엔진/기자재 Mix · 고부가 선종</td></tr>
-    <tr><td class="rank">5</td><td><b>화장품 / 뷰티</b></td><td>K-Beauty 수출, 북미·일본 채널 확장, ODM 및 미용기기 성장</td><td><span class="tag blue">성장</span></td><td>글로벌 유통 확대 · 인디브랜드 · ODM · 미용의료기기</td></tr>
+    <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag cycle-status cycle-boom" data-edit data-key="sector1Cycle">성장 → 호황</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
+    <tr><td class="rank">2</td><td><b data-edit data-key="sector2">전력기기 / Data Center Grid</b></td><td data-edit data-key="sector2Point">AI 데이터센터 전력 수요·북미 송배전 투자·전력망 병목</td><td><span class="tag cycle-status cycle-growth" data-edit data-key="sector2Cycle">성장</span></td><td data-edit data-key="sector2Growth">북미 전력망 교체 · 데이터센터 · HVDC/배전 자동화</td></tr>
+    <tr><td class="rank">3</td><td><b data-edit data-key="sector3">방산 / 항공우주</b></td><td data-edit data-key="sector3Point">수출 수주잔고·유럽/중동 재무장·우주 발사 이벤트</td><td><span class="tag cycle-status cycle-growth" data-edit data-key="sector3Cycle">성장</span></td><td data-edit data-key="sector3Growth">유럽·중동 후속계약 · 생산능력 확대 · 우주사업</td></tr>
+    <tr><td class="rank">4</td><td><b>조선 / 조선기자재</b></td><td>LNG·친환경 선박 수요, 고선가 수주잔고, 제한적인 글로벌 공급능력</td><td><span class="tag cycle-status cycle-boom">호황</span></td><td>LNG·암모니아 추진선 · 엔진/기자재 Mix · 고부가 선종</td></tr>
+    <tr><td class="rank">5</td><td><b>화장품 / 뷰티</b></td><td>K-Beauty 수출, 북미·일본 채널 확장, ODM 및 미용기기 성장</td><td><span class="tag cycle-status cycle-growth">성장</span></td><td>글로벌 유통 확대 · 인디브랜드 · ODM · 미용의료기기</td></tr>
   </tbody></table></div>
   <p class="note" style="margin:10px 2px 0"><b>Cycle은 종목 매수 신호가 아닙니다.</b> 같은 성장 국면에서도 Valuation과 실적 Revision에 따라 종목별 매력도는 달라질 수 있습니다.</p>
 </section>
@@ -394,7 +433,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div class="card">
       <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / AI · Fundamental TOP 10</h3>
-      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 등급</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>성장 대비 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>성장 대비 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
       <p class="note" style="margin:10px 2px 0">테마 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 테마 버튼을 바꾸면 해당 산업의 TOP 10을 다시 계산합니다.</p>
     </div>
   </div>
@@ -845,7 +884,7 @@ function applyProfileText(profile){
   });
   const inp=profile.inputs||{};
   tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
-  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);srLoadCapitalDisclosureRisk(profile);
+  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);srRenderEarningsReason(profile);srLoadCapitalDisclosureRisk(profile);
 }
 function updateProfileLinks(profile){
   const links=srCanonicalLinks(profile);
@@ -2431,6 +2470,99 @@ function srInitFundThemeUI(){
   });
 }
 
+
+function srFundSnapshotPrice(item){
+  const p=srNum(item?.close);
+  return p>0?'조회가 '+Math.round(p).toLocaleString('ko-KR')+'원':'조회가 확인 필요';
+}
+function srFundValClass(v){
+  const s=String(v||'').trim();
+  if(s==='매력')return'fund-val-attractive';
+  if(s==='중립')return'fund-val-neutral';
+  if(s==='부담')return'fund-val-burden';
+  return'fund-val-unknown';
+}
+function srApplySectorCycleColors(){
+  document.querySelectorAll('#sector tbody td:nth-child(4) .tag').forEach(el=>{
+    const s=String(el.textContent||'').replace(/\s+/g,' ').trim();
+    el.classList.remove('blue','green','amber','red','purple','cycle-recovery','cycle-growth','cycle-boom','cycle-peak','cycle-slow','cycle-down');
+    el.classList.add('cycle-status');
+    if(/침체/.test(s))el.classList.add('cycle-down');
+    else if(/둔화/.test(s))el.classList.add('cycle-slow');
+    else if(/peak|피크/i.test(s))el.classList.add('cycle-peak');
+    else if(/호황/.test(s))el.classList.add('cycle-boom');
+    else if(/성장/.test(s))el.classList.add('cycle-growth');
+    else if(/회복/.test(s))el.classList.add('cycle-recovery');
+    else el.classList.add('cycle-recovery');
+  });
+}
+
+function srCleanEarningsText(v){
+  return stripAiMarkerText(String(v||''))
+    .replace(/\s+/g,' ')
+    .replace(/^[·\-\s]+|[·\-\s]+$/g,'')
+    .trim();
+}
+function srPercentNumber(v){
+  const m=srCleanEarningsText(v).match(/(-?\d+(?:\.\d+)?)\s*%/);
+  return m?Number(m[1]):null;
+}
+function srIsMeaningfulEarningsReason(v){
+  const s=srCleanEarningsText(v);
+  if(s.length<35)return false;
+  return !/최근 실제.*(?:Consensus|컨센서스).*실적 방향|자동 연결해 실적 방향|기준으로 실적 방향을 확인/i.test(s);
+}
+function srBuildEarningsReason(profile){
+  const t=profile?.text||{};
+  if(srIsMeaningfulEarningsReason(t.earningsReason)){
+    const sentences=srCleanEarningsText(t.earningsReason).split(/(?<=[.!?。])\s+/).filter(Boolean);
+    return sentences.slice(0,2).join(' ').slice(0,260);
+  }
+  const rows=[1,2,3,4].map(n=>({
+    label:srCleanEarningsText(t['y'+n]),
+    rev:srCleanEarningsText(t['rev'+n]),
+    op:srCleanEarningsText(t['op'+n+'a']),
+    opm:srCleanEarningsText(t['opm'+n]),
+    qoq:srCleanEarningsText(t['yoy'+n])
+  })).filter(x=>x.label&&x.label!=='—');
+  const actual=rows.filter(x=>!/E\b/i.test(x.label));
+  const latest=actual.at(-1)||rows.at(-1);
+  const prev=actual.length>1?actual.at(-2):null;
+  const next=rows.find(x=>/E\b/i.test(x.label));
+  const parts=[];
+  if(latest){
+    let first=latest.label+' 기준';
+    if(latest.rev&&latest.rev!=='—')first+=' 매출 '+latest.rev;
+    if(latest.op&&latest.op!=='—')first+=(first.endsWith('기준')?'':',')+' 영업이익 '+latest.op;
+    if(latest.opm&&latest.opm!=='—')first+=', OPM '+latest.opm;
+    const q=latest.qoq.match(/QoQ\s*([+\-]?\d+(?:\.\d+)?)%/i);
+    if(q)first+=' · 매출 QoQ '+q[1]+'%';
+    const nowOpm=srPercentNumber(latest.opm),prevOpm=prev?srPercentNumber(prev.opm):null;
+    if(nowOpm!=null&&prevOpm!=null){
+      const d=nowOpm-prevOpm;
+      first+=' · OPM '+(d>=0?'+':'')+d.toFixed(1)+'%p';
+    }
+    parts.push(first+'.');
+  }
+  let driver=srCleanEarningsText(t.shortCat);
+  if(!driver||driver==='—'||/확인 필요|추가 확인|실적 방향/i.test(driver))driver=srCleanEarningsText(t.business);
+  if(driver&&driver!=='—'&&!/확인 필요|추가 확인/i.test(driver)){
+    driver=driver.replace(/[.!?。]+$/,'').slice(0,115);
+    parts.push('핵심 동력은 '+driver+'입니다.');
+  }
+  if(next&&(next.rev&&next.rev!=='—'||next.op&&next.op!=='—')){
+    let f=next.label+' 컨센서스';
+    if(next.rev&&next.rev!=='—')f+=' 매출 '+next.rev;
+    if(next.op&&next.op!=='—')f+=(f.endsWith('컨센서스')?'':',')+' 영업이익 '+next.op;
+    parts.push(f+'.');
+  }
+  return parts.slice(0,3).join(' ').slice(0,320)||'최근 분기 실적과 핵심 Catalyst를 함께 비교해 실적 방향을 판단합니다.';
+}
+function srRenderEarningsReason(profile){
+  const el=document.querySelector('#deepdive [data-key="earningsReason"]');
+  if(el)el.textContent=srBuildEarningsReason(profile);
+}
+
 function srRenderFundTop20(list){
   const el=document.getElementById('fundTop20List');if(!el)return;
   el.innerHTML=list.map((x,i)=>
@@ -2443,7 +2575,7 @@ function srRenderFundTop10(list){
   el.innerHTML=list.map((x,i)=>
     '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
     '<td>'+(i+1)+'</td>'+
-    '<td><div class="fund-stock-name">'+srEsc(x.item.name)+'</div><span class="fund-grade-badge">'+srEsc(x.f.grade)+'</span></td>'+
+    '<td><div class="fund-stock-name">'+srEsc(x.item.name)+'</div><span class="fund-price-snapshot">'+srEsc(srFundSnapshotPrice(x.item))+'</span></td>'+
     '<td><div class="fund-score-main">'+x.f.total.toFixed(1)+'</div><div class="fund-score-meta">Base '+x.f.base.toFixed(1)+' · Penalty -'+x.f.riskPenalty+'</div></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.growth.toFixed(1)+'/25</span></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.profitability.toFixed(1)+'/20</span></td>'+
@@ -2451,7 +2583,7 @@ function srRenderFundTop10(list){
     '<td><span class="fund-area-score">'+x.f.groups.quality.toFixed(1)+'/15</span></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.valuation.toFixed(1)+'/15</span></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.industry.toFixed(1)+'/10</span></td>'+
-    '<td><span class="fund-val-answer">'+x.f.attractiveness+'</span></td></tr>'
+    '<td><span class="fund-val-answer '+srFundValClass(x.f.attractiveness)+'">'+srEsc(x.f.attractiveness)+'</span></td></tr>'
   ).join('');
 }
 
@@ -3038,6 +3170,7 @@ function applyAutoData(d){
   renderTopPickTabs(profiles);
   if(profiles.length)selectStockProfile(activeProfileIndex,false);
   renderSentiment(d.sentiment||{});
+  srApplySectorCycleColors();
   if(d.meta){
     const uts=fmtDateKST(d.meta.generated_at);
     const lut=document.getElementById('lastUpdatedText');if(lut)lut.textContent=uts;
