@@ -110,6 +110,35 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .screening-stock-row:focus-visible{outline:2px solid #2563EB;outline-offset:-2px}
 
 
+
+/* v34 · Compact collapsible Fundamental summary */
+.fund-score-detail{padding:0!important;overflow:hidden}
+.fund-score-toggle{display:block}
+.fund-score-toggle>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px;min-height:62px;user-select:none}
+.fund-score-toggle>summary::-webkit-details-marker{display:none}
+.fund-score-summary-main{display:flex;align-items:center;gap:14px;min-width:0}
+.fund-score-summary-title{font-size:15px;font-weight:950;color:#101828;white-space:nowrap}
+.fund-score-summary-meta{font-size:11px;color:#667085;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fund-score-summary-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.fund-score-summary-score{font-size:20px;font-weight:950;color:#0B1F3A;white-space:nowrap}
+.fund-score-summary-grade{font-size:11px;font-weight:900;color:#1554AD;white-space:nowrap}
+.fund-score-summary-toggle{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:900;color:#475467;white-space:nowrap}
+.fund-score-summary-arrow{display:inline-block;font-size:12px;transition:transform .16s ease}
+.fund-score-toggle[open] .fund-score-summary-arrow{transform:rotate(180deg)}
+.fund-score-toggle[open]>summary{border-bottom:1px solid #E4E7EC;background:#FAFCFF}
+.fund-score-expanded{padding:16px 18px 18px}
+.fund-score-expanded .fund-score-head{margin-bottom:12px}
+@media(max-width:760px){
+  .fund-score-toggle>summary{align-items:flex-start;gap:10px;padding:13px 14px}
+  .fund-score-summary-main{display:block}
+  .fund-score-summary-title{font-size:14px}
+  .fund-score-summary-meta{margin-top:4px;max-width:220px}
+  .fund-score-summary-right{gap:8px}
+  .fund-score-summary-score{font-size:17px}
+  .fund-score-summary-grade{display:none}
+  .fund-score-expanded{padding:14px}
+}
+
 .fund-score-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
 .fund-score-total{font-size:26px;font-weight:950;color:#0B1F3A}
 .fund-score-grade{font-size:11px;font-weight:900;color:#1554AD;margin-top:3px}
@@ -919,27 +948,45 @@ function srRenderFundamentalDetail(profile){
   if(!f){el.style.display='none';el.innerHTML='';return}
   const keys=['growth','profitability','financial','revision','valuation','moat','sector','sectorCycle'];
   const rows=keys.map(k=>'<tr><td>'+srFundGroupLabel(k)+'</td><td>'+srFundGroupMax(k)+'</td><td>'+Number(f.groups[k]||0).toFixed(1)+'</td><td>'+srEsc(srFundGroupReason(f,k))+'</td></tr>').join('');
-  const sectorRows=(f.detail||[]).filter(x=>x.group==='sector').map(x=>'<tr><td>'+srEsc(x.label)+'</td><td>'+x.weight+'</td><td>'+x.earned.toFixed(1)+'</td><td>'+srEsc(x.reason)+'</td></tr>').join('');
+  const sectorRows=(f.detail||[]).filter(x=>x.group==='sector').map(x=>'<tr><td>'+srEsc(x.label)+'</td><td>'+Number(x.weight).toFixed(1)+'</td><td>'+x.earned.toFixed(1)+'</td><td>'+srEsc(x.reason)+'</td></tr>').join('');
   const list=a=>'<ol>'+((a||[]).slice(0,3).map(x=>'<li>'+srEsc(x)+'</li>').join('')||'<li>해당 없음</li>')+'</ol>';
+  const name=srEsc(profile.name||'선택 종목');
+  const sector=srEsc(f.sectorLabel||'—');
+  const cycle=srEsc(f.cycle||'—');
+  const score=Number(f.total).toFixed(1);
+  const grade=srEsc(f.grade||'');
   el.innerHTML=
-    '<div class="fund-score-head"><div><div class="eyebrow">FUNDAMENTAL · GROWTH 20 + PROFIT 15 + FINANCIAL 10 + REVISION 10 + VALUATION 15 + MOAT 10 + SECTOR KPI 15 + CYCLE 5</div><h3 class="subhead" style="margin:4px 0 0">'+srEsc(profile.name||'선택 종목')+' 펀더멘탈 종합평가</h3><div class="note" style="margin-top:5px">Sector: '+srEsc(f.sectorLabel||'—')+' · Cycle: '+srEsc(f.cycle||'—')+'</div></div><div><div class="fund-score-total">'+Number(f.total).toFixed(1)+' / 100</div><div class="fund-score-grade">'+srEsc(f.grade)+'</div></div></div>'+
-    '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>평가항목</th><th>배점</th><th>획득점수</th><th>판단 근거</th></tr></thead><tbody>'+rows+
-    '<tr><td><b>기본 Fundamental Score</b></td><td><b>100</b></td><td><b>'+Number(f.base).toFixed(1)+'</b></td><td>Forward Growth 20 + Profitability/ROIC 15 + Financial/FCF 10 + Revision 10 + Valuation 15 + Moat 10 + Sector KPI 15 + Sector Cycle 5</td></tr>'+
-    '<tr><td>Risk Penalty</td><td>최대 -15</td><td><b>-'+Number(f.riskPenalty||0).toFixed(1)+'</b></td><td>'+srEsc((f.riskReasons||[]).map(x=>x.label+' -'+x.pts).join(' · ')||'중대 Risk Penalty 없음')+'</td></tr>'+
-    '<tr><td><b>최종 Fundamental Score</b></td><td><b>100</b></td><td><b>'+Number(f.total).toFixed(1)+'</b></td><td>'+srEsc(f.grade)+'</td></tr></tbody></table></div>'+
-    '<div class="note" style="margin:14px 0 7px"><b>Sector Specific KPI · '+srEsc(f.sectorLabel||'')+'</b></div>'+
-    '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>산업 핵심 KPI</th><th>배점</th><th>획득점수</th><th>근거</th></tr></thead><tbody>'+sectorRows+'</tbody></table></div>'+
-    '<div class="fund-factor-grid">'+
-      '<div class="fund-factor-box"><h4>점수를 가장 많이 올린 요인 TOP 3</h4>'+list(f.topUp)+'</div>'+
-      '<div class="fund-factor-box"><h4>점수를 가장 많이 깎은 요인 TOP 3</h4>'+list(f.topDown)+'</div>'+
-      '<div class="fund-factor-box"><h4>향후 점수가 올라가기 위한 조건</h4>'+list(f.upConditions)+'</div>'+
-      '<div class="fund-factor-box"><h4>향후 점수가 떨어지는 조건</h4>'+list(f.downConditions)+'</div>'+
-    '</div>'+
-    '<div class="fund-valuation-answer"><b>Fundamental Score: '+Number(f.total).toFixed(1)+' / 100 — '+srEsc(f.grade)+'</b><br>'+
-    '<b>현재 주가에서도 성장률 대비 Valuation이 매력적인가?</b> '+srEsc(f.attractiveness)+' · '+srEsc(f.attractivenessReason)+'</div>';
+    '<details class="fund-score-toggle">'+
+      '<summary>'+
+        '<div class="fund-score-summary-main">'+
+          '<div class="fund-score-summary-title">'+name+' · 펀더멘탈 종합평가</div>'+
+          '<div class="fund-score-summary-meta">Sector '+sector+' · Cycle '+cycle+'</div>'+
+        '</div>'+
+        '<div class="fund-score-summary-right">'+
+          '<div class="fund-score-summary-score">'+score+' / 100</div>'+
+          '<div class="fund-score-summary-grade">'+grade+'</div>'+
+          '<div class="fund-score-summary-toggle"><span>상세보기</span><span class="fund-score-summary-arrow">▼</span></div>'+
+        '</div>'+
+      '</summary>'+
+      '<div class="fund-score-expanded">'+
+        '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>평가항목</th><th>배점</th><th>획득점수</th><th>판단 근거</th></tr></thead><tbody>'+rows+
+        '<tr><td><b>기본 Fundamental Score</b></td><td><b>100</b></td><td><b>'+Number(f.base).toFixed(1)+'</b></td><td>Forward Growth 20 + Profitability/ROIC 15 + Financial/FCF 10 + Revision 10 + Valuation 15 + Moat 10 + Sector KPI 15 + Sector Cycle 5</td></tr>'+
+        '<tr><td>Risk Penalty</td><td>최대 -15</td><td><b>-'+Number(f.riskPenalty||0).toFixed(1)+'</b></td><td>'+srEsc((f.riskReasons||[]).map(x=>x.label+' -'+x.pts).join(' · ')||'중대 Risk Penalty 없음')+'</td></tr>'+
+        '<tr><td><b>최종 Fundamental Score</b></td><td><b>100</b></td><td><b>'+score+'</b></td><td>'+grade+'</td></tr></tbody></table></div>'+
+        '<div class="note" style="margin:14px 0 7px"><b>Sector Specific KPI · '+sector+'</b></div>'+
+        '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>산업 핵심 KPI</th><th>배점</th><th>획득점수</th><th>근거</th></tr></thead><tbody>'+sectorRows+'</tbody></table></div>'+
+        '<div class="fund-factor-grid">'+
+          '<div class="fund-factor-box"><h4>점수를 가장 많이 올린 요인 TOP 3</h4>'+list(f.topUp)+'</div>'+
+          '<div class="fund-factor-box"><h4>점수를 가장 많이 깎은 요인 TOP 3</h4>'+list(f.topDown)+'</div>'+
+          '<div class="fund-factor-box"><h4>향후 점수가 올라가기 위한 조건</h4>'+list(f.upConditions)+'</div>'+
+          '<div class="fund-factor-box"><h4>향후 점수가 떨어지는 조건</h4>'+list(f.downConditions)+'</div>'+
+        '</div>'+
+        '<div class="fund-valuation-answer"><b>Fundamental Score: '+score+' / 100 — '+grade+'</b><br>'+
+        '<b>현재 주가에서도 성장률 대비 Valuation이 매력적인가?</b> '+srEsc(f.attractiveness)+' · '+srEsc(f.attractivenessReason)+'</div>'+
+      '</div>'+
+    '</details>';
   el.style.display='block';
 }
-
 function srCapitalDisclosureEvents(report){
   const parts=[
     ...(report?.keypoints||[]).map(x=>x?.ko||''),
