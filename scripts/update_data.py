@@ -2937,22 +2937,35 @@ def build_sector_cycle_snapshot(universe_payload, previous=None):
     prev_sectors = {x.get("key"): x for x in previous.get("sectors") or [] if x.get("key")}
     sector_rows = []
 
+    # Pre-fetch representative companies for all sectors in one bounded pool.
+    # This avoids re-querying overlapping companies and keeps the 36-sector daily
+    # refresh fast enough for GitHub Actions.
+    rep_codes_by_sector = {}
+    rep_stocks = {}
     for theme in themes:
         key = str(theme.get("key") or "")
         codes = [str(x).zfill(6) for x in theme.get("codes") or []]
         candidates = [by_code[c] for c in codes if c in by_code]
         candidates.sort(key=lambda x: (x.get("marketcap") or 0), reverse=True)
         reps = candidates[:3]
+        rep_codes_by_sector[key] = [str(x.get("code") or "").zfill(6) for x in reps]
+        for stock in reps:
+            rep_stocks[str(stock.get("code") or "").zfill(6)] = stock
 
-        members = []
-        if reps:
-            with ThreadPoolExecutor(max_workers=min(3, len(reps))) as ex:
-                futs = [ex.submit(_sector_member_snapshot, x) for x in reps]
-                for fut in as_completed(futs):
-                    try:
-                        members.append(fut.result())
-                    except Exception:
-                        pass
+    snapshot_by_code = {}
+    if rep_stocks:
+        with ThreadPoolExecutor(max_workers=min(12, len(rep_stocks))) as ex:
+            futures = {ex.submit(_sector_member_snapshot, stock): code for code, stock in rep_stocks.items()}
+            for fut in as_completed(futures):
+                code = futures[fut]
+                try:
+                    snapshot_by_code[code] = fut.result()
+                except Exception:
+                    pass
+
+    for theme in themes:
+        key = str(theme.get("key") or "")
+        members = [snapshot_by_code[c] for c in rep_codes_by_sector.get(key, []) if c in snapshot_by_code]
 
         text = " ".join(x.get("qual_text") or "" for x in members).lower()
         rev_qoq = _median([x.get("rev_qoq") for x in members])
