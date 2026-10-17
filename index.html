@@ -856,7 +856,7 @@ function srSearchItems(payload){
   return flat.map(x=>({code:String(x.code||x.itemCode||'').replace(/\D/g,'').slice(0,6),name:x.name,typeName:x.typeName||x.marketName||x.market||'',reutersCode:x.reutersCode||''})).filter(x=>x.code.length===6&&/코스피|코스닥|KOSPI|KOSDAQ/i.test(x.typeName));
 }
 async function srFetchJson(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
-const SR_KOSAI_BASE='https://raw.githubusercontent.com/kosairesearch/kosairesearch.github.io/19986ffb857c7f1cfff09cafd919a6d4ffde2619/data/reports_v2/';
+const SR_KOSAI_BASE='https://raw.githubusercontent.com/kosairesearch/kosairesearch.github.io/main/data/reports_v2/';
 const SR_CONSENSUS_SNAPSHOTS={
   '356860':{
     asOf:'2026-08-28',
@@ -891,10 +891,48 @@ function srCanonicalLinks(profile){
 function srAvgObj(o){const a=Object.values(o||{}).map(Number).filter(Number.isFinite);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null}
 async function srKosaiReport(item){
   const code=String(item.code||'').padStart(6,'0');
-  const r=await fetch(SR_KOSAI_BASE+code+'.json',{cache:'force-cache'});
-  if(!r.ok)throw new Error('KOSAI HTTP '+r.status);
-  const j=await r.json();
-  if(!j?.quant)throw new Error('KOSAI quant 데이터 없음');
+  const stamp=encodeURIComponent(stockUniverseMeta?.as_of||autoData?.meta?.market_date||Date.now());
+  const [kosaiR,finR,intR]=await Promise.allSettled([
+    fetch(SR_KOSAI_BASE+code+'.json?v='+stamp,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('KOSAI HTTP '+r.status);return r.json()}),
+    srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/finance/quarter'),
+    srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/integration')
+  ]);
+
+  let j=kosaiR.status==='fulfilled'&&kosaiR.value?kosaiR.value:{};
+  if(!j.quant)j.quant={};
+  if(!j.quant.valuation)j.quant.valuation={};
+
+  // Fundamental TOP10 must use the latest Naver/FnGuide quarter and valuation snapshot,
+  // not the old KOSAI repository commit. KOSAI remains a qualitative/catalyst source.
+  if(finR.status==='fulfilled'){
+    const qs=srFinance(finR.value);
+    if(qs.length){
+      j.quant.quarterly=qs.map(q=>({
+        q:q.label,
+        rev:q.rev,
+        op:q.op,
+        np_owner:q.net,
+        eps:q.eps,
+        est:!!q.est
+      }));
+    }
+  }
+  if(intR.status==='fulfilled'){
+    const m=srMetricMap(intR.value);
+    const v=j.quant.valuation;
+    if(m.per!=null)v.per=m.per;
+    if(m.pbr!=null)v.pbr=m.pbr;
+    if(m.bps!=null)v.bps_krx=m.bps;
+    if(m.eps!=null)v.eps=m.eps;
+    if(m.fper!=null)v.forward_per=m.fper;
+    if(m.feps!=null)v.forward_eps=m.feps;
+    if(m.feps!=null&&m.bps)v.roe_ttm=m.feps/m.bps*100;
+    v.price=srNum(item.close)||v.price;
+  }
+
+  j.dataDate=stockUniverseMeta?.as_of||autoData?.meta?.market_date||j.dataDate||'';
+  j.quant.asOf=j.dataDate;
+  if(!Array.isArray(j.quant.quarterly)||!j.quant.quarterly.length)throw new Error('최신 분기 Fundamental 데이터 없음');
   return j;
 }
 function srKosaiBundle(report,currentPrice){
@@ -1357,7 +1395,7 @@ async function loadStockUniverse(force=false){
       const arr=Array.isArray(d)?d:(d.items||[]);
       fullStockUniverse=arr.map(srUniverseItem).filter(x=>/^\d{6}$/.test(x.code)&&x.name&&(x.market==='KOSPI'||x.market==='KOSDAQ'));
       stockUniverseMeta={count:fullStockUniverse.length,as_of:d.as_of||''};
-      if(status)status.textContent='전체 상장종목 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 검색 준비 완료'+(stockUniverseMeta.as_of?' · KRX '+stockUniverseMeta.as_of:'')+'.';
+      if(status)status.textContent='전체 상장종목 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 검색 준비 완료'+(stockUniverseMeta.as_of?' · 최신 기준 '+stockUniverseMeta.as_of:'')+'.';
       return fullStockUniverse;
     }catch(e){
       console.warn('stock-universe.json load failed',e);
@@ -1879,6 +1917,10 @@ let automaticScreeningStarted=false;
 async function runAutomaticScreenings(){
   if(automaticScreeningStarted)return;
   automaticScreeningStarted=true;
+  const marketDate=String(autoData?.meta?.market_date||'');
+  if(marketDate&&stockUniverseMeta?.as_of&&stockUniverseMeta.as_of<marketDate){
+    await loadStockUniverse(true);
+  }
   const fStatus=document.getElementById('fundamentalScanStatus'),iStatus=document.getElementById('ictScanStatus');
   const fBtn=document.getElementById('fundamentalScanBtn'),iBtn=document.getElementById('ictScanBtn');
   if(fBtn)fBtn.disabled=true;if(iBtn)iBtn.disabled=true;
