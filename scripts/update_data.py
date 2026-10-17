@@ -2718,10 +2718,17 @@ def profile_live_update(p, live):
     txt["metricSource"] = f"네이버증권 연계 FnGuide · Forward PER/EV·EBITDA · 가격 기준 {live_date}"
 
 
-def update_theme_cards(d, live_by_code):
+def update_theme_cards(d, live_by_code, refresh_selection=False, selection_as_of=None):
+    """Refresh theme prices daily, but re-score/re-rank recommendations monthly.
+
+    Theme candidate membership remains the curated watchlist for each theme.
+    At the monthly refresh, the three candidates are re-ranked using:
+      base Fundamental/Catalyst 50% + Trading Score 35% + 20D/60D momentum 15%.
+    Daily runs only update price, r20/r60 and trend state so the monthly ranking
+    is not churned by short-term noise.
+    """
     cards = d.get("theme_cards") or []
     for card in cards:
-        scores = []
         for p in card.get("picks") or []:
             code = str(p.get("ticker", "")).split(".")[0]
             live = live_by_code.get(code)
@@ -2733,9 +2740,43 @@ def update_theme_cards(d, live_by_code):
             p["r20"] = None if tech.get("r20") is None else round(tech["r20"], 2)
             p["r60"] = None if tech.get("r60") is None else round(tech["r60"], 2)
             p["state"] = tech.get("state") or "관망"
-            scores.append(float(p.get("score") or 0))
-        if scores:
-            card["theme_score"] = round(statistics.mean(scores), 1)
+
+            if refresh_selection:
+                base_score = float(p.get("base_score") or p.get("score") or 50)
+                p["base_score"] = round(base_score, 2)
+                trading_score = float((((tech.get("trading_score") or {}).get("total")) or 50))
+                r20 = float(tech.get("r20") or 0)
+                r60 = float(tech.get("r60") or 0)
+                momentum_score = clamp(50.0 + 1.2 * r20 + 0.4 * r60, 0.0, 100.0)
+                monthly_score = (
+                    base_score * 0.50
+                    + trading_score * 0.35
+                    + momentum_score * 0.15
+                )
+                p["score"] = round(monthly_score, 1)
+                p["monthly_trading_score"] = round(trading_score, 1)
+                p["monthly_momentum_score"] = round(momentum_score, 1)
+                p["selection_as_of"] = selection_as_of or tech.get("date") or NOW.date().isoformat()
+
+        if refresh_selection:
+            card["picks"] = sorted(
+                card.get("picks") or [],
+                key=lambda x: (
+                    -float(x.get("score") or 0),
+                    str(x.get("name") or ""),
+                ),
+            )[:3]
+            scores = [float(p.get("score") or 0) for p in card.get("picks") or []]
+            if scores:
+                card["theme_score"] = round(statistics.mean(scores), 1)
+            card["selection_as_of"] = selection_as_of or NOW.date().isoformat()
+            card["selection_cycle"] = "MONTHLY_CLOSE"
+        else:
+            # Preserve the monthly recommendation score/order between month-end refreshes.
+            # Only live price/momentum/trend fields move every day.
+            if card.get("selection_as_of"):
+                card["selection_cycle"] = "MONTHLY_CLOSE"
+
 
 
 def validate_financial_snapshot(d):
@@ -2863,7 +2904,17 @@ def main():
     synchronize_profile_group_rows(kosdaq_profiles)
     d["stock_profile_groups"] = {"KOSPI": profiles[:5], "KOSDAQ": kosdaq_profiles}
     d["stock_profiles_kosdaq"] = kosdaq_profiles
-    update_theme_cards(d, live_by_code)
+
+    prev_theme_month = str((d.get("meta") or {}).get("theme_selection_month") or "")
+    force_theme_refresh = str(os.getenv("THEME_MONTHLY_REFRESH", "0")).lower() in ("1", "true", "yes")
+    initialize_theme_refresh = not prev_theme_month
+    refresh_theme_selection = force_theme_refresh or initialize_theme_refresh
+    update_theme_cards(
+        d,
+        live_by_code,
+        refresh_selection=refresh_theme_selection,
+        selection_as_of=md,
+    )
 
     # Refresh TOP5 summary cards/bind without touching verified financial snapshot fields.
     bind = d.setdefault("bind", {})
@@ -2926,6 +2977,11 @@ def main():
         "kosdaq_selection_policy": "Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading Score 40% [AI].",
         "kospi_selection_policy": "Watchlist 전체 재스크리닝 · Fundamental/Catalyst 60% + Trading Score 40% · Trading 50 미만 기본 제외 · 70 이상 우선 [AI].",
         "korea_sentiment_policy": "20D/60D 추세 우선 · 절대 변동성 패널티 · 외인/기관 수급 포함 · 20D 급락 Regime Gate [AI].",
+        "theme_selection_policy": "테마 추천 3종목은 월 종가 확정 후 월 1회 재평가. Base Fundamental/Catalyst 50% + Trading Score 35% + 20D/60D Momentum 15% [AI].",
+        "theme_selection_month": (md[:7] if refresh_theme_selection and md else prev_theme_month),
+        "theme_selection_as_of": (md if refresh_theme_selection and md else (d.get("meta") or {}).get("theme_selection_as_of")),
+        "theme_selection_updated_at": (NOW.isoformat() if refresh_theme_selection else (d.get("meta") or {}).get("theme_selection_updated_at")),
+        "theme_selection_refreshed_this_run": bool(refresh_theme_selection),
         "stock_universe": {
             "as_of": (universe_meta or {}).get("as_of"),
             "generated_at": (universe_meta or {}).get("generated_at"),
