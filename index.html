@@ -277,6 +277,8 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   font-weight:800;
 }
 #sector .cycle-legend-item{display:inline-flex;padding:5px 8px;border-radius:999px}
+#sector .cycle-legend-scale{color:#667085;font-size:10px;font-weight:900;white-space:nowrap}
+#sector .cycle-legend-sep{color:#D0D5DD;font-weight:900;user-select:none}
 #sector .cycle-strong{background:#F4F3FF;color:#6938EF;border-color:#D9D6FE}
 #sector .cycle-growth{background:#ECFDF3;color:#067647;border-color:#ABEFC6}
 #sector .cycle-expansion{background:#EAF2FF;color:#1554AD;border-color:#B8D1F8}
@@ -288,7 +290,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-sector-top7-cycle7-v34-20261017 -->
+<!-- BUILD: stock-room-sector-top7-cycle7-v35-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -389,13 +391,21 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 <section id="sector" class="section-track" data-name="SECTOR">
   <div class="section-head"><div><h2 class="section-title">② 유망 Sector TOP 7</h2><p class="section-desc">산업 성장률, 수요·공급, CAPEX, 실적 Revision과 밸류에이션을 함께 평가합니다. <b>Cycle 매력도</b>는 현재 업황의 투자 매력도를 7단계로 단순화한 참고 지표입니다.</p></div></div>
   <div class="sector-cycle-legend" aria-label="Sector Cycle 매력도 7단계">
-    <span class="cycle-legend-item cycle-strong">최상위 성장</span><span>›</span>
-    <span class="cycle-legend-item cycle-growth">성장</span><span>›</span>
-    <span class="cycle-legend-item cycle-expansion">우호적 확장</span><span>›</span>
-    <span class="cycle-legend-item cycle-neutral">중립</span><span>›</span>
-    <span class="cycle-legend-item cycle-slow">둔화</span><span>›</span>
-    <span class="cycle-legend-item cycle-down">하강</span><span>›</span>
+    <span class="cycle-legend-scale">매력도 높음</span>
+    <span class="cycle-legend-item cycle-strong">최상위 성장</span>
+    <span class="cycle-legend-sep">·</span>
+    <span class="cycle-legend-item cycle-growth">성장</span>
+    <span class="cycle-legend-sep">·</span>
+    <span class="cycle-legend-item cycle-expansion">우호적 확장</span>
+    <span class="cycle-legend-sep">·</span>
+    <span class="cycle-legend-item cycle-neutral">중립</span>
+    <span class="cycle-legend-sep">·</span>
+    <span class="cycle-legend-item cycle-slow">둔화</span>
+    <span class="cycle-legend-sep">·</span>
+    <span class="cycle-legend-item cycle-down">하강</span>
+    <span class="cycle-legend-sep">·</span>
     <span class="cycle-legend-item cycle-recession">침체</span>
+    <span class="cycle-legend-scale">매력도 낮음</span>
   </div>
   <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>Sector</th><th>투자포인트</th><th>Cycle 매력도</th><th>1~3년 성장동력</th></tr></thead><tbody>
     <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag cycle-status cycle-strong" data-edit data-key="sector1Cycle">최상위 성장</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
