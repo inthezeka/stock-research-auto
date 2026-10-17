@@ -327,10 +327,28 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 @media(max-width:900px){.sector-ranking-wrap{overflow-x:auto}.sector-ranking-table{min-width:1180px}}
 
 
+
+/* v42 · Sector > Sub-sector > Theme taxonomy */
+.fund-taxonomy-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid #EAECF0}
+.fund-taxonomy-detail>div>b{display:block;margin-bottom:7px;color:#475467;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.taxonomy-chip-list{display:flex;flex-wrap:wrap;gap:5px}
+.taxonomy-chip{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;border:1px solid #E4E7EC;background:#F9FAFB;color:#475467;font-size:10px;font-weight:850}
+.taxonomy-chip.sub{background:#F5F9FF;border-color:#D1E0FF;color:#175CD3}
+.taxonomy-chip.theme{background:#F9F5FF;border-color:#E9D7FE;color:#6941C6}
+.sector-subsector{max-width:220px;font-size:10px;line-height:1.45;color:#475467}
+.sector-ranking-table th:nth-child(3),.sector-ranking-table td:nth-child(3){min-width:170px}
+.sector-ranking-table th:nth-child(4),.sector-ranking-table td:nth-child(4){min-width:108px}
+.sector-ranking-table th:nth-child(5),.sector-ranking-table td:nth-child(5){min-width:118px}
+.sector-ranking-table th:nth-child(6),.sector-ranking-table td:nth-child(6){min-width:86px;text-align:center}
+.sector-ranking-table th:nth-child(7),.sector-ranking-table td:nth-child(7){min-width:82px;text-align:center}
+.sector-ranking-table th:nth-child(8),.sector-ranking-table td:nth-child(8){min-width:250px}
+.sector-ranking-table th:nth-child(9),.sector-ranking-table td:nth-child(9){min-width:230px}
+@media(max-width:720px){.fund-taxonomy-detail{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-shared-23-sector-daily-v41-20261017 -->
+<!-- BUILD: stock-room-36-sector-subsector-theme-v42-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -458,8 +476,8 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div id="sectorUniverseList" class="sector-universe-grid"></div>
   <div class="table-wrap sector-ranking-wrap">
     <table class="table sector-ranking-table">
-      <thead><tr><th>순위</th><th>Sector</th><th>실제 Cycle</th><th>Cycle 매력도</th><th>Cycle Score</th><th>투자점수</th><th>핵심 근거</th><th>1~3년 성장동력</th></tr></thead>
-      <tbody id="sectorTop10Body"><tr><td colspan="8">Sector Cycle을 계산하는 중입니다...</td></tr></tbody>
+      <thead><tr><th>순위</th><th>Sector</th><th>Sub-sector</th><th>실제 Cycle</th><th>Cycle 매력도</th><th>Cycle Score</th><th>투자점수</th><th>핵심 근거</th><th>1~3년 성장동력</th></tr></thead>
+      <tbody id="sectorTop10Body"><tr><td colspan="9">Sector Cycle을 계산하는 중입니다...</td></tr></tbody>
     </table>
   </div>
   <p class="note sector-method-note"><b>Sector Investment Score</b> = Cycle Attractiveness 65% + Valuation 15% + 수급/Relative Strength 10% + Catalyst 10%. <b>Cycle과 Valuation은 혼합하지 않고 각각 별도 산출</b>한 뒤 투자점수 단계에서만 결합합니다. 현재 절대수준보다 변화 방향을 더 중요하게 반영합니다.</p>
@@ -496,7 +514,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 
   <div class="screening-mode-tabs">
-    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental Theme</button>
+    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental Sector</button>
     <button type="button" class="screening-mode-btn" data-screening-mode="trading">ICT Trading → TOP 10</button>
   </div>
 
@@ -504,21 +522,25 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card fund-theme-card">
       <div class="fund-theme-head">
         <div>
-          <h3 class="subhead" style="margin:0">① Fundamental Theme</h3>
-          <p class="note" style="margin:6px 0 0">먼저 산업/테마를 선택합니다. 기본 Framework는 Universal 70점 + Sector Specific 20점 + Cycle / Earnings Visibility 10점이며, 이후 Fundamental Risk Penalty를 최대 -15점 적용합니다. 같은 산업 안에서는 Peer 상대평가를 우선하고, 산업별 핵심 KPI와 Valuation 기준은 해당 산업 특성에 맞게 변경합니다.</p>
+          <h3 class="subhead" style="margin:0">① Fundamental Sector</h3>
+          <p class="note" style="margin:6px 0 0">Sector → Sub-sector → Theme의 3단계 구조로 분류합니다. Sector는 본질적인 사업영역, Sub-sector는 세부 사업영역, Theme은 여러 Sector에 걸쳐 나타나는 시장 Catalyst로 분리합니다. Fundamental 평가는 선택한 Sector의 Peer를 기준으로 계산합니다.</p>
         </div>
-        <span class="tag blue" id="fundThemeSelected">반도체 / AI</span>
+        <span class="tag blue" id="fundThemeSelected">반도체 / 메모리 / AI Chip</span>
       </div>
       <div id="fundThemeList" class="fund-theme-grid"></div>
+      <div id="fundTaxonomyDetail" class="fund-taxonomy-detail">
+        <div><b>Sub-sector</b><div id="fundSubsectorList" class="taxonomy-chip-list"></div></div>
+        <div><b>Theme</b><div id="fundPrimaryThemeList" class="taxonomy-chip-list"></div></div>
+      </div>
     </div>
     <div class="scan-toolbar">
-      <button type="button" class="btn dark" id="fundamentalScanBtn">선택 테마 재분석</button>
-      <span class="scan-status" id="fundamentalScanStatus">반도체 / AI 테마를 자동 분석합니다.</span>
+      <button type="button" class="btn dark" id="fundamentalScanBtn">선택 Sector 재분석</button>
+      <span class="scan-status" id="fundamentalScanStatus">반도체 / 메모리 / AI Chip Sector를 자동 분석합니다.</span>
     </div>
     <div class="card">
-      <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / AI · Fundamental TOP 20</h3>
+      <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / 메모리 / AI Chip · Fundamental TOP 20</h3>
       <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>15</th><th>수익성/ROIC<br>15</th><th>재무/FCF<br>15</th><th>Valuation<br>10</th><th>경쟁우위<br>10</th><th>Revision<br>5</th><th>Sector KPI<br>20</th><th>Cycle/Visibility<br>10</th><th>점수 기반 투자매력</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="12">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
-      <p class="note" style="margin:10px 2px 0">테마 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 투자매력은 최종 Fundamental Score만으로 구분합니다: <b>95+ Best · 90~94 매력 · 75~89 관심 · 65~74 중립 · 60~64 주의 · 50~59 경고 · 50 미만 위험</b>.</p>
+      <p class="note" style="margin:10px 2px 0">Sector 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 투자매력은 최종 Fundamental Score만으로 구분합니다: <b>95+ Best · 90~94 매력 · 75~89 관심 · 65~74 중립 · 60~64 주의 · 50~59 경고 · 50 미만 위험</b>.</p>
     </div>
   </div>
 
@@ -2176,23 +2198,25 @@ async function loadFundamentalThemeConfig(){
     const r=await fetch('config/fundamental_themes.json?v='+Date.now(),{cache:'no-store'});
     if(!r.ok)throw new Error('HTTP '+r.status);
     const d=await r.json();
-    const themes=Array.isArray(d?.themes)?d.themes:[];
+    const themes=Array.isArray(d?.sectors)?d.sectors:(Array.isArray(d?.themes)?d.themes:[]);
     if(themes.length){
       FUNDAMENTAL_THEMES=themes.map(t=>({
         key:String(t.key||''),
         label:String(t.label||''),
         codes:(Array.isArray(t.codes)?t.codes:[]).map(x=>String(x).padStart(6,'0')),
+        subsectors:Array.isArray(t.subsectors)?t.subsectors.map(String):[],
+        themes:Array.isArray(t.themes)?t.themes.map(String):[],
         growth:String(t.growth||''),
         structural_base:Number(t.structural_base||70)
       })).filter(t=>t.key&&t.label);
-      if(!FUNDAMENTAL_THEMES.some(t=>t.key===activeFundThemeKey))activeFundThemeKey=FUNDAMENTAL_THEMES[0]?.key||'semi_ai';
+      if(!FUNDAMENTAL_THEMES.some(t=>t.key===activeFundThemeKey))activeFundThemeKey=FUNDAMENTAL_THEMES[0]?.key||'semi_memory_ai';
     }
   }catch(e){
     console.warn('fundamental theme config load failed; using embedded fallback',e);
   }
   return FUNDAMENTAL_THEMES;
 }
-let activeFundThemeKey='semi_ai';
+let activeFundThemeKey='semi_memory_ai';
 
 
 function srScreeningItemByCode(code){
@@ -2548,6 +2572,25 @@ function srInferFundThemeKey(report){
   ];
   return (rules.find(x=>x[1].test(s))||['industrial'])[0];
 }
+const SR_FUND_RULE_ALIAS={
+  semi_memory_ai:'semi_ai',
+  pcb_packaging:'semi_parts',
+  it_hardware:'auto',
+  display_oled:'semi_equipment',
+  battery_ess:'battery',
+  nuclear_smr:'nuclear_energy',
+  energy_lng_refining:'materials',
+  nonferrous:'materials',
+  environment:'industrial',
+  medical_device:'bio',
+  retail:'food',
+  software_cloud_ai:'platform',
+  telecom_network:'platform',
+  security_quantum:'platform',
+  shipping_logistics:'industrial',
+  holding_conglomerate:'finance'
+};
+function srFundRuleKey(key){return SR_FUND_RULE_ALIAS[key]||key}
 function srTokenHit(text,tokens){return (tokens||[]).filter(x=>text.includes(String(x).toLowerCase())).length}
 function srSectorKpiScore(text,row){
   const pos=srTokenHit(text,row[2]),neg=srTokenHit(text,row[3]);
@@ -2559,6 +2602,7 @@ function srSectorKpiScore(text,row){
   return 2.5;
 }
 function srValuationCore(themeKey,{fper,peg,pbr,roe,text,valComment}){
+  themeKey=srFundRuleKey(themeKey);
   let s=2.5,reason='';
   if(themeKey==='finance'||themeKey==='insurance'){
     if(pbr!=null&&roe!=null){
@@ -2734,7 +2778,7 @@ function srFundamentalScore(report,item,themeKey){
   add('revision','revision','Earnings Revision',5,reviseScore,revision==null?'최근 1~3개월 EPS/영업이익 Revision [검증 필요]':'Forward EPS Revision '+(revision>=0?'+':'')+revision.toFixed(1)+'%');
 
   // B. Sector Specific = 20
-  const sectorRules=SR_SECTOR_KPI_RULES[themeKey]||SR_SECTOR_KPI_RULES.industrial;
+  const sectorRules=SR_SECTOR_KPI_RULES[srFundRuleKey(themeKey)]||SR_SECTOR_KPI_RULES.industrial;
   sectorRules.forEach((row,i)=>add('sector','sector'+(i+1),row[0],row[1],srSectorKpiScore(text,row),'해당 Sector 핵심 KPI Evidence 기반'));
 
   // C. Cycle / Earnings Visibility = 10
@@ -2782,6 +2826,10 @@ function srRenderFundThemes(){
   const selected=srFundThemeByKey(activeFundThemeKey);
   const badge=document.getElementById('fundThemeSelected');if(badge)badge.textContent=selected.label;
   const title=document.getElementById('fundThemeTop10Title');if(title)title.textContent='② '+selected.label+' · Fundamental TOP 20';
+  const sub=document.getElementById('fundSubsectorList');
+  if(sub)sub.innerHTML=(selected.subsectors||[]).map(x=>'<span class="taxonomy-chip sub">'+srEsc(x)+'</span>').join('')||'<span class="taxonomy-chip">분류 확인 중</span>';
+  const th=document.getElementById('fundPrimaryThemeList');
+  if(th)th.innerHTML=(selected.themes||[]).map(x=>'<span class="taxonomy-chip theme">'+srEsc(x)+'</span>').join('')||'<span class="taxonomy-chip">Theme 확인 중</span>';
 }
 function srFundThemeCandidates(theme){
   const byCode=new Map(fullStockUniverse.map(x=>[x.code,x]));
@@ -2799,7 +2847,7 @@ async function srRunFundTheme(themeKey,status){
   activeFundThemeKey=theme.key;
   srRenderFundThemes();
   const candidates=srFundThemeCandidates(theme);
-  if(status)status.textContent=theme.label+' 대표 '+candidates.length+'개 종목 Forward Fundamental 분석 중...';
+  if(status)status.textContent=theme.label+' Sector 대표 '+candidates.length+'개 종목 Forward Fundamental 분석 중...';
   const reports=(await srMapLimit(candidates,6,async item=>{
     const report=await srKosaiCached(item),f=srFundamentalScore(report,item,theme.key);
     return report&&f?{item,report,f}:null;
@@ -2810,7 +2858,7 @@ async function srRunFundTheme(themeKey,status){
   srRenderFundTop20Rows(top20);
   if(!top20.length){
     const body=document.getElementById('fundTop10Body');
-    if(body)body.innerHTML='<tr><td colspan="12">해당 테마의 Fundamental 데이터를 불러오지 못했습니다. 재분석을 눌러주세요.</td></tr>';
+    if(body)body.innerHTML='<tr><td colspan="12">해당 Sector의 Fundamental 데이터를 불러오지 못했습니다. 재분석을 눌러주세요.</td></tr>';
   }
   fundamentalScanResults={themeKey:theme.key,top20};
   if(status)status.textContent='완료 · '+theme.label+' '+reports.length+'개 평가 → TOP '+top20.length+' · 기준 '+(stockUniverseMeta.as_of||'최신');
@@ -3012,6 +3060,8 @@ function srSectorFreshRows(){
       relativeStrength:Number(x.relative_strength_score),
       catalystScore:Number(x.catalyst_score),
       factors:x.factors||{},reason:x.reason||'',growth:x.growth||'',
+      subsectors:Array.isArray(x.subsectors)?x.subsectors:[],
+      themes:Array.isArray(x.themes)?x.themes:[],
       peakWarning:!!x.peak_warning,peakSignals:x.peak_signals||[],
       earlyRecovery:!!x.early_recovery,recoverySignals:x.recovery_signals||[]
     }));
@@ -3019,18 +3069,18 @@ function srSectorFreshRows(){
   const fallbackMap=new Map((SECTOR_CYCLE_DATA||[]).map(x=>[x.name,x]));
   return FUNDAMENTAL_THEMES.map(t=>{
     const old=fallbackMap.get(t.label);
-    return old?{...old,key:t.key,growth:old.growth||t.growth}:{key:t.key,name:t.label,actualCycle:'확인 필요',factors:{},valuation:50,relativeStrength:50,catalystScore:50,reason:'일일 Sector 데이터 생성 대기',growth:t.growth||'구조적 성장동력 확인'};
+    return old?{...old,key:t.key,growth:old.growth||t.growth,subsectors:t.subsectors||[],themes:t.themes||[]}:{key:t.key,name:t.label,actualCycle:'확인 필요',factors:{},valuation:50,relativeStrength:50,catalystScore:50,reason:'일일 Sector 데이터 생성 대기',growth:t.growth||'구조적 성장동력 확인',subsectors:t.subsectors||[],themes:t.themes||[]};
   });
 }
 function srRenderSectorUniverse(topKeys=[]){
   const el=document.getElementById('sectorUniverseList');if(!el)return;
   const top=new Set(topKeys);
-  el.innerHTML=FUNDAMENTAL_THEMES.map((t,i)=>'<div class="sector-universe-item '+(top.has(t.key)?'active-top10':'')+'" title="'+srEsc(t.label)+'">'+String(i+1).padStart(2,'0')+' · '+srEsc(t.label)+'</div>').join('');
+  el.innerHTML=FUNDAMENTAL_THEMES.map((t,i)=>'<div class="sector-universe-item '+(top.has(t.key)?'active-top10':'')+'" title="Sub-sector: '+srEsc((t.subsectors||[]).join(' · '))+' | Theme: '+srEsc((t.themes||[]).join(' · '))+'">'+String(i+1).padStart(2,'0')+' · '+srEsc(t.label)+'</div>').join('');
   const status=document.getElementById('sectorUpdateStatus');
   if(status){
     const sc=autoData?.sector_cycle||{};
     const count=Array.isArray(sc.sectors)?sc.sectors.length:FUNDAMENTAL_THEMES.length;
-    status.textContent=count+'개 Sector · '+(sc.as_of?'기준 '+sc.as_of+' · ':'')+(sc.generated_at?'Daily 자동갱신':'Fallback');
+    status.textContent=count+'개 Sector Universe · '+(sc.as_of?'기준 '+sc.as_of+' · ':'')+(sc.generated_at?'Daily 자동갱신':'Fallback');
   }
 }
 function srRenderSectorRanking(){
@@ -3049,6 +3099,7 @@ function srRenderSectorRanking(){
     return '<tr>'+
       '<td class="rank">'+(i+1)+'</td>'+
       '<td><div class="sector-name-wrap"><b>'+srEsc(x.name)+'</b>'+flags+'</div></td>'+
+      '<td><div class="sector-subsector" title="'+srEsc((x.subsectors||[]).join(' · '))+'">'+srEsc((x.subsectors||[]).slice(0,3).join(' · ')||'—')+'</div></td>'+
       '<td><span class="sector-actual-cycle">'+srEsc(srSectorActualCycle(x))+'</span></td>'+
       '<td><span class="tag cycle-status '+cls+'">'+srEsc(x.attractiveness)+'</span></td>'+
       '<td title="'+srEsc(srSectorBreakdownTitle(x))+'"><span class="sector-score-main">'+x.cycleScore.toFixed(1)+'</span><span class="sector-score-sub">/100</span></td>'+
@@ -3059,7 +3110,7 @@ function srRenderSectorRanking(){
   }).join('');
 }
 
-function srCleanEarningsText(v){function srCleanEarningsText(v){
+function srCleanEarningsText(v){
   return stripAiMarkerText(String(v||''))
     .replace(/\s+/g,' ')
     .replace(/^[·\-\s]+|[·\-\s]+$/g,'')
