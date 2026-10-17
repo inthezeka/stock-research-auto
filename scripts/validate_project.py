@@ -199,7 +199,7 @@ required_ui=[
     'id="fundSubsectorList"',
     'id="fundPrimaryThemeList"',
     'id="sectorUniverseList"',
-    "MY Trading · ICT TOP 10",
+    "MY Trading TOP 10",
     "ENTRY READY",
     "WATCH LIST",
     'id="fundThemeList"',
@@ -223,18 +223,18 @@ if "Sub-sector</th>" not in html or "Sector > Sub-sector > Theme" not in html:
     fail("3-level Sector/Sub-sector/Theme taxonomy UI missing")
 
 ict_framework_tokens=[
-    "HTF Market Structure",
-    "Protected Structure",
-    "Draw on Liquidity",
-    "Liquidity Event",
-    "MSS / BOS",
-    "Displacement",
-    "FVG / OB / Breaker",
+    "HTF Long Bias",
+    "Protected Low 유지",
+    "Upward DOL",
+    "Bullish Liquidity Event",
+    "Bullish MSS / BOS",
+    "Bullish Displacement",
+    "Bullish FVG / OB / Breaker",
+    "Discount / OTE",
     "Risk / Reward",
     "Setup Freshness",
-    "Liquidity / Gap Risk",
     "Data Confidence",
-    "Normalized ICT",
+    "Normalized:",
 ]
 for token in ict_framework_tokens:
     if token not in html:
