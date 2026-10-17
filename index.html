@@ -78,7 +78,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 @media(max-width:760px){.stock-search-row{grid-template-columns:1fr}.stock-search-row .btn{width:100%}}
 
 
-/* v18 dual screening: Fundamental + ICT */
+/* v18 dual screening: Fundamental + */
 .screening-mode-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
 .screening-mode-btn{appearance:none;border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-weight:900;cursor:pointer;color:#344054}
 .screening-mode-btn.active{background:#0B1F3A;color:#fff;border-color:#0B1F3A}
@@ -96,6 +96,14 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .ict-score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
 .ict-score-card>div{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:10px;font-size:10px}
 .ict-detail-card{margin-top:12px}
+.my-trading-detail{padding:0!important;overflow:hidden}
+.my-trading-detail>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;font-weight:900}
+.my-trading-detail>summary::-webkit-details-marker{display:none}
+.my-trading-detail-summary-meta{font-size:11px;color:#667085;font-weight:800}
+.my-trading-detail-arrow{display:inline-block;transition:transform .16s ease}
+.my-trading-detail[open] .my-trading-detail-arrow{transform:rotate(180deg)}
+.my-trading-detail[open]>summary{border-bottom:1px solid var(--border);background:#FAFCFF}
+.my-trading-detail-body{padding:14px 18px 18px}
 .ict-detail-card h3{margin:0 0 8px}
 .ict-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .ict-detail-grid>div{padding:9px;border:1px solid #EEF1F4;border-radius:9px;background:#FAFBFC;font-size:10px;line-height:1.5}
@@ -591,40 +599,38 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 
 <div id="tradingPanel" class="screening-panel">
     <div class="card">
-      <h3 class="subhead">MY Trading · ICT QUALITY SCORE · Normalized 100점 → Penalty → Adjusted</h3>
+      <h3 class="subhead">MY Trading · LONG ONLY QUALITY SCORE · Normalized 100점 → Bearish Risk Penalty → Adjusted</h3>
       <div class="ict-score-card">
-        <div><b>① HTF Market Structure · 10</b><br>Weekly / Daily / 4H External Structure</div>
-        <div><b>② Protected Structure · 10</b><br>Protected Low/High와 구조적 Invalidation</div>
-        <div><b>③ Multi-Timeframe Alignment · 5</b><br>Daily + 4H + 1H 방향 정렬</div>
-        <div><b>④ Draw on Liquidity · 10</b><br>External BSL · 진행 경로 · 장애 PD Array</div>
-        <div><b>⑤ Liquidity Event · 10</b><br>SSL Sweep → Reaction → MSS 우선</div>
-        <div><b>⑥ MSS / BOS · 10</b><br>몸통 종가 돌파 + 구조 중요도</div>
-        <div><b>⑦ Displacement · 10</b><br>Body · Structure Break · FVG · Follow-through</div>
-        <div><b>⑧ FVG / OB / Breaker · 10</b><br>MSS Origin과 현재가 근접 PD Array</div>
-        <div><b>⑨ Premium / Discount / OTE · 5</b><br>Long은 Discount / OTE 우선</div>
-        <div><b>⑩ Risk / Reward · 10</b><br>실제 BSL Target / Protected Low 기준</div>
-        <div><b>⑪ Setup Freshness · 5</b><br>Mitigation 횟수와 PD Array 소모도</div>
-        <div><b>⑫ Liquidity / Gap Risk · 5</b><br>거래대금 · Slippage · Gap Risk</div>
+        <div><b>① HTF Long Bias · 20</b><br>Strong Bullish → Bullish → Bullish Transition 우선</div>
+        <div><b>② Protected Low 유지 · 10</b><br>Protected Low 유지와 Structural Invalidation</div>
+        <div><b>③ Upward DOL · 10</b><br>Internal BSL → External BSL 상방 Liquidity 경로</div>
+        <div><b>④ Bullish Liquidity Event · 10</b><br>SSL Sweep → Reaction → Bullish MSS</div>
+        <div><b>⑤ Bullish MSS / BOS · 10</b><br>몸통 종가 돌파와 구조 회복/지속</div>
+        <div><b>⑥ Bullish Displacement · 10</b><br>Body · Structure Break · Follow-through</div>
+        <div><b>⑦ Bullish FVG / OB / Breaker · 10</b><br>Long Entry에 사용할 PD Array 품질</div>
+        <div><b>⑧ Discount / OTE · 5</b><br>Long은 Discount / OTE 우선</div>
+        <div><b>⑨ Risk / Reward · 10</b><br>확정 Entry와 상방 BSL Target 기준</div>
+        <div><b>⑩ Setup Freshness · 5</b><br>Mitigation 횟수와 PD Array 소모도</div>
       </div>
-      <p class="note"><b>좋은 ICT 구조 ≠ 지금 즉시 진입 가능한 종목.</b> MY Trading은 ① <b>ICT TOP10</b>(현재 시장에서 구조가 가장 좋은 종목), ② <b>ENTRY READY</b>(현재 신규 진입 조건 충족), ③ <b>WATCH LIST</b>(Breakout/Pullback/Reclaim 대기)로 분리합니다. Daily는 필수이며 4H/1H가 없으면 종목을 제거하지 않고 Data Confidence를 낮춘 뒤 평가 가능한 항목만 Normalized Score로 환산합니다.</p>
+      <p class="note"><b>국내주식 LONG ONLY.</b> Short / 공매도 / 하락 베팅 후보는 생성하지 않습니다. MY Trading은 ① <b>MY Trading TOP10</b>(Long 관점 구조 우수 순위), ② <b>ENTRY READY</b>(S급 신규 Long 진입 준비 완료), ③ <b>WATCH LIST</b>(A Pullback / B Breakout·Reclaim 대기)로 분리합니다. Bearish Signal은 신규 Short가 아니라 Long Risk 감점과 매수 제외 판단에만 사용합니다. Daily는 필수이며 4H/1H 누락은 0점 처리하지 않고 Data Confidence로 구분합니다.</p>
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="ictScanBtn">MY Trading TOP10 스캔</button>
       <span class="scan-status" id="ictScanStatus">페이지 로드 후 MY Trading 자동 조회합니다.</span>
     </div>
     <div class="card">
-      <h3 class="subhead">① MY Trading · ICT TOP 10</h3>
-      <p class="note" style="margin:0 0 10px">Adjusted ICT ≥ 65를 기본으로, Daily 구조와 HTF Structure 및 주요 Liquidity가 확인되는 종목을 시장 내 상대순위로 표시합니다. Entry Quality S/A/B를 모두 허용합니다.</p>
-      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>ICT Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="15">자동 ICT 분석 중입니다...</td></tr></tbody></table></div>
+      <h3 class="subhead">① MY Trading TOP 10</h3>
+      <p class="note" style="margin:0 0 10px">국내주식 Long Only 기준입니다. HTF Bias는 STRONG BULLISH → BULLISH → BULLISH TRANSITION 순으로 우선하며, 상방 DOL이 명확하고 S/A/B Long Setup인 종목만 상대순위로 표시합니다. BEARISH / BEARISH TRANSITION은 Bullish Reversal 확인 전까지 제외합니다.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="15">자동 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3 class="subhead">② ENTRY READY</h3>
-      <p class="note" style="margin:0 0 10px">Adjusted ICT ≥ 75 · Entry Quality S/A · R:R ≥ 1:2 · DOL/Invalidation 명확 · Liquidity Event 또는 MSS/BOS 확인 종목만 표시합니다. 0개여도 정상입니다.</p>
+      <p class="note" style="margin:0 0 10px">Entry Quality S = LONG ENTRY READY만 표시합니다. SSL Sweep → Bullish MSS → Bullish Displacement → FVG/OB Pullback과 R:R ≥ 1:2, 상방 DOL, Invalidation이 확인되어야 합니다. 0개여도 정상입니다.</p>
       <div class="table-wrap"><table class="table"><thead><tr><th>종목</th><th>Adjusted ICT</th><th>Setup Type</th><th>Entry Quality</th><th>Entry Zone</th><th>Trigger</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="entryReadyBody"><tr><td colspan="10">ENTRY READY 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3 class="subhead">③ WATCH LIST</h3>
-      <p class="note" style="margin:0 0 10px">Adjusted ICT ≥ 70 · Entry Quality B 종목. Breakout / Pullback / FVG·OB Retest / Reclaim 등 진입 트리거 대기 후보입니다.</p>
+      <p class="note" style="margin:0 0 10px">Entry Quality A/B 및 NEUTRAL 대기 후보입니다. A는 FVG/OB/Discount/OTE Pullback 대기, B는 Protected High / Major BSL 돌파 → Acceptance → Retest 대기입니다. Short 후보는 표시하지 않습니다.</p>
       <div class="table-wrap"><table class="table"><thead><tr><th>종목</th><th>Adjusted ICT</th><th>Setup Type</th><th>Entry Quality</th><th>Waiting For</th><th>Trigger Price</th><th>DOL</th></tr></thead><tbody id="watchListBody"><tr><td colspan="7">WATCH LIST 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div id="ictBestNote" class="ict-best-note" style="display:none"></div>
@@ -633,7 +639,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
-  <div class="note" style="margin-bottom:12px">상단 Fundamental / ICT 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
+  <div class="note" style="margin-bottom:12px">상단 Fundamental / 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
   <div id="fundamentalScoreDetail" class="card fund-score-detail" style="display:none;margin-bottom:14px"></div>
   <div class="card top-pick">
     <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">분석 종목</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
@@ -683,7 +689,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="catalyst" class="section-track" data-name="CATALYST / RISK">
-  <div class="section-head"><div><h2 class="section-title">Catalyst & Risk</h2><p class="section-desc">선택 종목의 실적·Consensus·정성 Keypoint·Valuation·ICT 구조를 조합해 Catalyst와 Risk를 자동 갱신합니다.</p></div></div>
+  <div class="section-head"><div><h2 class="section-title">Catalyst & Risk</h2><p class="section-desc">선택 종목의 실적·Consensus·정성 Keypoint·Valuation·구조를 조합해 Catalyst와 Risk를 자동 갱신합니다.</p></div></div>
   <div class="two-col">
     <div class="card"><h3 class="subhead">Catalyst Timeline</h3><div class="facts"><div class="fact-row"><span><span class="tag green">1~3개월</span></span><b data-edit data-key="shortCat">10/28 예상 3Q 실적 · MLCC 판가/믹스 · 추가 LTA</b></div><div class="fact-row"><span><span class="tag blue">3~6개월</span></span><b data-edit data-key="midCat">2027년 1월 LTA 공급 개시 · FCBGA 증설 가시화</b></div><div class="fact-row"><span><span class="tag purple">6~24개월</span></span><b data-edit data-key="longCat">AI 서버 MLCC 비중 확대 · FCBGA 고객 확장 · 전장 고부가</b></div></div></div>
     <div class="card"><h3 class="subhead">Risk Matrix</h3><div class="risk-grid"><div class="risk-row"><b data-edit data-key="risk1">Valuation 부담 / Multiple 압축</b><span class="risk-level medium" data-edit data-key="risk1P">가능성 H</span><span class="risk-level high" data-edit data-key="risk1I">영향 H</span></div><div class="risk-row"><b data-edit data-key="risk2">AI CSP CAPEX 둔화</b><span class="risk-level low" data-edit data-key="risk2P">가능성 M</span><span class="risk-level high" data-edit data-key="risk2I">영향 H</span></div><div class="risk-row"><b data-edit data-key="risk3">MLCC 공급 정상화 / 판가 둔화</b><span class="risk-level medium" data-edit data-key="risk3P">가능성 M</span><span class="risk-level medium" data-edit data-key="risk3I">영향 M</span></div><div class="risk-row"><b data-edit data-key="risk4">FCBGA 증설·수율 Ramp 지연</b><span class="risk-level low" data-edit data-key="risk4P">가능성 L</span><span class="risk-level medium" data-edit data-key="risk4I">영향 M</span></div></div></div>
@@ -1404,7 +1410,7 @@ function srTech(rows){
   const trend=ord&&s20>0?'상승':(price>m20&&s20>0?'상승초기':(rev&&s20<0?'하락':(price<m20?'조정':'횡보')));
   const heatHits=(rv>70?1:0)+(k>80?1:0)+(g20>10?1:0),heat=heatHits>=2?'높음':heatHits===1?'주의':'보통';
   const msPreferred=msMeta.hh&&msMeta.discount&&msScore>=30;
-  const action=total>=80&&msPreferred&&heatHits===0?'신규진입':total>=70&&msPreferred?'ICT Discount 관심':total>=70?'눌림목 대기':total>=60?'관망':total>=45&&(trend==='조정'||trend==='하락')?'일부매도':total<45?'손절검토':'관망';
+  const action=total>=80&&msPreferred&&heatHits===0?'신규진입':total>=70&&msPreferred?'Discount 관심':total>=70?'눌림목 대기':total>=60?'관망':total>=45&&(trend==='조정'||trend==='하락')?'일부매도':total<45?'손절검토':'관망';
   const support=srQuantile(c.slice(-60),.2),resistance=srQuantile(c.slice(-60),.8),atr14=srAtr(rows),high20=Math.max(...c.slice(-20)),low20=Math.min(...c.slice(-20)),high52=Math.max(...c.slice(-252));
   let target1=[resistance,high20,high52].filter(v=>v>price).sort((a,b)=>a-b)[0]??(atr14?price+1.5*atr14:null);
   let target2=[resistance,high20,high52].filter(v=>v>price&&v!==target1).sort((a,b)=>a-b)[0]??(atr14?price+3*atr14:null);
@@ -1694,7 +1700,7 @@ function srDynamicCatalystRisk(report,qs,m,tech,ict,cons,item){
     if(upside>5)catalysts.push('Consensus 목표가 '+srFmt(cons.targetPrice)+'원 · 현재가 대비 +'+upside.toFixed(1)+'%');
   }
   if(ict&&['S','A'].includes(ict.entryQuality)&&ict.adjustedScore>=80){
-    catalysts.push('ICT '+ict.setupType+' · Adjusted '+ict.adjustedScore+'/100 · '+ict.finalOpinion);
+    catalysts.push(''+ict.setupType+' · Adjusted '+ict.adjustedScore+'/100 · '+ict.finalOpinion);
   }
   const bizLong=srInsightSentence(biz,120);
   if(bizLong&&posRx.test(bizLong))catalysts.push(bizLong);
@@ -1727,7 +1733,7 @@ function srDynamicCatalystRisk(report,qs,m,tech,ict,cons,item){
   if(ict){
     const ictReason=(ict.hardFilterReasons||[])[0]||(ict.reasons||[])[0];
     riskCandidates.push({
-      text:ictReason?('ICT 구조 리스크 · '+ictReason):(ict.entryQuality==='B'?'Protected High/BSL 돌파 전 추격 리스크':ict.entryQuality==='C'?'ICT 진입 구조 불충분':'ICT Setup 무효화 / Protected Low 이탈'),
+      text:ictReason?('구조 리스크 · '+ictReason):(ict.entryQuality==='B'?'Protected High/BSL 돌파 전 추격 리스크':ict.entryQuality==='C'?'진입 구조 불충분':'Setup 무효화 / Protected Low 이탈'),
       p:ict.entryQuality==='C'?'H':ict.entryQuality==='B'?'M':'L',
       impact:ict.entryQuality==='C'?'H':'M'
     });
@@ -1980,11 +1986,11 @@ async function buildSearchProfile(item){
   try{
     searchIct=await srIctAnalyzeItem(item,rows,true);
   }catch(e){
-    console.warn('검색 종목 1H ICT 분석 실패 · Daily fallback 재시도',e);
+    console.warn('검색 종목 1H 분석 실패 · Daily fallback 재시도',e);
     try{
       searchIct=await srIctAnalyzeItem(item,rows,false);
     }catch(e2){
-      console.warn('검색 종목 Daily ICT fallback 실패',e2);
+      console.warn('검색 종목 Daily fallback 실패',e2);
     }
   }
   p.searchIct=searchIct;
@@ -2033,7 +2039,7 @@ async function buildSearchProfile(item){
   t.topPickScore=p.fundamentalScore?('Fundamental '+Number(p.fundamentalScore.total||0).toFixed(1)+' / 100 · '+srFundScoreAttractiveness(p.fundamentalScore.total)):'Fundamental 계산 확인 필요';
   t.thesis=searchIct
     ?('“검색 종목 ICT: Raw '+searchIct.rawScore+'점 → Penalty '+searchIct.penalty+'점 → Adjusted '+searchIct.adjustedScore+'점 · '+searchIct.setupType+' · Entry Quality '+searchIct.entryQuality+' · R:R '+searchIct.rr.toFixed(2)+':1. 좋은 구조와 현재 진입 준비도를 분리해 판단합니다.” [AI]')
-    :'“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. ICT 세부 데이터는 확인이 필요합니다.” [AI]';
+    :'“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. 세부 데이터는 확인이 필요합니다.” [AI]';
   t.currentPriceText=srFmt(tech.price)+'원';p.inputs.currentPrice=String(Math.round(tech.price));
   t.per=m.per!=null?m.per.toFixed(2)+'x'+(fundamentalSource.includes('KOSAI')?' [AI]':''):'N/A · 적자/TTM 확인';
   t.fper=t.fper2=m.fper!=null?m.fper.toFixed(2)+'x'+(cons?' · 2026E':''):(m.fperAI!=null?m.fperAI.toFixed(2)+'x Run-rate [AI]':'N/A · 이익추정 불가');
@@ -2125,7 +2131,7 @@ async function buildSearchProfile(item){
   if(tech.entry1)p.inputs.buy1=String(Math.round(tech.entry1));if(tech.entry2)p.inputs.buy2=String(Math.round(tech.entry2));if(tech.stop)p.inputs.stopPrice=String(Math.round(tech.stop));if(tech.target1)p.inputs.target1=String(Math.round(tech.target1));if(tech.target2)p.inputs.target2=String(Math.round(tech.target2));
   t.technicalComment='Trading Score '+tech.total+'/100 ('+tech.grade+'/'+tech.label+'), M\'s '+tech.components.ms[0]+'/40 · '+tech.components.ms[1]+', 추세 '+tech.trend+', 과열도 '+tech.heat+'. [AI]';
   t.tradingConclusion=searchIct
-    ?('ICT Raw '+searchIct.rawScore+'/100 → Adjusted '+searchIct.adjustedScore+'/100 | Penalty '+searchIct.penalty+' | Setup: '+searchIct.setupType+' | Entry: '+searchIct.entryQuality+' | R:R '+searchIct.rr.toFixed(2)+':1 | 판단: '+searchIct.finalOpinion+' [AI]')
+    ?('Raw '+searchIct.rawScore+'/100 → Adjusted '+searchIct.adjustedScore+'/100 | Penalty '+searchIct.penalty+' | Setup: '+searchIct.setupType+' | Entry: '+searchIct.entryQuality+' | R:R '+searchIct.rr.toFixed(2)+':1 | 판단: '+searchIct.finalOpinion+' [AI]')
     :('Trading Score '+tech.total+'/100 | M\'s '+tech.components.ms[0]+'/40 | 추세: '+tech.trend+' | 과열도: '+tech.heat+' | 전략: '+tech.action+' [AI]');
   t.tradingEntryCondition=searchIct
     ?('DOL '+srFmtPx(searchIct.dol)+' · Entry '+srFmtZone(searchIct.entryZone)+' · Structural Invalidation '+srFmtPx(searchIct.structuralInvalidation)+' · Target1 '+srFmtPx(searchIct.target1)+' [AI]')
@@ -2270,7 +2276,7 @@ function srRenderSearchIctSummary(ict){
 async function analyzeSearchItem(item,status,box){
   box?.classList.remove('show');
   document.getElementById('searchIctSummary')?.classList.remove('show');
-  status.textContent=(item.name||item.code)+' 데이터와 ICT 구조를 불러오는 중...';
+  status.textContent=(item.name||item.code)+' 데이터와 구조를 불러오는 중...';
   try{
     const p=await buildSearchProfile(item);
     const canonicalFund=await srResolveCanonicalFundamental(item);
@@ -2294,11 +2300,11 @@ async function analyzeSearchItem(item,status,box){
     const note=document.getElementById('selectedStockNote');
     if(note){
       const fs=Number(p.fundamentalScore?.total);
-      note.textContent=p.market+' · SEARCH · '+p.name+(Number.isFinite(fs)?' · Fundamental '+fs.toFixed(1)+'/100 · '+srFundScoreAttractiveness(fs):'')+(p.searchIct?' · ICT '+p.searchIct.adjustedScore+'/100':'');
+      note.textContent=p.market+' · SEARCH · '+p.name+(Number.isFinite(fs)?' · Fundamental '+fs.toFixed(1)+'/100 · '+srFundScoreAttractiveness(fs):'')+(p.searchIct?' · '+p.searchIct.adjustedScore+'/100':'');
     }
     document.getElementById('stockSearchBadge')?.classList.add('show');
     const fs=Number(p.fundamentalScore?.total);
-    status.textContent=p.name+' 분석 완료'+(Number.isFinite(fs)?' · Fundamental '+fs.toFixed(1)+'/100 · '+srFundScoreAttractiveness(fs):'')+(p.searchIct?' · ICT '+p.searchIct.adjustedScore+'/100':' · ICT 총점 계산 확인 필요')+' · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신');
+    status.textContent=p.name+' 분석 완료'+(Number.isFinite(fs)?' · Fundamental '+fs.toFixed(1)+'/100 · '+srFundScoreAttractiveness(fs):'')+(p.searchIct?' · '+p.searchIct.adjustedScore+'/100':' · 총점 계산 확인 필요')+' · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신');
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
@@ -2479,7 +2485,7 @@ function srLiquidityCandidates(limit=null){
 
   let arr=liquid;
   let mode='거래대금';
-  // Never let a temporary upstream omission freeze Fundamental/ICT at zero
+  // Never let a temporary upstream omission freeze Fundamental/at zero
   // candidates. If trading-value coverage is insufficient, use current
   // market-cap plus Naver price/volume ranking as a bounded liquidity proxy.
   if(liquid.length<50){
@@ -3762,87 +3768,147 @@ function srLoadMinuteRows(item){
   srMinuteRowsCache.set(item.code,p);
   return p;
 }
+function srIctBearishOrderBlock(rows){
+  const candidates=[];
+  for(let i=Math.max(1,rows.length-45);i<rows.length-1;i++){
+    const b=rows[i];if(!(b.close>b.open))continue;
+    let breakIndex=-1;
+    for(let j=i+1;j<=Math.min(rows.length-1,i+4);j++){
+      const med=srMedian(rows.slice(Math.max(0,j-15),j).map(x=>Math.abs(x.close-x.open)))||1;
+      if(rows[j].close<b.low&&rows[j].close<rows[j].open&&Math.abs(rows[j].close-rows[j].open)/med>=1.3){breakIndex=j;break}
+    }
+    if(breakIndex<0)continue;
+    const z={type:'Bearish OB',low:b.low,high:b.high,i,date:b.date,touches:0,invalidated:false};
+    for(let j=breakIndex+1;j<rows.length;j++){
+      if(rows[j].high>=z.low&&rows[j].low<=z.high)z.touches++;
+      if(rows[j].close>z.high)z.invalidated=true;
+    }
+    if(!z.invalidated)candidates.push(z);
+  }
+  return candidates.at(-1)||null;
+}
+function srIctConfirmedBullishReversal(res){
+  return !!(res.event?.sslSweep&&res.event?.bullishMss&&res.disp?.bullish&&res.disp?.structureBreak);
+}
+function srIctLongHtfBias(res){
+  const w=String(res.weekly?.external?.bias||'Neutral'),d=String(res.daily?.external?.bias||'Neutral'),h4=String(res.h4?.external?.bias||'Neutral');
+  const reversal=srIctConfirmedBullishReversal(res);
+  if(reversal&&(d.startsWith('Bearish')||d==='Neutral'))return'BULLISH TRANSITION';
+  if(w==='Bullish'&&d==='Bullish'&&(!res.h4Available||h4==='Bullish'))return'STRONG BULLISH';
+  if(d.startsWith('Bullish')&&!w.startsWith('Bearish')&&(!res.h4Available||!h4.startsWith('Bearish')))return'BULLISH';
+  if(d==='Bullish Transition'||res.event?.bullishMss||res.event?.bullishBos)return'BULLISH TRANSITION';
+  if(d==='Neutral'&&!w.startsWith('Bearish'))return'NEUTRAL';
+  if(d==='Bearish Transition'||(d.startsWith('Bearish')&&w.startsWith('Bullish')))return'BEARISH TRANSITION';
+  if(d.startsWith('Bearish'))return'BEARISH';
+  return'NEUTRAL';
+}
+function srIctLongDolDirection(res){
+  const up=srNearestAbove([...(res.liq?.highs||[]),...(res.weekly?.external?.highs||[])],res.price)||
+    res.liq?.internalBSL||res.liq?.externalBSL;
+  const down=res.liq?.externalSSL||res.liq?.internalSSL;
+  const bearishShift=!!((res.event?.bslSweep&&res.event?.bearishMss)||(res.disp?.bearish&&res.disp?.structureBreak)||
+    (String(res.daily?.external?.bias||'').startsWith('Bearish')&&!srIctConfirmedBullishReversal(res)));
+  if(srIctConfirmedBullishReversal(res)&&Number.isFinite(up)&&up>res.price)return'UP';
+  if(bearishShift&&Number.isFinite(down)&&down<res.price)return'DOWN';
+  if(Number.isFinite(up)&&up>res.price)return'UP';
+  return Number.isFinite(down)&&down<res.price?'DOWN':'NEUTRAL';
+}
 function srIctSetupType(res){
-  const htfBull=res.weekly.external.bias.startsWith('Bullish')&&res.daily.external.bias.startsWith('Bullish');
-  const pullback=res.selectedPd&&res.price<=res.selectedPd.high&&res.price>=res.selectedPd.low;
-  if(res.event.sslSweep&&res.event.bullishMss&&res.disp.bullish&&res.selectedPd&&res.dolClear)return'REVERSAL';
-  if(htfBull&&res.protectedLow&&(res.event.bullishBos||res.event.bullishMss||res.disp.bullish)&&res.selectedPd&&res.dolClear)return'CONTINUATION';
-  if((res.breakAcceptance?.accepted||res.protectedHigh||res.liq?.externalBSL)&&res.dolClear&&(res.disp.bullish||htfBull||pullback))return'BREAKOUT / RECLAIM';
-  return'NO VALID SETUP';
+  const bias=res.htfBiasLong||srIctLongHtfBias(res);
+  const upward=res.dolDirection==='UP';
+  const protectedOk=!res.protectedBreakdown&&Number.isFinite(res.protectedLow);
+  const pullback=!!(res.selectedPd&&res.price<=res.selectedPd.high&&res.price>=res.selectedPd.low);
+  if(srIctConfirmedBullishReversal(res)&&upward&&res.selectedPd)return'Bullish Reversal';
+  if(['STRONG BULLISH','BULLISH'].includes(bias)&&protectedOk&&upward&&res.selectedPd&&(res.event.bullishBos||res.disp.bullish||pullback))return'Bullish Continuation';
+  if(['STRONG BULLISH','BULLISH','BULLISH TRANSITION','NEUTRAL'].includes(bias)&&upward&&(res.protectedHigh||res.liq?.externalBSL||res.breakLevel))return'Bullish Breakout / Reclaim';
+  return'No Long Setup';
 }
 function srIctRawScore(res,item){
   const parts={};let earned=0,evaluatedMax=0;
-  const w=res.weekly.external.bias,d=res.daily.external.bias,h4=res.h4.external.bias,h1=res.h1.external.bias;
-  const h4Ok=!!res.h4Available,h1Ok=!!res.h1Available;
-  const htfMax=h4Ok?10:8;
-  if(h4Ok&&w==='Bullish'&&d==='Bullish'&&h4==='Bullish')parts.htf=10;
-  else if(w.startsWith('Bullish')&&d.startsWith('Bullish')&&(!h4Ok||!h4.startsWith('Bearish')))parts.htf=8;
-  else if(d.startsWith('Bullish')||w.startsWith('Bullish'))parts.htf=6;
-  else if(w.startsWith('Bearish')&&d.startsWith('Bearish'))parts.htf=2;
-  else parts.htf=4;
-  earned+=Math.min(parts.htf,htfMax);evaluatedMax+=htfMax;
+  const add=(key,score,max)=>{parts[key]=score;earned+=score;evaluatedMax+=max};
 
-  const stopDist=res.entry&&res.structuralInvalidation?Math.abs(res.entry-res.structuralInvalidation)/res.entry:1;
-  parts.protected=res.protectedLow&&res.structuralInvalidation&&res.structuralInvalidation<res.entry?(stopDist<=.08?10:stopDist<=.15?7:4):2;
-  earned+=parts.protected;evaluatedMax+=10;
+  const htfMax=res.h4Available?20:16;
+  const htfRatio={
+    'STRONG BULLISH':1.00,
+    'BULLISH':0.85,
+    'BULLISH TRANSITION':0.65,
+    'NEUTRAL':0.35,
+    'BEARISH TRANSITION':0.15,
+    'BEARISH':0
+  }[res.htfBiasLong]??0.35;
+  add('htfLong',Math.round(htfMax*htfRatio*10)/10,htfMax);
 
-  const alignmentMax=h1Ok?5:(h4Ok?4:0);
-  if(alignmentMax){
-    if(h1Ok&&d.startsWith('Bullish')&&h4.startsWith('Bullish')&&h1.startsWith('Bullish'))parts.alignment=5;
-    else if(h4Ok&&d.startsWith('Bullish')&&h4.startsWith('Bullish'))parts.alignment=4;
-    else if(w.startsWith('Bearish')&&d.startsWith('Bearish')&&(!h1Ok||!res.event.bullishMss))parts.alignment=0;
-    else parts.alignment=Math.min(2,alignmentMax);
-    earned+=parts.alignment;evaluatedMax+=alignmentMax;
-  }else parts.alignment=null;
+  add('protected',res.protectedBreakdown?0:(Number.isFinite(res.protectedLow)?10:4),10);
 
-  const dolPct=res.dol&&res.price?(res.dol/res.price-1)*100:null;
-  parts.dol=res.dolClear?(dolPct>=8&&!res.strongBearFvgAbove?10:dolPct>=5?8:dolPct>=3?6:3):0;
-  earned+=parts.dol;evaluatedMax+=10;
-  parts.event=res.event.sslSweep&&res.event.bullishMss?10:res.event.sslSweep?7:res.event.bullishMss?6:res.event.bslSweep&&res.event.bearishMss?0:3;
-  earned+=parts.event;evaluatedMax+=10;
-  parts.mss=res.event.bullishMss&&res.disp.structureBreak?10:res.event.bullishBos&&res.disp.structureBreak?8:res.event.bullishMss||res.event.bullishBos?6:2;
-  earned+=parts.mss;evaluatedMax+=10;
+  const upPct=res.liq.externalBSL&&res.price?(res.liq.externalBSL/res.price-1)*100:null;
+  const dolScore=res.dolDirection==='UP'?(upPct>=8?10:upPct>=5?8:upPct>=3?6:4):res.dolDirection==='NEUTRAL'?2:0;
+  add('dol',dolScore,10);
 
-  let dq=0;if(res.disp.bullish)dq+=4;if(res.disp.structureBreak)dq+=2;if(res.disp.closeLocation>=.7)dq+=1;if(res.disp.fvgCreated)dq+=2;if(res.disp.followThrough)dq+=1;
-  parts.displacement=Math.min(10,dq);earned+=parts.displacement;evaluatedMax+=10;
+  let eventScore=3;
+  if(res.event.sslSweep&&res.event.bullishMss)eventScore=10;
+  else if(res.event.sslSweep)eventScore=7;
+  else if(res.event.bullishMss)eventScore=6;
+  else if(res.event.bslSweep&&res.event.bearishMss)eventScore=0;
+  add('event',eventScore,10);
 
+  let structureScore=2;
+  if(res.event.bullishMss&&res.disp.structureBreak)structureScore=10;
+  else if(res.event.bullishBos&&res.disp.structureBreak)structureScore=8;
+  else if(res.event.bullishMss||res.event.bullishBos)structureScore=6;
+  else if(res.event.bearishMss||res.event.bearishBos)structureScore=0;
+  add('mssBos',structureScore,10);
+
+  let dispScore=0;
+  if(res.disp.bullish){
+    if(res.disp.structureBreak)dispScore+=5;
+    else dispScore+=3;
+    if(res.disp.closeLocation>=.7)dispScore+=1;
+    if(res.disp.fvgCreated)dispScore+=2;
+    if(res.disp.followThrough)dispScore+=2;
+  }
+  add('bullishDisplacement',Math.min(10,dispScore),10);
+
+  let pdScore=0;
   if(res.selectedPd){
     const distance=Math.max(0,res.price-res.selectedPd.high)/res.price;
     const linked=(res.selectedPd.i!=null&&res.disp.index!=null&&Math.abs(res.disp.index-res.selectedPd.i)<=6);
-    parts.pdArray=linked&&distance<=.03?10:distance<=.03?8:distance<=.08?6:4;
-  }else parts.pdArray=0;
-  earned+=parts.pdArray;evaluatedMax+=10;
+    pdScore=linked&&distance<=.03?10:distance<=.03?8:distance<=.08?6:4;
+    if(res.selectedPd.invalidated)pdScore=0;
+  }
+  add('bullishPdArray',pdScore,10);
 
-  parts.premium=res.pd.inOte?5:res.pd.zone==='Discount'?4:res.pd.zone==='Equilibrium'?2:0;
-  earned+=parts.premium;evaluatedMax+=5;
-  parts.rr=res.rr>=3?10:res.rr>=2.5?8:res.rr>=2?6:res.rr>=1.5?3:0;
-  earned+=parts.rr;evaluatedMax+=10;
+  const premScore=res.pd.inOte?5:res.pd.zone==='Discount'?5:res.pd.zone==='Equilibrium'?3:res.pd.pos<.8?1:0;
+  add('discountOte',premScore,5);
+
+  const rrEvaluable=!(res.setupType==='Bullish Breakout / Reclaim'&&!res.breakAcceptance?.accepted);
+  if(rrEvaluable){
+    const rrScore=res.rr>=3?10:res.rr>=2.5?8:res.rr>=2?6:res.rr>=1.5?3:0;
+    add('rr',rrScore,10);
+  }else parts.rr=null;
 
   const touch=res.selectedPd?.touches??99;
-  if(!res.selectedPd)parts.freshness=0;
-  else if(res.selectedPd.invalidated)parts.freshness=0;
-  else if(touch<=1)parts.freshness=5;
-  else if(touch===2)parts.freshness=4;
-  else if(touch===3)parts.freshness=2;
-  else parts.freshness=1;
-  earned+=parts.freshness;evaluatedMax+=5;
+  const fresh=!res.selectedPd?0:res.selectedPd.invalidated?0:touch<=1?5:touch===2?4:touch===3?2:1;
+  add('freshness',fresh,5);
 
-  const turnover=item.turnover||0,gap=res.gapRisk;
-  parts.liquidityGap=turnover>=2e10&&gap.max<6?5:turnover>=5e9&&gap.max<8?4:turnover>=5e9&&gap.max<12?2:0;
-  earned+=parts.liquidityGap;evaluatedMax+=5;
   const normalized=evaluatedMax>0?earned/evaluatedMax*100:0;
-  return{rawScore:Math.max(0,Math.min(100,Math.round(normalized*10)/10)),rawEarned:Math.round(earned*10)/10,evaluatedMax:Math.round(evaluatedMax*10)/10,parts};
+  return{
+    rawScore:Math.max(0,Math.min(100,Math.round(normalized*10)/10)),
+    rawEarned:Math.round(earned*10)/10,
+    evaluatedMax:Math.round(evaluatedMax*10)/10,
+    parts
+  };
 }
 function srIctPenalty(res,item){
   let penalty=0;const reasons=[];
-  const bslPct=res.liq.externalBSL&&res.price?(res.liq.externalBSL/res.price-1)*100:null;
-  if(bslPct!=null&&bslPct>0&&bslPct<2){penalty+=5;reasons.push('External BSL 극단적으로 가까움 -5')}
-  const htfBull=res.daily.external.bias.startsWith('Bullish'),ltfBear=res.h1Available&&res.h1.external.bias.startsWith('Bearish');
-  const htfBear=res.daily.external.bias.startsWith('Bearish'),ltfBull=res.h1Available&&res.h1.external.bias.startsWith('Bullish');
-  if((htfBull&&ltfBear)||(htfBear&&ltfBull)){penalty+=7;reasons.push('HTF / LTF 방향 완전 충돌 -7')}
-  if(res.selectedPd?.invalidated){penalty+=5;reasons.push('FVG / OB 완전 관통 -5')}
-  if(res.gapRisk.max>=12){penalty+=5;reasons.push('Gap Risk 매우 큼 -5')}
-  penalty=Math.min(15,penalty);
+  const add=(pts,label)=>{penalty+=pts;reasons.push(label+' -'+pts)};
+  const dailyBear=String(res.daily.external.bias||'').startsWith('Bearish');
+  const h4Bear=res.h4Available&&String(res.h4.external.bias||'').startsWith('Bearish');
+  if(dailyBear&&h4Bear)add(10,'Daily / 4H Bearish Alignment');
+  if(res.event.bslSweep&&res.event.bearishMss)add(10,'BSL Sweep + Bearish MSS');
+  if(res.protectedBreakdown)add(10,'Protected Low Breakdown');
+  if(res.disp.bearish&&res.disp.structureBreak)add(7,'강한 Bearish Displacement');
+  if(res.strongBearFvgAbove||res.strongBearObAbove)add(5,'바로 위 Bearish FVG / OB');
+  if(res.dolDirection==='DOWN')add(10,'External SSL 방향 DOL');
   return{penalty,reasons};
 }
 function srIctHardFilter(res,item){
@@ -3857,32 +3923,41 @@ function srIctHardFilter(res,item){
 }
 function srIctEntryQuality(res){
   if(!res.hardFilterPassed)return'C';
+  const bias=res.htfBiasLong;
+  const reversal=srIctConfirmedBullishReversal(res);
+  const longBias=['STRONG BULLISH','BULLISH','BULLISH TRANSITION'].includes(bias);
+  const neutral=bias==='NEUTRAL';
   const inZone=!!(res.selectedPd&&res.price>=res.selectedPd.low&&res.price<=res.selectedPd.high);
-  const sequence=!!(res.event.sslSweep&&res.event.bullishMss&&res.disp.bullish);
-  const bullishTrigger=!!(res.event.bullishMss||res.event.bullishBos||res.breakAcceptance?.accepted);
-  const htfBull=res.daily.external.bias.startsWith('Bullish')||res.weekly.external.bias.startsWith('Bullish');
+  const invalidationClear=Number.isFinite(res.structuralInvalidation)&&Number.isFinite(res.entry)&&res.structuralInvalidation<res.entry;
+
+  if(['BEARISH','BEARISH TRANSITION'].includes(bias)&&!reversal)return'C';
+  if(res.protectedBreakdown||res.dolDirection==='DOWN')return'C';
+
   let q='C';
-  if(res.adjustedScore>=75&&sequence&&inZone&&res.dolClear&&Number.isFinite(res.structuralInvalidation))q='S';
-  else if(res.adjustedScore>=72&&res.dolClear&&res.selectedPd&&htfBull&&(res.price>res.selectedPd.high||bullishTrigger))q='A';
-  else if(res.adjustedScore>=65&&htfBull&&(res.dolClear||res.liq.externalBSL||res.liq.internalBSL||res.liq.externalSSL))q='B';
-  if(res.dataConfidence==='LOW'&&(q==='S'||q==='A'))q='B';
-  if(res.dataConfidence==='MEDIUM'&&q==='S')q='A';
+  if(res.setupType==='Bullish Reversal'&&reversal&&inZone&&invalidationClear&&res.adjustedScore>=70)q='S';
+  else if(longBias&&res.dolDirection==='UP'&&res.selectedPd&&res.price>res.selectedPd.high&&res.adjustedScore>=60)q='A';
+  else if((longBias||neutral)&&['UP','NEUTRAL'].includes(res.dolDirection)&&(res.protectedHigh||res.liq.externalBSL||res.breakLevel)&&res.adjustedScore>=55)q='B';
+
+  if(res.dataConfidence==='LOW'&&q==='S')q='A';
   return q;
 }
 function srIctCoarseRank(res){
-  let x=0;
-  if(res.weekly.external.bias.startsWith('Bullish'))x+=25;
-  if(res.daily.external.bias.startsWith('Bullish'))x+=30;
-  if(res.dolClear)x+=20;
-  if(res.pd.zone==='Discount')x+=10;
-  else if(res.pd.zone==='Equilibrium')x+=5;
-  if(res.protectedLow)x+=10;
-  if(res.rr>=2)x+=5;
+  const biasScore={'STRONG BULLISH':40,'BULLISH':32,'BULLISH TRANSITION':24,'NEUTRAL':10,'BEARISH TRANSITION':2,'BEARISH':0}[res.htfBiasLong]||0;
+  let x=biasScore;
+  if(res.dolDirection==='UP')x+=20;
+  if(Number.isFinite(res.protectedLow)&&!res.protectedBreakdown)x+=15;
+  if(res.event.bullishMss||res.event.bullishBos)x+=10;
+  if(res.disp.bullish)x+=10;
+  if(res.selectedPd&&!res.selectedPd.invalidated)x+=5;
   return x;
 }
 function srIctRankCompare(a,b){
-  const conf={HIGH:3,MEDIUM:2,LOW:1};
-  return (b.adjustedScore-a.adjustedScore)||(b.rawScore-a.rawScore)||((conf[b.dataConfidence]||0)-(conf[a.dataConfidence]||0))||(b.coarseRank-a.coarseRank);
+  const bias={'STRONG BULLISH':5,'BULLISH':4,'BULLISH TRANSITION':3,'NEUTRAL':2,'BEARISH TRANSITION':1,'BEARISH':0};
+  const q={S:3,A:2,B:1,C:0};
+  return ((bias[b.htfBiasLong]||0)-(bias[a.htfBiasLong]||0))||
+    (b.adjustedScore-a.adjustedScore)||
+    ((q[b.entryQuality]||0)-(q[a.entryQuality]||0))||
+    (b.coarseRank-a.coarseRank);
 }
 async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item);
@@ -3899,12 +3974,14 @@ async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const liq=srIctLiquidity(daily,weeklyRows),event=h1Available?srIctEvent(h1Rows):srIctEvent(daily.slice(-40));
   const disp=h1Available?srIctDisplacement(h1Rows,event):srIctDisplacement(daily.slice(-40),event);
   const pdRows=h1Available?h1Rows:daily.slice(-80),fvgs=srIctFvg(pdRows),ob=srIctOrderBlock(pdRows,disp),breaker=srIctBreaker(pdRows);
+  const bearishOb=srIctBearishOrderBlock(pdRows);
   const bullFvgs=fvgs.filter(x=>x.type==='Bullish FVG'&&!x.invalidated),bearFvgs=fvgs.filter(x=>x.type==='Bearish FVG'&&!x.invalidated);
   const bullFvg=bullFvgs.filter(x=>x.low<price*1.02).at(-1)||null,selectedPd=srSelectBullishPd(price,fvgs,ob,breaker);
   const protectedLow=h1Protected.protectedLow||dailyProtected.protectedLow||srNearestBelow(dayStruct.external.lows.slice(-8),price)||liq.externalSSL;
   const protectedHigh=h1Protected.protectedHigh||dailyProtected.protectedHigh||srNearestAbove(dayStruct.external.highs.slice(-8),price);
   const internalProtectedLow=h1Protected.protectedLow||(h1Available?srNearestBelow(h1.internal.lows.slice(-6),price):null);
   const dailyProtectedLow=dailyProtected.protectedLow||srNearestBelow(dayStruct.internal.lows.slice(-6),price);
+  const protectedBreakdown=Number.isFinite(dailyProtectedLow)&&price<dailyProtectedLow;
   const pd=srIctPd(daily,dailyProtectedLow||protectedLow,liq.externalBSL);
   const breakLevel=event.breakLevel||protectedHigh||liq.internalBSL,breakAcceptance=h1Available?srIctAcceptance(h1Rows,breakLevel):{accepted:false,retested:false};
   const zoneLow=selectedPd?.low??null,zoneHigh=selectedPd?.high??null,entry=selectedPd?(zoneLow+zoneHigh)/2:(breakLevel||liq.externalBSL||null);
@@ -3914,42 +3991,66 @@ async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const target1=levels[0]??null,target2=levels[1]??levels[0]??null,finalExternal=levels.at(-1)??liq.finalExternalBSL??target2;
   const risk=entry&&structuralInvalidation?entry-structuralInvalidation:null,reward=entry&&target1?target1-entry:null,reward2=entry&&target2?target2-entry:null;
   const rr=risk>0&&reward>0?reward/risk:0,rr2=risk>0&&reward2>0?reward2/risk:0;
-  const dol=liq.externalBSL||target2,dolClear=Number.isFinite(dol)&&Number.isFinite(entry)&&dol>entry;
-  const strongBearFvgAbove=bearFvgs.filter(z=>z.low>price&&(z.low/price-1)<=.05).sort((a,b)=>a.low-b.low)[0]||null,gapRisk=srIctGapRisk(daily);
-  const base={item,price,dailyRows:daily,weeklyRows,h1Rows,h4Rows,weekly,daily:dayStruct,h4,h1,liq,event,disp,fvgs,bullFvg,ob,breaker,selectedPd,pd,protectedLow,protectedHigh,internalProtectedLow,dailyProtectedLow,breakAcceptance,entryZone:selectedPd?{low:zoneLow,high:zoneHigh}:null,entry,tradingInvalidation,structuralInvalidation,stop:structuralInvalidation,target1,target2,finalExternal,rr,rr2,dol,dolClear,strongBearFvgAbove,gapRisk,intradayAvailable:h1Available||h4Available,h1Available,h4Available,dataConfidence,breakLevel};
+  const strongBearFvgAbove=bearFvgs.filter(z=>z.low>price&&(z.low/price-1)<=.05).sort((a,b)=>a.low-b.low)[0]||null;
+  const strongBearObAbove=bearishOb&&bearishOb.low>price&&(bearishOb.low/price-1)<=.05?bearishOb:null;
+  const gapRisk=srIctGapRisk(daily);
+
+  const base={item,price,dailyRows:daily,weeklyRows,h1Rows,h4Rows,weekly,daily:dayStruct,h4,h1,liq,event,disp,fvgs,bullFvg,ob,breaker,bearishOb,selectedPd,pd,protectedLow,protectedHigh,internalProtectedLow,dailyProtectedLow,protectedBreakdown,breakAcceptance,entryZone:selectedPd?{low:zoneLow,high:zoneHigh}:null,entry,tradingInvalidation,structuralInvalidation,stop:structuralInvalidation,target1,target2,finalExternal,rr,rr2,strongBearFvgAbove,strongBearObAbove,gapRisk,intradayAvailable:h1Available||h4Available,h1Available,h4Available,dataConfidence,breakLevel};
+
+  base.htfBiasLong=srIctLongHtfBias(base);
+  base.dolDirection=srIctLongDolDirection(base);
+  base.dol=base.dolDirection==='DOWN'?(liq.externalSSL||liq.internalSSL):(liq.externalBSL||liq.internalBSL||target2);
+  base.dolClear=base.dolDirection==='UP'&&Number.isFinite(base.dol)&&base.dol>price;
   base.setupType=srIctSetupType(base);
+
   Object.assign(base,srIctRawScore(base,item));
   Object.assign(base,srIctPenalty(base,item));
   base.adjustedScore=Math.max(0,Math.min(100,Math.round((base.rawScore-base.penalty)*10)/10));base.score=base.adjustedScore;
-  const hf=srIctHardFilter(base,item);base.hardFilterPassed=hf.passed;base.hardFilterReasons=hf.reasons;base.hardFilterCodes=hf.codes;
+
+  const hf=srIctHardFilter(base,item);
+  base.hardFilterPassed=hf.passed;base.hardFilterReasons=hf.reasons;base.hardFilterCodes=hf.codes;
   base.entryQuality=srIctEntryQuality(base);
-  const htfStructure=srStructFlags(base.daily.external)!=='확인 필요'||srStructFlags(base.weekly.external)!=='확인 필요';
-  const hasLiquidity=!!(base.dolClear||base.liq.externalBSL||base.liq.internalBSL||base.liq.externalSSL||base.liq.internalSSL);
+
+  const reversal=srIctConfirmedBullishReversal(base);
+  const longBias=['STRONG BULLISH','BULLISH','BULLISH TRANSITION'].includes(base.htfBiasLong);
+  const neutral=base.htfBiasLong==='NEUTRAL';
+  const allowedSetup=['Bullish Reversal','Bullish Continuation','Bullish Breakout / Reclaim'].includes(base.setupType);
   const invalidationClear=Number.isFinite(base.structuralInvalidation)&&Number.isFinite(base.entry)&&base.structuralInvalidation<base.entry;
   const triggerConfirmed=!!(base.event.sslSweep||base.event.bullishMss||base.event.bullishBos||base.breakAcceptance.accepted);
-  base.top10Eligible=base.hardFilterPassed&&base.adjustedScore>=65&&htfStructure&&hasLiquidity&&['S','A','B'].includes(base.entryQuality);
-  base.entryReady=base.hardFilterPassed&&base.adjustedScore>=75&&['S','A'].includes(base.entryQuality)&&base.rr>=2&&base.dolClear&&invalidationClear&&triggerConfirmed;
-  base.watchEligible=base.hardFilterPassed&&base.adjustedScore>=70&&base.entryQuality==='B';
+
+  base.top10Eligible=base.hardFilterPassed&&base.adjustedScore>=60&&longBias&&base.dolDirection==='UP'&&!base.protectedBreakdown&&allowedSetup&&['S','A','B'].includes(base.entryQuality);
+  base.entryReady=base.hardFilterPassed&&base.entryQuality==='S'&&base.adjustedScore>=70&&base.rr>=2&&base.dolDirection==='UP'&&invalidationClear&&triggerConfirmed;
+  base.watchEligible=base.hardFilterPassed&&base.adjustedScore>=55&&['A','B'].includes(base.entryQuality)&&!['BEARISH','BEARISH TRANSITION'].includes(base.htfBiasLong);
+  if(neutral&&base.entryQuality==='B')base.watchEligible=true;
+  if(['BEARISH','BEARISH TRANSITION'].includes(base.htfBiasLong)&&!reversal){base.top10Eligible=false;base.entryReady=false;base.watchEligible=false}
+
   base.priorityEligible=base.entryReady;base.finalEligible=base.top10Eligible;base.coarseRank=srIctCoarseRank(base);base.setup=base.setupType;
   base.aggressiveEntry=base.entryZone?base.entryZone.high:(breakLevel||null);base.standardEntry=base.entry;
-  base.conservativeEntry=base.entryZone?'PD Array 반응 후 Bullish MSS 확인':'Protected High / BSL 돌파 → Acceptance → Retest 확인';
-  base.trigger=base.entryQuality==='S'?(base.event.type||'Liquidity Event + MSS'):base.entryQuality==='A'?(base.selectedPd?.type?base.selectedPd.type+' Retest':'Pullback / Retest'):base.entryQuality==='B'?'Protected High / External BSL Break':'구조 재확인';
-  base.waitingFor=base.entryQuality==='A'?'Pullback / FVG·OB Retest':base.entryQuality==='B'?'Breakout / Acceptance / Retest':'—';
+  base.conservativeEntry=base.entryZone?'PD Array 반응 후 Bullish MSS 확인':'Protected High / Major BSL 돌파 → Acceptance → Retest 확인';
+  base.trigger=base.entryQuality==='S'?(base.event.type||'SSL Sweep → Bullish MSS'):base.entryQuality==='A'?(base.selectedPd?.type?base.selectedPd.type+' Pullback':'FVG / OB / Discount Pullback'):base.entryQuality==='B'?'Protected High / Major BSL Break':'Bullish 구조 회복';
+  base.waitingFor=base.entryQuality==='A'?'Pullback / FVG·OB / Discount·OTE':base.entryQuality==='B'?'Breakout / Acceptance / Retest':'—';
   base.triggerPrice=base.entryQuality==='B'?(base.protectedHigh||base.liq.externalBSL||base.breakLevel):base.entry;
-  base.finalOpinion=base.entryQuality==='S'?'Immediate Setup':base.entryQuality==='A'?'Pullback Wait':base.entryQuality==='B'?'Breakout Wait':'No Trade';
+
+  if(base.entryQuality==='S')base.finalOpinion='LONG 진입 검토';
+  else if(base.entryQuality==='A')base.finalOpinion='Pullback 대기';
+  else if(base.entryQuality==='B')base.finalOpinion='Breakout / Reclaim 대기';
+  else if(['BEARISH','BEARISH TRANSITION'].includes(base.htfBiasLong)&&!reversal)base.finalOpinion='Bullish 구조 회복 대기';
+  else base.finalOpinion='매수 제외';
+
   const topReject=[],entryReject=[];
   if(!base.hardFilterPassed)topReject.push(...(base.hardFilterCodes||[]));
-  if(base.adjustedScore<65)topReject.push('LOW_ICT_SCORE');
-  if(!htfStructure)topReject.push('NO_HTF_STRUCTURE');
-  if(!hasLiquidity)topReject.push('NO_DOL');
-  if(!['S','A','B'].includes(base.entryQuality))topReject.push('ENTRY_QUALITY_C');
+  if(base.adjustedScore<60)topReject.push('LOW_LONG_SCORE');
+  if(!longBias)topReject.push(base.htfBiasLong==='NEUTRAL'?'NEUTRAL_WATCH_ONLY':'BEARISH_LONG_EXCLUDE');
+  if(base.dolDirection!=='UP')topReject.push(base.dolDirection==='DOWN'?'DOL_TO_EXTERNAL_SSL':'NO_UPWARD_DOL');
+  if(base.protectedBreakdown)topReject.push('PROTECTED_LOW_BREAKDOWN');
+  if(!allowedSetup)topReject.push('NO_LONG_SETUP');
+  if(!['S','A','B'].includes(base.entryQuality))topReject.push('NO_LONG_ENTRY_QUALITY');
   if(base.dataConfidence==='LOW')entryReject.push('LOW_DATA_CONFIDENCE');
-  if(base.adjustedScore<75)entryReject.push('LOW_ENTRY_SCORE');
-  if(!['S','A'].includes(base.entryQuality))entryReject.push(base.entryQuality==='B'?'FAIL_BREAKOUT_WAIT':'NO_ENTRY_TRIGGER');
+  if(base.entryQuality!=='S')entryReject.push(base.entryQuality==='A'?'PULLBACK_WAIT':base.entryQuality==='B'?'BREAKOUT_RECLAIM_WAIT':'NO_LONG_SETUP');
   if(!(base.rr>=2))entryReject.push('RR_BELOW_2');
-  if(!base.dolClear)entryReject.push('NO_DOL');
+  if(base.dolDirection!=='UP')entryReject.push('NO_UPWARD_DOL');
   if(!invalidationClear)entryReject.push('NO_INVALIDATION');
-  if(!triggerConfirmed)entryReject.push('NO_ENTRY_TRIGGER');
+  if(!triggerConfirmed)entryReject.push('NO_BULLISH_TRIGGER');
   base.rejectReason={top10:topReject.length?topReject:['PASS'],entryReady:entryReject.length?entryReject:['PASS']};
   return base;
 }
@@ -3957,74 +4058,76 @@ function srFmtPx(v){return v==null?'—':srFmt(v)+'원'}
 function srFmtZone(z){return!z?'—':srFmtPx(z.low)+' ~ '+srFmtPx(z.high)}
 function srHtfBias(x){
   const h4=x.h4Available?x.h4.external.bias:'N/A',h1=x.h1Available?x.h1.external.bias:'N/A';
-  return'W '+x.weekly.external.bias+' / D '+x.daily.external.bias+' / 4H '+h4+' / 1H '+h1;
+  return (x.htfBiasLong||'NEUTRAL')+' · W '+x.weekly.external.bias+' / D '+x.daily.external.bias+' / 4H '+h4+' / 1H '+h1;
 }
 function srIctRrText(x){
-  return ['S','A'].includes(x.entryQuality)&&x.rr>0?x.rr.toFixed(2)+':1':'N/A';
+  return x.entryQuality==='S'&&x.rr>0?x.rr.toFixed(2)+':1':x.entryQuality==='A'&&x.rr>0?x.rr.toFixed(2)+':1':'N/A';
 }
 function srIctDolText(x){
-  const vals=srDistinctLevels([x.target1,x.target2,x.finalExternal].filter(Number.isFinite));
-  return vals.length?vals.map(srFmtPx).join(' → '):srFmtPx(x.dol);
+  if(x.dolDirection==='DOWN')return '▼ External SSL '+srFmtPx(x.liq.externalSSL||x.liq.internalSSL);
+  const vals=srDistinctLevels([x.liq.internalBSL,x.liq.externalBSL,x.target2,x.finalExternal].filter(v=>Number.isFinite(v)&&v>x.price));
+  return vals.length?'▲ '+vals.map(srFmtPx).join(' → '):'—';
 }
 function srIctConfidenceTag(x){return x.dataConfidence||'LOW'}
 function srRenderEntryReady(list){
   const el=document.getElementById('entryReadyBody');if(!el)return;
-  if(!list.length){el.innerHTML='<tr><td colspan="10">현재 ENTRY READY 조건을 충족한 종목이 없습니다. 이는 정상적인 결과입니다.</td></tr>';return}
+  if(!list.length){el.innerHTML='<tr><td colspan="10">현재 LONG ENTRY READY(S) 조건을 충족한 종목이 없습니다. 이는 정상적인 결과입니다.</td></tr>';return}
   el.innerHTML=list.map(x=>'<tr data-code="'+x.item.code+'" class="screening-stock-row"><td><b>'+srEsc(x.item.name)+'</b></td><td><b>'+x.adjustedScore+'</b></td><td>'+srEsc(x.setupType)+'</td><td><span class="tag '+srEntryClass(x.entryQuality)+'">'+x.entryQuality+'</span></td><td>'+srFmtZone(x.entryZone)+'</td><td>'+srEsc(x.trigger)+'</td><td>'+srFmtPx(x.structuralInvalidation)+'</td><td>'+srFmtPx(x.target1)+'</td><td>'+srFmtPx(x.target2)+'</td><td>'+srIctRrText(x)+'</td></tr>').join('');
 }
 function srRenderWatchList(list){
   const el=document.getElementById('watchListBody');if(!el)return;
-  if(!list.length){el.innerHTML='<tr><td colspan="7">현재 WATCH LIST 조건을 충족한 종목이 없습니다.</td></tr>';return}
+  if(!list.length){el.innerHTML='<tr><td colspan="7">현재 LONG WATCH LIST 조건을 충족한 종목이 없습니다.</td></tr>';return}
   el.innerHTML=list.map(x=>'<tr data-code="'+x.item.code+'" class="screening-stock-row"><td><b>'+srEsc(x.item.name)+'</b></td><td><b>'+x.adjustedScore+'</b></td><td>'+srEsc(x.setupType)+'</td><td><span class="tag '+srEntryClass(x.entryQuality)+'">'+x.entryQuality+'</span></td><td>'+srEsc(x.waitingFor)+'</td><td>'+srFmtPx(x.triggerPrice)+'</td><td>'+srEsc(srIctDolText(x))+'</td></tr>').join('');
 }
 function srMyTradingStatus(result){
   const s=result.stats||{};
-  return '기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+' · 거래대금 통과 '+result.candidates.length+' · Daily '+(s.daily||0)+' · 4H '+(s.h4||0)+' · 1H '+(s.h1||0)+' · ICT Score '+(s.scored||0)+' · Adjusted ≥65 '+(s.adjusted65||0)+' · S '+(s.s||0)+' / A '+(s.a||0)+' / B '+(s.b||0)+' · ENTRY READY '+result.entryReady.length+' · WATCH '+result.watchList.length+' · TOP10 '+result.top10.length;
+  return '기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+' · 거래대금 통과 '+result.candidates.length+' · Daily '+(s.daily||0)+' · 4H '+(s.h4||0)+' · 1H '+(s.h1||0)+' · Score '+(s.scored||0)+' · Adjusted ≥60 '+(s.adjusted60||0)+' · S '+(s.s||0)+' / A '+(s.a||0)+' / B '+(s.b||0)+' · ENTRY READY '+result.entryReady.length+' · WATCH '+result.watchList.length+' · TOP10 '+result.top10.length;
 }
-
 function srRenderIctTop10(list){
   const el=document.getElementById('ictTop10Body');if(!el)return;
-  if(!list.length){el.innerHTML='<tr><td colspan="15">Daily 데이터 또는 최소 ICT 구조 기준을 충족한 종목이 없습니다. Adjusted 80 미만이라는 이유만으로 빈 목록 처리하지 않습니다.</td></tr>';return}
+  if(!list.length){el.innerHTML='<tr><td colspan="15">Daily 데이터 또는 최소 구조 기준을 충족한 종목이 없습니다. Adjusted 80 미만이라는 이유만으로 빈 목록 처리하지 않습니다.</td></tr>';return}
   el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" class="screening-stock-row"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td title="획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+' → Normalize">'+x.rawScore+'</td><td><b>'+x.adjustedScore+'</b></td><td>'+srEsc(x.setupType)+'</td><td><span class="tag '+srEntryClass(x.entryQuality)+'">'+x.entryQuality+'</span></td><td>'+srEsc(srHtfBias(x))+'</td><td><b>'+srEsc(srIctConfidenceTag(x))+'</b></td><td>'+srFmtPx(x.price)+'</td><td>'+srEsc(srIctDolText(x))+'</td><td>'+srFmtZone(x.entryZone)+'</td><td>'+srFmtPx(x.structuralInvalidation)+'</td><td>'+srFmtPx(x.target1)+'</td><td>'+srFmtPx(x.target2)+'</td><td>'+srIctRrText(x)+'</td></tr>').join('');
 }
 async function srRunTradingUniverse(status){
   const candidates=srLiquidityCandidates(),totalUniverse=fullStockUniverse.length;
-  if(status)status.textContent='전체 '+totalUniverse.toLocaleString('ko-KR')+'개 → 거래대금 통과 '+candidates.length.toLocaleString('ko-KR')+'개 · Daily 구조 조회 중...';
+  if(status)status.textContent='전체 '+totalUniverse.toLocaleString('ko-KR')+'개 → 거래대금 통과 '+candidates.length.toLocaleString('ko-KR')+'개 · Long Only Daily 구조 조회 중...';
   const dailyMap=await srKrxBatchHistory(candidates,status);
   const dailyCandidates=candidates.filter(item=>(dailyMap.get(item.code)||[]).length>=65);
   const coarse=(await srMapLimit(dailyCandidates,12,item=>srIctAnalyzeItem(item,dailyMap.get(item.code),false))).filter(Boolean);
   coarse.sort((a,b)=>b.coarseRank-a.coarseRank||b.rawScore-a.rawScore);
-  const shortlist=coarse.slice(0,80);
-  if(status)status.textContent='Daily '+coarse.length+'개 분석 완료 → 상위 '+shortlist.length+'개 4H/1H 보강 중 · 미수신 종목도 Daily Score 유지...';
+  const shortlist=coarse.slice(0,100);
+  if(status)status.textContent='Daily '+coarse.length+'개 분석 완료 → 상위 '+shortlist.length+'개 4H/1H 보강 중 · Bearish는 Long Risk로만 반영...';
   const detailed=(await srMapLimit(shortlist,6,async x=>{try{return await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code),true)}catch(e){console.warn('intraday detail fallback',x.item.code,e);return x}})).filter(Boolean);
   const detailedMap=new Map(detailed.map(x=>[x.item.code,x]));
   const analyzed=coarse.map(x=>detailedMap.get(x.item.code)||x);analyzed.sort(srIctRankCompare);
   const topPool=analyzed.filter(x=>x.top10Eligible).sort(srIctRankCompare),top10=topPool.slice(0,10);
   const entryReady=analyzed.filter(x=>x.entryReady).sort(srIctRankCompare);
-  const watchList=analyzed.filter(x=>x.watchEligible).sort(srIctRankCompare);
-  const stats={daily:coarse.length,h4:analyzed.filter(x=>x.h4Available).length,h1:analyzed.filter(x=>x.h1Available).length,scored:analyzed.length,adjusted65:analyzed.filter(x=>x.adjustedScore>=65).length,s:analyzed.filter(x=>x.entryQuality==='S').length,a:analyzed.filter(x=>x.entryQuality==='A').length,b:analyzed.filter(x=>x.entryQuality==='B').length};
+  const watchList=analyzed.filter(x=>x.watchEligible).sort(srIctRankCompare).slice(0,20);
+  const stats={daily:coarse.length,h4:analyzed.filter(x=>x.h4Available).length,h1:analyzed.filter(x=>x.h1Available).length,scored:analyzed.length,adjusted60:analyzed.filter(x=>x.adjustedScore>=60).length,s:analyzed.filter(x=>x.entryQuality==='S').length,a:analyzed.filter(x=>x.entryQuality==='A').length,b:analyzed.filter(x=>x.entryQuality==='B').length};
   return{candidates,coarse,shortlist,detailed,analyzed,passed:topPool,top10,entryReady,watchList,dailyMap,totalUniverse,stats};
 }
 function srRenderIctDetails(list){
   const el=document.getElementById('ictTop5Details');if(!el)return;
-  if(!list.length){el.innerHTML='<div class="card ict-detail-card"><h3>TOP5 상세 후보 없음</h3><p class="note">Daily 데이터 또는 최소 ICT 구조 기준을 충족한 후보가 없습니다.</p></div>';return}
+  if(!list.length){el.innerHTML='<div class="card ict-detail-card"><h3>상세 후보 없음</h3><p class="note">현재 Long 기준을 충족한 MY Trading 후보가 없습니다.</p></div>';return}
   el.innerHTML=list.map((x,i)=>{
     const ext=srStructFlags(x.daily.external),intl=x.h1Available?srStructFlags(x.h1.internal):'N/A';
     const penalty=x.reasons?.length?x.reasons.join(' · '):'없음',hard=x.hardFilterReasons?.length?x.hardFilterReasons.join(' · '):'통과';
-    return '<div class="card ict-detail-card"><h3>'+(i+1)+'. '+srEsc(x.item.name)+' · ICT '+x.rawScore+' / Adjusted '+x.adjustedScore+' · Entry '+x.entryQuality+' · Confidence '+x.dataConfidence+'</h3><div class="ict-detail-grid">'+
-      '<div><b>① Market Structure</b><br>Weekly: '+x.weekly.external.bias+' ('+srStructFlags(x.weekly.external)+')<br>Daily: '+x.daily.external.bias+' ('+ext+')<br>4H: '+(x.h4Available?x.h4.external.bias:'N/A')+'<br>1H: '+(x.h1Available?x.h1.external.bias:'N/A')+'<br>Internal: '+intl+'<br><b>Data Confidence:</b> '+x.dataConfidence+'</div>'+
-      '<div><b>② Liquidity Map</b><br>External BSL: '+srFmtPx(x.liq.externalBSL)+'<br>Internal BSL: '+srFmtPx(x.liq.internalBSL)+'<br>External SSL: '+srFmtPx(x.liq.externalSSL)+'<br>Internal SSL: '+srFmtPx(x.liq.internalSSL)+'<br>Progression: '+srEsc(srIctDolText(x))+'</div>'+
+    return '<details class="card ict-detail-card my-trading-detail">'+
+      '<summary><span>'+(i+1)+'. '+srEsc(x.item.name)+' · '+x.adjustedScore+'점 · '+srEsc(x.htfBiasLong)+' · Entry '+x.entryQuality+' · '+srEsc(x.finalOpinion)+'</span><span class="my-trading-detail-summary-meta">상세보기 <span class="my-trading-detail-arrow">▼</span></span></summary>'+
+      '<div class="my-trading-detail-body"><div class="ict-detail-grid">'+
+      '<div><b>① Long Market Structure</b><br>HTF Bias: <b>'+srEsc(x.htfBiasLong)+'</b><br>Weekly: '+x.weekly.external.bias+' ('+srStructFlags(x.weekly.external)+')<br>Daily: '+x.daily.external.bias+' ('+ext+')<br>4H: '+(x.h4Available?x.h4.external.bias:'N/A')+'<br>1H: '+(x.h1Available?x.h1.external.bias:'N/A')+'<br>Data Confidence: '+x.dataConfidence+'</div>'+
+      '<div><b>② Liquidity / DOL</b><br>DOL Direction: <b>'+x.dolDirection+'</b><br>External BSL: '+srFmtPx(x.liq.externalBSL)+'<br>Internal BSL: '+srFmtPx(x.liq.internalBSL)+'<br>External SSL: '+srFmtPx(x.liq.externalSSL)+'<br>Progression: '+srEsc(srIctDolText(x))+'</div>'+
       '<div><b>③ Liquidity Event</b><br>'+srEsc(x.event.type)+'<br>MSS: '+(x.event.bullishMss?'Bullish':x.event.bearishMss?'Bearish':'미확인')+'<br>BOS: '+(x.event.bullishBos?'Bullish':x.event.bearishBos?'Bearish':'미확인')+'</div>'+
       '<div><b>④ Displacement</b><br>'+(x.disp.bullish?'Bullish':x.disp.bearish?'Bearish':'미확인')+'<br>Structure Break: '+(x.disp.structureBreak?'확인':'미확인')+'<br>FVG: '+(x.disp.fvgCreated?'확인':'미확인')+'</div>'+
-      '<div><b>⑤ PD Array</b><br>FVG: '+(x.bullFvg?srFmtZone(x.bullFvg):'미확인')+'<br>OB: '+(x.ob?srFmtZone(x.ob):'미확인')+'<br>Breaker: '+(x.breaker?srFmtZone(x.breaker):'미확인')+'<br>'+x.pd.zone+'</div>'+
-      '<div><b>⑥ Setup Type</b><br>'+srEsc(x.setupType)+'</div>'+
+      '<div><b>⑤ Long PD Array</b><br>FVG: '+(x.bullFvg?srFmtZone(x.bullFvg):'미확인')+'<br>OB: '+(x.ob?srFmtZone(x.ob):'미확인')+'<br>Breaker: '+(x.breaker?srFmtZone(x.breaker):'미확인')+'<br>'+x.pd.zone+'</div>'+
+      '<div><b>⑥ Long Setup Type</b><br>'+srEsc(x.setupType)+'<br>최종 판단: <b>'+srEsc(x.finalOpinion)+'</b></div>'+
       '<div><b>⑦ Entry Plan</b><br>Entry Zone: '+srFmtZone(x.entryZone)+'<br>Trigger: '+srEsc(x.trigger)+'<br>Waiting For: '+srEsc(x.waitingFor)+'</div>'+
-      '<div><b>⑧ Invalidation</b><br>Trading: '+srFmtPx(x.tradingInvalidation)+'<br>Structural: '+srFmtPx(x.structuralInvalidation)+'</div>'+
+      '<div><b>⑧ Invalidation</b><br>Trading: '+srFmtPx(x.tradingInvalidation)+'<br>Structural: '+srFmtPx(x.structuralInvalidation)+'<br>Protected Low Breakdown: '+(x.protectedBreakdown?'YES':'NO')+'</div>'+
       '<div><b>⑨ Target / DOL</b><br>T1: '+srFmtPx(x.target1)+'<br>T2: '+srFmtPx(x.target2)+'<br>Final: '+srFmtPx(x.finalExternal)+'</div>'+
-      '<div><b>⑩ Risk / Reward</b><br>'+srIctRrText(x)+(x.entryQuality==='B'?'<br>Breakout 전이므로 N/A 처리':'')+'</div>'+
-      '<div><b>⑪ ICT Quality</b><br>획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+'<br>Normalized ICT: '+x.rawScore+'<br>Penalty: -'+x.penalty+'<br>Adjusted: '+x.adjustedScore+'<br>'+srEsc(penalty)+'</div>'+
-      '<div><b>⑫ Debug / Reject</b><br>TOP10: '+srEsc((x.rejectReason?.top10||[]).join(' · '))+'<br>ENTRY READY: '+srEsc((x.rejectReason?.entryReady||[]).join(' · '))+'<br>Hard Filter: '+srEsc(hard)+'</div>'+
-      '</div><p class="note" style="margin-top:10px">4H/1H 데이터가 없어도 Daily가 정상이라면 분석을 유지합니다. 누락 Timeframe은 0점 처리하지 않고 평가가능 최대점수에서 제외한 뒤 Normalized ICT Score로 환산합니다.</p></div>';
+      '<div><b>⑩ Risk / Reward</b><br>'+srIctRrText(x)+'</div>'+
+      '<div><b>⑪ MY Trading Quality</b><br>획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+'<br>Normalized: '+x.rawScore+'<br>Bearish Risk Penalty: -'+x.penalty+'<br>Adjusted: '+x.adjustedScore+'<br>'+srEsc(penalty)+'</div>'+
+      '<div><b>⑫ Long Reject Reason</b><br>TOP10: '+srEsc((x.rejectReason?.top10||[]).join(' · '))+'<br>ENTRY READY: '+srEsc((x.rejectReason?.entryReady||[]).join(' · '))+'<br>Hard Filter: '+srEsc(hard)+'</div>'+
+      '</div><p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 Short 추천에 사용하지 않고 신규 Long 금지·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
   }).join('');
 }
 async function runIctTradingScan(){
@@ -4035,7 +4138,7 @@ async function runIctTradingScan(){
     ictTradingResults={top10,top5:top10.slice(0,5),entryReady:result.entryReady,watchList:result.watchList,analyzed:result.analyzed};
     srRenderIctTop10(top10);srRenderEntryReady(result.entryReady);srRenderWatchList(result.watchList);srRenderIctDetails(ictTradingResults.top5);
     const best=top10[0],notNow=[...result.watchList,...top10].find(x=>x.entryQuality==='A'||x.entryQuality==='B'),note=document.getElementById('ictBestNote');
-    if(note){note.style.display='block';note.innerHTML='<b>MY Trading 최고 ICT 구조:</b> '+(best?srEsc(best.item.name)+' · Adjusted '+best.adjustedScore+' · '+best.finalOpinion:'최소 구조 기준 충족 종목 없음')+'<br><b>진입 대기 대표:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setupType+' · '+notNow.finalOpinion:'해당 없음')}
+    if(note){note.style.display='block';note.innerHTML='<b>MY Trading 최고 Long 구조:</b> '+(best?srEsc(best.item.name)+' · Adjusted '+best.adjustedScore+' · '+best.finalOpinion:'최소 구조 기준 충족 종목 없음')+'<br><b>진입 대기 대표:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setupType+' · '+notNow.finalOpinion:'해당 없음')}
     status.textContent=srMyTradingStatus(result);
   }catch(e){console.error(e);status.textContent='MY Trading 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
@@ -4077,7 +4180,7 @@ async function runAutomaticScreenings(){
     ictTradingResults={top10:ictTop10,top5:ictTop10.slice(0,5),entryReady:tradingResult.entryReady,watchList:tradingResult.watchList,analyzed:tradingResult.analyzed};
     srRenderIctTop10(ictTop10);srRenderEntryReady(tradingResult.entryReady);srRenderWatchList(tradingResult.watchList);srRenderIctDetails(ictTradingResults.top5);
     const best=ictTop10[0],notNow=[...tradingResult.watchList,...ictTop10].find(x=>x.entryQuality==='A'||x.entryQuality==='B'),note=document.getElementById('ictBestNote');
-    if(note){note.style.display='block';note.innerHTML='<b>MY Trading 최고 ICT 구조:</b> '+(best?srEsc(best.item.name)+' · Adjusted '+best.adjustedScore+' · '+best.finalOpinion:'최소 구조 기준 충족 종목 없음')+'<br><b>진입 대기 대표:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setupType+' · '+notNow.finalOpinion:'해당 없음')}
+    if(note){note.style.display='block';note.innerHTML='<b>MY Trading 최고 Long 구조:</b> '+(best?srEsc(best.item.name)+' · Adjusted '+best.adjustedScore+' · '+best.finalOpinion:'최소 구조 기준 충족 종목 없음')+'<br><b>진입 대기 대표:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setupType+' · '+notNow.finalOpinion:'해당 없음')}
     if(iStatus)iStatus.textContent=srMyTradingStatus(tradingResult);
   }catch(e){
     console.error('automatic screening failed',e);
@@ -4104,7 +4207,7 @@ function applyAutoData(d){
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
   renderTopPickTabs(profiles);
   // Legacy KOSPI/KOSDAQ profile data is retained only for its legacy list UI.
-  // Deep Dive is driven by current Fundamental TOP1, ICT selection, or explicit stock search.
+  // Deep Dive is driven by current Fundamental TOP1, selection, or explicit stock search.
   renderSentiment(d.sentiment||{});
   srRenderSectorRanking();
   if(d.meta){
@@ -4164,7 +4267,7 @@ async function boot(){
   await refreshMarketData();
   // 설명/코멘트는 로컬 오버라이드가 가능하지만 Trade Plan은 자동 데이터만 표시합니다.
   loadText();calcRR();applyTradingStateColors();
-  // Fundamental / ICT Screening은 별도 클릭 없이 페이지 로드 직후 자동 실행합니다.
+  // Fundamental / Screening은 별도 클릭 없이 페이지 로드 직후 자동 실행합니다.
   setTimeout(()=>runAutomaticScreenings(),250);
 }
 boot();
