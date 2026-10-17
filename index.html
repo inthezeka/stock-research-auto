@@ -2003,33 +2003,250 @@ async function srKosaiCached(item){
   if(srKosaiCache.has(item.code))return srKosaiCache.get(item.code);
   const p=srKosaiReport(item).catch(()=>null);srKosaiCache.set(item.code,p);return p;
 }
-function srClamp(v,a=0,b=25){return Math.max(a,Math.min(b,v))}
-function srFundamentalScore(report){
+
+function srClamp(v,a=0,b=100){return Math.max(a,Math.min(b,v))}
+function srRoundHalf(v){return Math.round(v*2)/2}
+function srWeightedSub(score,weight){return srRoundHalf(srClamp(score,0,5))/5*weight}
+function srGrowthBand(v,bands){
+  bands=bands||[25,15,5,0];
+  if(v==null)return 2.5;
+  if(v>=bands[0])return 5;
+  if(v>=bands[1])return 4;
+  if(v>=bands[2])return 3;
+  if(v>=bands[3])return 2;
+  if(v>-10)return 1;
+  return 0;
+}
+function srCagr(a,b,years){
+  if(!(a>0)||!(b>0)||!(years>0))return null;
+  return (Math.pow(b/a,1/years)-1)*100;
+}
+function srAvg(a){const x=(a||[]).filter(Number.isFinite);return x.length?x.reduce((s,v)=>s+v,0)/x.length:null}
+function srFundGrade(score){
+  if(score>=90)return'Strong Buy Candidate';
+  if(score>=80)return'Buy Candidate';
+  if(score>=70)return'Trading Buy / Watch';
+  if(score>=60)return'Neutral';
+  if(score>=50)return'Weak';
+  return'Avoid';
+}
+function srQualScore(text,positive,strong,negative){
+  text=String(text||'').toLowerCase();
+  if(strong&&strong.test(text))return 5;
+  if(positive&&positive.test(text))return 4;
+  if(negative&&negative.test(text))return 1.5;
+  return 2.5;
+}
+function srFundIndustryType(report){
+  const t=((report?.sector||'')+' '+(report?.categories||[]).join(' ')+' '+(report?.business?.ko||'')).toLowerCase();
+  if(/은행|bank|금융지주|증권/.test(t))return'금융';
+  if(/보험|insurance/.test(t))return'보험';
+  if(/바이오|제약|임상|pipeline|신약|cdmo/.test(t))return'바이오';
+  if(/saas|software|소프트웨어|클라우드|subscription/.test(t))return'SaaS/Software';
+  if(/반도체|메모리|hbm|dram|nand|foundry|파운드리/.test(t))return'반도체';
+  if(/건설|플랜트|방산|조선|수주잔고/.test(t))return'수주산업';
+  return'일반';
+}
+function srFundRiskPenalty(report,annuals){
+  const pieces=[
+    ...(report?.risks||[]).map(r=>String(r?.cat?.ko||'')+' '+String(r?.body?.ko||'')),
+    String(report?.outlook?.ko||''),
+    ...(report?.keypoints||[]).map(k=>String(k?.ko||''))
+  ];
+  const text=pieces.join(' ').toLowerCase(),reasons=[];let p=0;
+  const add=(rx,pts,label)=>{if(rx.test(text)){p+=pts;reasons.push({pts,label})}};
+  add(/유상증자|rights offering|주주배정/,4,'유상증자/자본조달 가능성');
+  add(/\bcb\b|\bbw\b|전환사채|신주인수권|희석/,3,'CB/BW·희석 위험');
+  add(/감사의견|회계처리|회계 부정|분식|audit opinion/,10,'회계·감사의견 위험');
+  add(/대형 고객.*이탈|핵심 고객.*이탈|customer loss|계약 해지/,6,'대형 고객 이탈');
+  add(/대규모 소송|중대한 소송|규제 제재|영업정지|과징금/,5,'소송·규제 위험');
+  add(/가이던스.*하향|guidance.*cut|실적 전망.*하향/,6,'Guidance 급격한 하향');
+  add(/대주주.*매각|최대주주.*매도|오버행/,2,'대주주 지분매각/오버행');
+  const a=(annuals||[]).filter(x=>!x.est).slice(-3);
+  if(a.length>=2){
+    const cfo=a.map(x=>srNum(x.cfo)).filter(Number.isFinite);
+    if(cfo.length>=2&&cfo.at(-1)<0&&cfo.at(-2)>0){p+=3;reasons.push({pts:3,label:'영업현금흐름 급격한 악화'})}
+    const dr=a.map(x=>srNum(x.debt_ratio)).filter(Number.isFinite);
+    if(dr.length>=2&&dr.at(-1)>150&&dr.at(-1)-dr.at(-2)>30){p+=3;reasons.push({pts:3,label:'CAPEX/차입에 따른 재무구조 악화 가능성'})}
+  }
+  p=Math.min(15,p);
+  reasons.sort((a,b)=>b.pts-a.pts);
+  return{penalty:p,reasons};
+}
+function srFundamentalScore(report,item){
   if(!report?.quant)return null;
-  const q=report.quant,qs=Array.isArray(q.quarterly)?q.quarterly:[],v=q.valuation||{};
-  const last=qs.at(-1)||{},prev=qs.at(-2)||{},prev4=qs.at(-5)||null;
-  const rev=srNum(last.rev),prevRev=srNum(prev.rev),yoyRev=prev4&&srNum(prev4.rev)?(rev/srNum(prev4.rev)-1)*100:(prevRev?((rev/prevRev)-1)*100:null);
-  const op=srNum(last.op),prevOp=srNum(prev.op),opm=rev&&op!=null?op/rev*100:null,prevOpm=prevRev&&prevOp!=null?prevOp/prevRev*100:null;
-  const net=srNum(last.np_owner??last.np);
-  const per=srNum(v.per),pbr=srNum(v.pbr),roe=srNum(v.roe_ttm);
-  let growth=12;if(yoyRev!=null){growth=srClamp(12+yoyRev*0.65,0,25)}
-  let earnings=8;
-  if(opm!=null)earnings+=srClamp(opm*0.8,0,10);
-  if(net!=null&&net>0)earnings+=4;
-  if(opm!=null&&prevOpm!=null&&opm>prevOpm)earnings+=3;
-  earnings=srClamp(earnings,0,25);
-  let valuation=12;
-  if(per!=null){valuation+=per>0&&per<=10?8:per<=20?5:per<=35?2:per>60?-5:0}
-  if(pbr!=null){valuation+=pbr<=1.5?4:pbr<=3?2:pbr>8?-3:0}
-  if(roe!=null){valuation+=roe>=20?4:roe>=12?2:roe<5?-2:0}
-  valuation=srClamp(valuation,0,25);
-  const kp=(report.keypoints||[]).map(x=>String(x?.ko||'')).filter(Boolean),out=String(report.outlook?.ko||'');
-  const text=(kp.join(' ')+out).toLowerCase();
-  let catalyst=8+Math.min(8,kp.length*2);
-  if(/수주|증설|양산|신제품|신규|점유율|고객|capex|ai|hbm|socamm|확대|성장/.test(text))catalyst+=6;
-  if(/지연|감소|둔화|적자|리스크/.test(text))catalyst-=3;
-  catalyst=srClamp(catalyst,0,25);
-  return{growth:Math.round(growth),earnings:Math.round(earnings),valuation:Math.round(valuation),catalyst:Math.round(catalyst),total:Math.round(growth+earnings+valuation+catalyst)};
+  const q=report.quant,v=q.valuation||{},prior=q.prior_valuation||{};
+  const annualRaw=Array.isArray(q.annual)?q.annual:[];
+  const annualHist=annualRaw.map(x=>({
+    year:Number(x.year),est:false,rev:srNum(x.rev),op:srNum(x.op),net:srNum(x.np_owner??x.np),
+    eps:srNum(x.eps_basic),roe:srNum(x.roe),opm:srNum(x.opm),cfo:srNum(x.cfo),debt_ratio:srNum(x.debt_ratio)
+  })).filter(x=>x.year).sort((a,b)=>a.year-b.year);
+  const annualN=(Array.isArray(q.annual_naver)?q.annual_naver:[]).map(x=>({
+    ...x,rev:srNum(x.rev),op:srNum(x.op),net:srNum(x.net),eps:srNum(x.eps),roe:srNum(x.roe),opm:srNum(x.opm)
+  })).sort((a,b)=>a.year-b.year);
+  const histN=annualN.filter(x=>!x.est),fwd=annualN.filter(x=>x.est).slice(0,2);
+  const hist=(histN.length>=2?histN:annualHist).slice(-3);
+  const latest=hist.at(-1)||annualHist.at(-1)||{},prev=hist.at(-2)||annualHist.at(-2)||{};
+  const f1=fwd[0]||null,f2=fwd[1]||null;
+  const text=[
+    ...(report.keypoints||[]).map(x=>x?.ko||''),
+    report.outlook?.ko||'',report.business?.ko||'',report.industry?.ko||'',
+    ...(report.risks||[]).map(x=>(x?.cat?.ko||'')+' '+(x?.body?.ko||''))
+  ].join(' ');
+  const industryType=srFundIndustryType(report);
+  const detail=[];
+  const add=(group,key,label,weight,score,reason)=>{
+    score=srRoundHalf(srClamp(score,0,5));
+    const earned=srWeightedSub(score,weight);
+    detail.push({group,key,label,weight,score,earned,reason});
+    return earned;
+  };
+
+  const histRevCagr=hist.length>=3?srCagr(hist[0].rev,hist.at(-1).rev,hist.length-1):((latest.rev&&prev.rev)?(latest.rev/prev.rev-1)*100:null);
+  const fwdRevGrowth=f1?.rev&&latest.rev?(f1.rev/latest.rev-1)*100:null;
+  const fwd2RevCagr=f2?.rev&&latest.rev?srCagr(latest.rev,f2.rev,2):fwdRevGrowth;
+  const revGrowth=(fwdRevGrowth!=null||fwd2RevCagr!=null||histRevCagr!=null)
+    ?(Number(fwdRevGrowth??fwd2RevCagr??0)*.55+Number(fwd2RevCagr??fwdRevGrowth??0)*.25+Number(histRevCagr??fwdRevGrowth??0)*.20):null;
+  let sRev=srGrowthBand(revGrowth,[15,10,5,0]);
+  if(fwdRevGrowth!=null&&histRevCagr!=null&&fwdRevGrowth>histRevCagr+5)sRev=Math.min(5,sRev+.5);
+  add('growth','revenue','매출 성장',7,sRev,'과거 CAGR '+(histRevCagr==null?'[검증 필요]':histRevCagr.toFixed(1)+'%')+' · Forward '+(fwdRevGrowth==null?'Consensus 없음':fwdRevGrowth.toFixed(1)+'%')+' [AI]');
+
+  const opGrowth=f1?.op&&latest.op&&latest.op>0?(f1.op/latest.op-1)*100:null;
+  const opmNow=latest.opm??(latest.rev&&latest.op!=null?latest.op/latest.rev*100:null);
+  const opmF=f1?.opm??(f1?.rev&&f1?.op!=null?f1.op/f1.rev*100:null);
+  let sOp=srGrowthBand(opGrowth,[25,15,5,0]);
+  if(opGrowth!=null&&fwdRevGrowth!=null&&opGrowth>fwdRevGrowth+5)sOp=Math.min(5,sOp+.5);
+  if(opmF!=null&&opmNow!=null&&opmF>opmNow)sOp=Math.min(5,sOp+.5);
+  if(f1?.op!=null&&f1.op<0)sOp=0;
+  add('growth','opGrowth','영업이익 성장',8,sOp,'Forward OP 성장 '+(opGrowth==null?'Consensus 없음':opGrowth.toFixed(1)+'%')+' · OPM '+(opmNow==null?'—':opmNow.toFixed(1)+'%')+' → '+(opmF==null?'—':opmF.toFixed(1)+'%')+' [AI]');
+
+  const epsBase=latest.eps??srNum(v.eps),epsF=f1?.eps??srNum(v.forward_eps),epsGrowth=epsF!=null&&epsBase>0?(epsF/epsBase-1)*100:null;
+  let sEps=srGrowthBand(epsGrowth,[25,15,5,0]);if(epsF!=null&&epsF<0)sEps=0;
+  add('growth','epsGrowth','EPS 성장',6,sEps,'Forward EPS 성장 '+(epsGrowth==null?'Consensus 없음':epsGrowth.toFixed(1)+'%')+' [AI]');
+
+  const oldFeps=srNum(prior.forward_eps),newFeps=srNum(v.forward_eps),revision=oldFeps&&newFeps?(newFeps/oldFeps-1)*100:null;
+  let sRevise=revision==null?2:revision>=10?5:revision>=5?4:revision>0?3:revision===0?2:revision>-5?1:0;
+  add('growth','revision','실적 추정치 Revision',4,sRevise,revision==null?'최근 1~3개월 Revision 이력 [검증 필요]':'Forward EPS Revision '+(revision>=0?'+':'')+revision.toFixed(1)+'% [AI]');
+
+  const opmPrev=prev.opm??(prev.rev&&prev.op!=null?prev.op/prev.rev*100:null),opmDelta=opmNow!=null&&opmPrev!=null?opmNow-opmPrev:null;
+  let sMargin=opmNow==null?2.5:opmNow<0?0:(opmNow>=15&&opmDelta>=2)?5:(opmNow>=10&&opmDelta>=0)?4:(opmNow>=5&&opmDelta>=-1)?3:opmNow>0?2:1;
+  if(/업종.*상위|업계.*상위|최고.*수익성|고마진/i.test(text))sMargin=Math.min(5,sMargin+.5);
+  add('profitability','margin','영업이익률 / Margin Trend',7,sMargin,'OPM '+(opmNow==null?'[검증 필요]':opmNow.toFixed(1)+'%')+' · 변화 '+(opmDelta==null?'—':(opmDelta>=0?'+':'')+opmDelta.toFixed(1)+'%p')+' [AI]');
+
+  const roe=srNum(v.roe_ttm)??srNum(f1?.roe)??srNum(latest.roe),debtRatio=srNum(latest.debt_ratio);
+  let sRoe=roe==null?2.5:roe>=15?5:roe>=12?4:roe>=8?3:roe>=5?2:roe>=0?1:0;
+  if(debtRatio!=null&&debtRatio>150)sRoe=Math.max(0,sRoe-1);
+  add('profitability','roe','ROE / ROIC',8,sRoe,'ROE '+(roe==null?'[검증 필요]':roe.toFixed(1)+'%')+' · ROIC '+(/roic/i.test(text)?'정성 확인':'[검증 필요]')+(debtRatio!=null?' · 부채비율 '+debtRatio.toFixed(1)+'%':''));
+
+  const sPricing=srQualScore(text,/가격.*전가|판가.*유지|mix.*개선|믹스.*개선|고부가|asp.*상승/i,/가격 결정력|pricing power|asp.*상승|판가.*인상|고부가.*확대/i,/판가.*하락|가격 경쟁|commodity|원가.*전가.*어려/i);
+  add('profitability','pricing','이익률 구조 / Pricing Power',5,sPricing,'ASP·제품 Mix·가격전가력 정성평가 [AI]');
+
+  const histCash=annualHist.slice(-3),cfo=histCash.map(x=>srNum(x.cfo)),cfoPositive=cfo.filter(x=>x>0).length,cfoTrend=cfo.length>=2?cfo.at(-1)-cfo[0]:null;
+  let sFcf=cfo.length>=3&&cfoPositive===3&&cfoTrend>0?5:cfo.length>=2&&cfoPositive===cfo.length?4:cfoPositive?3:2;
+  if(/대규모 capex|대규모.*설비투자|capex.*확대/i.test(text)&&sFcf>=3)sFcf-=.5;
+  add('financial','fcf','FCF',6,sFcf,'정확한 CAPEX 미확인 시 CFO proxy 사용 · 최근 '+cfo.length+'개년 양(+) CFO '+cfoPositive+'개년 [검증 필요]');
+
+  let sDebt=debtRatio==null?2.5:debtRatio<20?5:debtRatio<50?4:debtRatio<100?3:debtRatio<150?2:debtRatio<250?1:0;
+  if(/순현금|net cash/i.test(text))sDebt=5;
+  add('financial','netDebt','순차입금 / EBITDA',5,sDebt,debtRatio==null?'Net Debt/EBITDA [검증 필요]':'직접 Net Debt/EBITDA 미확인 · 부채비율 '+debtRatio.toFixed(1)+'% proxy [검증 필요]');
+
+  const latestCfo=cfo.length?cfo.at(-1):null;
+  let sInterest=debtRatio==null?2.5:debtRatio<50&&latestCfo>0?5:debtRatio<100&&latestCfo>0?4:debtRatio<150?3:debtRatio<250?2:1;
+  add('financial','interest','이자보상 / 유동성',4,sInterest,'이자보상배율 직접값 '+(/이자보상|interest coverage/i.test(text)?'정성 확인':'[검증 필요]')+' · CFO/부채구조 proxy [AI]');
+
+  const cfoNi=histCash.map(x=>{const ni=srNum(x.np_owner??x.np),cf=srNum(x.cfo);return ni>0&&cf!=null?cf/ni*100:null}).filter(Number.isFinite),cfoNiAvg=srAvg(cfoNi);
+  const sQuality=cfoNiAvg==null?2.5:cfoNiAvg>=100?5:cfoNiAvg>=80?4:cfoNiAvg>=60?3:cfoNiAvg>=40?2:cfoNiAvg>=0?1:0;
+  add('quality','cashConversion','CFO / 순이익',5,sQuality,'최근 3년 평균 CFO/순이익 '+(cfoNiAvg==null?'[검증 필요]':cfoNiAvg.toFixed(0)+'%')+' [AI]');
+
+  let sVisibility=srQualScore(text,/수주|계약|반복매출|subscription|recurring|backlog|장기 공급|다년 계약|lta|retention/i,/수주잔고.*[1-9]|장기.*계약|다년.*계약|recurring revenue|subscription.*계약/i,/spot|단기 주문|주문 변동|수주 공백/i);
+  if(industryType==='수주산업'&&/수주잔고|신규수주|book-to-bill/i.test(text))sVisibility=Math.min(5,sVisibility+.5);
+  add('quality','visibility','수주잔고 / 반복매출',5,sVisibility,industryType+' 특성 반영 · 장기계약/Backlog/Recurring Revenue 정성평가 [AI]');
+
+  let sCustomer=srQualScore(text,/고객.*다변화|글로벌 고객|장기 거래|점유율/i,/다년.*고객|핵심 공급|top tier|시장점유율.*1위|독점/i,/단일 고객|고객 집중|소수 고객|의존도.*높/i);
+  if(/nvidia|apple|엔비디아|애플/i.test(text)&&/핵심 공급|인증|qualification|점유율/i.test(text))sCustomer=Math.max(3.5,sCustomer);
+  add('quality','customer','고객구조 / 실적 안정성',5,sCustomer,'고객 집중도·장기거래·핵심공급자 지위 정성평가 [AI]');
+
+  const fper=srNum(v.forward_per)??srNum(v.per),fwdEpsGrowth=epsGrowth,peg=fper!=null&&fwdEpsGrowth>0?fper/fwdEpsGrowth:null;
+  let sPer=peg!=null?(peg<=1?5:peg<=1.5?4:peg<=2?3:peg<=3?2:1):(fper==null?2.5:fper<=10?4:fper<=20?3.5:fper<=35?2.5:fper<=50?1.5:.5);
+  const valComment=String(report.valuation_comment?.ko||'');
+  if(/20%.*할인|현저.*저평가|저평가/i.test(valComment))sPer=Math.min(5,sPer+.5);
+  if(/프리미엄|고평가/i.test(valComment))sPer=Math.max(0,sPer-.5);
+  add('valuation','perPeg','Forward PER / PEG',6,sPer,'Fwd PER '+(fper==null?'Consensus 없음':fper.toFixed(1)+'x')+' · PEG '+(peg==null?'[검증 필요]':peg.toFixed(2))+' [AI]');
+
+  const snap=item?srConsensusSnapshot(item.code):null,ev=srNum(snap?.evEbitda),peerEv=srAvgObj(snap?.peers?.evEbitda);
+  let sEv=2.5;
+  if(ev!=null&&peerEv!=null){const discount=(ev/peerEv-1)*100;sEv=discount<=-20?5:discount<=-10?4:discount<10?3:discount<20?2:1}
+  else if(/ev\/?ebitda.*할인|ev.*할인/i.test(valComment))sEv=4;
+  else if(/ev\/?ebitda.*프리미엄/i.test(valComment))sEv=2;
+  add('valuation','evEbitda','EV / EBITDA',4,sEv,ev!=null?'EV/EBITDA '+ev.toFixed(1)+'x'+(peerEv!=null?' · Peer '+peerEv.toFixed(1)+'x':''):'EV/EBITDA Peer 비교 [검증 필요]');
+
+  const pbr=srNum(v.pbr),roeForVal=roe;
+  let sPbr=2.5;
+  if(pbr!=null&&roeForVal!=null){
+    const efficiency=roeForVal/Math.max(.1,pbr);
+    sPbr=efficiency>=8?5:efficiency>=5?4:efficiency>=3?3:efficiency>=1.5?2:1;
+  }
+  add('valuation','pbrRoe','PBR / ROE 또는 FCF Yield',5,sPbr,'PBR '+(pbr==null?'—':pbr.toFixed(2)+'x')+' · ROE '+(roeForVal==null?'—':roeForVal.toFixed(1)+'%')+(pbr==null||roeForVal==null?' [검증 필요]':' [AI]'));
+
+  let sIndustry=srQualScore(text,/성장|회복|수요 증가|구조적 성장|확대/i,/구조적 고성장|공급 부족|cycle 초기|초기 회복|고성장/i,/peak|둔화|침체|수요 감소|구조적 축소/i);
+  let cycle='안정';
+  if(/초기 회복|회복 초기/i.test(text))cycle='초기 회복';
+  else if(/성장|수요 증가|공급 부족/i.test(text))cycle='성장';
+  else if(/호황|강한 상승 사이클/i.test(text))cycle='호황';
+  else if(/peak|피크/i.test(text))cycle='Peak';
+  else if(/둔화/i.test(text))cycle='둔화';
+  else if(/침체|축소/i.test(text))cycle='침체';
+  add('industry','cycle','산업 성장성 / Cycle',4,sIndustry,industryType+' · Cycle '+cycle+' [AI]');
+
+  const sMoat=srQualScore(text,/점유율|기술력|인증|진입장벽|top tier|1위|독점|qualification/i,/글로벌.*1위|국내.*1위|독점|높은 진입장벽|핵심 공급자/i,/점유율.*하락|가격 경쟁|차별화 부족/i);
+  add('industry','moat','시장점유율 / Moat',4,sMoat,'점유율·기술·규모·고객 인증 진입장벽 정성평가 [AI]');
+
+  let divCount=0;
+  if(/다양한 고객|고객 다변화|글로벌 고객|여러 고객|다수 고객/i.test(text))divCount++;
+  if(/제품군|제품 믹스|다양한 제품|포트폴리오|사업부문/i.test(text))divCount++;
+  if(/미국|유럽|중국|동남아|글로벌|해외/i.test(text))divCount++;
+  const sDiv=divCount>=3?5:divCount===2?4:divCount===1?3:/단일 고객|단일 제품|단일 지역/i.test(text)?1:2.5;
+  add('industry','diversification','고객·제품·지역 Diversification',2,sDiv,'다변화 확인 영역 '+divCount+'/3 [AI]');
+
+  if(industryType==='금융'||industryType==='보험'){
+    const f=detail.find(x=>x.key==='fcf');if(f){f.score=2.5;f.earned=srWeightedSub(2.5,f.weight);f.reason='금융업 FCF 대신 CET1/BIS/K-ICS 등 업종지표 필요 [검증 필요]'}
+    const n=detail.find(x=>x.key==='netDebt');if(n){n.score=2.5;n.earned=srWeightedSub(2.5,n.weight);n.reason='금융업 Net Debt/EBITDA 비적용 · 자본적정성 지표 필요 [검증 필요]'}
+  }
+  if(industryType==='바이오'){
+    const vis=detail.find(x=>x.key==='visibility');
+    if(vis){
+      const bioScore=srQualScore(text,/임상|pipeline|기술이전|license|peak sales|상업화/i,/기술이전.*계약|임상 3상|허가|상업화/i,/임상 실패|중단|현금 runway.*부족/i);
+      vis.score=bioScore;vis.earned=srWeightedSub(bioScore,vis.weight);vis.reason='Pipeline·임상단계·기술이전·현금 Runway 기준 [AI]';
+    }
+  }
+
+  const groups={growth:0,profitability:0,financial:0,quality:0,valuation:0,industry:0};
+  detail.forEach(x=>groups[x.group]+=x.earned);
+  Object.keys(groups).forEach(k=>groups[k]=Math.round(groups[k]*10)/10);
+  const base=Math.round(detail.reduce((s,x)=>s+x.earned,0)*10)/10;
+  const rp=srFundRiskPenalty(report,annualHist);
+  const total=Math.round(srClamp(base-rp.penalty,0,100)*10)/10;
+  const grade=srFundGrade(total);
+  const contribution=detail.map(x=>({...x,ratio:x.weight?x.earned/x.weight:0}));
+  const topUp=[...contribution].sort((a,b)=>b.earned-a.earned).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+x.weight+' · '+x.reason);
+  const topDown=[...contribution].sort((a,b)=>a.ratio-b.ratio||b.weight-a.weight).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+x.weight+' · '+x.reason);
+  if(rp.reasons.length)topDown.unshift(...rp.reasons.slice(0,2).map(x=>'Risk Penalty -'+x.pts+': '+x.label));
+  const weakest=[...contribution].sort((a,b)=>a.ratio-b.ratio).slice(0,3);
+  const strongest=[...contribution].sort((a,b)=>b.ratio-a.ratio).slice(0,3);
+  const upConditions=weakest.map(x=>x.label+' 개선 또는 검증 데이터 상향');
+  const downConditions=strongest.map(x=>x.label+' 둔화/훼손 시 점수 하락');
+  const valScore=groups.valuation;
+  const attractive=valScore>=11&&((fwdEpsGrowth??0)>10)?'Yes':valScore>=7?'Neutral':'No';
+  const attractiveReason='Forward 성장 '+(fwdEpsGrowth==null?'Consensus 없음':fwdEpsGrowth.toFixed(1)+'%')+' 대비 Valuation '+groups.valuation.toFixed(1)+'/15점';
+
+  return{
+    total,base,riskPenalty:rp.penalty,grade,groups,detail,industryType,cycle,
+    attractiveness:attractive,attractivenessReason:attractiveReason,
+    topUp:topUp.slice(0,3),topDown:topDown.slice(0,3),upConditions,downConditions,
+    riskReasons:rp.reasons,
+    growth:groups.growth,earnings:groups.profitability,valuation:groups.valuation,catalyst:groups.industry,
+    profitability:groups.profitability,financial:groups.financial,quality:groups.quality,industry:groups.industry
+  };
 }
 async function srMapLimit(arr,limit,fn){
   const out=new Array(arr.length);let idx=0;
@@ -2040,16 +2257,27 @@ function srRenderFundTop20(list){
   const el=document.getElementById('fundTop20List');if(!el)return;
   el.innerHTML=list.map((x,i)=>
     '<button type="button" class="compact-chip screening-stock-link" data-code="'+x.item.code+'" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="상세분석 보기">'+
-    (i+1)+'. '+srEsc(x.item.name)+' · '+x.f.total+'</button>'
+    (i+1)+'. '+srEsc(x.item.name)+' · '+x.f.total.toFixed(1)+'</button>'
   ).join('');
 }
 function srRenderFundTop10(list){
   const el=document.getElementById('fundTop10Body');if(!el)return;
   el.innerHTML=list.map((x,i)=>
     '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
-    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td>'+x.item.market+'</td><td><b>'+x.f.total+'</b></td><td>'+x.f.growth+'</td><td>'+x.f.earnings+'</td><td>'+x.f.valuation+'</td><td>'+x.f.catalyst+'</td></tr>'
+    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+srEsc(x.f.grade)+'</span></td><td><b>'+x.f.total.toFixed(1)+'</b><br><span class="note">Base '+x.f.base.toFixed(1)+' / P -'+x.f.riskPenalty+'</span></td>'+
+    '<td>'+x.f.groups.growth.toFixed(1)+'/25</td><td>'+x.f.groups.profitability.toFixed(1)+'/20</td><td>'+x.f.groups.financial.toFixed(1)+'/15</td>'+
+    '<td>'+x.f.groups.quality.toFixed(1)+'/15</td><td>'+x.f.groups.valuation.toFixed(1)+'/15</td><td>'+x.f.groups.industry.toFixed(1)+'/10</td>'+
+    '<td>'+x.f.attractiveness+'</td></tr>'
   ).join('');
 }
+function srRenderFundFinal(list){
+  const el=document.getElementById('fundFinalBody');if(!el)return;
+  el.innerHTML=list.map((x,i)=>
+    '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
+    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+x.item.market+'</span></td><td><b>'+x.f.total.toFixed(1)+'</b><br><span class="note">'+srEsc(x.f.grade)+'</span></td><td>'+x.ict.score+'</td><td><span class="tag '+srEntryClass(x.ict.entryQuality)+'">'+x.ict.entryQuality+'</span></td><td>'+srFmt(x.ict.price)+'원</td><td>'+srEsc(x.catalystText||'공시·실적 Catalyst 확인')+'</td><td>'+srEsc(x.ict.finalOpinion)+'</td></tr>'
+  ).join('');
+}
+
 function srEntryClass(g){return g==='S'?'entry-s':g==='A'?'entry-a':g==='B'?'entry-b':'entry-c'}
 function srRenderFundFinal(list){
   const el=document.getElementById('fundFinalBody');if(!el)return;
@@ -2561,7 +2789,7 @@ async function runFundamentalPipeline(){
   try{
     await loadStockUniverse();status.textContent='Fundamental 후보 수집 중...';
     const candidates=srLiquidityCandidates(50);
-    const reports=(await srMapLimit(candidates,8,async item=>{const report=await srKosaiCached(item);const f=srFundamentalScore(report);return report&&f?{item,report,f}:null})).filter(Boolean);
+    const reports=(await srMapLimit(candidates,8,async item=>{const report=await srKosaiCached(item);const f=srFundamentalScore(report,item);return report&&f?{item,report,f}:null})).filter(Boolean);
     reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
     const top20=reports.slice(0,20),top10=top20.slice(0,10);
     srRenderFundTop20(top20);srRenderFundTop10(top10);status.textContent='Fundamental TOP10 완료 · ICT용 일봉 일괄 조회 중...';
@@ -2595,7 +2823,7 @@ async function runAutomaticScreenings(){
     if(iStatus)iStatus.textContent='자동 조회 대기 · Fundamental 후보 선별 후 ICT 일괄 분석합니다.';
     const fundCandidates=srLiquidityCandidates(50);
     const reports=(await srMapLimit(fundCandidates,8,async item=>{
-      const report=await srKosaiCached(item),fund=srFundamentalScore(report);
+      const report=await srKosaiCached(item),fund=srFundamentalScore(report,item);
       return report&&fund?{item,report,f:fund}:null;
     })).filter(Boolean);
     reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
