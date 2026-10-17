@@ -101,7 +101,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: ict-quality-entry-v22-20261017 -->
+<!-- BUILD: ict-quality-entry-v22.1-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -290,7 +290,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
         <div><b>⑪ Setup Freshness · 5</b><br>Mitigation 횟수와 PD Array 소모도</div>
         <div><b>⑫ Liquidity / Gap Risk · 5</b><br>거래대금 · Slippage · Gap Risk</div>
       </div>
-      <p class="note"><b>좋은 차트 ≠ 지금 매수하기 좋은 차트.</b> Raw ICT Quality와 현재 Entry Quality를 분리합니다. Penalty 적용 후 Hard Filter를 통과하고, Adjusted ICT ≥ 80 · R:R ≥ 1:2 · DOL/Invalidation 명확 · Entry Quality S/A인 종목만 최종 ICT TOP10 후보로 사용합니다. Weekly → Daily → 4H → 1H 순서로 분석하며 1H/4H 데이터가 없으면 최종 추천에 보수적으로 반영합니다.</p>
+      <p class="note"><b>좋은 차트 ≠ 지금 매수하기 좋은 차트.</b> Raw ICT Quality와 현재 Entry Quality를 분리합니다. Penalty 적용 후 Hard Filter를 통과하고 Adjusted ICT ≥ 80 · R:R ≥ 1:2 · DOL/Invalidation이 명확한 종목을 후보로 사용하되, Entry Quality S/A를 최우선하고 B는 후순위로 표시합니다. Weekly → Daily → 4H → 1H 순서로 분석하며 1H/4H 데이터가 없으면 최종 추천에 보수적으로 반영합니다.</p>
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="ictScanBtn">ICT Trading TOP10 스캔</button>
@@ -1979,7 +1979,7 @@ function srIctSetupType(res){
   const htfBull=res.weekly.external.bias.startsWith('Bullish')&&res.daily.external.bias.startsWith('Bullish');
   const pullback=res.selectedPd&&res.price<=res.selectedPd.high&&res.price>=res.selectedPd.low;
   if(res.event.sslSweep&&res.event.bullishMss&&res.disp.bullish&&res.selectedPd&&res.dolClear)return'Bullish Reversal';
-  if(htfBull&&res.protectedLow&&res.event.sslSweep&&res.event.bullishBos&&res.disp.bullish&&res.selectedPd&&res.dolClear)return'Bullish Continuation';
+  if(htfBull&&res.protectedLow&&res.event.sslSweep&&(res.event.bullishBos||res.event.bullishMss)&&res.disp.bullish&&res.selectedPd&&res.dolClear)return'Bullish Continuation';
   if(res.breakAcceptance.accepted&&res.disp.bullish&&(res.breaker||res.bullFvg)&&res.dolClear&&(res.breakAcceptance.retested||pullback))return'Breakout / Reclaim';
   return'No Valid Setup';
 }
@@ -2054,7 +2054,7 @@ function srIctHardFilter(res,item){
   if(!(res.rr>=2))reasons.push('R:R < 1:2');
   if(res.daily.external.bias.startsWith('Bearish')&&!res.event.bullishMss)reasons.push('HTF Bearish + Bullish MSS 없음');
   const bslPct=res.liq.externalBSL&&res.price?(res.liq.externalBSL/res.price-1)*100:null;
-  if(bslPct!=null&&bslPct>0&&bslPct<3&&(!res.selectedPd||res.price>res.selectedPd.high))reasons.push('External BSL 바로 아래 추격 구간');
+  if(bslPct!=null&&bslPct>0&&bslPct<3&&res.setupType!=='No Valid Setup'&&(!res.selectedPd||res.price>res.selectedPd.high))reasons.push('External BSL 바로 아래 추격 구간');
   if((item.turnover||0)<5e9)reasons.push('거래대금 부족');
   if(res.gapRisk.max>=12)reasons.push('Gap Risk 과도');
   if(res.pd.pos>=.85&&(!res.selectedPd||res.price>res.selectedPd.high))reasons.push('Premium 과열');
@@ -2106,7 +2106,7 @@ async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const pd=srIctPd(daily,dailyProtectedLow||protectedLow,liq.externalBSL);
   const breakLevel=event.breakLevel||protectedHigh||liq.internalBSL,breakAcceptance=h1Rows.length?srIctAcceptance(h1Rows,breakLevel):{accepted:false,retested:false};
   const zoneLow=selectedPd?.low??null,zoneHigh=selectedPd?.high??null;
-  const entry=selectedPd?(zoneLow+zoneHigh)/2:(breakAcceptance.accepted&&breakLevel?breakLevel:null);
+  const entry=selectedPd?(zoneLow+zoneHigh)/2:(breakLevel||liq.externalBSL||null);
   const tradingInvalidation=(internalProtectedLow&&entry&&internalProtectedLow<entry)?internalProtectedLow:(selectedPd?.low??null);
   const structuralInvalidation=(dailyProtectedLow&&entry&&dailyProtectedLow<entry)?dailyProtectedLow:((protectedLow&&entry&&protectedLow<entry)?protectedLow:tradingInvalidation);
   const levels=srDistinctLevels([liq.internalBSL,...liq.bslLevels].filter(v=>entry&&v>entry));
@@ -2131,7 +2131,8 @@ async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   base.adjustedScore=Math.max(0,Math.min(100,base.rawScore-base.penalty));base.score=base.adjustedScore;
   const hf=srIctHardFilter(base,item);base.hardFilterPassed=hf.passed;base.hardFilterReasons=hf.reasons;
   base.entryQuality=srIctEntryQuality(base);
-  base.finalEligible=base.hardFilterPassed&&base.adjustedScore>=80&&base.rr>=2&&base.dolClear&&['S','A'].includes(base.entryQuality);
+  base.priorityEligible=base.hardFilterPassed&&base.adjustedScore>=80&&base.rr>=2&&base.dolClear&&['S','A'].includes(base.entryQuality);
+  base.finalEligible=base.hardFilterPassed&&base.adjustedScore>=80&&base.rr>=2&&base.dolClear&&base.entryQuality!=='C';
   base.coarseRank=srIctCoarseRank(base);
   base.setup=base.setupType;
   base.aggressiveEntry=base.entryZone?base.entryZone.high:(breakLevel||null);
@@ -2145,7 +2146,7 @@ function srFmtZone(z){return!z?'—':srFmtPx(z.low)+' ~ '+srFmtPx(z.high)}
 function srHtfBias(x){return'W '+x.weekly.external.bias+' / D '+x.daily.external.bias+' / 4H '+x.h4.external.bias}
 function srRenderIctTop10(list){
   const el=document.getElementById('ictTop10Body');if(!el)return;
-  if(!list.length){el.innerHTML='<tr><td colspan="14">Hard Filter + Adjusted ICT 80점 + Entry Quality S/A 조건을 충족한 종목이 없습니다.</td></tr>';return}
+  if(!list.length){el.innerHTML='<tr><td colspan="14">Hard Filter + Adjusted ICT 80점 조건을 충족한 종목이 없습니다.</td></tr>';return}
   el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" style="cursor:pointer">'+
     '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td>'+
     '<td>'+x.rawScore+'</td><td><b>'+x.adjustedScore+'</b></td>'+
@@ -2209,7 +2210,7 @@ async function runIctTradingScan(){
       note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
         '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음');
     }
-    status.textContent='기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+'개 → '+(stockUniverseMeta.liquidity_mode||'유동성')+' '+result.candidates.length+'개 → 상세검증 '+result.shortlist.length+'개 → Hard Filter + Adjusted 80 + S/A '+result.passed.length+'개 → TOP10 '+top10.length+'개';
+    status.textContent='기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+'개 → '+(stockUniverseMeta.liquidity_mode||'유동성')+' '+result.candidates.length+'개 → 상세검증 '+result.shortlist.length+'개 → Hard Filter + Adjusted 80 (S/A 우선) '+result.passed.length+'개 → TOP10 '+top10.length+'개';
   }catch(e){console.error(e);status.textContent='ICT 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
 }
@@ -2301,7 +2302,7 @@ async function runAutomaticScreenings(){
       note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
         '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음');
     }
-    if(iStatus)iStatus.textContent='기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 → '+(stockUniverseMeta.liquidity_mode||'유동성')+' '+tradingCandidates.length+'개 → 상세 '+shortlist.length+'개 → Hard Filter + Adjusted 80 + S/A '+passed.length+'개 → TOP10 '+ictTop10.length+'개';
+    if(iStatus)iStatus.textContent='기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 → '+(stockUniverseMeta.liquidity_mode||'유동성')+' '+tradingCandidates.length+'개 → 상세 '+shortlist.length+'개 → Hard Filter + Adjusted 80 (S/A 우선) '+passed.length+'개 → TOP10 '+ictTop10.length+'개';
   }catch(e){
     console.error('automatic screening failed',e);
     if(fStatus)fStatus.textContent='자동 조회 일부 실패 · 수동 새로고침 가능: '+e.message;
