@@ -110,144 +110,6 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .screening-stock-row:focus-visible{outline:2px solid #2563EB;outline-offset:-2px}
 
 
-/* v25 · Visual hierarchy: supporting text smaller, decision values stronger */
-.section-desc,
-.note,
-.reason,
-.market-flow,
-.technical-legend,
-.indicator-help,
-.top5-selector-desc,
-.theme-cycle,
-.theme-stock-sub,
-.theme-stock-reason,
-.theme-grid-note,
-.pipeline-step p,
-.scan-status,
-.stock-search-status,
-.source-action-card .section-desc,
-.update-strip,
-.flow span,
-.ict-best-note{
-  font-size:10px;
-  line-height:1.5;
-  color:#667085;
-}
-
-.section-title{font-size:28px}
-.subhead{font-size:16px;margin-bottom:10px}
-.card{padding:18px}
-
-/* KPI: label quiet, number dominant */
-.kpi .label{font-size:9px;font-weight:800;color:#7A8699;letter-spacing:.05em}
-.kpi .value{font-size:30px;font-weight:950;line-height:1.05;margin-top:7px;color:#0B1F3A}
-.kpi .delta{font-size:10px;font-weight:850;margin-top:7px}
-.regime strong{font-size:29px;font-weight:950}
-
-/* Key/value rows */
-.fact-row{font-size:11px;padding:8px 0;align-items:center}
-.fact-row span:first-child{
-  font-size:9.5px;
-  font-weight:750;
-  color:#7A8699;
-  letter-spacing:.01em
-}
-.fact-row b{
-  font-size:14px;
-  line-height:1.35;
-  font-weight:950;
-  color:#101828;
-  text-align:right
-}
-.fact-row .tag{font-size:9px}
-
-/* Core metric cards */
-.metric{padding:12px}
-.metric .m-label{font-size:9px;font-weight:800;color:#7A8699}
-.metric .m-val{font-size:21px;font-weight:950;line-height:1.15;margin-top:6px;color:#0B1F3A}
-.indicator-card{padding:12px}
-.indicator-name{font-size:9px}
-.indicator-value{font-size:21px;font-weight:950;color:#101828}
-.indicator-signal{font-size:10px;line-height:1.4}
-
-/* Tables: headers/metadata compact, values clearer */
-.table th{
-  font-size:9px;
-  font-weight:900;
-  padding:10px 12px;
-  color:#667085;
-  letter-spacing:.04em
-}
-.table td{
-  font-size:11px;
-  padding:11px 12px;
-  color:#475467;
-  line-height:1.35
-}
-.table td b,
-.table td strong{
-  font-size:13px;
-  font-weight:950;
-  color:#101828
-}
-.table td .tag{font-size:9px}
-.rank{font-size:13px}
-.score-pill{font-size:11px;font-weight:950}
-
-/* Screening / ICT */
-.pipeline-step{padding:11px;min-height:100px}
-.pipeline-step .num{font-size:9px}
-.pipeline-step h4{font-size:12px;margin:5px 0}
-.compact-chip{font-size:9.5px}
-.ict-score-card>div{font-size:9px;line-height:1.45}
-.ict-score-card>div b{font-size:10.5px;color:#101828}
-.ict-detail-card h3{font-size:14px}
-.ict-detail-grid>div{font-size:9.5px;line-height:1.55}
-.ict-detail-grid>div b{font-size:10.5px;color:#101828}
-
-/* Catalyst / Risk */
-.risk-row{font-size:10px;padding:9px 0}
-.risk-row> b{font-size:13px;line-height:1.35;color:#101828}
-.risk-level{font-size:9.5px;font-weight:950}
-
-/* Theme radar */
-.theme-sector-kicker{font-size:9px}
-.theme-sector-title{font-size:14px}
-.theme-sector-score{font-size:11px;font-weight:950}
-.theme-stock-rank{font-size:9px}
-.theme-stock-name{font-size:13px}
-.theme-stock-price{font-size:14px;font-weight:950;color:#101828}
-.theme-stock-mom{font-size:9.5px}
-
-/* Valuation / R:R / scenarios */
-.rr .r-label{font-size:9px}
-.rr .r-val{font-size:25px;font-weight:950;color:#0B1F3A}
-.scenario-card .s-name{font-size:9.5px}
-.scenario-card .s-price{font-size:29px;font-weight:950}
-.scenario-card .s-prob{font-size:10px}
-
-/* Source / action cards */
-.source-action-card h3{font-size:14px;line-height:1.35}
-.source-action-card .source-link{font-size:10.5px;padding:9px 11px}
-
-/* Top-pick hierarchy */
-.company-name{font-size:34px}
-.ticker{font-size:10px}
-.thesis{font-size:12px;line-height:1.6;padding:14px;margin-top:14px}
-.top5-tab-rank{font-size:8.5px}
-.top5-tab-name{font-size:13px}
-.top5-tab-meta{font-size:9px}
-
-/* Keep mobile readable without restoring visual clutter */
-@media(max-width:760px){
-  .section-title{font-size:25px}
-  .kpi .value{font-size:27px}
-  .fact-row b{font-size:13px}
-  .metric .m-val,.indicator-value{font-size:19px}
-  .table td{font-size:10.5px}
-  .table td b,.table td strong{font-size:12px}
-}
-
 .fund-score-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
 .fund-score-total{font-size:26px;font-weight:950;color:#0B1F3A}
 .fund-score-grade{font-size:11px;font-weight:900;color:#1554AD;margin-top:3px}
@@ -262,10 +124,62 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .fund-factor-box ol{margin:0;padding-left:18px;font-size:9.5px;line-height:1.55;color:#667085}
 .fund-valuation-answer{margin-top:12px;padding:10px 12px;border-left:4px solid #1769E0;background:#F5F9FF;border-radius:0 9px 9px 0;font-size:10.5px;line-height:1.55}
 @media(max-width:760px){.fund-factor-grid{grid-template-columns:1fr}.fund-score-head{display:block}.fund-score-total{margin-top:6px}}
+
+/* v27 · Fundamental readability / capital disclosure risk */
+.fund-top10-table{min-width:1320px;table-layout:auto}
+.fund-top10-table th,.fund-top10-table td{vertical-align:middle}
+.fund-top10-table th{font-size:11px;padding:12px 14px}
+.fund-top10-table td{font-size:13px;padding:14px 14px;line-height:1.45}
+.fund-top10-table th:nth-child(1),.fund-top10-table td:nth-child(1){width:54px}
+.fund-top10-table th:nth-child(2),.fund-top10-table td:nth-child(2){min-width:190px}
+.fund-top10-table th:nth-child(3),.fund-top10-table td:nth-child(3){min-width:135px}
+.fund-stock-name{font-size:14px;font-weight:900;color:#101828;white-space:nowrap}
+.fund-grade-badge{display:inline-flex;margin-top:6px;padding:4px 7px;border-radius:999px;background:#F2F4F7;border:1px solid #E4E7EC;color:#475467;font-size:10px;font-weight:850;white-space:nowrap}
+.fund-score-main{font-size:18px;font-weight:950;color:#0B1F3A;line-height:1}
+.fund-score-meta{margin-top:6px;font-size:10px;color:#667085;white-space:nowrap}
+.fund-area-score{font-size:13px;font-weight:850;color:#344054;white-space:nowrap}
+.fund-val-answer{font-weight:900;white-space:nowrap}
+.fund-score-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
+.fund-score-total{font-size:28px;font-weight:950;color:#0B1F3A}
+.fund-score-grade{font-size:12px;font-weight:900;color:#1554AD;margin-top:3px}
+.fund-score-table{width:100%;border-collapse:collapse;min-width:900px}
+.fund-score-table th,.fund-score-table td{padding:10px 12px;border-bottom:1px solid #EEF1F4;text-align:left}
+.fund-score-table th{font-size:11px;color:#667085;background:#F9FAFB}
+.fund-score-table td{font-size:12px;color:#475467;line-height:1.5}
+.fund-score-table td:nth-child(3){font-size:14px;font-weight:950;color:#101828}
+.fund-factor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.fund-factor-box{border:1px solid #EEF1F4;border-radius:10px;background:#FAFBFC;padding:12px}
+.fund-factor-box h4{font-size:13px;margin:0 0 8px}
+.fund-factor-box ol{margin:0;padding-left:18px;font-size:11px;line-height:1.6;color:#667085}
+.fund-valuation-answer{margin-top:12px;padding:11px 13px;border-left:4px solid #1769E0;background:#F5F9FF;border-radius:0 9px 9px 0;font-size:12px;line-height:1.6}
+
+.capital-risk-card{margin-top:14px}
+.capital-risk-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.capital-risk-title{font-size:17px;font-weight:900}
+.capital-risk-sub{font-size:12px;color:#667085;margin-top:4px;line-height:1.5}
+.capital-risk-status{font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;background:#FFF7ED;color:#B54708;white-space:nowrap}
+.capital-event-list{display:grid;gap:8px}
+.capital-event{display:grid;grid-template-columns:110px minmax(0,1fr) 110px;gap:10px;align-items:start;padding:11px 12px;border:1px solid #E4E7EC;border-radius:10px;background:#fff}
+.capital-event-type{font-size:12px;font-weight:900;color:#0B1F3A}
+.capital-event-summary{font-size:12px;line-height:1.55;color:#344054}
+.capital-event-impact{font-size:10px;font-weight:900;text-align:right;color:#B54708}
+.capital-empty{padding:12px;border:1px dashed #D0D5DD;border-radius:10px;color:#667085;font-size:12px;line-height:1.55}
+.dart-verify-row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.dart-verify-note{font-size:11px;color:#667085}
+.dart-frame-wrap{margin-top:10px;border:1px solid #E4E7EC;border-radius:10px;overflow:hidden;background:#fff}
+.dart-frame{display:block;width:100%;height:360px;border:0;background:#fff}
+@media(max-width:760px){
+  .fund-factor-grid{grid-template-columns:1fr}
+  .fund-score-head{display:block}
+  .fund-score-total{margin-top:6px}
+  .capital-event{grid-template-columns:1fr}
+  .capital-event-impact{text-align:left}
+  .dart-frame{height:430px}
+}
 </style>
 </head>
 <body>
-<!-- BUILD: fundamental-detail-v26.1-20261017 -->
+<!-- BUILD: readability-top2-capital-risk-v27-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -417,7 +331,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 
   <div class="screening-mode-tabs">
-    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental → 최종 TOP 5</button>
+    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental → 최종 TOP 2</button>
     <button type="button" class="screening-mode-btn" data-screening-mode="trading">ICT Trading → TOP 10</button>
   </div>
 
@@ -427,15 +341,15 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
       <div class="pipeline-step"><div class="num">02</div><h4>Fundamental TOP 10</h4><p>Forward 실적을 우선해 6개 영역 100점에서 Risk Penalty를 차감합니다. PER이 낮다는 이유만으로 높은 점수를 주지 않습니다.</p></div>
       <div class="pipeline-step"><div class="num">03</div><h4>ICT Screening</h4><p>Liquidity · Structure · MSS/BOS · FVG · Protected Low를 검증합니다.</p></div>
       <div class="pipeline-step"><div class="num">04</div><h4>Entry Quality</h4><p>S = 즉시 관심 · A = Pullback 대기 · B = Breakout 대기 · C = 제외.</p></div>
-      <div class="pipeline-step"><div class="num">05</div><h4>최종 TOP 5</h4><p>Fundamental 우수성에 ICT Entry Quality를 결합해 실제 관찰 우선순위를 결정합니다.</p></div>
+      <div class="pipeline-step"><div class="num">05</div><h4>최종 TOP 2</h4><p>Fundamental 우수성에 ICT Entry Quality를 결합해 실제 관찰 우선순위를 결정합니다.</p></div>
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="fundamentalScanBtn">Fundamental 스캔 실행</button>
       <span class="scan-status" id="fundamentalScanStatus">페이지 로드 후 자동 조회합니다.</span>
     </div>
     <div class="card"><h3 class="subhead">① Fundamental TOP 20</h3><div id="fundTop20List" class="compact-chips"><span class="note">자동 조회 중입니다...</span></div></div>
-    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10 · Forward 100점</h3><div class="table-wrap"><table class="table" style="min-width:1180px"><thead><tr><th>순위</th><th>종목 / 등급</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>현재 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">Forward Fundamental 자동 분석 중입니다...</td></tr></tbody></table></div><p class="note" style="margin:10px 2px 0">최종점수 = 기본점수(100) - Risk Penalty(최대 15). Forward 실적에 과거 실적보다 높은 가중치를 두며, 확인되지 않은 Net Debt/EBITDA·ROIC·EV/EBITDA 등은 [검증 필요] 상태로 중립 처리합니다.</p></div>
-    <div class="card" style="margin-top:12px"><h3 class="subhead">⑤ Fundamental 최종 TOP 5</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Fundamental</th><th>ICT</th><th>Entry Quality</th><th>현재가</th><th>핵심 Catalyst</th><th>상태</th></tr></thead><tbody id="fundFinalBody"><tr><td colspan="8">Fundamental 및 ICT 자동 분석 중입니다...</td></tr></tbody></table></div></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10 · Forward 100점</h3><div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 등급</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>현재 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">Forward Fundamental 자동 분석 중입니다...</td></tr></tbody></table></div><p class="note" style="margin:10px 2px 0">최종점수 = 기본점수(100) - Risk Penalty(최대 15). Forward 실적에 과거 실적보다 높은 가중치를 두며, 확인되지 않은 Net Debt/EBITDA·ROIC·EV/EBITDA 등은 [검증 필요] 상태로 중립 처리합니다.</p></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">⑤ Fundamental 최종 TOP 2</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Fundamental</th><th>ICT</th><th>Entry Quality</th><th>현재가</th><th>핵심 Catalyst</th><th>상태</th></tr></thead><tbody id="fundFinalBody"><tr><td colspan="8">Fundamental 및 ICT 자동 분석 중입니다...</td></tr></tbody></table></div></div>
   </div>
 
   <div id="tradingPanel" class="screening-panel">
@@ -520,6 +434,19 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card source-action-card"><div class="eyebrow">CONSENSUS</div><h3 data-edit data-key="consTitle">삼성전기 Consensus 최신성</h3><p class="section-desc" data-edit data-key="consDesc">Forward PER·ROE·PBR·이익 추정치와 목표주가 최신성을 확인합니다.</p><a class="source-link" id="consensusLink" href="https://finance.naver.com/item/coinfo.naver?code=009150" target="_blank" rel="noopener noreferrer"><span>Consensus 확인</span><span>↗</span></a></div>
     <div class="card source-action-card"><div class="eyebrow">최신기사</div><h3 data-edit data-key="newsTitle">삼성전기 최신 주요기사</h3><p class="section-desc" data-edit data-key="newsDesc">네이버증권 종목 뉴스 페이지에서 선택 종목의 최신 기사를 확인합니다.</p><a class="source-link" id="newsLink" href="https://stock.naver.com/domestic/stock/009150/news" target="_blank" rel="noopener noreferrer"><span>종목 뉴스 확인</span><span>↗</span></a></div>
   </div>
+  <div id="capitalRiskCard" class="card capital-risk-card">
+    <div class="capital-risk-head">
+      <div><div class="capital-risk-title">자본변동 / 희석 공시 Risk</div><div class="capital-risk-sub">선택 종목의 유상증자·무상증자·CB/BW·전환권 행사·신주/추가상장 관련 내용을 별도로 확인합니다.</div></div>
+      <span id="capitalRiskStatus" class="capital-risk-status">공시 확인 중</span>
+    </div>
+    <div id="capitalEventList" class="capital-event-list"><div class="capital-empty">종목을 선택하면 관련 자본변동 공시 후보를 표시합니다.</div></div>
+    <div class="dart-verify-row">
+      <div class="dart-verify-note">아래 DART 회사별 공시 화면에서 원문을 직접 대조합니다.</div>
+      <a id="capitalDartLink" class="btn secondary" href="https://dart.fss.or.kr/" target="_blank" rel="noopener">DART 원문 열기</a>
+    </div>
+    <div class="dart-frame-wrap"><iframe id="capitalDartFrame" class="dart-frame" title="선택 종목 DART 공시" loading="lazy"></iframe></div>
+  </div>
+
 </section>
 
 <section id="blueprint" class="section-track" data-name="THEME RADAR">
@@ -787,6 +714,81 @@ function srRenderFundamentalDetail(profile){
     '<b>현재 주가에서도 성장률 대비 Valuation이 매력적인가?</b> '+srEsc(f.attractiveness)+' · '+srEsc(f.attractivenessReason)+'</div>';
   el.style.display='block';
 }
+
+function srCapitalDisclosureEvents(report){
+  const parts=[
+    ...(report?.keypoints||[]).map(x=>x?.ko||''),
+    report?.outlook?.ko||'',
+    ...(report?.risks||[]).map(x=>(x?.cat?.ko||'')+' '+(x?.body?.ko||'')),
+    report?.business?.ko||''
+  ].filter(Boolean);
+  const rules=[
+    ['유상증자',/유상증자|주주배정|일반공모/i,'희석 가능 / 자금조달'],
+    ['무상증자',/무상증자/i,'주식수 증가 · 가치희석 아님'],
+    ['전환사채(CB)',/전환사채|\bCB\b/i,'잠재 희석 / 오버행'],
+    ['신주인수권부사채(BW)',/신주인수권부사채|\bBW\b/i,'잠재 희석 / 오버행'],
+    ['교환사채(EB)',/교환사채|\bEB\b/i,'잠재 오버행'],
+    ['전환권·전환청구',/전환권 행사|전환청구|전환권행사/i,'실제 주식수 증가 가능'],
+    ['신주·추가상장',/신주 상장|신주상장|추가상장|신규 상장 주식/i,'유통주식수 증가'],
+    ['주식매수선택권',/주식매수선택권|스톡옵션.*행사/i,'잠재 희석']
+  ];
+  const out=[],seen=new Set();
+  for(const text0 of parts){
+    const text=String(text0).replace(/\s+/g,' ').trim();
+    if(!text)continue;
+    for(const [type,rx,impact] of rules){
+      if(!rx.test(text))continue;
+      const key=type+'|'+text;
+      if(seen.has(key))continue;seen.add(key);
+      const dm=text.match(/20\d{2}년\s*\d{1,2}월\s*\d{1,2}일|20\d{2}[.-]\d{1,2}[.-]\d{1,2}/);
+      out.push({type,impact,date:dm?dm[0]:'',summary:text.slice(0,220)});
+    }
+  }
+  return out.slice(0,8);
+}
+function srCapitalDartUrl(code){
+  code=String(code||'').replace(/\D/g,'').slice(0,6);
+  return code?'https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM='+encodeURIComponent(code):'https://dart.fss.or.kr/';
+}
+function srCapitalDartSearchUrl(code){
+  code=String(code||'').replace(/\D/g,'').slice(0,6);
+  return code?'https://dart.fss.or.kr/dsab001/main.do?autoSearch=true&textCrpNM='+encodeURIComponent(code):'https://dart.fss.or.kr/';
+}
+function srRenderCapitalDisclosureRisk(profile,report){
+  const list=document.getElementById('capitalEventList'),status=document.getElementById('capitalRiskStatus');
+  const frame=document.getElementById('capitalDartFrame'),link=document.getElementById('capitalDartLink');
+  if(!list||!status)return;
+  const code=String(profile?.stock_code||profile?.ticker||'').match(/\d{6}/)?.[0]||'';
+  const events=srCapitalDisclosureEvents(report);
+  if(events.length){
+    list.innerHTML=events.map(x=>
+      '<div class="capital-event"><div class="capital-event-type">'+srEsc(x.type)+(x.date?'<br><span class="note">'+srEsc(x.date)+'</span>':'')+'</div>'+
+      '<div class="capital-event-summary">'+srEsc(x.summary)+'</div><div class="capital-event-impact">'+srEsc(x.impact)+'</div></div>'
+    ).join('');
+    status.textContent=events.length+'건 후보';
+  }else{
+    list.innerHTML='<div class="capital-empty">자동 감지된 자본변동 이벤트가 없습니다. 다만 누락 가능성이 있으므로 아래 DART 원문 목록에서 유상증자·무상증자·전환사채·전환권행사·추가상장 공시를 직접 확인하세요.</div>';
+    status.textContent='DART 확인';
+  }
+  const dartFrameUrl=srCapitalDartUrl(code),dartSearchUrl=srCapitalDartSearchUrl(code);
+  if(frame&&frame.src!==dartFrameUrl)frame.src=dartFrameUrl;
+  if(link)link.href=dartSearchUrl;
+}
+async function srLoadCapitalDisclosureRisk(profile){
+  const status=document.getElementById('capitalRiskStatus');
+  if(status)status.textContent='공시 확인 중';
+  const code=String(profile?.stock_code||profile?.ticker||'').match(/\d{6}/)?.[0]||'';
+  if(!code){srRenderCapitalDisclosureRisk(profile,null);return}
+  try{
+    const item={code,name:profile?.name||'',market:profile?.market||profile?.market_name||'',close:srNum(profile?.current_price)||null};
+    const report=await srKosaiCached(item);
+    profile.capitalReport=report;
+    srRenderCapitalDisclosureRisk(profile,report);
+  }catch(e){
+    console.warn('capital disclosure risk load failed',e);
+    srRenderCapitalDisclosureRisk(profile,null);
+  }
+}
 function applyProfileText(profile){
   if(!profile)return;
   const t=profile.text||{};
@@ -802,7 +804,7 @@ function applyProfileText(profile){
   });
   const inp=profile.inputs||{};
   tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
-  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);
+  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);srLoadCapitalDisclosureRisk(profile);
 }
 function updateProfileLinks(profile){
   const links=srCanonicalLinks(profile);
@@ -2312,12 +2314,19 @@ function srRenderFundTop10(list){
   const el=document.getElementById('fundTop10Body');if(!el)return;
   el.innerHTML=list.map((x,i)=>
     '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
-    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+srEsc(x.f.grade)+'</span></td><td><b>'+x.f.total.toFixed(1)+'</b><br><span class="note">Base '+x.f.base.toFixed(1)+' / P -'+x.f.riskPenalty+'</span></td>'+
-    '<td>'+x.f.groups.growth.toFixed(1)+'/25</td><td>'+x.f.groups.profitability.toFixed(1)+'/20</td><td>'+x.f.groups.financial.toFixed(1)+'/15</td>'+
-    '<td>'+x.f.groups.quality.toFixed(1)+'/15</td><td>'+x.f.groups.valuation.toFixed(1)+'/15</td><td>'+x.f.groups.industry.toFixed(1)+'/10</td>'+
-    '<td>'+x.f.attractiveness+'</td></tr>'
+    '<td>'+(i+1)+'</td>'+
+    '<td><div class="fund-stock-name">'+srEsc(x.item.name)+'</div><span class="fund-grade-badge">'+srEsc(x.f.grade)+'</span></td>'+
+    '<td><div class="fund-score-main">'+x.f.total.toFixed(1)+'</div><div class="fund-score-meta">Base '+x.f.base.toFixed(1)+' · Penalty -'+x.f.riskPenalty+'</div></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.growth.toFixed(1)+'/25</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.profitability.toFixed(1)+'/20</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.financial.toFixed(1)+'/15</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.quality.toFixed(1)+'/15</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.valuation.toFixed(1)+'/15</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.industry.toFixed(1)+'/10</span></td>'+
+    '<td><span class="fund-val-answer">'+x.f.attractiveness+'</span></td></tr>'
   ).join('');
 }
+
 function srRenderFundFinal(list){
   const el=document.getElementById('fundFinalBody');if(!el)return;
   el.innerHTML=list.map((x,i)=>
@@ -2839,9 +2848,9 @@ async function runFundamentalPipeline(){
     const withIct=(await srMapLimit(top10,4,async x=>{const ict=await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code));const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';return{...x,ict,catalystText}})).filter(Boolean);
     const rank={S:0,A:1,B:2,C:3};
     withIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.adjustedScore-a.ict.adjustedScore||b.f.total-a.f.total);
-    const final5=withIct.filter(x=>x.ict.finalEligible).slice(0,5);
+    const final5=withIct.filter(x=>x.ict.finalEligible).slice(0,2);
     fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
-    status.textContent='완료 · Fundamental TOP20 → TOP10 → ICT Screening → Entry Quality → 최종 TOP5 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · '+(stockUniverseMeta.liquidity_mode||'거래대금');
+    status.textContent='완료 · Fundamental TOP20 → TOP10 → ICT Screening → Entry Quality → 최종 TOP2 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · '+(stockUniverseMeta.liquidity_mode||'거래대금');
   }catch(e){console.error(e);status.textContent='Fundamental 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
 }
@@ -2887,9 +2896,9 @@ async function runAutomaticScreenings(){
     })).filter(Boolean);
     const rank={S:0,A:1,B:2,C:3};
     fundWithIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.adjustedScore-a.ict.adjustedScore||b.f.total-a.f.total);
-    const final5=fundWithIct.filter(x=>x.ict.finalEligible).slice(0,5);
+    const final5=fundWithIct.filter(x=>x.ict.finalEligible).slice(0,2);
     fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
-    if(fStatus)fStatus.textContent='자동 조회 완료 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · Fundamental TOP20 → TOP10 → ICT → 최종 TOP5 · '+(stockUniverseMeta.liquidity_mode||'거래대금');
+    if(fStatus)fStatus.textContent='자동 조회 완료 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · Fundamental TOP20 → TOP10 → ICT → 최종 TOP2 · '+(stockUniverseMeta.liquidity_mode||'거래대금');
 
     if(iStatus)iStatus.textContent='자동 조회 4/4 · 유동성 '+tradingCandidates.length+'개 Weekly/Daily 1차 ICT 스크리닝 중...';
     const coarse=(await srMapLimit(tradingCandidates,12,item=>{
