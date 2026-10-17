@@ -183,10 +183,56 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   color:#7A8699;
   margin-top:8px;
 }
+
+/* BUILD v31 · M's Stock Room + Sector TOP5 + Fundamental Theme 20 */
+.hero.hero-room{
+  display:flex;
+  grid-template-columns:none;
+  align-items:center;
+  min-height:260px;
+  padding:70px 0 58px;
+}
+.hero-room .room-title-wrap{width:100%}
+.hero-room .room-title{
+  margin:0;
+  font-size:clamp(44px,5vw,76px);
+  line-height:1.02;
+  letter-spacing:-2.6px;
+  font-weight:900;
+  color:var(--ink);
+}
+.fund-theme-card{padding:20px}
+.fund-theme-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}
+.fund-theme-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.fund-theme-btn{
+  appearance:none;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:11px;
+  min-height:44px;
+  padding:9px 10px;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  text-align:left;
+  transition:.15s ease;
+}
+.fund-theme-btn:hover{border-color:#9fbbe8;background:#f7faff;transform:translateY(-1px)}
+.fund-theme-btn.active{border-color:#2468d8;background:#eaf2ff;color:#0b57d0;box-shadow:0 0 0 1px rgba(36,104,216,.08) inset}
+@media(max-width:1180px){.fund-theme-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:820px){
+  .hero.hero-room{min-height:190px;padding:48px 0 38px}
+  .hero-room .room-title{font-size:42px;letter-spacing:-1.8px}
+  .fund-theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fund-theme-head{flex-direction:column}
+}
+
 </style>
 </head>
 <body>
-<!-- BUILD: remove-fundamental-final-menu-v30-20261017 -->
+<!-- BUILD: stock-room-theme20-sector5-v31-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -213,21 +259,9 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </header>
 <div class="update-strip"><span class="update-dot"></span><span>정보 업데이트</span><b id="topUpdatedText">-</b><span>· KST</span></div>
 
-<section id="home" class="hero section-track" data-name="HOME">
-  <div>
-    <div class="eyebrow" data-edit data-key="heroEyebrow">AI INVESTMENT WORKFLOW</div>
-    <h1 data-edit data-key="heroTitle">왜 지금 이 종목을<br>사야 하는가?</h1>
-    <p data-edit data-key="heroDesc">2026년 10월 2일 종가 기준으로 시장 환경부터 산업 사이클, 실적·밸류에이션·Catalyst·기술적 위치까지 연결해 “현재 가격에서의 기대수익과 하락위험”을 판단합니다.</p>
-    <div class="hero-quote" data-edit data-key="heroQuote">Fundamental × Growth/Value × Market Structure → Risk / Reward</div>
-    <div class="hero-actions"><button class="btn primary" onclick="go('market')">오늘의 시장판단 →</button><button class="btn secondary" onclick="go('screening')">추천 TOP 5 보기</button></div>
-  </div>
-  <div class="workflow">
-    <div class="flow"><div class="flow-n">01</div><div><b>MARKET REGIME</b><span>Risk-On / Neutral / Risk-Off</span></div></div>
-    <div class="flow"><div class="flow-n">02</div><div><b>SECTOR CYCLE</b><span>성장률 · 수요 · 공급 · CAPEX</span></div></div>
-    <div class="flow"><div class="flow-n">03</div><div><b>SCREENING</b><span>성장 · 실적 · 수급 · Catalyst</span></div></div>
-    <div class="flow"><div class="flow-n">04</div><div><b>DEEP DIVE</b><span>실적 · Forward · Valuation · IR</span></div></div>
-    <div class="flow"><div class="flow-n">05</div><div><b>ICT SETUP</b><span>Liquidity · Structure · MSS · FVG · Protected Low</span></div></div>
-    <div class="flow"><div class="flow-n">06</div><div><b>RANKING</b><span>Fundamental TOP 10 · ICT Trading TOP 10</span></div></div>
+<section id="home" class="hero hero-room section-track" data-name="HOME">
+  <div class="room-title-wrap">
+    <h1 class="room-title">M's Stock Room</h1>
   </div>
 </section>
 
@@ -298,13 +332,15 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="sector" class="section-track" data-name="SECTOR">
-  <div class="section-head"><div><h2 class="section-title">② 유망 Sector TOP 3</h2><p class="section-desc">산업 성장률, 수요·공급, CAPEX, 고객사 투자와 Cycle 위치를 함께 평가합니다.</p></div></div>
-  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>Sector</th><th>투자포인트</th><th>Cycle</th><th>1~3년 성장동력</th></tr></thead><tbody>
-    <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag green" data-edit data-key="sector1Cycle" >성장 → 호황</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
+  <div class="section-head"><div><h2 class="section-title">② 유망 Sector TOP 5</h2><p class="section-desc">산업 성장률, 수요·공급, CAPEX와 실적 방향을 함께 평가합니다. <b>현재 Cycle</b>은 업종의 수요·이익 국면을 초기회복 → 성장 → 호황 → Peak → 둔화 → 침체 중 어디에 위치하는지 보여주는 참고 지표입니다.</p></div></div>
+  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>Sector</th><th>투자포인트</th><th>현재 Cycle</th><th>1~3년 성장동력</th></tr></thead><tbody>
+    <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag green" data-edit data-key="sector1Cycle">성장 → 호황</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
     <tr><td class="rank">2</td><td><b data-edit data-key="sector2">전력기기 / Data Center Grid</b></td><td data-edit data-key="sector2Point">AI 데이터센터 전력 수요·북미 송배전 투자·전력망 병목</td><td><span class="tag blue" data-edit data-key="sector2Cycle">성장</span></td><td data-edit data-key="sector2Growth">북미 전력망 교체 · 데이터센터 · HVDC/배전 자동화</td></tr>
-    <tr><td class="rank">3</td><td><b data-edit data-key="sector3">방산 / 항공우주</b></td><td data-edit data-key="sector3Point">수출 수주잔고·유럽/중동 재무장·우주 발사 이벤트</td><td><span class="tag amber" data-edit data-key="sector3Cycle">성장</span></td><td data-edit data-key="sector3Growth">폴란드·중동 후속계약 · 생산능력 확대 · 우주사업</td></tr>
+    <tr><td class="rank">3</td><td><b data-edit data-key="sector3">방산 / 항공우주</b></td><td data-edit data-key="sector3Point">수출 수주잔고·유럽/중동 재무장·우주 발사 이벤트</td><td><span class="tag amber" data-edit data-key="sector3Cycle">성장</span></td><td data-edit data-key="sector3Growth">유럽·중동 후속계약 · 생산능력 확대 · 우주사업</td></tr>
+    <tr><td class="rank">4</td><td><b>조선 / 조선기자재</b></td><td>LNG·친환경 선박 수요, 고선가 수주잔고, 제한적인 글로벌 공급능력</td><td><span class="tag green">호황</span></td><td>LNG·암모니아 추진선 · 엔진/기자재 Mix · 고부가 선종</td></tr>
+    <tr><td class="rank">5</td><td><b>화장품 / 뷰티</b></td><td>K-Beauty 수출, 북미·일본 채널 확장, ODM 및 미용기기 성장</td><td><span class="tag blue">성장</span></td><td>글로벌 유통 확대 · 인디브랜드 · ODM · 미용의료기기</td></tr>
   </tbody></table></div>
-  <div class="card" style="margin-top:14px"><h3 class="subhead">산업 Cycle 위치</h3><div class="cycle"><span>초기 회복</span><span class="active">성장</span><span>호황</span><span>Peak</span><span>둔화</span><span>침체</span></div><p class="note" style="margin:14px 0 0">Cycle 표시는 투자 판단을 단순화하기 위한 템플릿입니다. 실제 산업 판단 시 수요·재고·가격·CAPEX·가동률 자료로 검증하세요.</p></div>
+  <p class="note" style="margin:10px 2px 0"><b>Cycle은 종목 매수 신호가 아닙니다.</b> 같은 성장 국면에서도 Valuation과 실적 Revision에 따라 종목별 매력도는 달라질 수 있습니다.</p>
 </section>
 
 <section id="screening" class="section-track" data-name="SCREENING">
@@ -338,24 +374,33 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 
   <div class="screening-mode-tabs">
-    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental TOP 10</button>
+    <button type="button" class="screening-mode-btn active" data-screening-mode="fundamental">Fundamental Theme</button>
     <button type="button" class="screening-mode-btn" data-screening-mode="trading">ICT Trading → TOP 10</button>
   </div>
 
   <div id="fundamentalPanel" class="screening-panel active">
-    <div class="pipeline-grid">
-      <div class="pipeline-step"><div class="num">01</div><h4>Fundamental Screening</h4><p>KOSPI/KOSDAQ 전체에서 유동성·시가총액 조건을 통과한 후보를 분석해 Fundamental TOP 20을 발굴합니다.</p></div>
-      <div class="pipeline-step"><div class="num">02</div><h4>Fundamental TOP 10</h4><p>Forward 실적을 우선해 6개 영역 100점에서 Risk Penalty를 차감하고 상위 10종목을 선정합니다.</p></div>
+    <div class="card fund-theme-card">
+      <div class="fund-theme-head">
+        <div>
+          <h3 class="subhead" style="margin:0">① Fundamental Theme 20</h3>
+          <p class="note" style="margin:6px 0 0">먼저 산업/테마를 선택합니다. 선택한 테마의 대표 KOSPI·KOSDAQ 종목을 Forward 실적·수익성·재무·Valuation·산업 경쟁력 기준으로 다시 점수화합니다.</p>
+        </div>
+        <span class="tag blue" id="fundThemeSelected">반도체 / AI</span>
+      </div>
+      <div id="fundThemeList" class="fund-theme-grid"></div>
     </div>
     <div class="scan-toolbar">
-      <button type="button" class="btn dark" id="fundamentalScanBtn">Fundamental 스캔 실행</button>
-      <span class="scan-status" id="fundamentalScanStatus">페이지 로드 후 자동 조회합니다.</span>
+      <button type="button" class="btn dark" id="fundamentalScanBtn">선택 테마 재분석</button>
+      <span class="scan-status" id="fundamentalScanStatus">반도체 / AI 테마를 자동 분석합니다.</span>
     </div>
-    <div class="card"><h3 class="subhead">① Fundamental TOP 20</h3><div id="fundTop20List" class="compact-chips"><span class="note">자동 조회 중입니다...</span></div></div>
-    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10 · Forward 100점</h3><div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 등급</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>성장 대비 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">Forward Fundamental 자동 분석 중입니다...</td></tr></tbody></table></div><p class="note" style="margin:10px 2px 0">최종점수 = 기본점수(100) - Risk Penalty(최대 15). Forward 실적에 과거 실적보다 높은 가중치를 둡니다. <b>성장 대비 Valuation</b>: 매력 = 성장률 대비 가격 메리트가 큼 · 중립 = 대체로 적정 · 부담 = 성장률을 감안해도 Valuation 점수가 낮음. 확인되지 않은 Net Debt/EBITDA·ROIC·EV/EBITDA 등은 [검증 필요] 상태로 중립 처리합니다.</p></div>
+    <div class="card">
+      <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / AI · Fundamental TOP 10</h3>
+      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 등급</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>성장 대비 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
+      <p class="note" style="margin:10px 2px 0">테마 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 테마 버튼을 바꾸면 해당 산업의 TOP 10을 다시 계산합니다.</p>
+    </div>
   </div>
 
-  <div id="tradingPanel" class="screening-panel">
+<div id="tradingPanel" class="screening-panel">
     <div class="card">
       <h3 class="subhead">ICT QUALITY SCORE · Raw 100점 → Penalty → Adjusted</h3>
       <div class="ict-score-card">
@@ -1969,6 +2014,31 @@ let fundamentalScanResults={top20:[],top10:[]};
 let ictTradingResults={top10:[],top5:[]};
 const srKosaiCache=new Map();
 
+const FUNDAMENTAL_THEMES=[
+  {key:'semi_ai',label:'반도체 / AI',codes:['005930','000660','042700','058470','403870','240810','039030','036930','095340','089030','166090','131970','356860']},
+  {key:'power_grid',label:'전력망 / 전선',codes:['267260','010120','298040','006260','103590','001440','000500','062040','033100','006340','006910','388050']},
+  {key:'auto',label:'자동차 / 부품',codes:['005380','000270','012330','161390','204320','011210','018880','011070','005850','123040','064960']},
+  {key:'shipbuilding',label:'조선 / 기자재',codes:['009540','010140','042660','329180','443060','082740','071970','017960','033500','075580']},
+  {key:'defense_space',label:'방산 / 우주항공',codes:['012450','079550','047810','064350','272210','103140','005870','099320','211270','077970','042660']},
+  {key:'battery',label:'2차전지',codes:['373220','006400','051910','003670','247540','086520','066970','361610','020150','336370','357780']},
+  {key:'bio',label:'바이오 / 제약',codes:['207940','068270','000100','128940','326030','302440','145020','141080','196170','028300','214450']},
+  {key:'beauty',label:'화장품 / 뷰티',codes:['090430','051900','192820','161890','278470','018290','257720','214420','241710','237880','214150','214450']},
+  {key:'platform',label:'인터넷 / 플랫폼',codes:['035420','035720','377300','323410','067160','181710','023590','093320','079940','060250','042000']},
+  {key:'game',label:'게임',codes:['259960','036570','251270','263750','293490','225570','112040','095660','194480','078340','063080']},
+  {key:'robot',label:'로봇 / 자동화',codes:['277810','454910','108490','056080','090360','348340','389500','058610','140670','090710','322510']},
+  {key:'finance',label:'금융 / 증권',codes:['105560','055550','086790','316140','071050','005940','039490','006800','016360','001500','138040']},
+  {key:'insurance',label:'보험',codes:['032830','000810','005830','088350','000370','001450','003690','085620','138040','031210','000400']},
+  {key:'construction',label:'건설 / 인프라',codes:['000720','028260','047040','006360','375500','294870','028050','013580','000210','005960']},
+  {key:'industrial',label:'기계 / 산업재',codes:['034020','241560','267270','112610','100840','077970','009160','064350','082740','071970','036890','015230']},
+  {key:'nuclear_energy',label:'원전 / 에너지',codes:['034020','052690','051600','015760','083650','105840','094820','388050','010120','298040']},
+  {key:'entertainment',label:'엔터 / 미디어',codes:['352820','041510','035900','122870','253450','035760','036420','173940','067160','259960']},
+  {key:'food',label:'음식료 / 소비재',codes:['097950','004370','271560','280360','007310','005300','001680','136480','003230','145990']},
+  {key:'travel',label:'여행 / 레저 / 항공',codes:['003490','020560','089590','272450','180640','039130','080160','032350','034230','114090','008770']},
+  {key:'materials',label:'철강 / 소재 / 화학',codes:['005490','004020','010130','103140','011780','011170','009830','051910','006650','010060','014830']}
+];
+let activeFundThemeKey='semi_ai';
+
+
 function srScreeningItemByCode(code){
   const direct=fullStockUniverse.find(x=>x.code===code);
   if(direct)return direct;
@@ -2017,7 +2087,7 @@ function initScreeningModes(){
   }));
   document.getElementById('fundamentalScanBtn')?.addEventListener('click',runFundamentalPipeline);
   document.getElementById('ictScanBtn')?.addEventListener('click',runIctTradingScan);
-  srBindScreeningList('fundTop20List','fundamentalScanStatus');
+  srInitFundThemeUI();
   srBindScreeningList('fundTop10Body','fundamentalScanStatus');
   srBindScreeningList('ictTop10Body','ictScanStatus');
 }
@@ -2305,6 +2375,66 @@ async function srMapLimit(arr,limit,fn){
   async function worker(){while(true){const i=idx++;if(i>=arr.length)return;try{out[i]=await fn(arr[i],i)}catch(e){out[i]=null}}}
   await Promise.all(Array.from({length:Math.min(limit,arr.length)},worker));return out;
 }
+
+function srFundThemeByKey(key){return FUNDAMENTAL_THEMES.find(x=>x.key===key)||FUNDAMENTAL_THEMES[0]}
+function srRenderFundThemes(){
+  const el=document.getElementById('fundThemeList');if(!el)return;
+  el.innerHTML=FUNDAMENTAL_THEMES.map((t,i)=>
+    '<button type="button" class="fund-theme-btn'+(t.key===activeFundThemeKey?' active':'')+'" data-fund-theme="'+t.key+'">'+
+    String(i+1).padStart(2,'0')+' · '+srEsc(t.label)+'</button>'
+  ).join('');
+  const selected=srFundThemeByKey(activeFundThemeKey);
+  const badge=document.getElementById('fundThemeSelected');if(badge)badge.textContent=selected.label;
+  const title=document.getElementById('fundThemeTop10Title');if(title)title.textContent='② '+selected.label+' · Fundamental TOP 10';
+}
+function srFundThemeCandidates(theme){
+  const byCode=new Map(fullStockUniverse.map(x=>[x.code,x]));
+  const seen=new Set(),out=[];
+  for(const code of theme.codes||[]){
+    const item=byCode.get(code);
+    if(!item||seen.has(item.code))continue;
+    seen.add(item.code);out.push(item);
+  }
+  return out.sort((a,b)=>(b.marketcap||0)-(a.marketcap||0)||(b.turnover||0)-(a.turnover||0));
+}
+async function srRunFundTheme(themeKey,status){
+  await loadStockUniverse();
+  const theme=srFundThemeByKey(themeKey);
+  activeFundThemeKey=theme.key;
+  srRenderFundThemes();
+  const candidates=srFundThemeCandidates(theme);
+  if(status)status.textContent=theme.label+' 대표 '+candidates.length+'개 종목 Forward Fundamental 분석 중...';
+  const reports=(await srMapLimit(candidates,6,async item=>{
+    const report=await srKosaiCached(item),f=srFundamentalScore(report,item);
+    return report&&f?{item,report,f}:null;
+  })).filter(Boolean);
+  reports.sort((a,b)=>b.f.total-a.f.total||(b.item.marketcap||0)-(a.item.marketcap||0));
+  const top10=reports.slice(0,10);
+  srRenderFundTop10(top10);
+  if(!top10.length){
+    const body=document.getElementById('fundTop10Body');
+    if(body)body.innerHTML='<tr><td colspan="10">해당 테마의 Fundamental 데이터를 불러오지 못했습니다. 재분석을 눌러주세요.</td></tr>';
+  }
+  fundamentalScanResults={themeKey:theme.key,top20:reports,top10};
+  if(status)status.textContent='완료 · '+theme.label+' '+reports.length+'개 평가 → TOP '+top10.length+' · 기준 '+(stockUniverseMeta.as_of||'최신');
+  return top10;
+}
+function srInitFundThemeUI(){
+  srRenderFundThemes();
+  const el=document.getElementById('fundThemeList');if(!el||el.dataset.bound==='1')return;
+  el.dataset.bound='1';
+  el.addEventListener('click',async e=>{
+    const btn=e.target.closest('[data-fund-theme]');if(!btn)return;
+    const next=btn.dataset.fundTheme;
+    if(!next)return;
+    activeFundThemeKey=next;
+    srRenderFundThemes();
+    const body=document.getElementById('fundTop10Body');
+    if(body)body.innerHTML='<tr><td colspan="10">'+srEsc(srFundThemeByKey(next).label)+' Fundamental 분석 중입니다...</td></tr>';
+    await runFundamentalPipeline();
+  });
+}
+
 function srRenderFundTop20(list){
   const el=document.getElementById('fundTop20List');if(!el)return;
   el.innerHTML=list.map((x,i)=>
@@ -2830,18 +2960,16 @@ async function runIctTradingScan(){
 }
 
 async function runFundamentalPipeline(){
-  const status=document.getElementById('fundamentalScanStatus'),btn=document.getElementById('fundamentalScanBtn');if(btn)btn.disabled=true;
+  const status=document.getElementById('fundamentalScanStatus'),btn=document.getElementById('fundamentalScanBtn');
+  if(btn)btn.disabled=true;
   try{
-    await loadStockUniverse();status.textContent='Forward Fundamental 후보 수집 중...';
-    const candidates=srLiquidityCandidates(50);
-    const reports=(await srMapLimit(candidates,8,async item=>{const report=await srKosaiCached(item);const f=srFundamentalScore(report,item);return report&&f?{item,report,f}:null})).filter(Boolean);
-    reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
-    const top20=reports.slice(0,20),top10=top20.slice(0,10);
-    srRenderFundTop20(top20);srRenderFundTop10(top10);
-    fundamentalScanResults={top20,top10};
-    status.textContent='완료 · Fundamental TOP20 → TOP10 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · '+(stockUniverseMeta.liquidity_mode||'거래대금');
-  }catch(e){console.error(e);status.textContent='Fundamental 스캔 실패: '+e.message}
-  finally{if(btn)btn.disabled=false}
+    await srRunFundTheme(activeFundThemeKey,status);
+  }catch(e){
+    console.error(e);
+    if(status)status.textContent='Fundamental 테마 분석 실패: '+e.message;
+  }finally{
+    if(btn)btn.disabled=false;
+  }
 }
 
 
@@ -2858,18 +2986,9 @@ async function runAutomaticScreenings(){
   if(fBtn)fBtn.disabled=true;if(iBtn)iBtn.disabled=true;
   try{
     await loadStockUniverse();
-    if(fStatus)fStatus.textContent='Forward Fundamental 후보 50개 분석 중...';
+    if(fStatus)fStatus.textContent='Fundamental 테마 자동 분석 중...';
     if(iStatus)iStatus.textContent='자동 조회 대기 · ICT 유동성 후보를 준비합니다.';
-    const fundCandidates=srLiquidityCandidates(50);
-    const reports=(await srMapLimit(fundCandidates,8,async item=>{
-      const report=await srKosaiCached(item),fund=srFundamentalScore(report,item);
-      return report&&fund?{item,report,f:fund}:null;
-    })).filter(Boolean);
-    reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
-    const top20=reports.slice(0,20),top10=top20.slice(0,10);
-    srRenderFundTop20(top20);srRenderFundTop10(top10);
-    fundamentalScanResults={top20,top10};
-    if(fStatus)fStatus.textContent='자동 조회 완료 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · Fundamental TOP20 → TOP10 · '+(stockUniverseMeta.liquidity_mode||'거래대금');
+    await srRunFundTheme(activeFundThemeKey,fStatus);
 
     const tradingCandidates=srLiquidityCandidates();
     if(iStatus)iStatus.textContent='자동 조회 · 전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 중 유동성 '+tradingCandidates.length+'개 KRX 일봉 일괄 조회 중...';
