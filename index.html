@@ -111,7 +111,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: search-ict-total-v23.2-20261017 -->
+<!-- BUILD: dynamic-catalyst-risk-v24-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -354,7 +354,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="catalyst" class="section-track" data-name="CATALYST / RISK">
-  <div class="section-head"><div><h2 class="section-title">Catalyst & Risk</h2><p class="section-desc">상승 동력과 투자 논리를 훼손할 요인을 같은 화면에서 봅니다.</p></div></div>
+  <div class="section-head"><div><h2 class="section-title">Catalyst & Risk</h2><p class="section-desc">선택 종목의 실적·Consensus·정성 Keypoint·Valuation·ICT 구조를 조합해 Catalyst와 Risk를 자동 갱신합니다.</p></div></div>
   <div class="two-col">
     <div class="card"><h3 class="subhead">Catalyst Timeline</h3><div class="facts"><div class="fact-row"><span><span class="tag green">1~3개월</span></span><b data-edit data-key="shortCat">10/28 예상 3Q 실적 · MLCC 판가/믹스 · 추가 LTA</b></div><div class="fact-row"><span><span class="tag blue">3~6개월</span></span><b data-edit data-key="midCat">2027년 1월 LTA 공급 개시 · FCBGA 증설 가시화</b></div><div class="fact-row"><span><span class="tag purple">6~24개월</span></span><b data-edit data-key="longCat">AI 서버 MLCC 비중 확대 · FCBGA 고객 확장 · 전장 고부가</b></div></div></div>
     <div class="card"><h3 class="subhead">Risk Matrix</h3><div class="risk-grid"><div class="risk-row"><b data-edit data-key="risk1">Valuation 부담 / Multiple 압축</b><span class="risk-level medium" data-edit data-key="risk1P">가능성 H</span><span class="risk-level high" data-edit data-key="risk1I">영향 H</span></div><div class="risk-row"><b data-edit data-key="risk2">AI CSP CAPEX 둔화</b><span class="risk-level low" data-edit data-key="risk2P">가능성 M</span><span class="risk-level high" data-edit data-key="risk2I">영향 H</span></div><div class="risk-row"><b data-edit data-key="risk3">MLCC 공급 정상화 / 판가 둔화</b><span class="risk-level medium" data-edit data-key="risk3P">가능성 M</span><span class="risk-level medium" data-edit data-key="risk3I">영향 M</span></div><div class="risk-row"><b data-edit data-key="risk4">FCBGA 증설·수율 Ramp 지연</b><span class="risk-level low" data-edit data-key="risk4P">가능성 L</span><span class="risk-level medium" data-edit data-key="risk4I">영향 M</span></div></div></div>
@@ -616,7 +616,7 @@ function applyProfileText(profile){
   });
   const inp=profile.inputs||{};
   tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
-  updateProfileLinks(profile);calcRR();applyTradingStateColors();
+  updateProfileLinks(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);
 }
 function updateProfileLinks(profile){
   const links=srCanonicalLinks(profile);
@@ -1037,6 +1037,121 @@ function srApplyKosaiQualitative(t,report){
   if(kp[3])t.moat=kp[3];
   if(!t.barrier||t.barrier==='—')t.barrier='기술·고객 Qualification·CAPEX 진입장벽 확인';
 }
+
+function srInsightSentence(s,max=110){
+  return String(s||'').replace(/\s+/g,' ').replace(/\s*\[AI\]\s*/g,' ').trim().split(/(?<=[.!?。])\s+/)[0].slice(0,max).trim();
+}
+function srInsightUnique(list){
+  const out=[],seen=new Set();
+  for(const raw of list){
+    const s=srInsightSentence(raw);
+    const k=s.replace(/[\s·,./()%-]/g,'').toLowerCase();
+    if(!s||k.length<6||seen.has(k))continue;
+    seen.add(k);out.push(s);
+  }
+  return out;
+}
+function srDynamicCatalystRisk(report,qs,m,tech,ict,cons,item){
+  const kp=(report?.keypoints||[]).map(x=>x?.ko).filter(Boolean);
+  const outlook=String(report?.outlook?.ko||'').trim();
+  const biz=String(report?.business?.ko||'').trim();
+  const all=srInsightUnique([...kp,outlook]);
+  const posRx=/수주|계약|양산|출시|신제품|신규|증설|확대|성장|개선|회복|점유율|고객|수요|가동|흑자|상향|진출|투자|capex|ai|hbm|socamm|수출|매출 증가|이익 증가/i;
+  const negRx=/둔화|감소|하락|적자|지연|부진|부담|경쟁|리스크|우려|축소|원가|비용|환율|규제|소송|차입|희석|증자|재고|수율|가격 하락|수요 감소/i;
+  const positives=all.filter(x=>posRx.test(x)&&!negRx.test(x));
+  const negatives=all.filter(x=>negRx.test(x));
+
+  const actual=qs.filter(x=>!x.est),latest=actual.at(-1),prev=actual.at(-2),next=qs.find(x=>x.est);
+  const revGrowth=(latest?.rev!=null&&prev?.rev)?(latest.rev/prev.rev-1)*100:null;
+  const opmDelta=(latest?.opm!=null&&prev?.opm!=null)?latest.opm-prev.opm:null;
+  const nextRevGrowth=(next?.rev!=null&&latest?.rev)?(next.rev/latest.rev-1)*100:null;
+  const nextOpGrowth=(next?.op!=null&&latest?.op&&latest.op!==0)?(next.op/latest.op-1)*100:null;
+
+  const catalysts=[];
+  positives.forEach(x=>catalysts.push(x));
+  if(revGrowth!=null||opmDelta!=null){
+    const bits=[];
+    if(revGrowth!=null)bits.push('최근 분기 매출 QoQ '+(revGrowth>=0?'+':'')+revGrowth.toFixed(1)+'%');
+    if(latest?.opm!=null)bits.push('OPM '+latest.opm.toFixed(1)+'%');
+    if(opmDelta!=null)bits.push('OPM '+(opmDelta>=0?'개선 ':'하락 ')+Math.abs(opmDelta).toFixed(1)+'%p');
+    if((revGrowth??0)>0||(opmDelta??0)>0)catalysts.push(bits.join(' · '));
+  }
+  if(next){
+    const bits=[next.label||'다음 분기'];
+    if(nextRevGrowth!=null)bits.push('매출 '+(nextRevGrowth>=0?'+':'')+nextRevGrowth.toFixed(1)+'% 예상');
+    if(nextOpGrowth!=null)bits.push('영업이익 '+(nextOpGrowth>=0?'+':'')+nextOpGrowth.toFixed(1)+'% 예상');
+    if(bits.length>1)catalysts.push(bits.join(' · '));
+  }
+  if(cons&&tech?.price){
+    const upside=(cons.targetPrice/tech.price-1)*100;
+    if(upside>5)catalysts.push('Consensus 목표가 '+srFmt(cons.targetPrice)+'원 · 현재가 대비 +'+upside.toFixed(1)+'%');
+  }
+  if(ict&&['S','A'].includes(ict.entryQuality)&&ict.adjustedScore>=80){
+    catalysts.push('ICT '+ict.setupType+' · Adjusted '+ict.adjustedScore+'/100 · '+ict.finalOpinion);
+  }
+  const bizLong=srInsightSentence(biz,120);
+  if(bizLong&&posRx.test(bizLong))catalysts.push(bizLong);
+
+  const cats=srInsightUnique(catalysts);
+  const shortCat=cats[0]||('최근 실적·공시에서 '+item.name+' 단기 Catalyst 추가 확인');
+  const midCat=cats[1]||(next?(next.label+' 실적 Consensus와 가이던스 변화 확인'):'다음 분기 실적·수주·가이던스 변화 확인');
+  const longCat=cats[2]||(bizLong?bizLong+' · 중장기 성장 지속성 확인':'시장점유율·제품 믹스·중장기 이익 성장 지속성 확인');
+
+  const riskCandidates=[];
+  negatives.slice(0,2).forEach((x,i)=>riskCandidates.push({text:x,p:i===0?'M':'L',impact:'H'}));
+
+  const fper=srNum(m?.fper??m?.fperAI),per=srNum(m?.per),pbr=srNum(m?.pbr);
+  const valHigh=(fper!=null&&fper>=40)||(per!=null&&per>=50)||(pbr!=null&&pbr>=6);
+  const valMid=(fper!=null&&fper>=25)||(per!=null&&per>=30)||(pbr!=null&&pbr>=3);
+  riskCandidates.push({
+    text:valHigh?'고평가 구간 / Valuation Multiple 압축':valMid?'Valuation Multiple 압축 가능성':'시장 Multiple 하락에 따른 Valuation 변동',
+    p:valHigh?'H':valMid?'M':'L',
+    impact:valHigh?'H':'M'
+  });
+
+  const earningsWeak=(revGrowth!=null&&revGrowth<0)||(opmDelta!=null&&opmDelta<0);
+  const estimateWeak=(nextRevGrowth!=null&&nextRevGrowth<0)||(nextOpGrowth!=null&&nextOpGrowth<0);
+  riskCandidates.push({
+    text:earningsWeak?'최근 실적 모멘텀 둔화 / 이익 기대치 하향':estimateWeak?'다음 분기 Consensus 둔화':'실적 Consensus 미달 가능성',
+    p:earningsWeak?'H':estimateWeak?'M':'L',
+    impact:'H'
+  });
+
+  if(ict){
+    const ictReason=(ict.hardFilterReasons||[])[0]||(ict.reasons||[])[0];
+    riskCandidates.push({
+      text:ictReason?('ICT 구조 리스크 · '+ictReason):(ict.entryQuality==='B'?'Protected High/BSL 돌파 전 추격 리스크':ict.entryQuality==='C'?'ICT 진입 구조 불충분':'ICT Setup 무효화 / Protected Low 이탈'),
+      p:ict.entryQuality==='C'?'H':ict.entryQuality==='B'?'M':'L',
+      impact:ict.entryQuality==='C'?'H':'M'
+    });
+    if(ict.gapRisk?.max>=6)riskCandidates.push({text:'Gap Risk / 단기 변동성 확대',p:ict.gapRisk.max>=10?'H':'M',impact:'M'});
+  }else{
+    const overheat=tech?.rv>=70||tech?.g20>=10;
+    riskCandidates.push({text:overheat?'단기 과열 / 변동성 확대':'수급·변동성 확대',p:overheat?'H':'M',impact:'M'});
+  }
+
+  const risks=[],seen=new Set();
+  for(const r of riskCandidates){
+    const key=srInsightSentence(r.text).replace(/\s/g,'').toLowerCase();
+    if(!key||seen.has(key))continue;
+    seen.add(key);risks.push(r);
+    if(risks.length>=4)break;
+  }
+  while(risks.length<4)risks.push({text:'핵심 Catalyst 일정 지연 / 기대 선반영',p:'M',impact:'M'});
+
+  return{shortCat,midCat,longCat,risks};
+}
+function srApplyRiskLevelClasses(root=document){
+  for(let i=1;i<=4;i++){
+    for(const suffix of ['P','I']){
+      const el=root.querySelector?.('[data-key="risk'+i+suffix+'"]');
+      if(!el)continue;
+      const v=String(el.textContent||'').trim().match(/[HML]$/)?.[0]||'M';
+      el.classList.remove('high','medium','low');
+      el.classList.add(v==='H'?'high':v==='L'?'low':'medium');
+    }
+  }
+}
 function srIrLinkFromKosai(report,code){
   const src=Array.isArray(report?.sources)?report.sources:[];
   return src.find(u=>/irgo\.co\.kr\/IR-COMP\//i.test(u))||('https://m.irgo.co.kr/IR-COMP/'+code);
@@ -1292,6 +1407,12 @@ async function buildSearchProfile(item){
       }catch(e2){console.warn('AlphaSquare fundamental fallback failed',e2)}
     }
   }
+  if(!kosaiReport){
+    try{
+      kosaiReport=await srKosaiCached(item);
+      if(kosaiReport)srApplyKosaiQualitative(t,kosaiReport);
+    }catch(e){console.warn('검색 종목 정성 Catalyst 데이터 조회 실패',e)}
+  }
   const cons=srConsensusSnapshot(code);
   if(cons){
     m.fper=cons.forwardPer;
@@ -1376,8 +1497,11 @@ async function buildSearchProfile(item){
     t.domesticPeer='동일 업종 Peer 정적데이터 미확보 · 개별 Valuation 기준';
     t.globalPeer='해외 Peer 정적데이터 미확보 · 임의 비교하지 않음';
   }
-  t.shortCat='공시·실적·수급 Catalyst 확인 [AI]';t.midCat='다음 분기 실적과 업황 방향 확인 [AI]';t.longCat='중장기 이익 성장 지속성 확인 [AI]';
-  t.risk1='실적 Consensus 미달';t.risk1P='가능성 M';t.risk1I='영향 H';t.risk2='Valuation Multiple 압축';t.risk2P='가능성 M';t.risk2I='영향 H';t.risk3='수급·변동성 확대';t.risk3P='가능성 M';t.risk3I='영향 M';t.risk4='핵심 Catalyst 지연';t.risk4P='가능성 M';t.risk4I='영향 M';
+  const cr=srDynamicCatalystRisk(kosaiReport,qs,m,tech,searchIct,cons,item);
+  t.shortCat=cr.shortCat;t.midCat=cr.midCat;t.longCat=cr.longCat;
+  cr.risks.slice(0,4).forEach((r,i)=>{
+    const n=i+1;t['risk'+n]=r.text;t['risk'+n+'P']='가능성 '+r.p;t['risk'+n+'I']='영향 '+r.impact;
+  });
   t.disclosureTitle=item.name+' 최근 공시';t.disclosureDesc='네이버페이 증권의 선택 종목 전자공시 페이지에서 공시 원문을 확인합니다.';t.irTitle=item.name+' IR / 실적자료';t.irDesc=(SR_OFFICIAL_IR_LINKS[code]?'기업 공식 IR 자료실':'IRGO 종목별 IR 아카이브')+'에서 기업설명회·실적발표·IR 자료를 확인합니다.';t.consTitle=item.name+' Consensus / Valuation';t.consDesc=cons?('네이버페이 증권 종목분석(FnGuide) · '+cons.asOf+' 스냅숏 · '+cons.analysts+'개 기관 · 목표가 '+srFmt(cons.targetPrice)+'원 · 2026E PER '+cons.forwardPer.toFixed(1)+'x · EV/EBITDA '+cons.evEbitda.toFixed(1)+'x'):'Analyst Consensus 미확보 시 DART/KRX 기반 Trailing·Run-rate 지표를 [AI]로 보완합니다. Consensus가 존재하지 않는 종목에는 임의 목표주가를 만들지 않습니다.';t.newsTitle=item.name+' 최신 주요기사';t.newsDesc='네이버페이 증권의 선택 종목 뉴스 페이지에서 최신 기사를 확인합니다.';
   t.tradingScore=String(tech.total);t.tradingGrade=tech.grade+' / '+tech.label;t.tradingTrend=tech.trend;t.tradingAction=tech.action;t.tradingOverheat=tech.heat;
   t.msValue=(tech.msMeta.discount?'Discount':'Premium')+(tech.msMeta.retracement!=null?' · Retrace '+(tech.msMeta.retracement*100).toFixed(1)+'%':'')+(tech.msMeta.eq!=null?' · EQ '+srFmt(tech.msMeta.eq):'')+' [AI]';
