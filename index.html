@@ -250,7 +250,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: visual-hierarchy-v25-20261017 -->
+<!-- BUILD: fundamental-forward-100-v26-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -375,7 +375,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div class="section-head">
     <div>
       <h2 class="section-title">③ 종목 선정 · Fundamental / ICT Trading</h2>
-      <p class="section-desc">추천은 두 개의 독립 경로로 운영합니다. Fundamental은 기업의 성장·이익·Valuation·Catalyst를 먼저 압축한 뒤 ICT 구조로 진입 품질을 검증하고, Trading은 유동성 상위 종목을 ICT Setup 완성도만으로 순위화합니다.</p>
+      <p class="section-desc">Fundamental은 Forward 실적 중심 100점 체계로 평가합니다. 성장성 25 · 수익성 20 · 재무/FCF 15 · 이익의 질/가시성 15 · Valuation 15 · 산업/경쟁우위 10에서 중대 Fundamental Risk를 최대 15점 감점한 뒤, ICT로 실제 진입 품질을 별도 검증합니다.</p>
     </div>
   </div>
 
@@ -409,7 +409,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div id="fundamentalPanel" class="screening-panel active">
     <div class="pipeline-grid">
       <div class="pipeline-step"><div class="num">01</div><h4>Fundamental Screening</h4><p>KOSPI/KOSDAQ 전체에서 유동성·시가총액 조건을 통과한 후보를 분석해 Fundamental TOP 20을 발굴합니다.</p></div>
-      <div class="pipeline-step"><div class="num">02</div><h4>Fundamental TOP 10</h4><p>Growth · Earnings · Valuation · Catalyst를 각각 25점으로 평가해 상위 10개를 압축합니다.</p></div>
+      <div class="pipeline-step"><div class="num">02</div><h4>Fundamental TOP 10</h4><p>Forward 실적을 우선해 6개 영역 100점에서 Risk Penalty를 차감합니다. PER이 낮다는 이유만으로 높은 점수를 주지 않습니다.</p></div>
       <div class="pipeline-step"><div class="num">03</div><h4>ICT Screening</h4><p>Liquidity · Structure · MSS/BOS · FVG · Protected Low를 검증합니다.</p></div>
       <div class="pipeline-step"><div class="num">04</div><h4>Entry Quality</h4><p>S = 즉시 관심 · A = Pullback 대기 · B = Breakout 대기 · C = 제외.</p></div>
       <div class="pipeline-step"><div class="num">05</div><h4>최종 TOP 5</h4><p>Fundamental 우수성에 ICT Entry Quality를 결합해 실제 관찰 우선순위를 결정합니다.</p></div>
@@ -419,7 +419,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
       <span class="scan-status" id="fundamentalScanStatus">페이지 로드 후 자동 조회합니다.</span>
     </div>
     <div class="card"><h3 class="subhead">① Fundamental TOP 20</h3><div id="fundTop20List" class="compact-chips"><span class="note">자동 조회 중입니다...</span></div></div>
-    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>시장</th><th>Fundamental</th><th>Growth</th><th>Earnings</th><th>Valuation</th><th>Catalyst</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="8">자동 조회 중입니다...</td></tr></tbody></table></div></div>
+    <div class="card" style="margin-top:12px"><h3 class="subhead">② Fundamental TOP 10 · Forward 100점</h3><div class="table-wrap"><table class="table" style="min-width:1180px"><thead><tr><th>순위</th><th>종목 / 등급</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>현재 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">Forward Fundamental 자동 분석 중입니다...</td></tr></tbody></table></div><p class="note" style="margin:10px 2px 0">최종점수 = 기본점수(100) - Risk Penalty(최대 15). Forward 실적에 과거 실적보다 높은 가중치를 두며, 확인되지 않은 Net Debt/EBITDA·ROIC·EV/EBITDA 등은 [검증 필요] 상태로 중립 처리합니다.</p></div>
     <div class="card" style="margin-top:12px"><h3 class="subhead">⑤ Fundamental 최종 TOP 5</h3><div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Fundamental</th><th>ICT</th><th>Entry Quality</th><th>현재가</th><th>핵심 Catalyst</th><th>상태</th></tr></thead><tbody id="fundFinalBody"><tr><td colspan="8">Fundamental 및 ICT 자동 분석 중입니다...</td></tr></tbody></table></div></div>
   </div>
 
@@ -2279,13 +2279,6 @@ function srRenderFundFinal(list){
 }
 
 function srEntryClass(g){return g==='S'?'entry-s':g==='A'?'entry-a':g==='B'?'entry-b':'entry-c'}
-function srRenderFundFinal(list){
-  const el=document.getElementById('fundFinalBody');if(!el)return;
-  el.innerHTML=list.map((x,i)=>
-    '<tr data-code="'+x.item.code+'" class="screening-stock-row" tabindex="0" role="button" aria-label="'+srEsc(x.item.name)+' 상세분석 보기" title="클릭하여 상세분석">'+
-    '<td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b><br><span class="note">'+x.item.market+'</span></td><td>'+x.f.total+'</td><td>'+x.ict.score+'</td><td><span class="tag '+srEntryClass(x.ict.entryQuality)+'">'+x.ict.entryQuality+'</span></td><td>'+srFmt(x.ict.price)+'원</td><td>'+srEsc(x.catalystText||'공시·실적 Catalyst 확인')+'</td><td>'+srEsc(x.ict.finalOpinion)+'</td></tr>'
-  ).join('');
-}
 
 function srAggregateWeekly(rows){
   const map=new Map();
@@ -2787,14 +2780,14 @@ async function runIctTradingScan(){
 async function runFundamentalPipeline(){
   const status=document.getElementById('fundamentalScanStatus'),btn=document.getElementById('fundamentalScanBtn');if(btn)btn.disabled=true;
   try{
-    await loadStockUniverse();status.textContent='Fundamental 후보 수집 중...';
+    await loadStockUniverse();status.textContent='Forward Fundamental 후보 수집 중...';
     const candidates=srLiquidityCandidates(50);
     const reports=(await srMapLimit(candidates,8,async item=>{const report=await srKosaiCached(item);const f=srFundamentalScore(report,item);return report&&f?{item,report,f}:null})).filter(Boolean);
     reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
     const top20=reports.slice(0,20),top10=top20.slice(0,10);
-    srRenderFundTop20(top20);srRenderFundTop10(top10);status.textContent='Fundamental TOP10 완료 · ICT용 일봉 일괄 조회 중...';
+    srRenderFundTop20(top20);srRenderFundTop10(top10);status.textContent='Forward Fundamental TOP10 완료 · ICT용 일봉 일괄 조회 중...';
     const dailyMap=await srKrxBatchHistory(top10.map(x=>x.item),status);
-    status.textContent='Fundamental TOP10 · ICT Screening 진행 중...';
+    status.textContent='Forward Fundamental TOP10 · ICT Screening 진행 중...';
     const withIct=(await srMapLimit(top10,4,async x=>{const ict=await srIctAnalyzeItem(x.item,dailyMap.get(x.item.code));const catalystText=(x.report.keypoints||[]).map(k=>k?.ko).filter(Boolean)[0]||'';return{...x,ict,catalystText}})).filter(Boolean);
     const rank={S:0,A:1,B:2,C:3};
     withIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.adjustedScore-a.ict.adjustedScore||b.f.total-a.f.total);
@@ -2819,7 +2812,7 @@ async function runAutomaticScreenings(){
   if(fBtn)fBtn.disabled=true;if(iBtn)iBtn.disabled=true;
   try{
     await loadStockUniverse();
-    if(fStatus)fStatus.textContent='자동 조회 1/4 · Fundamental 후보 50개 분석 중...';
+    if(fStatus)fStatus.textContent='자동 조회 1/4 · Forward Fundamental 후보 50개 분석 중...';
     if(iStatus)iStatus.textContent='자동 조회 대기 · Fundamental 후보 선별 후 ICT 일괄 분석합니다.';
     const fundCandidates=srLiquidityCandidates(50);
     const reports=(await srMapLimit(fundCandidates,8,async item=>{
@@ -2829,7 +2822,7 @@ async function runAutomaticScreenings(){
     reports.sort((a,b)=>b.f.total-a.f.total||(b.item.turnover||0)-(a.item.turnover||0));
     const top20=reports.slice(0,20),top10=top20.slice(0,10);
     srRenderFundTop20(top20);srRenderFundTop10(top10);
-    if(fStatus)fStatus.textContent='자동 조회 2/4 · Fundamental TOP10 완료 · ICT 가격구조 준비 중...';
+    if(fStatus)fStatus.textContent='자동 조회 2/4 · Forward Fundamental TOP10 완료 · ICT 가격구조 준비 중...';
 
     const tradingCandidates=srLiquidityCandidates();
     const unionMap=new Map();
