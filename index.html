@@ -111,7 +111,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: search-ict-score-v23-20261017 -->
+<!-- BUILD: search-ict-total-v23.1-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -261,20 +261,9 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div id="stockSearchStatus" class="stock-search-status">KOSPI·KOSDAQ 전체 상장종목 목록을 불러오는 중입니다...</div>
     <div id="searchIctSummary" class="search-ict-summary">
       <div class="search-ict-summary-head">
-        <div class="search-ict-summary-title">검색 종목 ICT 분석</div>
-        <span id="searchIctEligibility" class="tag gray">분석 대기</span>
+        <div class="search-ict-summary-title">검색 종목 ICT 총점</div>
+        <b id="searchIctTotal" style="font-size:18px;color:#0B1F3A">—</b>
       </div>
-      <div class="search-ict-grid">
-        <div class="search-ict-metric"><span>ICT Raw Score</span><b id="searchIctRaw">—</b></div>
-        <div class="search-ict-metric"><span>Adjusted Score</span><b id="searchIctAdjusted">—</b></div>
-        <div class="search-ict-metric"><span>Penalty</span><b id="searchIctPenalty">—</b></div>
-        <div class="search-ict-metric"><span>Entry Quality</span><b id="searchIctEntryQuality">—</b></div>
-        <div class="search-ict-metric"><span>Setup Type</span><b id="searchIctSetup">—</b></div>
-        <div class="search-ict-metric"><span>R:R · T1</span><b id="searchIctRR">—</b></div>
-        <div class="search-ict-metric"><span>Draw on Liquidity</span><b id="searchIctDol">—</b></div>
-        <div class="search-ict-metric"><span>Invalidation</span><b id="searchIctInvalidation">—</b></div>
-      </div>
-      <div id="searchIctFilter" class="search-ict-filter"></div>
     </div>
   </div>
 
@@ -1312,7 +1301,7 @@ async function buildSearchProfile(item){
   p.score=tech.total;p.rating=tech.label;
   const searchDataDate=String(rows.at(-1)?.date||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
   t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · 기준일 '+searchDataDate+' · SEARCH RESULT';
-  t.topPickScore=searchIct?('ICT '+searchIct.rawScore+' → '+searchIct.adjustedScore+' · '+searchIct.entryQuality):('Trading '+tech.total+' / '+tech.label);
+  t.topPickScore=searchIct?('ICT '+searchIct.adjustedScore+'/100'):('Trading '+tech.total+'/100');
   t.thesis=searchIct
     ?('“검색 종목 ICT: Raw '+searchIct.rawScore+'점 → Penalty '+searchIct.penalty+'점 → Adjusted '+searchIct.adjustedScore+'점 · '+searchIct.setupType+' · Entry Quality '+searchIct.entryQuality+' · R:R '+searchIct.rr.toFixed(2)+':1. 좋은 구조와 현재 진입 준비도를 분리해 판단합니다.” [AI]')
     :'“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. ICT 세부 데이터는 확인이 필요합니다.” [AI]';
@@ -1541,28 +1530,11 @@ function srRenderSearchIctSummary(ict){
   const card=document.getElementById('searchIctSummary');
   if(!card)return;
   if(!ict){card.classList.remove('show');return}
-  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
-  set('searchIctRaw',ict.rawScore+'/100');
-  set('searchIctAdjusted',ict.adjustedScore+'/100');
-  set('searchIctPenalty','-'+ict.penalty+'점');
-  set('searchIctEntryQuality',ict.entryQuality);
-  set('searchIctSetup',ict.setupType);
-  set('searchIctRR',ict.rr.toFixed(2)+':1');
-  set('searchIctDol',srFmtPx(ict.dol));
-  set('searchIctInvalidation',srFmtPx(ict.structuralInvalidation));
-  const eligibility=document.getElementById('searchIctEligibility');
-  if(eligibility){
-    eligibility.className='tag '+srEntryClass(ict.entryQuality);
-    eligibility.textContent=ict.finalEligible?'ICT 후보 · '+ict.entryQuality:('Entry '+ict.entryQuality);
-  }
-  const filter=document.getElementById('searchIctFilter');
-  if(filter){
-    const hard=ict.hardFilterPassed?'Hard Filter 통과':('Hard Filter 제외: '+(ict.hardFilterReasons||[]).join(' · '));
-    const penalties=(ict.reasons||[]).length?(' · Penalty: '+ict.reasons.join(' · ')):'';
-    filter.textContent=hard+penalties+' · 최종 판단: '+ict.finalOpinion;
-  }
+  const total=document.getElementById('searchIctTotal');
+  if(total)total.textContent=ict.adjustedScore+'/100';
   card.classList.add('show');
 }
+
 async function analyzeSearchItem(item,status,box){
   box?.classList.remove('show');
   document.getElementById('searchIctSummary')?.classList.remove('show');
@@ -1582,7 +1554,7 @@ async function analyzeSearchItem(item,status,box){
     const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
     const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
     document.getElementById('stockSearchBadge')?.classList.add('show');
-    status.textContent=p.name+' 분석 완료 · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신')+(p.searchIct?' · ICT Adjusted '+p.searchIct.adjustedScore+' · Entry '+p.searchIct.entryQuality:'')+' · 아래 상세분석을 검색 종목으로 전환했습니다.';
+    status.textContent=p.name+' 분석 완료 · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신')+(p.searchIct?' · ICT '+p.searchIct.adjustedScore+'/100':'')+' · 아래 상세분석을 검색 종목으로 전환했습니다.';
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
