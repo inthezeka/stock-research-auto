@@ -300,7 +300,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-fund20-val7-earnings-v36-20261017 -->
+<!-- BUILD: stock-room-sector-fundamental-framework-v37-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -469,7 +469,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
       <div class="fund-theme-head">
         <div>
           <h3 class="subhead" style="margin:0">① Fundamental Theme</h3>
-          <p class="note" style="margin:6px 0 0">먼저 산업/테마를 선택합니다. 테마 수는 고정하지 않으며 필요할 때 언제든 추가할 수 있습니다. 선택한 테마의 대표 KOSPI·KOSDAQ 종목을 Forward 실적·수익성·재무·Valuation·산업 경쟁력 기준으로 다시 점수화합니다.</p>
+          <p class="note" style="margin:6px 0 0">먼저 산업/테마를 선택합니다. 기본 Framework는 Universal 70점 + Sector Specific 20점 + Cycle / Earnings Visibility 10점이며, 이후 Fundamental Risk Penalty를 최대 -15점 적용합니다. 같은 산업 안에서는 Peer 상대평가를 우선하고, 산업별 핵심 KPI와 Valuation 기준은 해당 산업 특성에 맞게 변경합니다.</p>
         </div>
         <span class="tag blue" id="fundThemeSelected">반도체 / AI</span>
       </div>
@@ -481,7 +481,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div class="card">
       <h3 class="subhead" id="fundThemeTop10Title">② 반도체 / AI · Fundamental TOP 20</h3>
-      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>25</th><th>수익성<br>20</th><th>재무/FCF<br>15</th><th>이익의 질<br>15</th><th>Valuation<br>15</th><th>산업/Moat<br>10</th><th>성장 대비 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="10">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table fund-top10-table"><thead><tr><th>순위</th><th>종목 / 조회가</th><th>최종점수</th><th>성장성<br>15</th><th>수익성/ROIC<br>15</th><th>재무/FCF<br>15</th><th>Valuation<br>10</th><th>경쟁우위<br>10</th><th>Revision<br>5</th><th>Sector KPI<br>20</th><th>Cycle/Visibility<br>10</th><th>성장 대비 Valuation</th></tr></thead><tbody id="fundTop10Body"><tr><td colspan="12">선택 테마 Fundamental 분석 중입니다...</td></tr></tbody></table></div>
       <p class="note" style="margin:10px 2px 0">테마 안에서 <b>최종점수 = 기본점수(100) - Risk Penalty(최대 15)</b>로 정렬합니다. 테마 버튼을 바꾸면 해당 산업의 평가 가능 종목을 점수화해 상위 20개까지 표시합니다.</p>
     </div>
   </div>
@@ -812,25 +812,40 @@ function applyTradingStateColors(){
 const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','sources'];
 
 function srFundGroupLabel(k){
-  return({growth:'실적 성장성',profitability:'수익성',financial:'재무건전성 / FCF',quality:'이익의 질 / 실적 가시성',valuation:'Valuation',industry:'산업 / 경쟁우위'})[k]||k;
+  return({
+    growth:'성장성',
+    profitability:'수익성 / ROIC',
+    financial:'재무건전성 / FCF',
+    valuation:'Valuation',
+    moat:'경쟁우위 / Moat',
+    revision:'Earnings Revision',
+    sector:'Sector Specific',
+    cycleVisibility:'Cycle / Earnings Visibility'
+  })[k]||k;
 }
-function srFundGroupMax(k){return({growth:25,profitability:20,financial:15,quality:15,valuation:15,industry:10})[k]||0}
+function srFundGroupMax(k){return({growth:15,profitability:15,financial:15,valuation:10,moat:10,revision:5,sector:20,cycleVisibility:10})[k]||0}
 function srFundGroupReason(f,k){
-  return(f?.detail||[]).filter(x=>x.group===k).sort((a,b)=>b.weight-a.weight).slice(0,2).map(x=>x.label+' '+x.score+'/5 · '+x.reason).join(' / ');
+  const base=(f?.detail||[]).filter(x=>x.group===k).sort((a,b)=>b.weight-a.weight).slice(0,k==='sector'?3:2).map(x=>x.label+' '+x.earned.toFixed(1)+'/'+x.weight+' · '+x.reason);
+  if(k==='profitability'&&f?.peerProfitabilityNote)base.push(f.peerProfitabilityNote);
+  if(k==='valuation'&&f?.peerValuationNote)base.push(f.peerValuationNote);
+  return base.join(' / ');
 }
 function srRenderFundamentalDetail(profile){
   const el=document.getElementById('fundamentalScoreDetail');if(!el)return;
   const f=profile?.fundamentalScore;
   if(!f){el.style.display='none';el.innerHTML='';return}
-  const keys=['growth','profitability','financial','quality','valuation','industry'];
+  const keys=['growth','profitability','financial','valuation','moat','revision','sector','cycleVisibility'];
   const rows=keys.map(k=>'<tr><td>'+srFundGroupLabel(k)+'</td><td>'+srFundGroupMax(k)+'</td><td>'+Number(f.groups[k]||0).toFixed(1)+'</td><td>'+srEsc(srFundGroupReason(f,k))+'</td></tr>').join('');
+  const sectorRows=(f.detail||[]).filter(x=>x.group==='sector').map(x=>'<tr><td>'+srEsc(x.label)+'</td><td>'+x.weight+'</td><td>'+x.earned.toFixed(1)+'</td><td>'+srEsc(x.reason)+'</td></tr>').join('');
   const list=a=>'<ol>'+((a||[]).slice(0,3).map(x=>'<li>'+srEsc(x)+'</li>').join('')||'<li>해당 없음</li>')+'</ol>';
   el.innerHTML=
-    '<div class="fund-score-head"><div><div class="eyebrow">FUNDAMENTAL · FORWARD 100</div><h3 class="subhead" style="margin:4px 0 0">'+srEsc(profile.name||'선택 종목')+' 펀더멘탈 종합평가</h3></div><div><div class="fund-score-total">'+Number(f.total).toFixed(1)+' / 100</div><div class="fund-score-grade">'+srEsc(f.grade)+'</div></div></div>'+
+    '<div class="fund-score-head"><div><div class="eyebrow">FUNDAMENTAL · UNIVERSAL 70 + SECTOR 20 + CYCLE 10</div><h3 class="subhead" style="margin:4px 0 0">'+srEsc(profile.name||'선택 종목')+' 펀더멘탈 종합평가</h3><div class="note" style="margin-top:5px">Sector: '+srEsc(f.sectorLabel||'—')+' · Cycle: '+srEsc(f.cycle||'—')+'</div></div><div><div class="fund-score-total">'+Number(f.total).toFixed(1)+' / 100</div><div class="fund-score-grade">'+srEsc(f.grade)+'</div></div></div>'+
     '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>평가항목</th><th>배점</th><th>획득점수</th><th>판단 근거</th></tr></thead><tbody>'+rows+
-    '<tr><td><b>기본점수</b></td><td><b>100</b></td><td><b>'+Number(f.base).toFixed(1)+'</b></td><td>세부항목 0~5점 × 배점 환산 합계</td></tr>'+
+    '<tr><td><b>기본 Fundamental Score</b></td><td><b>100</b></td><td><b>'+Number(f.base).toFixed(1)+'</b></td><td>Universal 70 + Sector Specific 20 + Cycle/Visibility 10</td></tr>'+
     '<tr><td>Risk Penalty</td><td>최대 -15</td><td><b>-'+Number(f.riskPenalty||0).toFixed(1)+'</b></td><td>'+srEsc((f.riskReasons||[]).map(x=>x.label+' -'+x.pts).join(' · ')||'중대 Risk Penalty 없음')+'</td></tr>'+
-    '<tr><td><b>최종점수</b></td><td><b>100</b></td><td><b>'+Number(f.total).toFixed(1)+'</b></td><td>'+srEsc(f.grade)+'</td></tr></tbody></table></div>'+
+    '<tr><td><b>최종 Fundamental Score</b></td><td><b>100</b></td><td><b>'+Number(f.total).toFixed(1)+'</b></td><td>'+srEsc(f.grade)+'</td></tr></tbody></table></div>'+
+    '<div class="note" style="margin:14px 0 7px"><b>Sector Specific KPI · '+srEsc(f.sectorLabel||'')+'</b></div>'+
+    '<div class="table-wrap"><table class="fund-score-table"><thead><tr><th>산업 핵심 KPI</th><th>배점</th><th>획득점수</th><th>근거</th></tr></thead><tbody>'+sectorRows+'</tbody></table></div>'+
     '<div class="fund-factor-grid">'+
       '<div class="fund-factor-box"><h4>점수를 가장 많이 올린 요인 TOP 3</h4>'+list(f.topUp)+'</div>'+
       '<div class="fund-factor-box"><h4>점수를 가장 많이 깎은 요인 TOP 3</h4>'+list(f.topDown)+'</div>'+
@@ -2229,8 +2244,11 @@ function srCagr(a,b,years){
 function srAvg(a){const x=(a||[]).filter(Number.isFinite);return x.length?x.reduce((s,v)=>s+v,0)/x.length:null}
 function srFundGrade(score){
   if(score>=90)return'Strong Buy Candidate';
-  if(score>=80)return'Buy Candidate';
-  if(score>=70)return'Trading Buy / Watch';
+  if(score>=85)return'Buy+';
+  if(score>=80)return'Buy';
+  if(score>=75)return'Trading Buy+';
+  if(score>=70)return'Trading Buy';
+  if(score>=65)return'Neutral+';
   if(score>=60)return'Neutral';
   if(score>=50)return'Weak';
   return'Avoid';
@@ -2278,8 +2296,305 @@ function srFundRiskPenalty(report,annuals){
   reasons.sort((a,b)=>b.pts-a.pts);
   return{penalty:p,reasons};
 }
-function srFundamentalScore(report,item){
+
+const SR_SECTOR_KPI_RULES={
+  semi_ai:[
+    ['AI/HBM/고성능반도체 Exposure',5,['ai','hbm','accelerator','asic','gpu','고성능'],['legacy','범용']],
+    ['ASP / Bit Growth / 제품 Mix',4,['asp','bit growth','믹스','mix','고부가','ddr5'],['asp 하락','가격 하락']],
+    ['고객사 CAPEX 및 수요 성장',4,['capex','증설','수요 증가','수요 성장','csp'],['capex 축소','수요 둔화']],
+    ['재고 / 가동률 / 공급상황',4,['재고 감소','재고 정상화','가동률 상승','공급 부족'],['재고 증가','가동률 하락','공급 과잉']],
+    ['차세대 제품 경쟁력 및 점유율',3,['차세대','점유율','advanced packaging','hbm4','socamm'],['점유율 하락']]
+  ],
+  semi_materials:[
+    ['주요 고객 Qualification / 인증',5,['qualification','인증','고객 승인','벤더 등록'],['인증 지연']],
+    ['고객 Fab 가동률 및 증설 수혜',4,['fab','가동률','증설','capex'],['감산','가동률 하락']],
+    ['국산화 / 점유율 확대',4,['국산화','점유율 확대','대체 공급'],['점유율 하락']],
+    ['ASP 및 원재료 Spread',4,['asp','spread','가격 전가','판가 인상'],['원가 상승','spread 축소']],
+    ['신규제품 / 고객 다변화',3,['신제품','신규 고객','고객 다변화'],['고객 집중']]
+  ],
+  semi_parts:[
+    ['고객 장비당 Content 증가',4,['content 증가','채용량 증가','고사양','고부가'],['content 감소']],
+    ['교체주기 / 소모품 Recurring Revenue',5,['교체주기','소모품','recurring','반복매출'],['일회성']],
+    ['고객사 점유율',4,['점유율','share','주요 고객'],['점유율 하락']],
+    ['국산화 / 진입장벽',4,['국산화','진입장벽','qualification','특허'],['commodity']],
+    ['신규 고객 / 신제품',3,['신규 고객','신제품','고객 확대'],['고객 이탈']]
+  ],
+  semi_equipment:[
+    ['신규수주 / 수주잔고',5,['신규수주','수주잔고','backlog','order'],['수주 감소','수주 공백']],
+    ['고객사 CAPEX 방향',5,['capex 확대','설비투자 확대','증설','투자 확대'],['capex 축소','투자 지연']],
+    ['신규장비 Qualification',4,['qualification','장비 인증','평가 통과','신규 장비'],['qualification 지연']],
+    ['고객 다변화',3,['고객 다변화','신규 고객','해외 고객'],['고객 집중']],
+    ['장비 ASP / Margin / Service 매출',3,['asp','margin','서비스 매출','service'],['margin 하락','asp 하락']]
+  ],
+  power_grid:[
+    ['수주잔고 / Book-to-Bill',5,['수주잔고','book-to-bill','신규수주'],['수주 감소']],
+    ['북미·유럽 전력망 투자 Exposure',4,['북미','유럽','전력망','grid'],['투자 지연']],
+    ['데이터센터 전력수요 Exposure',4,['데이터센터','data center','전력수요'],['수요 둔화']],
+    ['CAPA / 납기 / 공급부족',4,['capa','납기','공급 부족','증설'],['납기 지연','공급 과잉']],
+    ['구리 등 원재료 가격 전가능력',3,['구리','원재료','가격 전가','판가'],['원가 부담','전가 어려움']]
+  ],
+  auto:[
+    ['글로벌 판매량 성장',4,['판매량 증가','글로벌 판매','출하 증가'],['판매 감소']],
+    ['ASP / 제품 Mix',4,['asp','mix','고급차','suv','믹스 개선'],['인센티브 증가']],
+    ['인센티브 / 재고',3,['재고 감소','인센티브 안정','재고 정상화'],['재고 증가','인센티브 확대']],
+    ['HEV / EV / 전장 경쟁력',5,['hev','ev','전장','전기차','하이브리드'],['전기차 부진']],
+    ['신차 Cycle / 해외공장 / 관세 대응',4,['신차','해외공장','현지 생산','관세 대응'],['관세 부담']]
+  ],
+  shipbuilding:[
+    ['수주잔고',5,['수주잔고','backlog'],['수주잔고 감소']],
+    ['신규수주 / Book-to-Bill',4,['신규수주','book-to-bill','계약'],['수주 감소']],
+    ['선가 / 고선가 선박 매출인식',4,['선가','고선가','lng선','고부가 선종'],['선가 하락']],
+    ['후판 등 원가',3,['후판 안정','원가 안정','원가 하락'],['후판 상승','원가 상승']],
+    ['도크 가동률 / 인도 Schedule',4,['도크','가동률','인도','납기'],['인도 지연']]
+  ],
+  defense_space:[
+    ['수주잔고',5,['수주잔고','backlog'],['수주 감소']],
+    ['해외수출 계약',5,['수출 계약','해외 계약','본계약'],['mou','계약 지연']],
+    ['생산 CAPA / 납기',3,['capa','증설','납기','생산능력'],['납기 지연']],
+    ['수출 Margin / 제품 Mix',4,['수출 margin','고마진','제품 mix','믹스'],['margin 하락']],
+    ['후속군수지원 / 추가수주 가시성',3,['후속군수','mro','추가수주','후속 계약'],['후속 계약 지연']]
+  ],
+  battery:[
+    ['가동률',4,['가동률 상승','가동률 회복'],['가동률 하락','저가동']],
+    ['고객사 EV / ESS 수요',4,['ev 수요','ess 수요','수요 회복'],['ev 둔화','수요 둔화']],
+    ['신규수주 / 장기공급계약',4,['장기공급','신규수주','계약'],['계약 지연']],
+    ['원재료 가격 및 Spread',4,['spread 개선','원재료 안정','가격 전가'],['spread 축소','원재료 부담']],
+    ['차세대 Battery / 제품 Mix',4,['차세대','4680','전고체','lfp','고니켈','mix'],['제품 경쟁력 약화']]
+  ],
+  bio:[
+    ['Pipeline 가치',5,['pipeline','파이프라인','신약','후보물질'],['파이프라인 중단']],
+    ['임상 성공 가능성 / 단계',4,['임상 3상','임상 2상','허가','승인'],['임상 실패','중단']],
+    ['시장규모 / Peak Sales',4,['시장규모','peak sales','블록버스터'],['시장 축소']],
+    ['기술이전 / Partnership',4,['기술이전','license','partnership','파트너십'],['기술반환']],
+    ['Cash Runway / 자금조달 위험',3,['cash runway','현금 충분','순현금'],['유상증자','자금조달','현금 부족']]
+  ],
+  beauty:[
+    ['해외매출 성장',5,['해외매출','북미','일본','동남아','수출'],['해외매출 둔화']],
+    ['브랜드 / ODM 고객 Momentum',4,['브랜드','odm','고객 확대','수주'],['고객 이탈']],
+    ['지역 다변화',3,['지역 다변화','미국','일본','유럽'],['중국 의존']],
+    ['SKU / 채널 / 재구매',4,['sku','채널','재구매','온라인','오프라인'],['재구매 하락']],
+    ['마케팅비 대비 매출효율 및 Margin',4,['마케팅 효율','margin 개선','광고 효율'],['마케팅비 증가','margin 하락']]
+  ],
+  platform:[
+    ['MAU / DAU / 사용자 성장',4,['mau','dau','사용자 성장','트래픽 증가'],['사용자 감소']],
+    ['ARPU / Monetization',4,['arpu','monetization','수익화'],['arpu 하락']],
+    ['광고 / Commerce / Cloud 성장',4,['광고 성장','commerce','커머스','cloud','클라우드'],['광고 둔화']],
+    ['AI Monetization',4,['ai 수익화','ai 서비스','생성형 ai'],['ai 비용 증가']],
+    ['FCF Margin / Operating Leverage',4,['fcf','operating leverage','영업레버리지','margin 개선'],['fcf 악화']]
+  ],
+  game:[
+    ['신작 Pipeline',5,['신작','pipeline','출시 예정'],['출시 지연']],
+    ['DAU / MAU / Retention',4,['dau','mau','retention','리텐션'],['이용자 감소']],
+    ['ARPU / Paying User',3,['arpu','paying user','결제'],['arpu 하락']],
+    ['글로벌 출시 / 판호',4,['글로벌 출시','판호','해외 출시'],['판호 지연']],
+    ['개발비 대비 흥행수익성',4,['흥행','매출 순위','개발비 회수'],['흥행 부진','개발비 증가']]
+  ],
+  robot:[
+    ['실제 매출 / 수주',5,['매출 증가','신규수주','수주잔고','계약'],['테마성','매출 미미']],
+    ['반복 고객 / 대기업 고객',4,['반복 고객','대기업 고객','재구매'],['고객 부재']],
+    ['제조원가 / Gross Margin',3,['gross margin','원가 개선','margin 개선'],['원가 상승']],
+    ['CAPA / 양산능력',4,['capa','양산','생산능력','증설'],['양산 지연']],
+    ['휴머노이드 / 자동화 기술 경쟁력',4,['휴머노이드','자동화','기술 경쟁력','로봇 플랫폼'],['기술 격차']]
+  ],
+  finance:[
+    ['ROE',4,['roe 개선','roe 상승'],['roe 하락']],
+    ['자본건전성 / CET1',4,['cet1','자본비율','자본건전성'],['cet1 하락']],
+    ['주주환원 / 배당 / 자사주',4,['주주환원','배당','자사주'],['배당 축소']],
+    ['수익원 안정성',4,['수익 다변화','안정적 이익','비이자이익'],['pf 부담','대손비용 증가']],
+    ['Valuation(PBR/ROE)',4,['저pbr','pbr','roe'],['고평가']]
+  ],
+  insurance:[
+    ['CSM / CSM 성장',5,['csm','csm 성장'],['csm 감소']],
+    ['K-ICS',4,['k-ics','지급여력'],['k-ics 하락']],
+    ['ROE',3,['roe 개선','roe 상승'],['roe 하락']],
+    ['신계약 가치 / 손해율',4,['신계약','손해율 개선','신계약가치'],['손해율 상승']],
+    ['배당 / 자사주 / 주주환원',4,['배당','자사주','주주환원'],['배당 축소']]
+  ],
+  construction:[
+    ['신규수주',4,['신규수주','수주 증가'],['수주 감소']],
+    ['수주잔고',4,['수주잔고','backlog'],['수주잔고 감소']],
+    ['원가율 / 프로젝트 Margin',4,['원가율 개선','margin 개선','공사원가 개선'],['원가율 상승']],
+    ['PF / 미분양 / 우발채무',4,['pf 축소','미분양 감소','우발채무 감소'],['pf 리스크','미분양 증가','우발채무']],
+    ['해외수주 / 플랜트 / 인프라 성장',4,['해외수주','플랜트','인프라 수주'],['해외수주 감소']]
+  ],
+  industrial:[
+    ['Order Intake',4,['order intake','신규수주'],['수주 감소']],
+    ['Backlog',4,['backlog','수주잔고'],['backlog 감소']],
+    ['고객 산업 CAPEX',4,['capex','설비투자 확대'],['capex 축소']],
+    ['ASP / 가동률',4,['asp','가동률 상승','mix 개선'],['가동률 하락']],
+    ['After Service / Recurring Revenue',4,['after service','서비스 매출','recurring'],['일회성']]
+  ],
+  nuclear_energy:[
+    ['신규원전 / SMR·에너지 프로젝트 수주',5,['원전 수주','smr','프로젝트 수주','신규 계약'],['수주 지연']],
+    ['수주잔고 / 장기계약',4,['수주잔고','장기계약','backlog'],['계약 감소']],
+    ['CAPA / 공급망 / 가동률',4,['capa','공급망','가동률','증설'],['공급망 차질']],
+    ['해외수출 / 장기 판매계약',4,['수출','해외 계약','장기 판매계약','ppa'],['수출 지연']],
+    ['Margin / 기자재·Spread 경쟁력',3,['margin','spread','기자재 경쟁력','가격 전가'],['margin 하락']]
+  ],
+  entertainment:[
+    ['Artist IP / 콘텐츠 IP',5,['artist','아티스트','ip','콘텐츠 ip'],['재계약 리스크']],
+    ['Concert / Tour / 콘텐츠 Pipeline',4,['concert','tour','투어','콘텐츠 pipeline','라인업'],['일정 지연']],
+    ['Album / Streaming / OTT 계약',3,['album','streaming','ott','음원'],['판매 감소']],
+    ['MD / 해외매출 / 글로벌 판매',4,['md','해외매출','글로벌 판매'],['해외매출 둔화']],
+    ['신인 Pipeline / 제작비 대비 수익성',4,['신인','pipeline','제작비 효율','수익성 개선'],['제작비 증가']]
+  ],
+  food:[
+    ['판매량 Volume',4,['판매량 증가','volume 증가','출하 증가'],['판매량 감소']],
+    ['ASP',4,['asp 상승','판가 인상'],['asp 하락']],
+    ['원재료 가격 / Spread',4,['원재료 안정','spread 개선','원가 하락'],['원재료 상승','spread 축소']],
+    ['해외매출 성장',4,['해외매출','수출 증가','글로벌 성장'],['해외매출 둔화']],
+    ['브랜드 / 점유율 / 유통채널',4,['브랜드','점유율','유통채널','채널 확대'],['점유율 하락']]
+  ],
+  travel:[
+    ['수요 / 이용객 / RPK 성장',4,['이용객 증가','입국자 증가','rpk','방문객 증가'],['이용객 감소']],
+    ['Occupancy / Load Factor',4,['occupancy','load factor','탑승률','객실점유율'],['점유율 하락']],
+    ['ADR / Yield / RevPAR',4,['adr','yield','revpar','운임 상승'],['yield 하락']],
+    ['Capacity / 신규 객실 / ASK',4,['ask','공급 확대','신규 객실','노선 확대'],['과잉 공급']],
+    ['유가 / 환율 / 비용관리',4,['비용 절감','유가 하락','환율 안정'],['유가 상승','환율 부담']]
+  ],
+  materials:[
+    ['제품 Spread',5,['spread 개선','스프레드 개선'],['spread 축소','스프레드 축소']],
+    ['가동률',4,['가동률 상승','가동률 회복'],['가동률 하락']],
+    ['재고 Cycle',3,['재고 감소','재고 정상화'],['재고 증가']],
+    ['공급증설 / 중국 공급환경',4,['감산','공급 축소','중국 감산'],['공급 과잉','증설 부담']],
+    ['원재료 가격 전가 / 판가',4,['가격 전가','판가 인상','원가 안정'],['원가 상승','판가 하락']]
+  ]
+};
+
+function srInferFundThemeKey(report){
+  const s=((report?.sector||'')+' '+(report?.categories||[]).join(' ')+' '+(report?.business?.ko||'')+' '+(report?.industry?.ko||'')).toLowerCase();
+  const rules=[
+    ['semi_equipment',/반도체.*장비|semiconductor equipment|증착|식각|노광|검사장비/],
+    ['semi_materials',/반도체.*소재|포토레지스트|특수가스|전구체|웨이퍼 소재/],
+    ['semi_parts',/반도체.*부품|probe|소켓|pcb|package substrate|쿼츠|ceramic/],
+    ['semi_ai',/반도체|hbm|dram|nand|foundry|gpu|asic/],
+    ['power_grid',/전력망|변압기|전선|송배전|grid/],
+    ['auto',/자동차|완성차|전장|타이어/],
+    ['shipbuilding',/조선|선박|lng선/],
+    ['defense_space',/방산|우주|항공|missile|위성/],
+    ['battery',/2차전지|배터리|양극재|음극재|전해액/],
+    ['bio',/바이오|제약|임상|신약|cdmo/],
+    ['beauty',/화장품|뷰티|odm/],
+    ['platform',/인터넷|플랫폼|클라우드|saas/],
+    ['game',/게임|game/],
+    ['robot',/로봇|자동화|robot/],
+    ['finance',/은행|금융|증권/],
+    ['insurance',/보험|insurance/],
+    ['construction',/건설|인프라|플랜트/],
+    ['industrial',/기계|산업재/],
+    ['nuclear_energy',/원전|에너지|정유|lng|가스|신재생/],
+    ['entertainment',/엔터|미디어|콘텐츠/],
+    ['food',/음식료|식품|소비재/],
+    ['travel',/여행|항공|호텔|카지노|레저/],
+    ['materials',/철강|화학|소재/]
+  ];
+  return (rules.find(x=>x[1].test(s))||['industrial'])[0];
+}
+function srTokenHit(text,tokens){return (tokens||[]).filter(x=>text.includes(String(x).toLowerCase())).length}
+function srSectorKpiScore(text,row){
+  const pos=srTokenHit(text,row[2]),neg=srTokenHit(text,row[3]);
+  if(neg>=2)return 1;
+  if(neg===1&&pos===0)return 1.5;
+  if(pos>=3)return 5;
+  if(pos===2)return 4;
+  if(pos===1)return 3.5;
+  return 2.5;
+}
+function srValuationCore(themeKey,{fper,peg,pbr,roe,text,valComment}){
+  let s=2.5,reason='';
+  if(themeKey==='finance'||themeKey==='insurance'){
+    if(pbr!=null&&roe!=null){
+      const eff=roe/Math.max(.1,pbr);
+      s=eff>=8?5:eff>=5?4:eff>=3?3:eff>=1.5?2:1;
+      reason='PBR '+pbr.toFixed(2)+'x · ROE '+roe.toFixed(1)+'%';
+    }else{reason='PBR/ROE 비교 [검증 필요]'}
+  }else if(themeKey==='bio'){
+    if(fper!=null&&fper>0){s=fper<=15?4.5:fper<=25?3.5:fper<=40?2.5:fper<=60?1.5:1;reason='흑자 바이오 Fwd PER '+fper.toFixed(1)+'x'}
+    else{s=/cash runway|현금 충분|기술이전|pipeline|파이프라인/i.test(text)?3:2;reason='적자 바이오: PER 미사용 · Pipeline/Cash Runway 기반 정성평가'}
+  }else if(['materials','shipbuilding','construction','nuclear_energy'].includes(themeKey)){
+    const cyc=/저평가|할인|mid-cycle|normalized|정상화/i.test(valComment+' '+text);
+    s=cyc?4:(pbr!=null?(pbr<=.8?4.5:pbr<=1.2?3.5:pbr<=2?2.5:1.5):(fper!=null&&fper>0?(fper<=10?3.5:fper<=18?3:2):2.5));
+    reason='Cycle 산업: PBR/Normalized Earnings/EV 기준 우선';
+  }else{
+    s=peg!=null?(peg<=1?5:peg<=1.5?4:peg<=2?3:peg<=3?2:1):(fper==null?2.5:fper<=10?4.5:fper<=20?3.5:fper<=30?3:fper<=45?2:1);
+    reason='Fwd PER '+(fper==null?'[Consensus 없음]':fper.toFixed(1)+'x')+' · PEG '+(peg==null?'[검증 필요]':peg.toFixed(2));
+  }
+  if(/명확한 저평가|현저.*저평가|20%.*할인/i.test(valComment))s=Math.min(5,s+.5);
+  if(/고평가|프리미엄/i.test(valComment))s=Math.max(0,s-.5);
+  return{score:s,reason};
+}
+function srCycleScore(text){
+  if(/침체 말기|바닥 통과|턴어라운드|초기 회복|초기회복|회복 국면/i.test(text))return{score:4,label:'초기회복'};
+  if(/성장 국면|수요 성장|고성장|증설 사이클|투자 확대/i.test(text))return{score:4,label:'성장'};
+  if(/호황|강한 수요|공급 부족/i.test(text))return{score:3,label:'호황'};
+  if(/peak|피크|정점/i.test(text))return{score:2,label:'Peak'};
+  if(/둔화|감속|수요 약화/i.test(text))return{score:1,label:'둔화'};
+  if(/침체|불황|구조적 감소/i.test(text))return{score:.5,label:'침체'};
+  return{score:2,label:'중립/확인 필요'};
+}
+function srVisibilityScore(text){
+  if(/장기계약|다년 계약|수주잔고|backlog|recurring|반복매출|subscription|lta|확정 수주/i.test(text))return 3;
+  if(/계약|수주|고객 다변화|가이던스|반복/i.test(text))return 2;
+  if(/변동성 큼|spot|단기 주문|예측 어려/i.test(text))return 1;
+  return 1.5;
+}
+function srAttractiveness7(valScore,fwdEpsGrowth){
+  const adj=fwdEpsGrowth==null?0:(fwdEpsGrowth>=30?1:fwdEpsGrowth>=20?.8:fwdEpsGrowth>=10?.5:fwdEpsGrowth>=5?.25:fwdEpsGrowth>=0?0:fwdEpsGrowth>-10?-.25:-.5);
+  const x=srClamp(valScore+adj,0,10);
+  const label=x>=9.2?'매우 매력':x>=8.2?'매력':x>=7.2?'다소 매력':x>=5.8?'중립':x>=4.8?'다소 부담':x>=3.5?'부담':'매우 부담';
+  return{label,score:x,reason:'Forward EPS 성장 '+(fwdEpsGrowth==null?'[Consensus 없음]':fwdEpsGrowth.toFixed(1)+'%')+' · Valuation '+valScore.toFixed(1)+'/10 · 성장조정 '+x.toFixed(1)+'/10'};
+}
+function srRecalcFundamental(f){
+  f.base=Object.values(f.groups).reduce((s,v)=>s+Number(v||0),0);
+  f.total=srClamp(f.base-Number(f.riskPenalty||0),0,100);
+  f.grade=srFundGrade(f.total);
+  const a=srAttractiveness7(f.groups.valuation, f.forwardEpsGrowth);
+  f.attractiveness=a.label;f.attractivenessReason=a.reason;
+  return f;
+}
+function srPercentile(value,arr,higherBetter=true){
+  const vals=(arr||[]).filter(Number.isFinite).sort((a,b)=>a-b);
+  if(!Number.isFinite(value)||vals.length<3)return null;
+  const below=vals.filter(x=>x<value).length,equal=vals.filter(x=>x===value).length;
+  let p=(below+equal*.5)/vals.length;
+  return higherBetter?p:1-p;
+}
+function srPeerAdj(p){
+  if(p==null)return 0;
+  if(p>=.90)return 1.5;
+  if(p>=.75)return 1;
+  if(p>=.60)return .5;
+  if(p>=.40)return 0;
+  if(p>=.25)return-.5;
+  if(p>=.10)return-1;
+  return-1.5;
+}
+function srApplyPeerRelativeScoring(reports){
+  const opms=reports.map(x=>x.f.peerMetrics?.opm).filter(Number.isFinite);
+  const roes=reports.map(x=>x.f.peerMetrics?.roe).filter(Number.isFinite);
+  const vals=reports.map(x=>x.f.peerMetrics?.peg??x.f.peerMetrics?.fper).filter(x=>Number.isFinite(x)&&x>0);
+  reports.forEach(x=>{
+    const f=x.f,m=f.peerMetrics||{};
+    const pp=[srPercentile(m.opm,opms,true),srPercentile(m.roe,roes,true)].filter(v=>v!=null);
+    const vp=srPercentile(m.peg??m.fper,vals,false);
+    if(pp.length){
+      const p=pp.reduce((a,b)=>a+b,0)/pp.length,adj=srPeerAdj(p);
+      f.groups.profitability=srClamp(f.groups.profitability+adj,0,15);
+      f.peerProfitabilityNote='동일 테마 Peer 수익성 백분위 '+Math.round(p*100)+'% · 조정 '+(adj>=0?'+':'')+adj.toFixed(1);
+    }
+    if(vp!=null){
+      const adj=srPeerAdj(vp);
+      f.groups.valuation=srClamp(f.groups.valuation+adj,0,10);
+      f.peerValuationNote='동일 테마 Valuation 백분위 '+Math.round(vp*100)+'% · 조정 '+(adj>=0?'+':'')+adj.toFixed(1);
+    }
+    srRecalcFundamental(f);
+  });
+  return reports;
+}
+
+function srFundamentalScore(report,item,themeKey){
   if(!report?.quant)return null;
+  themeKey=themeKey||srInferFundThemeKey(report);
   const q=report.quant,v=q.valuation||{},prior=q.prior_valuation||{};
   const annualRaw=Array.isArray(q.annual)?q.annual:[];
   const annualHist=annualRaw.map(x=>({
@@ -2295,10 +2610,9 @@ function srFundamentalScore(report,item){
   const f1=fwd[0]||null,f2=fwd[1]||null;
   const text=[
     ...(report.keypoints||[]).map(x=>x?.ko||''),
-    report.outlook?.ko||'',report.business?.ko||'',report.industry?.ko||'',
+    report.outlook?.ko||'',report.business?.ko||'',report.industry?.ko||'',report.valuation_comment?.ko||'',
     ...(report.risks||[]).map(x=>(x?.cat?.ko||'')+' '+(x?.body?.ko||''))
-  ].join(' ');
-  const industryType=srFundIndustryType(report);
+  ].join(' ').toLowerCase();
   const detail=[];
   const add=(group,key,label,weight,score,reason)=>{
     score=srRoundHalf(srClamp(score,0,5));
@@ -2307,159 +2621,92 @@ function srFundamentalScore(report,item){
     return earned;
   };
 
+  // A. Universal Fundamental Score = 70
   const histRevCagr=hist.length>=3?srCagr(hist[0].rev,hist.at(-1).rev,hist.length-1):((latest.rev&&prev.rev)?(latest.rev/prev.rev-1)*100:null);
   const fwdRevGrowth=f1?.rev&&latest.rev?(f1.rev/latest.rev-1)*100:null;
   const fwd2RevCagr=f2?.rev&&latest.rev?srCagr(latest.rev,f2.rev,2):fwdRevGrowth;
-  const revGrowth=(fwdRevGrowth!=null||fwd2RevCagr!=null||histRevCagr!=null)
-    ?(Number(fwdRevGrowth??fwd2RevCagr??0)*.55+Number(fwd2RevCagr??fwdRevGrowth??0)*.25+Number(histRevCagr??fwdRevGrowth??0)*.20):null;
-  let sRev=srGrowthBand(revGrowth,[15,10,5,0]);
-  if(fwdRevGrowth!=null&&histRevCagr!=null&&fwdRevGrowth>histRevCagr+5)sRev=Math.min(5,sRev+.5);
-  add('growth','revenue','매출 성장',7,sRev,'과거 CAGR '+(histRevCagr==null?'[검증 필요]':histRevCagr.toFixed(1)+'%')+' · Forward '+(fwdRevGrowth==null?'Consensus 없음':fwdRevGrowth.toFixed(1)+'%')+' [AI]');
+  const revBlend=(fwdRevGrowth!=null||histRevCagr!=null)?Number(fwdRevGrowth??histRevCagr)*.7+Number(fwd2RevCagr??fwdRevGrowth??histRevCagr)*.15+Number(histRevCagr??fwdRevGrowth)*.15:null;
+  add('growth','revenue','매출 성장',5,srGrowthBand(revBlend,[20,12,5,0]),'과거 CAGR '+(histRevCagr==null?'[검증 필요]':histRevCagr.toFixed(1)+'%')+' · Forward '+(fwdRevGrowth==null?'[Consensus 없음]':fwdRevGrowth.toFixed(1)+'%'));
 
   const opGrowth=f1?.op&&latest.op&&latest.op>0?(f1.op/latest.op-1)*100:null;
-  const opmNow=latest.opm??(latest.rev&&latest.op!=null?latest.op/latest.rev*100:null);
-  const opmF=f1?.opm??(f1?.rev&&f1?.op!=null?f1.op/f1.rev*100:null);
-  let sOp=srGrowthBand(opGrowth,[25,15,5,0]);
-  if(opGrowth!=null&&fwdRevGrowth!=null&&opGrowth>fwdRevGrowth+5)sOp=Math.min(5,sOp+.5);
-  if(opmF!=null&&opmNow!=null&&opmF>opmNow)sOp=Math.min(5,sOp+.5);
-  if(f1?.op!=null&&f1.op<0)sOp=0;
-  add('growth','opGrowth','영업이익 성장',8,sOp,'Forward OP 성장 '+(opGrowth==null?'Consensus 없음':opGrowth.toFixed(1)+'%')+' · OPM '+(opmNow==null?'—':opmNow.toFixed(1)+'%')+' → '+(opmF==null?'—':opmF.toFixed(1)+'%')+' [AI]');
+  add('growth','opGrowth','영업이익 성장',5,srGrowthBand(opGrowth,[30,20,8,0]),'Forward 영업이익 성장 '+(opGrowth==null?'[Consensus 없음]':opGrowth.toFixed(1)+'%'));
 
   const epsBase=latest.eps??srNum(v.eps),epsF=f1?.eps??srNum(v.forward_eps),epsGrowth=epsF!=null&&epsBase>0?(epsF/epsBase-1)*100:null;
-  let sEps=srGrowthBand(epsGrowth,[25,15,5,0]);if(epsF!=null&&epsF<0)sEps=0;
-  add('growth','epsGrowth','EPS 성장',6,sEps,'Forward EPS 성장 '+(epsGrowth==null?'Consensus 없음':epsGrowth.toFixed(1)+'%')+' [AI]');
+  let epsScore=srGrowthBand(epsGrowth,[30,20,8,0]);if(epsF!=null&&epsF<0)epsScore=0;
+  add('growth','epsGrowth','EPS 성장 / 가속',5,epsScore,'Forward EPS 성장 '+(epsGrowth==null?'[Consensus 없음]':epsGrowth.toFixed(1)+'%'));
 
-  const oldFeps=srNum(prior.forward_eps),newFeps=srNum(v.forward_eps),revision=oldFeps&&newFeps?(newFeps/oldFeps-1)*100:null;
-  let sRevise=revision==null?2:revision>=10?5:revision>=5?4:revision>0?3:revision===0?2:revision>-5?1:0;
-  add('growth','revision','실적 추정치 Revision',4,sRevise,revision==null?'최근 1~3개월 Revision 이력 [검증 필요]':'Forward EPS Revision '+(revision>=0?'+':'')+revision.toFixed(1)+'% [AI]');
-
-  const opmPrev=prev.opm??(prev.rev&&prev.op!=null?prev.op/prev.rev*100:null),opmDelta=opmNow!=null&&opmPrev!=null?opmNow-opmPrev:null;
-  let sMargin=opmNow==null?2.5:opmNow<0?0:(opmNow>=15&&opmDelta>=2)?5:(opmNow>=10&&opmDelta>=0)?4:(opmNow>=5&&opmDelta>=-1)?3:opmNow>0?2:1;
-  if(/업종.*상위|업계.*상위|최고.*수익성|고마진/i.test(text))sMargin=Math.min(5,sMargin+.5);
-  add('profitability','margin','영업이익률 / Margin Trend',7,sMargin,'OPM '+(opmNow==null?'[검증 필요]':opmNow.toFixed(1)+'%')+' · 변화 '+(opmDelta==null?'—':(opmDelta>=0?'+':'')+opmDelta.toFixed(1)+'%p')+' [AI]');
+  const opmNow=latest.opm??(latest.rev&&latest.op!=null?latest.op/latest.rev*100:null);
+  const opmPrev=prev.opm??(prev.rev&&prev.op!=null?prev.op/prev.rev*100:null);
+  const opmDelta=opmNow!=null&&opmPrev!=null?opmNow-opmPrev:null;
+  let marginScore=opmNow==null?2.5:opmNow<0?0:(opmDelta!=null&&opmDelta>=3)?5:(opmDelta!=null&&opmDelta>=1)?4:opmDelta!=null&&opmDelta>=0?3.5:opmNow>0?2.5:1;
+  if(/업종.*상위|top-tier|고마진|pricing power|믹스 개선|mix 개선/i.test(text))marginScore=Math.min(5,marginScore+.5);
+  add('profitability','margin','영업이익률 / Margin Trend',6,marginScore,'OPM '+(opmNow==null?'[검증 필요]':opmNow.toFixed(1)+'%')+' · 변화 '+(opmDelta==null?'—':(opmDelta>=0?'+':'')+opmDelta.toFixed(1)+'%p'));
 
   const roe=srNum(v.roe_ttm)??srNum(f1?.roe)??srNum(latest.roe),debtRatio=srNum(latest.debt_ratio);
-  let sRoe=roe==null?2.5:roe>=15?5:roe>=12?4:roe>=8?3:roe>=5?2:roe>=0?1:0;
-  if(debtRatio!=null&&debtRatio>150)sRoe=Math.max(0,sRoe-1);
-  add('profitability','roe','ROE / ROIC',8,sRoe,'ROE '+(roe==null?'[검증 필요]':roe.toFixed(1)+'%')+' · ROIC '+(/roic/i.test(text)?'정성 확인':'[검증 필요]')+(debtRatio!=null?' · 부채비율 '+debtRatio.toFixed(1)+'%':''));
+  let roeScore=roe==null?2.5:roe>=20?5:roe>=15?4.5:roe>=10?3.5:roe>=6?2.5:roe>=0?1.5:0;
+  add('profitability','roe','ROE / ROIC',5,roeScore,'ROE '+(roe==null?'[검증 필요]':roe.toFixed(1)+'%')+' · ROIC '+(/roic/i.test(text)?'정성 확인':'[검증 필요]'));
 
-  const sPricing=srQualScore(text,/가격.*전가|판가.*유지|mix.*개선|믹스.*개선|고부가|asp.*상승/i,/가격 결정력|pricing power|asp.*상승|판가.*인상|고부가.*확대/i,/판가.*하락|가격 경쟁|commodity|원가.*전가.*어려/i);
-  add('profitability','pricing','이익률 구조 / Pricing Power',5,sPricing,'ASP·제품 Mix·가격전가력 정성평가 [AI]');
+  const pricingScore=srQualScore(text,/가격.*전가|판가.*유지|mix.*개선|믹스.*개선|고부가|asp.*상승/i,/pricing power|판가.*인상|고부가.*확대|원가 경쟁력/i,/판가.*하락|가격 경쟁|commodity|원가.*부담/i);
+  add('profitability','pricing','제품 Mix / Pricing Power',4,pricingScore,'제품 Mix·ASP·가격전가력 기준');
 
-  const histCash=annualHist.slice(-3),cfo=histCash.map(x=>srNum(x.cfo)),cfoPositive=cfo.filter(x=>x>0).length,cfoTrend=cfo.length>=2?cfo.at(-1)-cfo[0]:null;
-  let sFcf=cfo.length>=3&&cfoPositive===3&&cfoTrend>0?5:cfo.length>=2&&cfoPositive===cfo.length?4:cfoPositive?3:2;
-  if(/대규모 capex|대규모.*설비투자|capex.*확대/i.test(text)&&sFcf>=3)sFcf-=.5;
-  add('financial','fcf','FCF',6,sFcf,'정확한 CAPEX 미확인 시 CFO proxy 사용 · 최근 '+cfo.length+'개년 양(+) CFO '+cfoPositive+'개년 [검증 필요]');
+  const cfo=annualHist.slice(-3).map(x=>srNum(x.cfo)).filter(Number.isFinite),cfoPositive=cfo.filter(x=>x>0).length;
+  let fcfScore=cfo.length>=3&&cfoPositive===3&&cfo.at(-1)>=cfo[0]?5:cfo.length>=2&&cfoPositive===cfo.length?4:cfoPositive?3:2;
+  if(/성장 capex|증설|신공장/i.test(text)&&/capa|생산능력|수주/i.test(text))fcfScore=Math.max(fcfScore,3);
+  add('financial','fcf','영업현금흐름 / FCF',6,fcfScore,'최근 '+cfo.length+'개년 양(+) CFO '+cfoPositive+'개년 · 성장 CAPEX는 CAPA/ROIC와 함께 평가');
 
-  let sDebt=debtRatio==null?2.5:debtRatio<20?5:debtRatio<50?4:debtRatio<100?3:debtRatio<150?2:debtRatio<250?1:0;
-  if(/순현금|net cash/i.test(text))sDebt=5;
-  add('financial','netDebt','순차입금 / EBITDA',5,sDebt,debtRatio==null?'Net Debt/EBITDA [검증 필요]':'직접 Net Debt/EBITDA 미확인 · 부채비율 '+debtRatio.toFixed(1)+'% proxy [검증 필요]');
+  let debtScore=debtRatio==null?2.5:debtRatio<30?5:debtRatio<70?4:debtRatio<120?3:debtRatio<180?2:debtRatio<250?1:0;
+  if(/순현금|net cash/i.test(text))debtScore=5;
+  add('financial','debt','순차입금 / 부채 / 유동성',5,debtScore,debtRatio==null?'Net Debt/EBITDA·부채비율 [검증 필요]':'부채비율 '+debtRatio.toFixed(1)+'% proxy');
 
-  const latestCfo=cfo.length?cfo.at(-1):null;
-  let sInterest=debtRatio==null?2.5:debtRatio<50&&latestCfo>0?5:debtRatio<100&&latestCfo>0?4:debtRatio<150?3:debtRatio<250?2:1;
-  add('financial','interest','이자보상 / 유동성',4,sInterest,'이자보상배율 직접값 '+(/이자보상|interest coverage/i.test(text)?'정성 확인':'[검증 필요]')+' · CFO/부채구조 proxy [AI]');
+  let capexScore=srQualScore(text,/현금흐름.*안정|유동성.*충분|capex.*회수|투자 효율|roic.*개선/i,/순현금|재무구조.*우수|fcf.*증가/i,/과도한 capex|유동성 위험|자금조달|차입 증가/i);
+  add('financial','liquidity','이자보상 / CAPEX 부담',4,capexScore,'CAPEX 부담과 향후 CAPA/ROIC를 함께 평가');
 
-  const cfoNi=histCash.map(x=>{const ni=srNum(x.np_owner??x.np),cf=srNum(x.cfo);return ni>0&&cf!=null?cf/ni*100:null}).filter(Number.isFinite),cfoNiAvg=srAvg(cfoNi);
-  const sQuality=cfoNiAvg==null?2.5:cfoNiAvg>=100?5:cfoNiAvg>=80?4:cfoNiAvg>=60?3:cfoNiAvg>=40?2:cfoNiAvg>=0?1:0;
-  add('quality','cashConversion','CFO / 순이익',5,sQuality,'최근 3년 평균 CFO/순이익 '+(cfoNiAvg==null?'[검증 필요]':cfoNiAvg.toFixed(0)+'%')+' [AI]');
-
-  let sVisibility=srQualScore(text,/수주|계약|반복매출|subscription|recurring|backlog|장기 공급|다년 계약|lta|retention/i,/수주잔고.*[1-9]|장기.*계약|다년.*계약|recurring revenue|subscription.*계약/i,/spot|단기 주문|주문 변동|수주 공백/i);
-  if(industryType==='수주산업'&&/수주잔고|신규수주|book-to-bill/i.test(text))sVisibility=Math.min(5,sVisibility+.5);
-  add('quality','visibility','수주잔고 / 반복매출',5,sVisibility,industryType+' 특성 반영 · 장기계약/Backlog/Recurring Revenue 정성평가 [AI]');
-
-  let sCustomer=srQualScore(text,/고객.*다변화|글로벌 고객|장기 거래|점유율/i,/다년.*고객|핵심 공급|top tier|시장점유율.*1위|독점/i,/단일 고객|고객 집중|소수 고객|의존도.*높/i);
-  if(/nvidia|apple|엔비디아|애플/i.test(text)&&/핵심 공급|인증|qualification|점유율/i.test(text))sCustomer=Math.max(3.5,sCustomer);
-  add('quality','customer','고객구조 / 실적 안정성',5,sCustomer,'고객 집중도·장기거래·핵심공급자 지위 정성평가 [AI]');
-
-  const fper=srNum(v.forward_per)??srNum(v.per),fwdEpsGrowth=epsGrowth,peg=fper!=null&&fwdEpsGrowth>0?fper/fwdEpsGrowth:null;
-  let sPer=peg!=null?(peg<=1?5:peg<=1.5?4:peg<=2?3:peg<=3?2:1):(fper==null?2.5:fper<=10?4:fper<=20?3.5:fper<=35?2.5:fper<=50?1.5:.5);
+  const fper=srNum(v.forward_per)??srNum(v.per),pbr=srNum(v.pbr),peg=fper!=null&&epsGrowth>0?fper/epsGrowth:null;
   const valComment=String(report.valuation_comment?.ko||'');
-  if(/20%.*할인|현저.*저평가|저평가/i.test(valComment))sPer=Math.min(5,sPer+.5);
-  if(/프리미엄|고평가/i.test(valComment))sPer=Math.max(0,sPer-.5);
-  add('valuation','perPeg','Forward PER / PEG',6,sPer,'Fwd PER '+(fper==null?'Consensus 없음':fper.toFixed(1)+'x')+' · PEG '+(peg==null?'[검증 필요]':peg.toFixed(2))+' [AI]');
+  const valCore=srValuationCore(themeKey,{fper,peg,pbr,roe,text,valComment});
+  add('valuation','sectorValuation','산업맞춤 Valuation',10,valCore.score,valCore.reason+' · 과거/국내 Peer/글로벌 Peer 비교 우선');
 
-  const snap=item?srConsensusSnapshot(item.code):null,ev=srNum(snap?.evEbitda),peerEv=srAvgObj(snap?.peers?.evEbitda);
-  let sEv=2.5;
-  if(ev!=null&&peerEv!=null){const discount=(ev/peerEv-1)*100;sEv=discount<=-20?5:discount<=-10?4:discount<10?3:discount<20?2:1}
-  else if(/ev\/?ebitda.*할인|ev.*할인/i.test(valComment))sEv=4;
-  else if(/ev\/?ebitda.*프리미엄/i.test(valComment))sEv=2;
-  add('valuation','evEbitda','EV / EBITDA',4,sEv,ev!=null?'EV/EBITDA '+ev.toFixed(1)+'x'+(peerEv!=null?' · Peer '+peerEv.toFixed(1)+'x':''):'EV/EBITDA Peer 비교 [검증 필요]');
+  let moat1=srQualScore(text,/점유율|진입장벽|qualification|특허|수율|원가경쟁력/i,/글로벌.*1위|top-tier|독점|핵심 공급|강력한 진입장벽/i,/점유율 하락|commodity|진입장벽 낮/i);
+  add('moat','barrier','점유율 / 기술·인증 진입장벽',6,moat1,'시장점유율·기술·고객 인증·수율 기준');
+  let moat2=srQualScore(text,/고객 다변화|장기 거래|브랜드|switching cost|lock-in|반복매출/i,/고객 lock-in|독점 공급|브랜드 파워|장기 독점/i,/고객 집중|핵심 고객 이탈/i);
+  add('moat','lockin','고객 Lock-in / 브랜드 / 규모',4,moat2,'고객 Lock-in·브랜드·규모의 경제 기준');
 
-  const pbr=srNum(v.pbr),roeForVal=roe;
-  let sPbr=2.5;
-  if(pbr!=null&&roeForVal!=null){
-    const efficiency=roeForVal/Math.max(.1,pbr);
-    sPbr=efficiency>=8?5:efficiency>=5?4:efficiency>=3?3:efficiency>=1.5?2:1;
-  }
-  add('valuation','pbrRoe','PBR / ROE 또는 FCF Yield',5,sPbr,'PBR '+(pbr==null?'—':pbr.toFixed(2)+'x')+' · ROE '+(roeForVal==null?'—':roeForVal.toFixed(1)+'%')+(pbr==null||roeForVal==null?' [검증 필요]':' [AI]'));
+  const oldFeps=srNum(prior.forward_eps),newFeps=srNum(v.forward_eps),revision=oldFeps&&newFeps?(newFeps/oldFeps-1)*100:null;
+  const reviseScore=revision==null?2:revision>=10?5:revision>=5?4:revision>0?3:revision===0?2:revision>-5?1:0;
+  add('revision','revision','Earnings Revision',5,reviseScore,revision==null?'최근 1~3개월 EPS/영업이익 Revision [검증 필요]':'Forward EPS Revision '+(revision>=0?'+':'')+revision.toFixed(1)+'%');
 
-  let sIndustry=srQualScore(text,/성장|회복|수요 증가|구조적 성장|확대/i,/구조적 고성장|공급 부족|cycle 초기|초기 회복|고성장/i,/peak|둔화|침체|수요 감소|구조적 축소/i);
-  let cycle='안정';
-  if(/초기 회복|회복 초기/i.test(text))cycle='초기 회복';
-  else if(/성장|수요 증가|공급 부족/i.test(text))cycle='성장';
-  else if(/호황|강한 상승 사이클/i.test(text))cycle='호황';
-  else if(/peak|피크/i.test(text))cycle='Peak';
-  else if(/둔화/i.test(text))cycle='둔화';
-  else if(/침체|축소/i.test(text))cycle='침체';
-  add('industry','cycle','산업 성장성 / Cycle',4,sIndustry,industryType+' · Cycle '+cycle+' [AI]');
+  // B. Sector Specific = 20
+  const sectorRules=SR_SECTOR_KPI_RULES[themeKey]||SR_SECTOR_KPI_RULES.industrial;
+  sectorRules.forEach((row,i)=>add('sector','sector'+(i+1),row[0],row[1],srSectorKpiScore(text,row),'해당 Sector 핵심 KPI Evidence 기반'));
 
-  const sMoat=srQualScore(text,/점유율|기술력|인증|진입장벽|top tier|1위|독점|qualification/i,/글로벌.*1위|국내.*1위|독점|높은 진입장벽|핵심 공급자/i,/점유율.*하락|가격 경쟁|차별화 부족/i);
-  add('industry','moat','시장점유율 / Moat',4,sMoat,'점유율·기술·규모·고객 인증 진입장벽 정성평가 [AI]');
+  // C. Cycle / Earnings Visibility = 10
+  const cyc=srCycleScore(text);
+  add('cycleVisibility','cycle','산업 Cycle',4,cyc.score/4*5,cyc.label);
+  const vis=srVisibilityScore(text);
+  add('cycleVisibility','visibility','Forward 실적 가시성',3,vis/3*5,vis===3?'수주/계약/반복매출 가시성 높음':vis===2?'가시성 보통':'가시성 추가 검증 필요');
+  const dir=revision==null?1.5:revision>=5?3:revision>=0?2:revision>-5?1:0;
+  add('cycleVisibility','estimateDirection','추정치 방향',3,dir/3*5,revision==null?'추정치 방향 [검증 필요]':revision>=5?'지속 상향':revision>=0?'안정/소폭 상향':revision>-5?'소폭 하향':'지속 하향');
 
-  let divCount=0;
-  if(/다양한 고객|고객 다변화|글로벌 고객|여러 고객|다수 고객/i.test(text))divCount++;
-  if(/제품군|제품 믹스|다양한 제품|포트폴리오|사업부문/i.test(text))divCount++;
-  if(/미국|유럽|중국|동남아|글로벌|해외/i.test(text))divCount++;
-  const sDiv=divCount>=3?5:divCount===2?4:divCount===1?3:/단일 고객|단일 제품|단일 지역/i.test(text)?1:2.5;
-  add('industry','diversification','고객·제품·지역 Diversification',2,sDiv,'다변화 확인 영역 '+divCount+'/3 [AI]');
-
-  if(industryType==='금융'||industryType==='보험'){
-    const f=detail.find(x=>x.key==='fcf');if(f){f.score=2.5;f.earned=srWeightedSub(2.5,f.weight);f.reason='금융업 FCF 대신 CET1/BIS/K-ICS 등 업종지표 필요 [검증 필요]'}
-    const n=detail.find(x=>x.key==='netDebt');if(n){n.score=2.5;n.earned=srWeightedSub(2.5,n.weight);n.reason='금융업 Net Debt/EBITDA 비적용 · 자본적정성 지표 필요 [검증 필요]'}
-  }
-  if(industryType==='바이오'){
-    const vis=detail.find(x=>x.key==='visibility');
-    if(vis){
-      const bioScore=srQualScore(text,/임상|pipeline|기술이전|license|peak sales|상업화/i,/기술이전.*계약|임상 3상|허가|상업화/i,/임상 실패|중단|현금 runway.*부족/i);
-      vis.score=bioScore;vis.earned=srWeightedSub(bioScore,vis.weight);vis.reason='Pipeline·임상단계·기술이전·현금 Runway 기준 [AI]';
-    }
-  }
-
-  const groups={growth:0,profitability:0,financial:0,quality:0,valuation:0,industry:0};
-  detail.forEach(x=>groups[x.group]+=x.earned);
-  Object.keys(groups).forEach(k=>groups[k]=Math.round(groups[k]*10)/10);
-  const base=Math.round(detail.reduce((s,x)=>s+x.earned,0)*10)/10;
+  const groups={};
+  ['growth','profitability','financial','valuation','moat','revision','sector','cycleVisibility'].forEach(g=>groups[g]=detail.filter(x=>x.group===g).reduce((s,x)=>s+x.earned,0));
   const rp=srFundRiskPenalty(report,annualHist);
-  const total=Math.round(srClamp(base-rp.penalty,0,100)*10)/10;
-  const grade=srFundGrade(total);
+  const f={
+    total:0,base:0,riskPenalty:rp.penalty,grade:'',groups,detail,
+    themeKey,sectorLabel:(srFundThemeByKey?.(themeKey)?.label||themeKey),cycle:cyc.label,
+    forwardEpsGrowth:epsGrowth,
+    peerMetrics:{opm:opmNow,roe,fper,peg},
+    riskReasons:rp.reasons,
+    growth:groups.growth,earnings:groups.profitability,valuation:groups.valuation,catalyst:groups.sector,
+    profitability:groups.profitability,financial:groups.financial,quality:groups.cycleVisibility,industry:groups.sector
+  };
   const contribution=detail.map(x=>({...x,ratio:x.weight?x.earned/x.weight:0}));
-  const topUp=[...contribution].sort((a,b)=>b.earned-a.earned).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+x.weight+' · '+x.reason);
+  const topUp=[...contribution].sort((a,b)=>b.ratio-a.ratio||b.weight-a.weight).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+x.weight+' · '+x.reason);
   const topDown=[...contribution].sort((a,b)=>a.ratio-b.ratio||b.weight-a.weight).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+x.weight+' · '+x.reason);
   if(rp.reasons.length)topDown.unshift(...rp.reasons.slice(0,2).map(x=>'Risk Penalty -'+x.pts+': '+x.label));
-  const weakest=[...contribution].sort((a,b)=>a.ratio-b.ratio).slice(0,3);
-  const strongest=[...contribution].sort((a,b)=>b.ratio-a.ratio).slice(0,3);
-  const upConditions=weakest.map(x=>x.label+' 개선 또는 검증 데이터 상향');
-  const downConditions=strongest.map(x=>x.label+' 둔화/훼손 시 점수 하락');
-  const valScore=groups.valuation;
-  const growthAdj=fwdEpsGrowth==null?0:(fwdEpsGrowth>=30?2:fwdEpsGrowth>=20?1.5:fwdEpsGrowth>=10?1:fwdEpsGrowth>=5?.5:fwdEpsGrowth>=0?0:fwdEpsGrowth>-10?-.5:-1);
-  const growthAdjustedValuation=srClamp(valScore+growthAdj,0,15);
-  const attractive=
-    growthAdjustedValuation>=13.5?'매우 매력':
-    growthAdjustedValuation>=12?'매력':
-    growthAdjustedValuation>=10.5?'다소 매력':
-    growthAdjustedValuation>=8.5?'중립':
-    growthAdjustedValuation>=7?'다소 부담':
-    growthAdjustedValuation>=5?'부담':'매우 부담';
-  const attractiveReason='Forward EPS 성장 '+(fwdEpsGrowth==null?'Consensus 없음':fwdEpsGrowth.toFixed(1)+'%')+' · Valuation '+groups.valuation.toFixed(1)+'/15 · 성장조정 '+growthAdjustedValuation.toFixed(1)+'/15';
-
-  return{
-    total,base,riskPenalty:rp.penalty,grade,groups,detail,industryType,cycle,
-    attractiveness:attractive,attractivenessReason:attractiveReason,
-    topUp:topUp.slice(0,3),topDown:topDown.slice(0,3),upConditions,downConditions,
-    riskReasons:rp.reasons,
-    growth:groups.growth,earnings:groups.profitability,valuation:groups.valuation,catalyst:groups.industry,
-    profitability:groups.profitability,financial:groups.financial,quality:groups.quality,industry:groups.industry
-  };
+  f.topUp=topUp.slice(0,3);f.topDown=topDown.slice(0,3);
+  f.upConditions=[...contribution].sort((a,b)=>a.ratio-b.ratio).slice(0,3).map(x=>x.label+' 개선 또는 검증 데이터 상향');
+  f.downConditions=[...contribution].sort((a,b)=>b.ratio-a.ratio).slice(0,3).map(x=>x.label+' 둔화/훼손 시 점수 하락');
+  return srRecalcFundamental(f);
 }
 async function srMapLimit(arr,limit,fn){
   const out=new Array(arr.length);let idx=0;
@@ -2496,15 +2743,16 @@ async function srRunFundTheme(themeKey,status){
   const candidates=srFundThemeCandidates(theme);
   if(status)status.textContent=theme.label+' 대표 '+candidates.length+'개 종목 Forward Fundamental 분석 중...';
   const reports=(await srMapLimit(candidates,6,async item=>{
-    const report=await srKosaiCached(item),f=srFundamentalScore(report,item);
+    const report=await srKosaiCached(item),f=srFundamentalScore(report,item,theme.key);
     return report&&f?{item,report,f}:null;
   })).filter(Boolean);
+  srApplyPeerRelativeScoring(reports);
   reports.sort((a,b)=>b.f.total-a.f.total||(b.item.marketcap||0)-(a.item.marketcap||0));
   const top20=reports.slice(0,20);
   srRenderFundTop20Rows(top20);
   if(!top20.length){
     const body=document.getElementById('fundTop10Body');
-    if(body)body.innerHTML='<tr><td colspan="10">해당 테마의 Fundamental 데이터를 불러오지 못했습니다. 재분석을 눌러주세요.</td></tr>';
+    if(body)body.innerHTML='<tr><td colspan="12">해당 테마의 Fundamental 데이터를 불러오지 못했습니다. 재분석을 눌러주세요.</td></tr>';
   }
   fundamentalScanResults={themeKey:theme.key,top20};
   if(status)status.textContent='완료 · '+theme.label+' '+reports.length+'개 평가 → TOP '+top20.length+' · 기준 '+(stockUniverseMeta.as_of||'최신');
@@ -2648,16 +2896,17 @@ function srRenderFundTop20Rows(list){
     '<td>'+(i+1)+'</td>'+
     '<td><div class="fund-stock-name">'+srEsc(x.item.name)+'</div><span class="fund-price-snapshot">'+srEsc(srFundSnapshotPrice(x.item))+'</span></td>'+
     '<td><div class="fund-score-main">'+x.f.total.toFixed(1)+'</div><div class="fund-score-meta">Base '+x.f.base.toFixed(1)+' · Penalty -'+x.f.riskPenalty+'</div></td>'+
-    '<td><span class="fund-area-score">'+x.f.groups.growth.toFixed(1)+'/25</span></td>'+
-    '<td><span class="fund-area-score">'+x.f.groups.profitability.toFixed(1)+'/20</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.growth.toFixed(1)+'/15</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.profitability.toFixed(1)+'/15</span></td>'+
     '<td><span class="fund-area-score">'+x.f.groups.financial.toFixed(1)+'/15</span></td>'+
-    '<td><span class="fund-area-score">'+x.f.groups.quality.toFixed(1)+'/15</span></td>'+
-    '<td><span class="fund-area-score">'+x.f.groups.valuation.toFixed(1)+'/15</span></td>'+
-    '<td><span class="fund-area-score">'+x.f.groups.industry.toFixed(1)+'/10</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.valuation.toFixed(1)+'/10</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.moat.toFixed(1)+'/10</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.revision.toFixed(1)+'/5</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.sector.toFixed(1)+'/20</span></td>'+
+    '<td><span class="fund-area-score">'+x.f.groups.cycleVisibility.toFixed(1)+'/10</span></td>'+
     '<td><span class="fund-val-answer '+srFundValClass(x.f.attractiveness)+'">'+srEsc(x.f.attractiveness)+'</span></td></tr>'
   ).join('');
 }
-
 
 function srEntryClass(g){return g==='S'?'entry-s':g==='A'?'entry-a':g==='B'?'entry-b':'entry-c'}
 
