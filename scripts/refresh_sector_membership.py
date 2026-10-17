@@ -170,10 +170,12 @@ def refresh_membership(force=False):
         return False
 
     seed_codes = set()
+    seed_by_sector = {}
     for sector in sectors:
         current = [str(x).zfill(6) for x in (sector.get("codes") or []) if str(x).strip()]
         seed = [str(x).zfill(6) for x in (sector.get("seed_codes") or current) if str(x).strip()]
         sector["seed_codes"] = list(dict.fromkeys(seed))
+        seed_by_sector[sector.get("key")] = set(sector["seed_codes"])
         seed_codes.update(sector["seed_codes"])
 
     candidates = candidate_universe(universe, seed_codes)
@@ -213,7 +215,7 @@ def refresh_membership(force=False):
 
         if assigned:
             for sc, key, hits in assigned[:3]:
-                if p["code"] in seed_codes:
+                if p["code"] in (seed_by_sector.get(key) or set()):
                     continue
                 sector_auto.setdefault(key, []).append({
                     "code": p["code"],
