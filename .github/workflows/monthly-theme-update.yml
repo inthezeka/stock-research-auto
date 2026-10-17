@@ -1,0 +1,70 @@
+name: Monthly theme recommendation refresh
+
+on:
+  schedule:
+    - cron: "15 22 1 * *" # 07:15 KST on the 1st, using the prior month's final close
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: stock-research-daily
+  cancel-in-progress: true
+
+jobs:
+  refresh-theme-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Smoke test
+        run: python scripts/smoke_test.py
+
+      - name: Refresh monthly theme recommendations
+        run: THEME_MONTHLY_REFRESH=1 python scripts/update_data.py
+
+      - name: Sync embedded fallback
+        run: python scripts/embed_fallback.py
+
+      - name: Validate project
+        run: python scripts/validate_project.py
+
+      - name: Commit verified monthly theme data
+        run: |
+          if git diff --quiet; then
+            echo "No verified changes"
+          else
+            git config user.name "stock-research-bot"
+            git config user.email "stock-research-bot@users.noreply.github.com"
+            git add data/market-data.json stock-universe.json index.html QA_REPORT.md
+            git commit -m "chore: monthly theme refresh [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy GitHub Pages
+        uses: actions/deploy-pages@v4
