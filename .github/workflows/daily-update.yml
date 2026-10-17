@@ -60,6 +60,9 @@ jobs:
       - name: Refresh MY Trading intraday cache
         run: python scripts/update_intraday_cache.py
 
+      - name: Refresh 3-month analyst research cache
+        run: python scripts/update_analyst_research_cache.py
+
       - name: Sync embedded fallback
         run: python scripts/embed_fallback.py
 
@@ -83,6 +86,7 @@ jobs:
             python scripts/refresh_sector_membership.py
             python scripts/update_data.py
             python scripts/update_intraday_cache.py
+            python scripts/update_analyst_research_cache.py
             python scripts/embed_fallback.py
             python scripts/validate_project.py
           fi
@@ -90,7 +94,7 @@ jobs:
           if git diff --quiet; then
             echo "No verified changes"
           else
-            git add config/fundamental_themes.json data/market-data.json data/intraday-cache.json stock-universe.json index.html QA_REPORT.md
+            git add config/fundamental_themes.json data/market-data.json data/intraday-cache.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
             git commit -m "chore: daily verified market data [skip ci]"
             git push origin HEAD:main
           fi
