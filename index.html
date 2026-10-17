@@ -255,23 +255,40 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .fund-val-answer.fund-val-burden{background:#FEF3F2;color:#B42318;border:1px solid #FECDCA}
 .fund-val-answer.fund-val-unknown{background:#F2F4F7;color:#667085;border:1px solid #E4E7EC}
 
-#sector .cycle-status{
-  min-width:58px;
+#sector .cycle-status,
+#sector .cycle-legend-item{
+  min-width:64px;
   justify-content:center;
   border:1px solid transparent;
   font-weight:950;
 }
-#sector .cycle-recovery{background:#EAF2FF;color:#1554AD;border-color:#B8D1F8}
+.sector-cycle-legend{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:0 0 12px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#fff;
+  color:#98A2B3;
+  font-size:11px;
+  font-weight:800;
+}
+#sector .cycle-legend-item{display:inline-flex;padding:5px 8px;border-radius:999px}
+#sector .cycle-strong{background:#F4F3FF;color:#6938EF;border-color:#D9D6FE}
 #sector .cycle-growth{background:#ECFDF3;color:#067647;border-color:#ABEFC6}
-#sector .cycle-boom{background:#F4F3FF;color:#6938EF;border-color:#D9D6FE}
-#sector .cycle-peak{background:#FFF1F3;color:#C01048;border-color:#FECDD6}
-#sector .cycle-slow{background:#FFFAEB;color:#B54708;border-color:#FEDF89}
-#sector .cycle-down{background:#FEF3F2;color:#B42318;border-color:#FECDCA}
+#sector .cycle-expansion{background:#EAF2FF;color:#1554AD;border-color:#B8D1F8}
+#sector .cycle-neutral{background:#F2F4F7;color:#475467;border-color:#E4E7EC}
+#sector .cycle-slow{background:#FEF7C3;color:#854A0E;border-color:#FDE272}
+#sector .cycle-down{background:#FFF4E5;color:#C25B00;border-color:#FEC84B}
+#sector .cycle-recession{background:#FEF3F2;color:#B42318;border-color:#FECDCA}
 
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-fund-price-cycle-val-earnings-v33-20261017 -->
+<!-- BUILD: stock-room-sector-top7-cycle7-v34-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -370,15 +387,26 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </section>
 
 <section id="sector" class="section-track" data-name="SECTOR">
-  <div class="section-head"><div><h2 class="section-title">② 유망 Sector TOP 5</h2><p class="section-desc">산업 성장률, 수요·공급, CAPEX와 실적 방향을 함께 평가합니다. <b>현재 Cycle</b>은 업종의 수요·이익 국면을 초기회복 → 성장 → 호황 → Peak → 둔화 → 침체 중 어디에 위치하는지 보여주는 참고 지표입니다.</p></div></div>
-  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>Sector</th><th>투자포인트</th><th>현재 Cycle</th><th>1~3년 성장동력</th></tr></thead><tbody>
-    <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag cycle-status cycle-boom" data-edit data-key="sector1Cycle">성장 → 호황</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
+  <div class="section-head"><div><h2 class="section-title">② 유망 Sector TOP 7</h2><p class="section-desc">산업 성장률, 수요·공급, CAPEX, 실적 Revision과 밸류에이션을 함께 평가합니다. <b>Cycle 매력도</b>는 현재 업황의 투자 매력도를 7단계로 단순화한 참고 지표입니다.</p></div></div>
+  <div class="sector-cycle-legend" aria-label="Sector Cycle 매력도 7단계">
+    <span class="cycle-legend-item cycle-strong">최상위 성장</span><span>›</span>
+    <span class="cycle-legend-item cycle-growth">성장</span><span>›</span>
+    <span class="cycle-legend-item cycle-expansion">우호적 확장</span><span>›</span>
+    <span class="cycle-legend-item cycle-neutral">중립</span><span>›</span>
+    <span class="cycle-legend-item cycle-slow">둔화</span><span>›</span>
+    <span class="cycle-legend-item cycle-down">하강</span><span>›</span>
+    <span class="cycle-legend-item cycle-recession">침체</span>
+  </div>
+  <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>Sector</th><th>투자포인트</th><th>Cycle 매력도</th><th>1~3년 성장동력</th></tr></thead><tbody>
+    <tr><td class="rank">1</td><td><b data-edit data-key="sector1">AI 서버 부품 / 메모리</b></td><td data-edit data-key="sector1Point">AI 서버·HBM·MLCC·FCBGA 수요와 글로벌 CSP CAPEX</td><td><span class="tag cycle-status cycle-strong" data-edit data-key="sector1Cycle">최상위 성장</span></td><td data-edit data-key="sector1Growth">HBM4 · AI 서버용 MLCC · FCBGA · 차세대 가속기</td></tr>
     <tr><td class="rank">2</td><td><b data-edit data-key="sector2">전력기기 / Data Center Grid</b></td><td data-edit data-key="sector2Point">AI 데이터센터 전력 수요·북미 송배전 투자·전력망 병목</td><td><span class="tag cycle-status cycle-growth" data-edit data-key="sector2Cycle">성장</span></td><td data-edit data-key="sector2Growth">북미 전력망 교체 · 데이터센터 · HVDC/배전 자동화</td></tr>
-    <tr><td class="rank">3</td><td><b data-edit data-key="sector3">방산 / 항공우주</b></td><td data-edit data-key="sector3Point">수출 수주잔고·유럽/중동 재무장·우주 발사 이벤트</td><td><span class="tag cycle-status cycle-growth" data-edit data-key="sector3Cycle">성장</span></td><td data-edit data-key="sector3Growth">유럽·중동 후속계약 · 생산능력 확대 · 우주사업</td></tr>
-    <tr><td class="rank">4</td><td><b>조선 / 조선기자재</b></td><td>LNG·친환경 선박 수요, 고선가 수주잔고, 제한적인 글로벌 공급능력</td><td><span class="tag cycle-status cycle-boom">호황</span></td><td>LNG·암모니아 추진선 · 엔진/기자재 Mix · 고부가 선종</td></tr>
-    <tr><td class="rank">5</td><td><b>화장품 / 뷰티</b></td><td>K-Beauty 수출, 북미·일본 채널 확장, ODM 및 미용기기 성장</td><td><span class="tag cycle-status cycle-growth">성장</span></td><td>글로벌 유통 확대 · 인디브랜드 · ODM · 미용의료기기</td></tr>
+    <tr><td class="rank">3</td><td><b>반도체 장비</b></td><td>HBM·선단공정 증설, 미세화 난이도 상승, 공정 장비 투자 확대</td><td><span class="tag cycle-status cycle-growth">성장</span></td><td>HBM CAPEX · 전공정 미세화 · 첨단 패키징 · 검사/테스트</td></tr>
+    <tr><td class="rank">4</td><td><b data-edit data-key="sector3">방산 / 항공우주</b></td><td data-edit data-key="sector3Point">수출 수주잔고·유럽/중동 재무장·우주 발사 이벤트</td><td><span class="tag cycle-status cycle-growth" data-edit data-key="sector3Cycle">성장</span></td><td data-edit data-key="sector3Growth">유럽·중동 후속계약 · 생산능력 확대 · 우주사업</td></tr>
+    <tr><td class="rank">5</td><td><b>조선 / 조선기자재</b></td><td>LNG·친환경 선박 수요, 고선가 수주잔고, 제한적인 글로벌 공급능력</td><td><span class="tag cycle-status cycle-expansion">우호적 확장</span></td><td>LNG·암모니아 추진선 · 엔진/기자재 Mix · 고부가 선종</td></tr>
+    <tr><td class="rank">6</td><td><b>화장품 / 뷰티</b></td><td>K-Beauty 수출, 북미·일본 채널 확장, ODM 및 미용기기 성장</td><td><span class="tag cycle-status cycle-expansion">우호적 확장</span></td><td>글로벌 유통 확대 · 인디브랜드 · ODM · 미용의료기기</td></tr>
+    <tr><td class="rank">7</td><td><b>원전 / 에너지 인프라</b></td><td>원전 수주 파이프라인, 전력수요 증가, SMR·송전 인프라 투자 확대</td><td><span class="tag cycle-status cycle-expansion">우호적 확장</span></td><td>대형원전 수출 · SMR · 전력망 증설 · 유지보수/기자재</td></tr>
   </tbody></table></div>
-  <p class="note" style="margin:10px 2px 0"><b>Cycle은 종목 매수 신호가 아닙니다.</b> 같은 성장 국면에서도 Valuation과 실적 Revision에 따라 종목별 매력도는 달라질 수 있습니다.</p>
+  <p class="note" style="margin:10px 2px 0"><b>색상 우선순위:</b> 보라 → 초록 → 파랑 → 회색(중립) → 노랑 → 주황 → 빨강. Cycle 매력도는 섹터의 종합 국면을 보여주는 보조지표이며 종목별 Valuation·실적 Revision은 별도로 확인합니다.</p>
 </section>
 
 <section id="screening" class="section-track" data-name="SCREENING">
@@ -2484,16 +2512,19 @@ function srFundValClass(v){
 }
 function srApplySectorCycleColors(){
   document.querySelectorAll('#sector tbody td:nth-child(4) .tag').forEach(el=>{
-    const s=String(el.textContent||'').replace(/\s+/g,' ').trim();
-    el.classList.remove('blue','green','amber','red','purple','cycle-recovery','cycle-growth','cycle-boom','cycle-peak','cycle-slow','cycle-down');
+    const raw=String(el.textContent||'').replace(/\s+/g,' ').trim();
+    el.classList.remove('blue','green','amber','red','purple','cycle-recovery','cycle-boom','cycle-peak','cycle-strong','cycle-growth','cycle-expansion','cycle-neutral','cycle-slow','cycle-down','cycle-recession');
     el.classList.add('cycle-status');
-    if(/침체/.test(s))el.classList.add('cycle-down');
-    else if(/둔화/.test(s))el.classList.add('cycle-slow');
-    else if(/peak|피크/i.test(s))el.classList.add('cycle-peak');
-    else if(/호황/.test(s))el.classList.add('cycle-boom');
-    else if(/성장/.test(s))el.classList.add('cycle-growth');
-    else if(/회복/.test(s))el.classList.add('cycle-recovery');
-    else el.classList.add('cycle-recovery');
+    let label='중립',cls='cycle-neutral';
+    if(/침체|recession/i.test(raw)){label='침체';cls='cycle-recession'}
+    else if(/하강|수축|contraction/i.test(raw)){label='하강';cls='cycle-down'}
+    else if(/둔화|slow/i.test(raw)){label='둔화';cls='cycle-slow'}
+    else if(/중립|neutral/i.test(raw)){label='중립';cls='cycle-neutral'}
+    else if(/호황|확장|peak|피크/i.test(raw)){label='우호적 확장';cls='cycle-expansion'}
+    else if(/성장\s*(?:→|->)\s*호황|강한 성장|고성장|가속/i.test(raw)){label='최상위 성장';cls='cycle-strong'}
+    else if(/성장|회복/i.test(raw)){label='성장';cls='cycle-growth'}
+    el.textContent=label;
+    el.classList.add(cls);
   });
 }
 
