@@ -3848,7 +3848,7 @@ function srIctPenalty(res,item){
 function srIctHardFilter(res,item){
   const reasons=[],codes=[];
   const add=(code,label)=>{codes.push(code);reasons.push(label)};
-  if(!Array.isArray(res.dailyRows)||res.dailyRows.length<80)add('NO_DAILY_DATA','Daily 데이터 부족');
+  if(!Array.isArray(res.dailyRows)||res.dailyRows.length<65)add('NO_DAILY_DATA','Daily 데이터 부족');
   if(!Number.isFinite(res.price)||res.price<=0)add('MARKET_DATA_ERROR','시장 가격 데이터 오류');
   if((item.turnover||0)<5e9)add('LOW_VOLUME','거래대금 기준 미달');
   const status=String(item.tradeStatus||item.status||item.marketStatus||'');
@@ -3885,8 +3885,8 @@ function srIctRankCompare(a,b){
   return (b.adjustedScore-a.adjustedScore)||(b.rawScore-a.rawScore)||((conf[b.dataConfidence]||0)-(conf[a.dataConfidence]||0))||(b.coarseRank-a.coarseRank);
 }
 async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
-  const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=80)?dailyOverride:await srLoadChartRows(item);
-  if(!daily?.length||daily.length<80)return null;
+  const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item);
+  if(!daily?.length||daily.length<65)return null;
   const weeklyRows=srAggregateWeekly(daily),minute=useIntraday?await srLoadMinuteRows(item):[];
   const h1Rows=minute.length>=20?minute:[],h4Rows=minute.length>=20?srAggregateIntraday(minute,4):[];
   const h1Available=h1Rows.length>=12,h4Available=h4Rows.length>=12;
@@ -3991,7 +3991,7 @@ async function srRunTradingUniverse(status){
   const candidates=srLiquidityCandidates(),totalUniverse=fullStockUniverse.length;
   if(status)status.textContent='전체 '+totalUniverse.toLocaleString('ko-KR')+'개 → 거래대금 통과 '+candidates.length.toLocaleString('ko-KR')+'개 · Daily 구조 조회 중...';
   const dailyMap=await srKrxBatchHistory(candidates,status);
-  const dailyCandidates=candidates.filter(item=>(dailyMap.get(item.code)||[]).length>=80);
+  const dailyCandidates=candidates.filter(item=>(dailyMap.get(item.code)||[]).length>=65);
   const coarse=(await srMapLimit(dailyCandidates,12,item=>srIctAnalyzeItem(item,dailyMap.get(item.code),false))).filter(Boolean);
   coarse.sort((a,b)=>b.coarseRank-a.coarseRank||b.rawScore-a.rawScore);
   const shortlist=coarse.slice(0,80);
