@@ -15,7 +15,7 @@ OUT = ROOT / "data" / "analyst-research-cache.json"
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
 BASE = "https://stock.naver.com/api/stockSecurity/researches/v2/company"
-PAGE_SIZE = 100
+PAGE_SIZE = 30
 MAX_PAGES = 80
 
 session = requests.Session()
