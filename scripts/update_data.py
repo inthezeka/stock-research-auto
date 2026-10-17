@@ -139,10 +139,11 @@ def parse_korean_market_value(value):
     return total if matched else None
 
 
-def _naver_universe_page(market_type, start_idx, page_size=500):
+def _naver_universe_page(start_idx, page_size=100):
+    # These parameters are the currently supported Naver domestic-market contract.
     url = (
         "https://stock.naver.com/api/domestic/market/stock/default"
-        f"?tradeType=KRX&marketType={market_type}&orderType=marketValueTop"
+        f"?tradeType=KRX&marketType=ALL&orderType=quantTop"
         f"&startIdx={start_idx}&pageSize={page_size}"
     )
     payload = req(url, 2).json()
@@ -155,62 +156,75 @@ def _naver_universe_page(market_type, start_idx, page_size=500):
     return []
 
 
+def _universe_market(x):
+    raw = " ".join(str(v) for v in (
+        x.get("marketType"), x.get("marketName"), x.get("stockExchangeName"),
+        x.get("stockExchangeType"), x.get("typeName"), x.get("reutersCode"),
+    ) if v is not None).upper()
+    if "KOSDAQ" in raw or ".KQ" in raw:
+        return "KOSDAQ"
+    if "KOSPI" in raw or ".KS" in raw:
+        return "KOSPI"
+    return None
+
+
 def refresh_stock_universe():
     """Refresh the KOSPI/KOSDAQ search/screening universe every workflow run."""
     items = []
     seen = set()
     observed_dates = []
+    page_size = 100
 
-    for market in ("KOSPI", "KOSDAQ"):
-        for start in range(0, 4000, 500):
-            page = _naver_universe_page(market, start, 500)
-            if not page:
-                break
-            added = 0
-            for x in page:
-                code = str(
-                    x.get("itemcode") or x.get("itemCode") or x.get("stockCode")
-                    or x.get("code") or ""
-                ).replace("A", "").strip()
-                if not re.fullmatch(r"\d{6}", code) or code in seen:
-                    continue
-                name = str(x.get("itemname") or x.get("itemName") or x.get("stockName") or x.get("name") or "").strip()
-                if not name:
-                    continue
+    for start in range(0, 5000, page_size):
+        page = _naver_universe_page(start, page_size)
+        if not page:
+            break
+        added = 0
+        for x in page:
+            code = str(
+                x.get("itemcode") or x.get("itemCode") or x.get("stockCode")
+                or x.get("code") or ""
+            ).replace("A", "").strip()
+            if not re.fullmatch(r"\d{6}", code) or code in seen:
+                continue
+            name = str(x.get("itemname") or x.get("itemName") or x.get("stockName") or x.get("name") or "").strip()
+            market = _universe_market(x)
+            if not name or market not in ("KOSPI", "KOSDAQ"):
+                continue
 
-                close = n(x.get("nowPrice") or x.get("currentPrice") or x.get("closePrice") or x.get("price"))
-                volume = n(x.get("accumulatedTradingVolume") or x.get("accumulatedVolume") or x.get("volume")) or 0
-                turnover = n(
-                    x.get("accumulatedTradingValue") or x.get("accumulatedTradingAmount")
-                    or x.get("tradingValue") or x.get("turnover")
-                ) or 0
-                shares = n(x.get("listedStockCount") or x.get("listedShares") or x.get("shares"))
-                marketcap = parse_korean_market_value(
-                    x.get("marketValue") or x.get("marketCap") or x.get("marketCapitalization")
-                )
-                if marketcap is None and shares is not None and close is not None:
-                    marketcap = shares * close
+            close = n(x.get("nowPrice") or x.get("currentPrice") or x.get("closePrice") or x.get("price"))
+            volume = n(x.get("accumulatedTradingVolume") or x.get("accumulatedVolume") or x.get("volume")) or 0
+            turnover = n(
+                x.get("accumulatedTradingValue") or x.get("accumulatedTradingAmount")
+                or x.get("tradingValue") or x.get("turnover")
+            ) or 0
+            shares = n(x.get("listedStockCount") or x.get("listedShares") or x.get("shares"))
+            marketcap = parse_korean_market_value(
+                x.get("marketValue") or x.get("marketCap") or x.get("marketCapitalization")
+            )
+            if marketcap is None and shares is not None and close is not None:
+                marketcap = shares * close
 
-                traded_at = str(x.get("localTradedAt") or x.get("localDate") or x.get("date") or "")[:10]
-                if re.fullmatch(r"\d{4}-\d{2}-\d{2}", traded_at):
-                    observed_dates.append(traded_at)
+            traded_at = str(x.get("localTradedAt") or x.get("localDate") or x.get("date") or "")[:10]
+            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", traded_at):
+                observed_dates.append(traded_at)
 
-                items.append({
-                    "code": code,
-                    "name": name,
-                    "market": market,
-                    "ticker": code + (".KQ" if market == "KOSDAQ" else ".KS"),
-                    "shares": None if shares is None else int(round(shares)),
-                    "close": close,
-                    "marketcap": marketcap,
-                    "volume": volume,
-                    "turnover": turnover,
-                })
-                seen.add(code)
-                added += 1
+            items.append({
+                "code": code,
+                "name": name,
+                "market": market,
+                "ticker": code + (".KQ" if market == "KOSDAQ" else ".KS"),
+                "shares": None if shares is None else int(round(shares)),
+                "close": close,
+                "marketcap": marketcap,
+                "volume": volume,
+                "turnover": turnover,
+            })
+            seen.add(code)
+            added += 1
 
-            if len(page) < 500 or added == 0:
-                break
+        if len(page) < page_size or added == 0:
+            break
 
     # Guard against silently replacing the full KRX universe with a partial API page.
     if len(items) < 1500:
