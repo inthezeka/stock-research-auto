@@ -4055,9 +4055,12 @@ async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const daily=(Array.isArray(dailyOverride)&&dailyOverride.length>=65)?dailyOverride:await srLoadChartRows(item);
   if(!daily?.length||daily.length<65)return null;
   const weeklyRows=srAggregateWeekly(daily),minute=useIntraday?await srLoadMinuteRows(item):[];
-  const h1Rows=minute.length>=20?minute:[],h4Rows=minute.length>=20?srAggregateIntraday(minute,4):[];
-  const h1Available=h1Rows.length>=12,h4Available=h4Rows.length>=12;
-  const dataConfidence=h1Available&&h4Available?'HIGH':h4Available?'MEDIUM':'LOW';
+  const h1Rows=minute.length>=12?minute:[],h4Rows=minute.length>=24?srAggregateIntraday(minute,4):[];
+  const h1Available=h1Rows.length>=20,h4Available=h4Rows.length>=10;
+  const partialH1=h1Rows.length>=12,partialH4=h4Rows.length>=6;
+  const dataConfidence=h1Available&&h4Available?'HIGH':(partialH1||partialH4)?'MEDIUM':'LOW';
+  const intradayMeta=srMinuteSourceCache.get(String(item.code||'').padStart(6,'0'))||{source:useIntraday?'DAILY_ONLY':'COARSE_DAILY',rowCount:minute.length,note:useIntraday?'60분봉 미수신':'1차 Daily 스캔'};
+  const dataConfidenceReason=dataConfidence==='HIGH'?'Weekly + Daily + 4H + 1H 정상':dataConfidence==='MEDIUM'?'Weekly + Daily 정상 · Intraday 일부 확보':'Weekly + Daily만 정상 · 4H/1H 미수신';
   const price=daily.at(-1).close;
   const weekly=srIctStructureMap(weeklyRows),dayStruct=srIctStructureMap(daily);
   const h4=h4Available?srIctStructureMap(h4Rows):{external:srIctStructure([],2),internal:srIctStructure([],1)};
@@ -4110,6 +4113,12 @@ async function srIctAnalyzeItem(item,dailyOverride=null,useIntraday=true){
   const invalidationClear=Number.isFinite(base.structuralInvalidation)&&Number.isFinite(base.entry)&&base.structuralInvalidation<base.entry;
   const triggerConfirmed=!!(base.event.sslSweep||base.event.bullishMss||base.event.bullishBos||base.breakAcceptance.accepted);
 
+  base.intradaySource=intradayMeta.source;
+  base.intradayRowCount=minute.length;
+  base.h1RowCount=h1Rows.length;
+  base.h4RowCount=h4Rows.length;
+  base.dataConfidenceReason=dataConfidenceReason;
+
   base.top10Eligible=base.hardFilterPassed&&base.adjustedScore>=60&&longBias&&base.dolDirection==='UP'&&!base.protectedBreakdown&&allowedSetup&&['S','A','B'].includes(base.entryQuality);
   base.entryReady=base.hardFilterPassed&&base.entryQuality==='S'&&base.adjustedScore>=70&&base.rr>=2&&base.dolDirection==='UP'&&invalidationClear&&triggerConfirmed;
   base.watchEligible=base.hardFilterPassed&&base.adjustedScore>=55&&['A','B'].includes(base.entryQuality)&&!['BEARISH','BEARISH TRANSITION'].includes(base.htfBiasLong);
@@ -4160,7 +4169,10 @@ function srIctDolText(x){
   const vals=srDistinctLevels([x.liq.internalBSL,x.liq.externalBSL,x.target2,x.finalExternal].filter(v=>Number.isFinite(v)&&v>x.price));
   return vals.length?'▲ '+vals.map(srFmtPx).join(' → '):'—';
 }
-function srIctConfidenceTag(x){return x.dataConfidence||'LOW'}
+function srIctConfidenceTag(x){
+  const src={YAHOO_CACHE:'Yahoo Cache',CACHE_STALE:'Yahoo Cache*',NAVER_60M:'Naver 60m',YAHOO_LIVE:'Yahoo Live',DAILY_ONLY:'Daily only',COARSE_DAILY:'Daily only'}[x.intradaySource]||x.intradaySource||'Daily only';
+  return (x.dataConfidence||'LOW')+' · '+src+' · 1H '+(x.h1RowCount||0)+' / 4H '+(x.h4RowCount||0);
+}
 function srRenderEntryReady(list){
   const el=document.getElementById('entryReadyBody');if(!el)return;
   if(!list.length){el.innerHTML='<tr><td colspan="10">현재 LONG ENTRY READY(S) 조건을 충족한 종목이 없습니다. 이는 정상적인 결과입니다.</td></tr>';return}
@@ -4173,7 +4185,7 @@ function srRenderWatchList(list){
 }
 function srMyTradingStatus(result){
   const s=result.stats||{};
-  return '기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+' · 거래대금 통과 '+result.candidates.length+' · Daily '+(s.daily||0)+' · 4H '+(s.h4||0)+' · 1H '+(s.h1||0)+' · Score '+(s.scored||0)+' · Adjusted ≥60 '+(s.adjusted60||0)+' · S '+(s.s||0)+' / A '+(s.a||0)+' / B '+(s.b||0)+' · ENTRY READY '+result.entryReady.length+' · WATCH '+result.watchList.length+' · TOP10 '+result.top10.length;
+  return '기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+' · 거래대금 통과 '+result.candidates.length+' · Daily '+(s.daily||0)+' · 4H '+(s.h4||0)+' · 1H '+(s.h1||0)+' · Intraday '+(s.intraday||0)+' · Score '+(s.scored||0)+' · Adjusted ≥60 '+(s.adjusted60||0)+' · S '+(s.s||0)+' / A '+(s.a||0)+' / B '+(s.b||0)+' · ENTRY READY '+result.entryReady.length+' · WATCH '+result.watchList.length+' · TOP10 '+result.top10.length;
 }
 function srRenderIctTop10(list){
   const el=document.getElementById('ictTop10Body');if(!el)return;
@@ -4195,7 +4207,7 @@ async function srRunTradingUniverse(status){
   const topPool=analyzed.filter(x=>x.top10Eligible).sort(srIctRankCompare),top10=topPool.slice(0,10);
   const entryReady=analyzed.filter(x=>x.entryReady).sort(srIctRankCompare);
   const watchList=analyzed.filter(x=>x.watchEligible).sort(srWatchRankCompare).slice(0,20);
-  const stats={daily:coarse.length,h4:analyzed.filter(x=>x.h4Available).length,h1:analyzed.filter(x=>x.h1Available).length,scored:analyzed.length,adjusted60:analyzed.filter(x=>x.adjustedScore>=60).length,s:analyzed.filter(x=>x.entryQuality==='S').length,a:analyzed.filter(x=>x.entryQuality==='A').length,b:analyzed.filter(x=>x.entryQuality==='B').length};
+  const stats={daily:coarse.length,h4:analyzed.filter(x=>x.h4Available).length,h1:analyzed.filter(x=>x.h1Available).length,intraday:analyzed.filter(x=>(x.intradayRowCount||0)>=12).length,scored:analyzed.length,adjusted60:analyzed.filter(x=>x.adjustedScore>=60).length,s:analyzed.filter(x=>x.entryQuality==='S').length,a:analyzed.filter(x=>x.entryQuality==='A').length,b:analyzed.filter(x=>x.entryQuality==='B').length};
   return{candidates,coarse,shortlist,detailed,analyzed,passed:topPool,top10,entryReady,watchList,dailyMap,totalUniverse,stats};
 }
 function srRenderIctDetails(list){
@@ -4207,7 +4219,7 @@ function srRenderIctDetails(list){
     return '<details class="card ict-detail-card my-trading-detail">'+
       '<summary><span>'+(i+1)+'. '+srEsc(x.item.name)+' · '+x.adjustedScore+'점 · '+srEsc(x.htfBiasLong)+' · Entry '+x.entryQuality+' · '+srEsc(x.finalOpinion)+'</span><span class="my-trading-detail-summary-meta">상세보기 <span class="my-trading-detail-arrow">▼</span></span></summary>'+
       '<div class="my-trading-detail-body"><div class="ict-detail-grid">'+
-      '<div><b>① Long Market Structure</b><br>HTF Bias: <b>'+srEsc(x.htfBiasLong)+'</b><br>Weekly: '+x.weekly.external.bias+' ('+srStructFlags(x.weekly.external)+')<br>Daily: '+x.daily.external.bias+' ('+ext+')<br>4H: '+(x.h4Available?x.h4.external.bias:'N/A')+'<br>1H: '+(x.h1Available?x.h1.external.bias:'N/A')+'<br>Data Confidence: '+x.dataConfidence+'</div>'+
+      '<div><b>① Long Market Structure</b><br>HTF Bias: <b>'+srEsc(x.htfBiasLong)+'</b><br>Weekly: '+x.weekly.external.bias+' ('+srStructFlags(x.weekly.external)+')<br>Daily: '+x.daily.external.bias+' ('+ext+')<br>4H: '+(x.h4Available?x.h4.external.bias:'N/A')+'<br>1H: '+(x.h1Available?x.h1.external.bias:'N/A')+'<br>Data Confidence: <b>'+x.dataConfidence+'</b><br>'+srEsc(x.dataConfidenceReason||'')+'<br>Source: '+srEsc(x.intradaySource||'DAILY_ONLY')+' · 1H '+(x.h1RowCount||0)+' / 4H '+(x.h4RowCount||0)+'</div>'+
       '<div><b>② Liquidity / DOL</b><br>DOL Direction: <b>'+x.dolDirection+'</b><br>External BSL: '+srFmtPx(x.liq.externalBSL)+'<br>Internal BSL: '+srFmtPx(x.liq.internalBSL)+'<br>External SSL: '+srFmtPx(x.liq.externalSSL)+'<br>Progression: '+srEsc(srIctDolText(x))+'</div>'+
       '<div><b>③ Liquidity Event</b><br>'+srEsc(x.event.type)+'<br>MSS: '+(x.event.bullishMss?'Bullish':x.event.bearishMss?'Bearish':'미확인')+'<br>BOS: '+(x.event.bullishBos?'Bullish':x.event.bearishBos?'Bearish':'미확인')+'</div>'+
       '<div><b>④ Displacement</b><br>'+(x.disp.bullish?'Bullish':x.disp.bearish?'Bearish':'미확인')+'<br>Structure Break: '+(x.disp.structureBreak?'확인':'미확인')+'<br>FVG: '+(x.disp.fvgCreated?'확인':'미확인')+'</div>'+
