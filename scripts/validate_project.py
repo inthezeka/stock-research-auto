@@ -173,7 +173,7 @@ if 'id="technical"' in html or "Technical & Market Structure · Trading Score" i
 required_ui=[
     "③ 종목 선정 · Fundamental / ICT Trading",
     "① Fundamental Theme",
-    "Fundamental TOP 10",
+    "Fundamental TOP 20",
     "ICT Trading TOP 10",
     'id="fundThemeList"',
     'id="fundamentalScanBtn"',
