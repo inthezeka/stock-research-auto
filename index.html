@@ -1281,9 +1281,12 @@ const EMBEDDED_FALLBACK_DATA={"meta":{"generated_at":"2026-10-18T00:49:57.713125
 const AUTO_DATA_URL='https://raw.githubusercontent.com/inthezeka/stock-research-auto/main/data/market-data.json';
 const STOCK_UNIVERSE_URL='https://raw.githubusercontent.com/inthezeka/stock-research-auto/main/stock-universe.json';
 const INTRADAY_CACHE_URL='https://raw.githubusercontent.com/inthezeka/stock-research-auto/main/data/intraday-cache.json';
+const ANALYST_RESEARCH_CACHE_URL='https://raw.githubusercontent.com/inthezeka/stock-research-auto/main/data/analyst-research-cache.json';
 let autoData=null;
 let intradayCacheData=null;
 let intradayCachePromise=null;
+let analystResearchCacheData=null;
+let analystResearchCachePromise=null;
 function fmtDateKST(iso){try{return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(iso))}catch(e){return iso||'-'}}
 
 function sentimentColor(score){
@@ -1552,14 +1555,37 @@ function srResearchTarget(row){
 }
 function srResearchNormalize(row){
   if(!row||typeof row!=='object')return null;
-  const date=row.wdt||row.date||row.writeDate||row.publishedAt||row.createdAt||row.regDate||row.researchDate||'';
-  const broker=row.bnm||row.brokerName||row.broker||row.companyName||row.publisherName||row.securitiesFirm||'증권사 확인 필요';
-  const title=row.tit||row.title||row.subject||row.summary||row.description||row.contentSummary||'리포트 내용 확인 필요';
-  return{date,broker,title:String(title).replace(/\s+/g,' ').trim(),target:srResearchTarget(row),nid:row.nid||row.researchId||row.id||null};
+  const date=row.writeDate||row.publishDate||row.publishedAt||row.researchDate||row.regDate||row.createdAt||row.date||row.wdt||'';
+  const broker=row.brokerName||row.broker||row.securitiesCompanyName||row.securitiesFirm||row.companyName||row.publisherName||row.bnm||'증권사 확인 필요';
+  const analyst=row.analystName||row.analyst||row.writerName||row.writer||'';
+  const title=row.title||row.researchTitle||row.reportTitle||row.subject||row.tit||row.summary||row.description||row.contentSummary||'리포트 내용 확인 필요';
+  return{
+    date,
+    broker:typeof broker==='object'?(broker.name||broker.brokerName||'증권사 확인 필요'):broker,
+    analyst:typeof analyst==='object'?(analyst.name||''):analyst,
+    title:String(title).replace(/s+/g,' ').trim(),
+    target:srResearchTarget(row),
+    nid:row.nid||row.researchId||row.id||null
+  };
 }
 function srResearchCutoffDate(){
   const base=srResearchDateValue(stockUniverseMeta?.as_of||autoData?.meta?.market_date)||new Date();
   const d=new Date(base);d.setMonth(d.getMonth()-3);return d;
+}
+function srAnalystResearchFromPayload(payload){
+  const cutoff=srResearchCutoffDate(),arr=payload?.items||payload?.result?.items||[];
+  const rows=(Array.isArray(arr)?arr:[]).map(srResearchNormalize).filter(Boolean)
+    .filter(x=>{const d=srResearchDateValue(x.date);return !d||d>=cutoff})
+    .sort((a,b)=>(srResearchDateValue(b.date)?.getTime()||0)-(srResearchDateValue(a.date)?.getTime()||0));
+  return rows.slice(0,12);
+}
+function srLoadAnalystResearchCache(){
+  if(analystResearchCacheData)return Promise.resolve(analystResearchCacheData);
+  if(analystResearchCachePromise)return analystResearchCachePromise;
+  analystResearchCachePromise=srFetchJson(ANALYST_RESEARCH_CACHE_URL+'?v='+(stockUniverseMeta?.as_of||Date.now()))
+    .then(x=>{analystResearchCacheData=x||{};return analystResearchCacheData})
+    .catch(()=>{analystResearchCacheData={meta:{},items:{}};return analystResearchCacheData});
+  return analystResearchCachePromise;
 }
 function srAnalystResearchFromIntegration(integration){
   const cutoff=srResearchCutoffDate(),rows=(integration?.researches||[]).map(srResearchNormalize).filter(Boolean);
@@ -1575,12 +1601,44 @@ function srAnalystResearchFromIntegration(integration){
 }
 async function srLoadAnalystResearch(profile){
   const code=String(profile?.stock_code||profile?.code||'').padStart(6,'0');
-  if(!/^\d{6}$/.test(code))return{rows:[],target:null,recommMean:null,consensusDate:'',source:''};
-  if(profile?.naverIntegration)return srAnalystResearchFromIntegration(profile.naverIntegration);
+  if(!/^d{6}$/.test(code))return{rows:[],target:null,recommMean:null,consensusDate:'',source:''};
   if(srAnalystResearchCache.has(code))return srAnalystResearchCache.get(code);
-  const p=srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/integration')
-    .then(srAnalystResearchFromIntegration)
-    .catch(()=>({rows:[],target:null,recommMean:null,consensusDate:'',source:'Naver Stock'}));
+
+  const p=(async()=>{
+    const integration=profile?.naverIntegration||await srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/integration').catch(()=>null);
+    const base=integration?srAnalystResearchFromIntegration(integration):{rows:[],target:null,recommMean:null,consensusDate:'',source:''};
+    let rows=[];
+
+    // 1) GitHub Actions cache built from the current Naver research v2 company endpoint.
+    try{
+      const cache=await srLoadAnalystResearchCache();
+      const hit=cache?.items?.[code];
+      if(Array.isArray(hit)&&hit.length)rows=hit.map(srResearchNormalize).filter(Boolean);
+    }catch(_){}
+
+    // 2) Live current Naver Stock research endpoint.
+    if(!rows.length){
+      try{
+        const baseDate=srResearchDateValue(stockUniverseMeta?.as_of||autoData?.meta?.market_date)||new Date();
+        const start=new Date(baseDate);start.setMonth(start.getMonth()-3);
+        const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        const url='https://stock.naver.com/api/stockSecurity/researches/v2/company?index=0&size=30&startDate='+fmt(start)+'&endDate='+fmt(baseDate)+'&itemCodes='+code;
+        rows=srAnalystResearchFromPayload(await srFetchJson(url));
+      }catch(_){}
+    }
+
+    // 3) Legacy integration researches fallback if present.
+    if(!rows.length&&base.rows?.length)rows=base.rows;
+
+    return{
+      rows:rows.slice(0,8),
+      target:base.target,
+      recommMean:base.recommMean,
+      consensusDate:base.consensusDate,
+      source:rows.length?'Naver Stock Research v2 · 최근 3개월':'Naver Stock · 최근 3개월 리포트 없음'
+    };
+  })();
+
   srAnalystResearchCache.set(code,p);
   return p;
 }
