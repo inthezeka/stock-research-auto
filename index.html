@@ -612,7 +612,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
         <div><b>⑨ Risk / Reward · 10</b><br>확정 Entry와 상방 BSL Target 기준</div>
         <div><b>⑩ Setup Freshness · 5</b><br>Mitigation 횟수와 PD Array 소모도</div>
       </div>
-      <p class="note"><b>국내주식 LONG ONLY.</b> Short / 공매도 / 하락 베팅 후보는 생성하지 않습니다. MY Trading은 ① <b>MY Trading TOP10</b>(Long 관점 구조 우수 순위), ② <b>ENTRY READY</b>(S급 신규 Long 진입 준비 완료), ③ <b>WATCH LIST</b>(A Pullback / B Breakout·Reclaim 대기)로 분리합니다. Bearish Signal은 신규 Short가 아니라 Long Risk 감점과 매수 제외 판단에만 사용합니다. Daily는 필수이며 4H/1H 누락은 0점 처리하지 않고 Data Confidence로 구분합니다.</p>
+      <p class="note"><b>국내주식 LONG ONLY.</b> MY Trading은 ① <b>MY Trading TOP10</b>(Long 관점 구조 우수 순위), ② <b>ENTRY READY</b>(S급 신규 Long 진입 준비 완료), ③ <b>WATCH LIST</b>(A Pullback / B Breakout·Reclaim 대기)로 분리합니다. Bearish Signal은 Long Risk 감점·신규 매수 제한·매수 제외 판단에만 사용합니다. Daily는 필수이며 4H/1H 누락은 0점 처리하지 않고 Data Confidence로 구분합니다.</p>
     </div>
     <div class="scan-toolbar">
       <button type="button" class="btn dark" id="ictScanBtn">MY Trading TOP10 스캔</button>
@@ -630,7 +630,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div class="card" style="margin-top:12px">
       <h3 class="subhead">③ WATCH LIST</h3>
-      <p class="note" style="margin:0 0 10px">Entry Quality A/B 및 NEUTRAL 대기 후보입니다. A는 FVG/OB/Discount/OTE Pullback 대기, B는 Protected High / Major BSL 돌파 → Acceptance → Retest 대기입니다. Short 후보는 표시하지 않습니다.</p>
+      <p class="note" style="margin:0 0 10px">Entry Quality A/B 및 NEUTRAL 대기 후보입니다. A는 FVG/OB/Discount/OTE Pullback 대기, B는 Protected High / Major BSL 돌파 → Acceptance → Retest 대기입니다. Bearish Structure는 Long 후보에서 제외합니다.</p>
       <div class="table-wrap"><table class="table"><thead><tr><th>종목</th><th>Adjusted ICT</th><th>Setup Type</th><th>Entry Quality</th><th>Waiting For</th><th>Trigger Price</th><th>DOL</th></tr></thead><tbody id="watchListBody"><tr><td colspan="7">WATCH LIST 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div id="ictBestNote" class="ict-best-note" style="display:none"></div>
@@ -4127,7 +4127,7 @@ function srRenderIctDetails(list){
       '<div><b>⑩ Risk / Reward</b><br>'+srIctRrText(x)+'</div>'+
       '<div><b>⑪ MY Trading Quality</b><br>획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+'<br>Normalized: '+x.rawScore+'<br>Bearish Risk Penalty: -'+x.penalty+'<br>Adjusted: '+x.adjustedScore+'<br>'+srEsc(penalty)+'</div>'+
       '<div><b>⑫ Long Reject Reason</b><br>TOP10: '+srEsc((x.rejectReason?.top10||[]).join(' · '))+'<br>ENTRY READY: '+srEsc((x.rejectReason?.entryReady||[]).join(' · '))+'<br>Hard Filter: '+srEsc(hard)+'</div>'+
-      '</div><p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 Short 추천에 사용하지 않고 신규 Long 금지·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
+      '</div><p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 신규 Long 제한·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
   }).join('');
 }
 async function runIctTradingScan(){
