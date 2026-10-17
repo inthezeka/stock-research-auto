@@ -348,7 +348,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-sector-top10-border-v43-20261017 -->
+<!-- BUILD: stock-room-deepdive-current-fundamental-v44-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -577,7 +577,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div class="note" style="margin-bottom:12px">상단 Fundamental / ICT 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
   <div id="fundamentalScoreDetail" class="card fund-score-detail" style="display:none;margin-bottom:14px"></div>
   <div class="card top-pick">
-    <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">🥇 TOP PICK</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
+    <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">분석 종목</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
     <div class="thesis"><b>투자 Thesis</b><br><span data-edit data-key="thesis">“이 종목을 지금 투자해야 하는 가장 중요한 이유는 AI 서버용 MLCC 장기계약과 FCBGA 믹스 개선이 2027년 이익 추정치를 끌어올리는 가운데, 최근 주가 조정 후에도 실적 상향 흐름이 이어지고 있기 때문이다.”</span></div>
     <div class="metrics">
       <div class="metric"><div class="m-label">현재가</div><div class="m-val" data-edit data-key="currentPriceText">1,581,000원</div></div>
@@ -2885,6 +2885,24 @@ function srFundSnapshotPrice(item){
   const p=srNum(item?.close);
   return p>0?'조회가 '+Math.round(p).toLocaleString('ko-KR')+'원':'조회가 확인 필요';
 }
+async function srApplyFundamentalTopPick(result){
+  if(!result?.item)return;
+  try{
+    const p=await buildSearchProfile(result.item);
+    p.fundamentalScore=result.f||p.fundamentalScore;
+    const score=Number(result.f?.total||0);
+    const t=p.text||{};
+    t.topPickName=result.item.name;
+    t.topPickTicker=result.item.code+' · '+(result.item.market||p.market||'')+' · 기준일 '+(stockUniverseMeta.as_of||autoData?.meta?.market_date||'최신')+' · FUNDAMENTAL TOP 1';
+    t.topPickScore='Fundamental '+score.toFixed(1)+' / 100';
+    applyProfileText(p);
+    const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🏅 FUNDAMENTAL TOP 1';
+    const note=document.getElementById('selectedStockNote');if(note)note.textContent='Fundamental · '+srFundThemeByKey(activeFundThemeKey).label+' · TOP 1 · '+result.item.name;
+    document.title=(result.item.name||'종목')+' | Stock Research';
+  }catch(e){
+    console.warn('Fundamental TOP1 Deep Dive 연결 실패',e);
+  }
+}
 function srFundValClass(v){
   const s=String(v||'').trim();
   if(s==='Best')return'fund-val-violet';
@@ -3738,7 +3756,8 @@ async function runAutomaticScreenings(){
     await loadStockUniverse();
     if(fStatus)fStatus.textContent='Fundamental Sector 자동 분석 중...';
     if(iStatus)iStatus.textContent='자동 조회 대기 · ICT 유동성 후보를 준비합니다.';
-    await srRunFundTheme(activeFundThemeKey,fStatus);
+    const fundamentalTop20=await srRunFundTheme(activeFundThemeKey,fStatus);
+    if(fundamentalTop20?.[0])await srApplyFundamentalTopPick(fundamentalTop20[0]);
 
     const tradingCandidates=srLiquidityCandidates();
     if(iStatus)iStatus.textContent='자동 조회 · 전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 중 유동성 '+tradingCandidates.length+'개 KRX 일봉 일괄 조회 중...';
@@ -3790,7 +3809,8 @@ function applyAutoData(d){
   const profiles=profileGroups[activeProfileMarket]||[];
   activeProfileIndex=Math.max(0,profiles.findIndex(p=>p.ticker===previousTicker));
   renderTopPickTabs(profiles);
-  if(profiles.length)selectStockProfile(activeProfileIndex,false);
+  // Legacy KOSPI/KOSDAQ profile data is retained only for its legacy list UI.
+  // Deep Dive is driven by current Fundamental TOP1, ICT selection, or explicit stock search.
   renderSentiment(d.sentiment||{});
   srRenderSectorRanking();
   if(d.meta){
