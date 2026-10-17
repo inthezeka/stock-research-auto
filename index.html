@@ -101,7 +101,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: dual-screening-v18-pages-refresh-20261005 -->
+<!-- BUILD: daily-search-fundamental-ict-v20-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -1394,7 +1394,13 @@ async function loadStockUniverse(force=false){
       const d=await r.json();
       const arr=Array.isArray(d)?d:(d.items||[]);
       fullStockUniverse=arr.map(srUniverseItem).filter(x=>/^\d{6}$/.test(x.code)&&x.name&&(x.market==='KOSPI'||x.market==='KOSDAQ'));
-      stockUniverseMeta={count:fullStockUniverse.length,as_of:d.as_of||''};
+      stockUniverseMeta={
+        count:fullStockUniverse.length,
+        as_of:d.as_of||'',
+        generated_at:d.generated_at||'',
+        liquidity_coverage:d.liquidity_coverage||{},
+        liquidity_mode:''
+      };
       if(status)status.textContent='전체 상장종목 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 검색 준비 완료'+(stockUniverseMeta.as_of?' · 최신 기준 '+stockUniverseMeta.as_of:'')+'.';
       return fullStockUniverse;
     }catch(e){
@@ -1620,9 +1626,32 @@ function initScreeningModes(){
 }
 
 function srLiquidityCandidates(limit=null){
-  const arr=fullStockUniverse
-    .filter(x=>(x.turnover||0)>=5e9&&(x.marketcap||0)>=1e11)
-    .sort((a,b)=>(b.turnover||0)-(a.turnover||0));
+  const minCap=1e11,minTurnover=5e9;
+  const liquid=fullStockUniverse
+    .filter(x=>(x.turnover||0)>=minTurnover&&(x.marketcap||0)>=minCap)
+    .sort((a,b)=>(b.turnover||0)-(a.turnover||0)||(b.marketcap||0)-(a.marketcap||0));
+
+  let arr=liquid;
+  let mode='거래대금';
+  // Never let a temporary upstream omission freeze Fundamental/ICT at zero
+  // candidates. If trading-value coverage is insufficient, use current
+  // market-cap plus Naver price/volume ranking as a bounded liquidity proxy.
+  if(liquid.length<50){
+    mode='유동성 proxy';
+    arr=fullStockUniverse
+      .filter(x=>(x.marketcap||0)>=minCap)
+      .sort((a,b)=>{
+        const ar=Number.isFinite(Number(a.trading_value_rank))?Number(a.trading_value_rank):999999;
+        const br=Number.isFinite(Number(b.trading_value_rank))?Number(b.trading_value_rank):999999;
+        if(ar!==br)return ar-br;
+        const av=Number.isFinite(Number(a.volume_rank))?Number(a.volume_rank):999999;
+        const bv=Number.isFinite(Number(b.volume_rank))?Number(b.volume_rank):999999;
+        if(av!==bv)return av-bv;
+        return (b.marketcap||0)-(a.marketcap||0);
+      })
+      .slice(0,500);
+  }
+  stockUniverseMeta.liquidity_mode=mode;
   return Number.isFinite(limit)&&limit>0?arr.slice(0,limit):arr;
 }
 async function srKosaiCached(item){
@@ -1886,7 +1915,7 @@ async function runIctTradingScan(){
       note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
         '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음');
     }
-    status.textContent='전체 '+result.totalUniverse.toLocaleString('ko-KR')+'개 → 유동성 '+result.candidates.length+'개 → 상세검증 '+result.shortlist.length+'개 → ICT 60점 이상 '+result.passed.length+'개 → TOP10 '+top10.length+'개';
+    status.textContent='기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+result.totalUniverse.toLocaleString('ko-KR')+'개 → '+(stockUniverseMeta.liquidity_mode||'유동성')+' '+result.candidates.length+'개 → 상세검증 '+result.shortlist.length+'개 → ICT 60점 이상 '+result.passed.length+'개 → TOP10 '+top10.length+'개';
   }catch(e){console.error(e);status.textContent='ICT 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
 }
@@ -1907,7 +1936,7 @@ async function runFundamentalPipeline(){
     withIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.score-a.ict.score||b.f.total-a.f.total);
     const final5=withIct.filter(x=>x.ict.entryQuality!=='C').slice(0,5);
     fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
-    status.textContent='완료 · Fundamental TOP20 → TOP10 → ICT Screening → Entry Quality → 최종 TOP5 [AI]';
+    status.textContent='완료 · Fundamental TOP20 → TOP10 → ICT Screening → Entry Quality → 최종 TOP5 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · '+(stockUniverseMeta.liquidity_mode||'거래대금');
   }catch(e){console.error(e);status.textContent='Fundamental 스캔 실패: '+e.message}
   finally{if(btn)btn.disabled=false}
 }
@@ -1955,7 +1984,7 @@ async function runAutomaticScreenings(){
     fundWithIct.sort((a,b)=>(rank[a.ict.entryQuality]-rank[b.ict.entryQuality])||b.ict.score-a.ict.score||b.f.total-a.f.total);
     const final5=fundWithIct.filter(x=>x.ict.entryQuality!=='C').slice(0,5);
     fundamentalScanResults={top20,top10,final5};srRenderFundFinal(final5);
-    if(fStatus)fStatus.textContent='자동 조회 완료 · Fundamental TOP20 → TOP10 → ICT → 최종 TOP5';
+    if(fStatus)fStatus.textContent='자동 조회 완료 · 기준 '+(stockUniverseMeta.as_of||'최신')+' · Fundamental TOP20 → TOP10 → ICT → 최종 TOP5 · '+(stockUniverseMeta.liquidity_mode||'거래대금');
 
     if(iStatus)iStatus.textContent='자동 조회 4/4 · 유동성 '+tradingCandidates.length+'개 Weekly/Daily 1차 ICT 스크리닝 중...';
     const coarse=(await srMapLimit(tradingCandidates,12,item=>{
@@ -1978,7 +2007,7 @@ async function runAutomaticScreenings(){
       note.innerHTML='<b>가장 좋은 종목:</b> '+(best?srEsc(best.item.name)+' · ICT '+best.score+' · '+best.finalOpinion:'조건 충족 종목 없음')+
         '<br><b>구조는 좋지만 현재 진입하면 안 되는 종목:</b> '+(notNow?srEsc(notNow.item.name)+' · '+notNow.setup+' · '+notNow.finalOpinion:'해당 없음');
     }
-    if(iStatus)iStatus.textContent='전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 → 유동성 '+tradingCandidates.length+'개 → 상세 '+shortlist.length+'개 → 60점 이상 '+passed.length+'개 → TOP10 '+ictTop10.length+'개';
+    if(iStatus)iStatus.textContent='기준 '+(stockUniverseMeta.as_of||'최신')+' · 전체 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 → '+(stockUniverseMeta.liquidity_mode||'유동성')+' '+tradingCandidates.length+'개 → 상세 '+shortlist.length+'개 → 60점 이상 '+passed.length+'개 → TOP10 '+ictTop10.length+'개';
   }catch(e){
     console.error('automatic screening failed',e);
     if(fStatus)fStatus.textContent='자동 조회 일부 실패 · 수동 새로고침 가능: '+e.message;
