@@ -139,75 +139,65 @@ def parse_korean_market_value(value):
     return total if matched else None
 
 
-def _naver_universe_page(start_idx, page_size=100):
-    # These parameters are the currently supported Naver domestic-market contract.
+def _naver_universe_page(start_idx=0, page_size=5000):
+    # Verified current Naver stock-list contract.
     url = (
         "https://stock.naver.com/api/domestic/market/stock/default"
-        f"?tradeType=KRX&marketType=ALL&orderType=quantTop"
+        f"?tradeType=KRX&marketType=ALL&orderType=marketSum"
         f"&startIdx={start_idx}&pageSize={page_size}"
     )
-    payload = req(url, 2).json()
-    if isinstance(payload, list):
-        return payload
-    for key in ("stocks", "items", "result", "datas"):
-        arr = payload.get(key) if isinstance(payload, dict) else None
-        if isinstance(arr, list):
-            return arr
-    return []
-
-
-def _universe_market(x):
-    raw = " ".join(str(v) for v in (
-        x.get("marketType"), x.get("marketName"), x.get("stockExchangeName"),
-        x.get("stockExchangeType"), x.get("typeName"), x.get("reutersCode"),
-    ) if v is not None).upper()
-    if "KOSDAQ" in raw or ".KQ" in raw:
-        return "KOSDAQ"
-    if "KOSPI" in raw or ".KS" in raw:
-        return "KOSPI"
-    return None
+    payload = req(url, 2, headers={"Referer": "https://stock.naver.com/"}).json()
+    return payload if isinstance(payload, list) else []
 
 
 def refresh_stock_universe():
     """Refresh the KOSPI/KOSDAQ search/screening universe every workflow run."""
     items = []
     seen = set()
-    observed_dates = []
-    page_size = 100
+    page_size = 5000
 
-    for start in range(0, 5000, page_size):
-        page = _naver_universe_page(start, page_size)
+    for page_no in range(3):
+        start_idx = page_no * page_size
+        page = _naver_universe_page(start_idx, page_size)
         if not page:
             break
-        added = 0
+        first_code = str((page[0] or {}).get("itemcode") or "")
+        if page_no > 0 and first_code and any(x["code"] == first_code for x in items[:1]):
+            break
+
         for x in page:
-            code = str(
-                x.get("itemcode") or x.get("itemCode") or x.get("stockCode")
-                or x.get("code") or ""
-            ).replace("A", "").strip()
-            if not re.fullmatch(r"\d{6}", code) or code in seen:
-                continue
-            name = str(x.get("itemname") or x.get("itemName") or x.get("stockName") or x.get("name") or "").strip()
-            market = _universe_market(x)
-            if not name or market not in ("KOSPI", "KOSDAQ"):
+            code = str(x.get("itemcode") or "").strip()
+            name = str(x.get("itemname") or "").strip()
+            if not re.fullmatch(r"\d{6}", code) or not name or code in seen:
                 continue
 
-            close = n(x.get("nowPrice") or x.get("currentPrice") or x.get("closePrice") or x.get("price"))
-            volume = n(x.get("accumulatedTradingVolume") or x.get("accumulatedVolume") or x.get("volume")) or 0
-            turnover = n(
-                x.get("accumulatedTradingValue") or x.get("accumulatedTradingAmount")
-                or x.get("tradingValue") or x.get("turnover")
-            ) or 0
-            shares = n(x.get("listedStockCount") or x.get("listedShares") or x.get("shares"))
-            marketcap = parse_korean_market_value(
-                x.get("marketValue") or x.get("marketCap") or x.get("marketCapitalization")
-            )
+            sosok = str(x.get("sosok") or "").strip()
+            market = "KOSPI" if sosok == "0" else ("KOSDAQ" if sosok == "1" else None)
+            if market is None:
+                continue
+
+            close = n(x.get("nowVal") or x.get("nowPrice") or x.get("closePrice"))
+            shares = n(x.get("listedStockCnt") or x.get("listedStockCount"))
+            marketcap = n(x.get("marketSum"))
+            if marketcap is None:
+                marketcap = parse_korean_market_value(x.get("marketValue"))
             if marketcap is None and shares is not None and close is not None:
                 marketcap = shares * close
 
-            traded_at = str(x.get("localTradedAt") or x.get("localDate") or x.get("date") or "")[:10]
-            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", traded_at):
-                observed_dates.append(traded_at)
+            # Naver has used both old and new names for volume/trading-value fields.
+            volume = n(
+                x.get("accQuant") or x.get("accumulatedTradingVolume")
+                or x.get("accumulatedVolume") or x.get("volume")
+            ) or 0
+            turnover = n(
+                x.get("accAmount") or x.get("accumulatedTradingValue")
+                or x.get("accumulatedTradingAmount") or x.get("tradingValue")
+            ) or 0
+
+            # If trading value is omitted from the market-cap list, the close*volume
+            # proxy is sufficient for liquidity pre-screening and is refreshed daily.
+            if not turnover and close is not None and volume:
+                turnover = close * volume
 
             items.append({
                 "code": code,
@@ -221,10 +211,35 @@ def refresh_stock_universe():
                 "turnover": turnover,
             })
             seen.add(code)
-            added += 1
 
-        if len(page) < page_size or added == 0:
+        if len(page) < page_size:
             break
+
+    # The full KOSPI+KOSDAQ common-stock universe is normally well above 2,000.
+    if len(items) < 1500:
+        sample_keys = sorted(list((page[0] if page else {}).keys()))[:30] if page else []
+        raise RuntimeError(f"Naver stock universe incomplete: {len(items)} keys={sample_keys}")
+
+    # The market list itself does not expose a reliable trade date. Use the latest
+    # domestic index close date, which is the same KRX session used by the dashboard.
+    try:
+        as_of = naver_domestic_index_snapshot("KOSPI").get("date") or NOW.date().isoformat()
+    except Exception:
+        as_of = NOW.date().isoformat()
+
+    payload = {
+        "as_of": as_of,
+        "generated_at": NOW.isoformat(),
+        "source": "Naver Stock domestic market API · marketSum",
+        "count": len(items),
+        "items": sorted(items, key=lambda x: (x["market"], x["name"], x["code"])),
+    }
+    tmp = UNIVERSE_PATH.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    json.loads(tmp.read_text(encoding="utf-8"))
+    tmp.replace(UNIVERSE_PATH)
+    return payload
+
 
     # Guard against silently replacing the full KRX universe with a partial API page.
     if len(items) < 1500:
