@@ -738,113 +738,151 @@ def naver_world_index_polling_snapshot(reuters_code=".IXIC"):
     return x
 
 
-def _walk_dicts(obj):
-    if isinstance(obj, dict):
-        yield obj
-        for value in obj.values():
-            yield from _walk_dicts(value)
-    elif isinstance(obj, list):
-        for value in obj:
-            yield from _walk_dicts(value)
+def _direction_name(value):
+    if isinstance(value, dict):
+        return str(value.get("name") or value.get("text") or value.get("code") or "")
+    return str(value or "")
 
 
-def _naver_index_rows(index_code, count=180):
-    rows = []
-    seen = set()
-    page_size = 60
-    for page in range(1, max(2, math.ceil(count / page_size) + 1)):
-        url = f"https://m.stock.naver.com/api/index/{index_code}/price?pageSize={page_size}&page={page}"
-        payload = req(url, 2).json()
-        items = payload if isinstance(payload, list) else (payload.get("result") or [])
-        if not items:
-            break
-        for x in items:
-            ds = str(x.get("localTradedAt") or x.get("localDate") or "")[:10]
-            close = n(x.get("closePrice"))
-            if not ds or close is None or ds in seen:
-                continue
-            seen.add(ds)
-            rows.append({
-                "date": ds,
-                "open": n(x.get("openPrice")) or close,
-                "high": n(x.get("highPrice")) or close,
-                "low": n(x.get("lowPrice")) or close,
-                "close": close,
-                "volume": n(x.get("accumulatedTradingVolume")) or 0,
-            })
-        if len(rows) >= count:
-            break
-    rows.sort(key=lambda x: x["date"])
-    if len(rows) < 20:
-        raise RuntimeError(f"Naver index history insufficient: {index_code}")
-    return rows[-count:], "Naver Stock index history"
+def _signed_market_value(value, direction):
+    v = n(value)
+    if v is None:
+        return None
+    d = _direction_name(direction).upper()
+    if d in {"FALLING", "하락", "5", "4"}:
+        return -abs(v)
+    if d in {"RISING", "상승", "2", "1"}:
+        return abs(v)
+    return v
 
 
-def _naver_fx_rows(code="FX_USDKRW", count=120):
-    url = f"https://api.stock.naver.com/marketindex/exchange/{code}/prices?page=1&pageSize={count}"
+def _naver_index_rows(index_code):
+    url = f"https://api.stock.naver.com/chart/domestic/index/{index_code}?periodType=dayCandle"
     payload = req(url, 2).json()
-    items = payload.get("result") if isinstance(payload, dict) else payload
-    if not isinstance(items, list):
-        raise RuntimeError("Naver FX history malformed")
+    if isinstance(payload, list):
+        items = payload
+    else:
+        items = payload.get("priceInfos") or payload.get("result") or payload.get("datas") or []
     rows = []
     for x in items:
-        ds = str(x.get("localTradedAt") or x.get("localDate") or "")[:10]
-        close = n(x.get("closePrice"))
+        ds = str(x.get("localDate") or x.get("localTradedAt") or x.get("date") or "")[:10]
+        close = n(x.get("closePrice") or x.get("close"))
         if not ds or close is None:
             continue
         rows.append({
             "date": ds,
-            "open": n(x.get("openPrice")) or close,
-            "high": n(x.get("highPrice")) or close,
-            "low": n(x.get("lowPrice")) or close,
+            "open": n(x.get("openPrice") or x.get("open")) or close,
+            "high": n(x.get("highPrice") or x.get("high")) or close,
+            "low": n(x.get("lowPrice") or x.get("low")) or close,
             "close": close,
-            "volume": 0,
+            "volume": n(x.get("accumulatedTradingVolume") or x.get("volume")) or 0,
         })
     rows.sort(key=lambda x: x["date"])
     if len(rows) < 20:
-        raise RuntimeError("Naver FX history insufficient")
-    return rows[-count:], "Naver Stock FX"
+        raise RuntimeError(f"Naver index history insufficient: {index_code}")
+    return rows, "Naver Stock index chart"
 
 
-def _naver_code_snapshot(url, accepted_codes, source, value_keys=("closePrice", "nowPrice", "value")):
-    payload = req(url, 2).json()
-    for x in _walk_dicts(payload):
-        code = str(x.get("reutersCode") or x.get("symbolCode") or x.get("code") or "")
-        if code not in accepted_codes:
-            continue
-        value = None
-        for key in value_keys:
-            value = n(x.get(key))
-            if value is not None:
-                break
-        if value is None:
-            continue
-        cp = n(x.get("fluctuationsRatio") or x.get("changeRate") or x.get("cr"))
-        ds = str(x.get("localTradedAt") or x.get("localDate") or x.get("date") or NOW.date().isoformat())[:10]
-        return {
-            "value": value,
-            "change_pct": cp,
-            "date": ds,
-            "fresh": True,
-            "source": source,
-        }
-    raise RuntimeError(f"Naver snapshot code not found: {accepted_codes}")
+def naver_domestic_index_snapshot(index_code):
+    url = f"https://stock.naver.com/api/securityFe/api/index/{index_code}/basic"
+    x = req(url, 2).json()
+    value = n(x.get("closePrice") or x.get("currentPrice"))
+    if value is None:
+        raise RuntimeError(f"Naver index snapshot missing: {index_code}")
+    direction = x.get("fluctuationsType") or x.get("compareToPreviousPrice")
+    cp = _signed_market_value(x.get("fluctuationsRatio"), direction)
+    ds = str(x.get("localTradedAt") or x.get("localDate") or NOW.date().isoformat())[:10]
+    return {
+        "value": value,
+        "change_pct": cp,
+        "date": ds,
+        "fresh": True,
+        "source": "Naver Stock index basic",
+    }
 
 
-def naver_world_index_current_snapshot(reuters_code=".IXIC"):
-    return _naver_code_snapshot(
-        f"https://stock.naver.com/api/polling/worldstock/index?reutersCodes={quote(reuters_code, safe='.')}",
-        {reuters_code, reuters_code.lstrip(".")},
-        "Naver Stock world-index polling v2",
+def naver_index_flow(index_code):
+    url = f"https://stock.naver.com/api/securityFe/api/index/{index_code}/integration"
+    x = req(url, 2).json()
+    trend = x.get("dealTrendInfo") or {}
+    if not trend:
+        raise RuntimeError(f"Naver index flow missing: {index_code}")
+    return {
+        "date": str(trend.get("bizdate") or "")[:10],
+        "individual": n(trend.get("personalValue")),
+        "foreign": n(trend.get("foreignValue")),
+        "institution": n(trend.get("institutionalValue")),
+        "source": "Naver Stock index integration",
+    }
+
+
+def _find_reuters_item(payload, code):
+    items = payload if isinstance(payload, list) else (payload.get("datas") or payload.get("result") or [])
+    for x in items:
+        if str(x.get("reutersCode") or "") == code:
+            return x
+    raise RuntimeError(f"Naver Reuters code not found: {code}")
+
+
+def naver_fx_snapshot():
+    x = _find_reuters_item(
+        req("https://stock.naver.com/api/securityService/marketindex/majors/rpc", 2).json(),
+        "FX_USDKRW",
     )
+    value = n(x.get("calcPrice") or x.get("closePrice") or x.get("currentPrice"))
+    if value is None:
+        raise RuntimeError("Naver FX value missing")
+    direction = x.get("fluctuationsType") or x.get("compareToPreviousPrice")
+    cp = _signed_market_value(x.get("fluctuationsRatio"), direction)
+    ds = str(x.get("localTradedAt") or x.get("localDate") or NOW.date().isoformat())[:10]
+    return {
+        "value": value,
+        "change_pct": cp,
+        "date": ds,
+        "fresh": True,
+        "source": "Naver Stock majors RPC",
+    }
 
 
 def naver_us10y_snapshot():
-    return _naver_code_snapshot(
-        "https://m.stock.naver.com/front-api/marketIndex/bondMain",
-        {"US10YT=RR", "US10YT"},
-        "Naver Stock US 10Y",
+    x = _find_reuters_item(
+        req("https://stock.naver.com/api/securityService/marketindex/majors/bond", 2).json(),
+        "US10YT=RR",
     )
+    value = n(x.get("closePrice") or x.get("currentPrice"))
+    if value is None:
+        raise RuntimeError("Naver US10Y value missing")
+    direction = x.get("fluctuationsType") or x.get("compareToPreviousPrice")
+    cp = _signed_market_value(x.get("fluctuationsRatio"), direction)
+    ds = str(x.get("localTradedAt") or x.get("localDate") or NOW.date().isoformat())[:10]
+    return {
+        "value": value,
+        "change_pct": cp,
+        "date": ds,
+        "fresh": True,
+        "source": "Naver Stock majors bond",
+    }
+
+
+def naver_world_index_current_snapshot(reuters_code=".IXIC"):
+    payload = req(
+        f"https://stock.naver.com/api/polling/worldstock/index?reutersCodes={quote(reuters_code, safe='.')}",
+        2,
+    ).json()
+    x = _find_reuters_item(payload, reuters_code)
+    value = n(x.get("closePrice") or x.get("currentPrice"))
+    if value is None:
+        raise RuntimeError(f"Naver world-index value missing: {reuters_code}")
+    direction = x.get("fluctuationsType") or x.get("compareToPreviousPrice")
+    cp = _signed_market_value(x.get("fluctuationsRatio"), direction)
+    ds = str(x.get("localTradedAt") or x.get("localDate") or NOW.date().isoformat())[:10]
+    return {
+        "value": value,
+        "change_pct": cp,
+        "date": ds,
+        "fresh": True,
+        "source": "Naver Stock world-index polling v2",
+    }
 
 
 def market_series():
@@ -853,33 +891,29 @@ def market_series():
 
     for key, symbol in syms.items():
         if key in ("kospi", "kosdaq"):
+            index_code = "KOSPI" if key == "kospi" else "KOSDAQ"
             try:
-                rows, source = _naver_index_rows("KOSPI" if key == "kospi" else "KOSDAQ")
-                vals = [x["close"] for x in rows]
-                out[key] = {
-                    "value": vals[-1],
-                    "change_pct": pct(vals[-1], vals[-2]) if len(vals) > 1 else None,
-                    "date": rows[-1]["date"],
-                    "fresh": True,
-                    "source": source,
-                    "rows": rows,
-                }
+                rows, row_source = _naver_index_rows(index_code)
+                snap = naver_domestic_index_snapshot(index_code)
+                try:
+                    flow = naver_index_flow(index_code)
+                except Exception as e:
+                    errors.append(f"{key} flow: {e}")
+                    flow = {}
+                out[key] = {**snap, "rows": rows, "flow": flow, "history_source": row_source}
                 continue
             except Exception as e:
                 errors.append(f"{key} Naver: {e}")
 
         if key == "usdkrw":
             try:
-                rows, source = _naver_fx_rows("FX_USDKRW")
-                vals = [x["close"] for x in rows]
-                out[key] = {
-                    "value": vals[-1],
-                    "change_pct": pct(vals[-1], vals[-2]) if len(vals) > 1 else None,
-                    "date": rows[-1]["date"],
-                    "fresh": True,
-                    "source": source,
-                    "rows": rows,
-                }
+                snap = naver_fx_snapshot()
+                rows = []
+                try:
+                    rows, _ = yahoo_chart(symbol)
+                except Exception as e:
+                    errors.append(f"usdkrw Yahoo history: {e}")
+                out[key] = {**snap, "rows": rows}
                 continue
             except Exception as e:
                 errors.append(f"usdkrw Naver: {e}")
@@ -887,7 +921,12 @@ def market_series():
         if key == "us10y":
             try:
                 snap = naver_us10y_snapshot()
-                out[key] = {**snap, "rows": []}
+                rows = []
+                try:
+                    rows, _ = yahoo_chart(symbol)
+                except Exception as e:
+                    errors.append(f"us10y Yahoo history: {e}")
+                out[key] = {**snap, "rows": rows}
                 continue
             except Exception as e:
                 errors.append(f"us10y Naver: {e}")
@@ -904,6 +943,7 @@ def market_series():
                     candidates.append(fn())
                 except Exception as e:
                     errors.append(f"nasdaq {label}: {e}")
+
             yahoo_rows = []
             try:
                 yahoo_rows, yahoo_source = yahoo_chart(symbol)
@@ -921,15 +961,15 @@ def market_series():
 
             if candidates:
                 priority = {
-                    "Naver Stock world-index polling v2": 5,
-                    "Nasdaq official COMP historical": 4,
-                    "Naver Stock index basic": 3,
-                    "Naver Finance world-index polling": 2,
-                    "Yahoo Finance": 1,
+                    "Naver Stock world-index polling v2": 6,
+                    "Nasdaq official COMP historical": 5,
+                    "Naver Stock index basic": 4,
+                    "Naver Finance world-index polling": 3,
+                    "Yahoo Finance": 2,
                 }
                 snap = max(
                     candidates,
-                    key=lambda x: (str(x.get("date") or ""), priority.get(x.get("source"), 0))
+                    key=lambda x: (str(x.get("date") or ""), priority.get(x.get("source"), 1))
                 )
                 prev_text = PREV.get("text") or {}
                 prev_date = str(prev_text.get("nasdaqDataDate") or "")
@@ -1841,7 +1881,7 @@ def update_market_text(d, market):
             return
         v = x["value"]
         if key == "us10y":
-            t[text_key] = f"{v:.2f}%"
+            t[text_key] = f"{v:.1f}%"
         else:
             t[text_key] = f"{int(round(v)):,}"
         cp = x.get("change_pct")
@@ -1852,11 +1892,34 @@ def update_market_text(d, market):
         if key == "nasdaq" and x.get("date"):
             t["nasdaqDataDate"] = x["date"]
 
+    def flow_text(index_key):
+        flow = (market.get(index_key) or {}).get("flow") or {}
+        foreign = flow.get("foreign")
+        institution = flow.get("institution")
+        if foreign is None or institution is None:
+            return "수급 최신값 확인 중"
+        return f"외국인 {foreign:+,.0f}억 · 기관 {institution:+,.0f}억"
+
     set_market("kospi", "kospi", "kospiDelta")
     set_market("kosdaq", "kosdaq", "kosdaqDelta")
     set_market("nasdaq", "nasdaq", "nasdaqDelta")
     set_market("usdkrw", "fx", "fxDelta")
     set_market("us10y", "us10y", "us10yDelta")
+
+    t["kospiFlow"] = flow_text("kospi")
+    t["kosdaqFlow"] = flow_text("kosdaq")
+
+    kf = ((market.get("kospi") or {}).get("flow") or {})
+    if kf.get("foreign") is not None and kf.get("institution") is not None:
+        foreign = kf["foreign"]
+        institution = kf["institution"]
+        foreign_state = "외인 매수" if foreign > 0 else ("외인 매도" if foreign < 0 else "외인 중립")
+        inst_state = "기관 매수" if institution > 0 else ("기관 매도" if institution < 0 else "기관 중립")
+        t["flowState"] = f"{inst_state} / {foreign_state}"
+        t["flowDesc"] = f"기관 {institution:+,.0f}억 · 외인 {foreign:+,.0f}억"
+    else:
+        t["flowState"] = "수급 데이터 확인 중"
+        t["flowDesc"] = "가격 데이터는 최신 반영 · 외인/기관 수급 확인 중"
 
     md = max(equity_dates) if equity_dates else d.get("meta", {}).get("market_date")
     if md:
@@ -1875,10 +1938,11 @@ def update_market_text(d, market):
     )
     t["marketReason2"] = (
         f"USD/KRW {t.get('fx','—')} ({t.get('fxDelta','—')}), "
-        f"미 10년물 {t.get('us10y','—')} ({t.get('us10yDelta','—')})를 함께 확인합니다."
+        f"미 10년물 {t.get('us10y','—')} ({t.get('us10yDelta','—')}). "
+        f"KOSPI 수급은 {t.get('kospiFlow','확인 중')}입니다."
     )
     t["marketReason3"] = (
-        "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인 수급, "
+        "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, "
         "주요 지지·저항과 변동성 축소 여부를 함께 확인합니다."
     )
     t["marketImpact"] = (
@@ -2133,7 +2197,12 @@ def profile_live_update(p, live):
 
     apply_kosdaq_scenario(p, tech)
 
-    txt["sourceMarketDate"] = f"{tech.get('date','')} 종가"
+    live_date = tech.get("date") or NOW.date().isoformat()
+    txt["sourceMarketDate"] = f"{live_date} 종가"
+    txt["topPickTicker"] = f"{p.get('stock_code','')} · {p.get('market','KOSPI')} · 기준일 {live_date}"
+    txt["footerDataNote"] = f"데이터 기준: {live_date} 종가. 최신 반영형 대시보드이며 자체 점수·계산·매매전략은 참고용입니다. 투자 권유가 아닙니다."
+    txt["sourceTopPick"] = f"{p.get('name','')} · 선택 종목별 상세 분석"
+    txt["metricSource"] = f"네이버증권 연계 FnGuide · Forward PER/EV·EBITDA · 가격 기준 {live_date}"
 
 
 def update_theme_cards(d, live_by_code):
@@ -2285,10 +2354,27 @@ def main():
         if target:
             bind[f"stock{i}Target"] = f"{fmt_price(target)} Cons."
 
-    # Keep initial page synchronized with TOP1 profile.
+    # Keep initial page synchronized with TOP1 profile, then restore the global
+    # market snapshot so stale per-profile market fields can never overwrite it.
     if profiles:
         d["text"].update(profiles[0].get("text") or {})
         d["inputs"].update(profiles[0].get("inputs") or {})
+
+    md = update_market_text(d, market)
+    if sentiment.get("regime"):
+        d.setdefault("text", {})["marketRegime"] = sentiment["regime"]
+
+    market_text_keys = (
+        "heroDesc", "marketRegime", "kospi", "kospiDelta", "kosdaq", "kosdaqDelta",
+        "nasdaq", "nasdaqDelta", "nasdaqDataDate", "fx", "fxDelta", "us10y", "us10yDelta",
+        "flowState", "flowDesc", "kospiFlow", "kosdaqFlow", "marketReason1", "marketReason2",
+        "marketReason3", "marketImpact", "sourceMarketDate", "sourceKR", "sourceUS",
+    )
+    for p in all_profiles:
+        ptxt = p.setdefault("text", {})
+        for key in market_text_keys:
+            if key in d.get("text", {}):
+                ptxt[key] = d["text"][key]
 
     financial_bad = validate_financial_snapshot(d)
     if financial_bad:
@@ -2307,6 +2393,7 @@ def main():
     meta.update({
         "generated_at": NOW.isoformat(),
         "market_date": md,
+        "financial_snapshot_date": NOW.date().isoformat(),
         "status": "ok",
         "ui_version": "v15-kosdaq-gated-selection",
         "profile_count": 5 + len(kosdaq_profiles),
@@ -2327,6 +2414,17 @@ def main():
         "errors": errors[:20],
         "note": "실시간 가격/기술지표·Trading Score 갱신. TOP5 실적은 최근 분기 + 다음 분기(E) Consensus 기준입니다.",
     })
+
+    meta.pop("nasdaq_refresh_note", None)
+    meta["market_sources"] = {
+        key: {
+            "value": (market.get(key) or {}).get("value"),
+            "change_pct": (market.get(key) or {}).get("change_pct"),
+            "date": (market.get(key) or {}).get("date"),
+            "source": (market.get(key) or {}).get("source"),
+        }
+        for key in ("kospi", "kosdaq", "nasdaq", "usdkrw", "us10y")
+    }
 
     tmp = DATA_PATH.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
