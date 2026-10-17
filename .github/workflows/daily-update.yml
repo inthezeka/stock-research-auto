@@ -59,16 +59,30 @@ jobs:
         run: python scripts/validate_project.py
 
       - name: Commit verified data
+        env:
+          THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: |
+          git config user.name "stock-research-bot"
+          git config user.email "stock-research-bot@users.noreply.github.com"
+
+          # A manual/code commit may land while this workflow is generating data.
+          # If main advanced, discard the stale generated workspace, move to the
+          # latest main, and regenerate once so code + data stay consistent.
+          git fetch origin main
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+            echo "main advanced during data generation; regenerating on latest main"
+            git reset --hard origin/main
+            python scripts/update_data.py
+            python scripts/embed_fallback.py
+            python scripts/validate_project.py
+          fi
+
           if git diff --quiet; then
             echo "No verified changes"
           else
-            git config user.name "stock-research-bot"
-            git config user.email "stock-research-bot@users.noreply.github.com"
             git add data/market-data.json stock-universe.json index.html QA_REPORT.md
             git commit -m "chore: daily verified market data [skip ci]"
-            git pull --rebase origin main
-            git push
+            git push origin HEAD:main
           fi
 
       - name: Configure GitHub Pages
