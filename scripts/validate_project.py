@@ -188,27 +188,31 @@ if "TOP5 추천점수 시장심리 조정" in html or "심리 0 [AI]" in html:
     fail("stock sentiment score wording remains in HTML")
 if '<section id="blueprint"' in html or "Theme Radar · 테마별 추천 3종목" in html:
     fail("obsolete Theme Radar section must be removed")
-# Fundamental Theme + ICT dual-selection UI validation.
+# Fundamental Theme + MY Trading dual-selection UI validation.
 # The former Technical & Market Structure / Trading Score page was intentionally removed.
 if 'id="technical"' in html or "Technical & Market Structure · Trading Score" in html:
     fail("legacy Technical & Market Structure section must be removed")
 required_ui=[
-    "③ 종목 선정 · Fundamental / ICT Trading",
+    "③ 종목 선정 · Fundamental / MY Trading",
     "① Fundamental Sector",
     "Fundamental TOP 20",
     'id="fundSubsectorList"',
     'id="fundPrimaryThemeList"',
     'id="sectorUniverseList"',
-    "ICT Trading TOP 10",
+    "MY Trading · ICT TOP 10",
+    "ENTRY READY",
+    "WATCH LIST",
     'id="fundThemeList"',
     'id="fundamentalScanBtn"',
     'id="ictScanBtn"',
     'id="fundTop10Body"',
     'id="ictTop10Body"',
+    'id="entryReadyBody"',
+    'id="watchListBody"',
 ]
 for token in required_ui:
     if token not in html:
-        fail(f"dual Fundamental/ICT screening UI missing: {token}")
+        fail(f"Fundamental/MY Trading screening UI missing: {token}")
 if 'id="stockSearchInput"' not in html or 'id="stockSearchMarket"' not in html or 'function buildSearchProfile' not in html:
     fail("KOSPI/KOSDAQ live stock search UI missing")
 if "front-api/search/autoComplete" not in html or "chart/domestic/item/" not in html:
@@ -218,8 +222,23 @@ if "function runFundamentalPipeline" not in html or "function runIctTradingScan"
 if "Sub-sector</th>" not in html or "Sector > Sub-sector > Theme" not in html:
     fail("3-level Sector/Sub-sector/Theme taxonomy UI missing")
 
-if "HTF Market Structure" not in html or "External Liquidity" not in html or "Protected Low" not in html:
-    fail("ICT score framework missing")
+ict_framework_tokens=[
+    "HTF Market Structure",
+    "Protected Structure",
+    "Draw on Liquidity",
+    "Liquidity Event",
+    "MSS / BOS",
+    "Displacement",
+    "FVG / OB / Breaker",
+    "Risk / Reward",
+    "Setup Freshness",
+    "Liquidity / Gap Risk",
+    "Data Confidence",
+    "Normalized ICT",
+]
+for token in ict_framework_tokens:
+    if token not in html:
+        fail(f"MY Trading ICT score framework missing: {token}")
 
 m=re.search(r"const EMBEDDED_FALLBACK_DATA=(.*?);\n",html,re.S)
 if not m:
