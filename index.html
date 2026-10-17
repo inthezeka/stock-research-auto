@@ -299,6 +299,13 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 #sector .cycle-recession{background:#FEF3F2;color:#B42318;border-color:#FECDCA}
 .sector-factor-strip{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px}
 .sector-factor-strip span{display:inline-flex;align-items:center;padding:6px 9px;border:1px solid var(--border);border-radius:999px;background:#fff;color:#475467;font-size:10px;font-weight:850}
+.sector-universe-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 8px;color:#475467;font-size:10px}
+.sector-universe-head b{color:#101828;font-size:11px}
+.sector-universe-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 12px}
+.sector-universe-item{padding:7px 8px;border:1px solid #E4E7EC;border-radius:9px;background:#fff;color:#344054;font-size:10px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sector-universe-item.active-top10{background:#F5F9FF;border-color:#B8D1F8;color:#1554AD}
+@media(max-width:1200px){.sector-universe-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:720px){.sector-universe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sector-universe-head{align-items:flex-start;flex-direction:column}}
 .sector-ranking-table th:nth-child(1),.sector-ranking-table td:nth-child(1){width:48px}
 .sector-ranking-table th:nth-child(2),.sector-ranking-table td:nth-child(2){min-width:155px}
 .sector-ranking-table th:nth-child(3),.sector-ranking-table td:nth-child(3){min-width:108px}
@@ -323,7 +330,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: stock-room-attractiveness-range-v40-20261017 -->
+<!-- BUILD: stock-room-shared-23-sector-daily-v41-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -447,6 +454,8 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div class="sector-factor-strip">
     <span>수요 20</span><span>공급/재고 15</span><span>ASP/Margin 15</span><span>CAPEX/수주 15</span><span>Revision 15</span><span>구조적 성장 10</span><span>정책/Catalyst 10</span>
   </div>
+  <div class="sector-universe-head"><b>Sector Universe · Fundamental Theme 연동</b><span id="sectorUpdateStatus">23개 Sector 데이터 확인 중...</span></div>
+  <div id="sectorUniverseList" class="sector-universe-grid"></div>
   <div class="table-wrap sector-ranking-wrap">
     <table class="table sector-ranking-table">
       <thead><tr><th>순위</th><th>Sector</th><th>실제 Cycle</th><th>Cycle 매력도</th><th>Cycle Score</th><th>투자점수</th><th>핵심 근거</th><th>1~3년 성장동력</th></tr></thead>
@@ -2136,7 +2145,7 @@ let fundamentalScanResults={top20:[],top10:[]};
 let ictTradingResults={top10:[],top5:[]};
 const srKosaiCache=new Map();
 
-const FUNDAMENTAL_THEMES=[
+let FUNDAMENTAL_THEMES=[
   {key:'semi_ai',label:'반도체 / AI',codes:['005930','000660','009150','042700','058470','403870','240810','039030','036930','095340','089030','166090','131970','356860','222800','353200','007810','195870','067310','319660','084370','031980','265520','348210','083450']},
   {key:'semi_materials',label:'반도체 소재',codes:['357780','005290','104830','014680','102710','281740','093370','317330','121600','036830','074600','101160','078600','278280','051910','011780','010060','298000','161000','025900','144960']},
   {key:'semi_parts',label:'반도체 부품',codes:['095340','058470','356860','222800','353200','007810','195870','166090','101160','252990','067310','131970','074600','083500','080220','054450','036540','092220','094360','033640','036090']},
@@ -2161,6 +2170,28 @@ const FUNDAMENTAL_THEMES=[
   {key:'travel',label:'여행 / 레저 / 항공',codes:['003490','020560','089590','272450','180640','039130','080160','032350','034230','114090','008770','005880','004140','069960','031430','035250','025980','085310','016710','122870']},
   {key:'materials',label:'철강 / 소재 / 화학',codes:['005490','004020','010130','103140','011780','011170','009830','051910','006650','010060','014830','298000','161000','120110','004000','011500','003240','001430','004890','002710']}
 ];
+
+async function loadFundamentalThemeConfig(){
+  try{
+    const r=await fetch('config/fundamental_themes.json?v='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    const themes=Array.isArray(d?.themes)?d.themes:[];
+    if(themes.length){
+      FUNDAMENTAL_THEMES=themes.map(t=>({
+        key:String(t.key||''),
+        label:String(t.label||''),
+        codes:(Array.isArray(t.codes)?t.codes:[]).map(x=>String(x).padStart(6,'0')),
+        growth:String(t.growth||''),
+        structural_base:Number(t.structural_base||70)
+      })).filter(t=>t.key&&t.label);
+      if(!FUNDAMENTAL_THEMES.some(t=>t.key===activeFundThemeKey))activeFundThemeKey=FUNDAMENTAL_THEMES[0]?.key||'semi_ai';
+    }
+  }catch(e){
+    console.warn('fundamental theme config load failed; using embedded fallback',e);
+  }
+  return FUNDAMENTAL_THEMES;
+}
 let activeFundThemeKey='semi_ai';
 
 
@@ -2913,11 +2944,18 @@ const SECTOR_CYCLE_DATA=[
 ];
 
 function srSectorFactorScore(pair){
-  const level=Number(pair?.[0]||0),momentum=Number(pair?.[1]||0);
+  if(pair==null)return 50;
+  if(Array.isArray(pair)){
+    const level=Number(pair?.[0]||0),momentum=Number(pair?.[1]||0);
+    return srClamp(level*.4+momentum*.6,0,100);
+  }
+  if(Number.isFinite(Number(pair.score)))return Number(pair.score);
+  const level=Number(pair.level??50),momentum=Number(pair.momentum??50);
   return srClamp(level*.4+momentum*.6,0,100);
 }
 function srSectorCycleScore(row){
-  return Object.entries(SECTOR_CYCLE_WEIGHTS).reduce((sum,[k,w])=>sum+srSectorFactorScore(row.factors[k])*w/100,0);
+  if(Number.isFinite(Number(row.cycleScore)))return Number(row.cycleScore);
+  return Object.entries(SECTOR_CYCLE_WEIGHTS).reduce((sum,[k,w])=>sum+srSectorFactorScore(row.factors?.[k])*w/100,0);
 }
 function srSectorCycleLabel(score){
   if(score>=88)return'최상위 성장';
@@ -2938,35 +2976,76 @@ function srSectorCycleClass(label){
   return'cycle-recession';
 }
 function srSectorInvestmentScore(row,cycleScore){
+  if(Number.isFinite(Number(row.investmentScore)))return Number(row.investmentScore);
   return srClamp(cycleScore*.65+Number(row.valuation||0)*.15+Number(row.relativeStrength||0)*.10+Number(row.catalystScore||0)*.10,0,100);
 }
-function srSectorActualCycle(row){
-  const recovery=(row.recoverySignals||[]).length>=3;
-  if(recovery&&/둔화|침체/.test(String(row.actualCycle||'')))return'초기회복';
-  return row.actualCycle||'확인 필요';
-}
+function srSectorActualCycle(row){return row.actualCycle||row.actual_cycle||'확인 필요'}
 function srSectorFlags(row){
   const out=[];
-  if((row.peakSignals||[]).length>=3)out.push({label:'PEAK WARNING',cls:'peak',title:(row.peakSignals||[]).join(' · ')});
-  if((row.recoverySignals||[]).length>=3&&/둔화|침체/.test(String(row.actualCycle||'')))out.push({label:'EARLY RECOVERY',cls:'recovery',title:(row.recoverySignals||[]).join(' · ')});
+  const peak=!!row.peakWarning||!!row.peak_warning||(row.peakSignals||row.peak_signals||[]).length>=3;
+  const recovery=!!row.earlyRecovery||!!row.early_recovery;
+  const peakSignals=row.peakSignals||row.peak_signals||[];
+  const recoverySignals=row.recoverySignals||row.recovery_signals||[];
+  if(peak)out.push({label:'PEAK WARNING',cls:'peak',title:peakSignals.join(' · ')||'Peak 조건 3개 이상'});
+  if(recovery)out.push({label:'EARLY RECOVERY',cls:'recovery',title:recoverySignals.join(' · ')||'회복 조건 3개 이상'});
   return out;
 }
 function srSectorBreakdownTitle(row){
   const names={demand:'수요',supply:'공급/재고',price:'ASP/Margin',capex:'CAPEX/수주',revision:'Revision',structural:'구조적 성장',catalyst:'정책/Catalyst'};
-  const parts=Object.keys(SECTOR_CYCLE_WEIGHTS).map(k=>names[k]+' '+srSectorFactorScore(row.factors[k]).toFixed(1));
-  return parts.join(' · ');
+  return Object.keys(SECTOR_CYCLE_WEIGHTS).map(k=>{
+    const f=row.factors?.[k];
+    const score=srSectorFactorScore(f);
+    const level=Array.isArray(f)?Number(f?.[0]||0):Number(f?.level??50);
+    const momentum=Array.isArray(f)?Number(f?.[1]||0):Number(f?.momentum??50);
+    return names[k]+' '+score.toFixed(1)+' (L '+level.toFixed(0)+' / M '+momentum.toFixed(0)+')';
+  }).join(' · ');
+}
+function srSectorFreshRows(){
+  const live=autoData?.sector_cycle?.sectors;
+  if(Array.isArray(live)&&live.length){
+    return live.map(x=>({
+      key:x.key,name:x.name,actualCycle:x.actual_cycle,
+      attractiveness:x.cycle_attractiveness,
+      cycleScore:Number(x.cycle_score),
+      investmentScore:Number(x.investment_score),
+      valuation:Number(x.valuation_score),
+      relativeStrength:Number(x.relative_strength_score),
+      catalystScore:Number(x.catalyst_score),
+      factors:x.factors||{},reason:x.reason||'',growth:x.growth||'',
+      peakWarning:!!x.peak_warning,peakSignals:x.peak_signals||[],
+      earlyRecovery:!!x.early_recovery,recoverySignals:x.recovery_signals||[]
+    }));
+  }
+  const fallbackMap=new Map((SECTOR_CYCLE_DATA||[]).map(x=>[x.name,x]));
+  return FUNDAMENTAL_THEMES.map(t=>{
+    const old=fallbackMap.get(t.label);
+    return old?{...old,key:t.key,growth:old.growth||t.growth}:{key:t.key,name:t.label,actualCycle:'확인 필요',factors:{},valuation:50,relativeStrength:50,catalystScore:50,reason:'일일 Sector 데이터 생성 대기',growth:t.growth||'구조적 성장동력 확인'};
+  });
+}
+function srRenderSectorUniverse(topKeys=[]){
+  const el=document.getElementById('sectorUniverseList');if(!el)return;
+  const top=new Set(topKeys);
+  el.innerHTML=FUNDAMENTAL_THEMES.map((t,i)=>'<div class="sector-universe-item '+(top.has(t.key)?'active-top10':'')+'" title="'+srEsc(t.label)+'">'+String(i+1).padStart(2,'0')+' · '+srEsc(t.label)+'</div>').join('');
+  const status=document.getElementById('sectorUpdateStatus');
+  if(status){
+    const sc=autoData?.sector_cycle||{};
+    const count=Array.isArray(sc.sectors)?sc.sectors.length:FUNDAMENTAL_THEMES.length;
+    status.textContent=count+'개 Sector · '+(sc.as_of?'기준 '+sc.as_of+' · ':'')+(sc.generated_at?'Daily 자동갱신':'Fallback');
+  }
 }
 function srRenderSectorRanking(){
   const body=document.getElementById('sectorTop10Body');if(!body)return;
-  const ranked=SECTOR_CYCLE_DATA.map(row=>{
+  const all=srSectorFreshRows().map(row=>{
     const cycleScore=srSectorCycleScore(row);
     const investmentScore=srSectorInvestmentScore(row,cycleScore);
-    return{...row,cycleScore,investmentScore,attractiveness:srSectorCycleLabel(cycleScore)};
-  }).sort((a,b)=>b.investmentScore-a.investmentScore).slice(0,10);
+    return{...row,cycleScore,investmentScore,attractiveness:row.attractiveness||srSectorCycleLabel(cycleScore)};
+  });
+  const ranked=all.sort((a,b)=>b.investmentScore-a.investmentScore).slice(0,10);
+  srRenderSectorUniverse(ranked.map(x=>x.key));
   body.innerHTML=ranked.map((x,i)=>{
     const flags=srSectorFlags(x).map(f=>'<span class="sector-flag '+f.cls+'" title="'+srEsc(f.title)+'">['+f.label+']</span>').join('');
     const cls=srSectorCycleClass(x.attractiveness);
-    const invTitle='Cycle '+x.cycleScore.toFixed(1)+'×65% · Valuation '+x.valuation.toFixed(0)+'×15% · RS '+x.relativeStrength.toFixed(0)+'×10% · Catalyst '+x.catalystScore.toFixed(0)+'×10%';
+    const invTitle='Cycle '+x.cycleScore.toFixed(1)+'×65% · Valuation '+Number(x.valuation||0).toFixed(0)+'×15% · RS '+Number(x.relativeStrength||0).toFixed(0)+'×10% · Catalyst '+Number(x.catalystScore||0).toFixed(0)+'×10%';
     return '<tr>'+
       '<td class="rank">'+(i+1)+'</td>'+
       '<td><div class="sector-name-wrap"><b>'+srEsc(x.name)+'</b>'+flags+'</div></td>'+
@@ -2980,7 +3059,7 @@ function srRenderSectorRanking(){
   }).join('');
 }
 
-function srCleanEarningsText(v){
+function srCleanEarningsText(v){function srCleanEarningsText(v){
   return stripAiMarkerText(String(v||''))
     .replace(/\s+/g,' ')
     .replace(/^[·\-\s]+|[·\-\s]+$/g,'')
@@ -3713,7 +3792,7 @@ bindTop5TableRows();
 
 async function boot(){
   initAiMarkerCleaner();
-  await loadStockUniverse();
+  await Promise.all([loadStockUniverse(),loadFundamentalThemeConfig()]);
   initStockSearch();
   initScreeningModes();
   srRenderSectorRanking();
