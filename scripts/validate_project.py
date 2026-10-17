@@ -164,18 +164,18 @@ if meta.get("status")=="ok":
 html=(ROOT/"index.html").read_text(encoding="utf-8")
 if "TOP5 추천점수 시장심리 조정" in html or "심리 0 [AI]" in html:
     fail("stock sentiment score wording remains in HTML")
-# v18 dual-selection UI validation.
+# Fundamental Theme + ICT dual-selection UI validation.
 # The former Technical & Market Structure / Trading Score page was intentionally removed.
 if 'id="technical"' in html or "Technical & Market Structure · Trading Score" in html:
     fail("legacy Technical & Market Structure section must be removed")
 required_ui=[
     "③ 종목 선정 · Fundamental / ICT Trading",
-    "① Fundamental TOP 20",
-    "② Fundamental TOP 10",
+    "① Fundamental Theme 20",
+    "Fundamental TOP 10",
     "ICT Trading TOP 10",
+    'id="fundThemeList"',
     'id="fundamentalScanBtn"',
     'id="ictScanBtn"',
-    'id="fundTop20List"',
     'id="fundTop10Body"',
     'id="ictTop10Body"',
 ]
