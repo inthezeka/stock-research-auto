@@ -64,6 +64,16 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .stock-search-item:last-child{border-bottom:0}.stock-search-item:hover{background:#F8FAFC}
 .stock-search-name{font-weight:900;color:var(--navy)}.stock-search-meta{font-size:11px;color:var(--sub)}
 .stock-search-status{font-size:11px;color:var(--sub);margin-top:9px;min-height:17px}
+.search-ict-summary{display:none;margin-top:12px;padding:12px;border:1px solid #DCE5F0;border-radius:12px;background:#F8FAFC}
+.search-ict-summary.show{display:block}
+.search-ict-summary-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:9px}
+.search-ict-summary-title{font-size:12px;font-weight:950;color:var(--navy)}
+.search-ict-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.search-ict-metric{background:#fff;border:1px solid #E5EAF0;border-radius:9px;padding:8px}
+.search-ict-metric span{display:block;font-size:9px;color:#667085;margin-bottom:3px}
+.search-ict-metric b{font-size:12px;color:#101828;word-break:break-word}
+.search-ict-filter{margin-top:8px;font-size:10px;color:#475467;line-height:1.5}
+@media(max-width:760px){.search-ict-grid{grid-template-columns:1fr 1fr}}
 .search-result-badge{display:none}.search-result-badge.show{display:inline-flex}
 @media(max-width:760px){.stock-search-row{grid-template-columns:1fr}.stock-search-row .btn{width:100%}}
 
@@ -101,7 +111,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 </style>
 </head>
 <body>
-<!-- BUILD: ict-quality-entry-v22.1-20261017 -->
+<!-- BUILD: search-ict-score-v23-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">AI STOCK RESEARCH</div>
@@ -249,6 +259,23 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     </div>
     <div id="stockSearchResults" class="stock-search-results"></div>
     <div id="stockSearchStatus" class="stock-search-status">KOSPI·KOSDAQ 전체 상장종목 목록을 불러오는 중입니다...</div>
+    <div id="searchIctSummary" class="search-ict-summary">
+      <div class="search-ict-summary-head">
+        <div class="search-ict-summary-title">검색 종목 ICT 분석</div>
+        <span id="searchIctEligibility" class="tag gray">분석 대기</span>
+      </div>
+      <div class="search-ict-grid">
+        <div class="search-ict-metric"><span>ICT Raw Score</span><b id="searchIctRaw">—</b></div>
+        <div class="search-ict-metric"><span>Adjusted Score</span><b id="searchIctAdjusted">—</b></div>
+        <div class="search-ict-metric"><span>Penalty</span><b id="searchIctPenalty">—</b></div>
+        <div class="search-ict-metric"><span>Entry Quality</span><b id="searchIctEntryQuality">—</b></div>
+        <div class="search-ict-metric"><span>Setup Type</span><b id="searchIctSetup">—</b></div>
+        <div class="search-ict-metric"><span>R:R · T1</span><b id="searchIctRR">—</b></div>
+        <div class="search-ict-metric"><span>Draw on Liquidity</span><b id="searchIctDol">—</b></div>
+        <div class="search-ict-metric"><span>Invalidation</span><b id="searchIctInvalidation">—</b></div>
+      </div>
+      <div id="searchIctFilter" class="search-ict-filter"></div>
+    </div>
   </div>
 
   <div class="screening-mode-tabs">
@@ -1243,6 +1270,13 @@ async function buildSearchProfile(item){
   if(chartR.status!=='fulfilled')throw new Error('차트 데이터를 불러오지 못했습니다: '+(chartR.reason?.message||'Naver/KRX 백업 모두 실패'));
   const rows=chartR.value;if(rows.length<65)throw new Error('기술적 분석에 필요한 일봉 데이터가 부족합니다.');
   const tech=srTech(rows);
+  let searchIct=null;
+  try{
+    searchIct=await srIctAnalyzeItem(item,rows,true);
+  }catch(e){
+    console.warn('검색 종목 ICT 분석 실패',e);
+  }
+  p.searchIct=searchIct;
   let m=intR.status==='fulfilled'?srMetricMap(intR.value):{};
   let qs=finR.status==='fulfilled'?srFinance(finR.value):[];
   let fundamentalSource=(qs.length||m.per!=null||m.pbr!=null)?'Naver/FnGuide':'';
@@ -1277,8 +1311,11 @@ async function buildSearchProfile(item){
   }
   p.score=tech.total;p.rating=tech.label;
   const searchDataDate=String(rows.at(-1)?.date||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
-  t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · 기준일 '+searchDataDate+' · SEARCH RESULT';t.topPickScore=tech.total+' / '+tech.label+' [AI]';
-  t.thesis='“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. 정성적 투자 Thesis는 공식 IR·공시 확인이 필요합니다.” [AI]';
+  t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · 기준일 '+searchDataDate+' · SEARCH RESULT';
+  t.topPickScore=searchIct?('ICT '+searchIct.rawScore+' → '+searchIct.adjustedScore+' · '+searchIct.entryQuality):('Trading '+tech.total+' / '+tech.label);
+  t.thesis=searchIct
+    ?('“검색 종목 ICT: Raw '+searchIct.rawScore+'점 → Penalty '+searchIct.penalty+'점 → Adjusted '+searchIct.adjustedScore+'점 · '+searchIct.setupType+' · Entry Quality '+searchIct.entryQuality+' · R:R '+searchIct.rr.toFixed(2)+':1. 좋은 구조와 현재 진입 준비도를 분리해 판단합니다.” [AI]')
+    :'“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. ICT 세부 데이터는 확인이 필요합니다.” [AI]';
   t.currentPriceText=srFmt(tech.price)+'원';p.inputs.currentPrice=String(Math.round(tech.price));
   t.per=m.per!=null?m.per.toFixed(2)+'x'+(fundamentalSource.includes('KOSAI')?' [AI]':''):'N/A · 적자/TTM 확인';
   t.fper=t.fper2=m.fper!=null?m.fper.toFixed(2)+'x'+(cons?' · 2026E':''):(m.fperAI!=null?m.fperAI.toFixed(2)+'x Run-rate [AI]':'N/A · 이익추정 불가');
@@ -1365,7 +1402,13 @@ async function buildSearchProfile(item){
   const ps=[['tpCurrent',tech.price,'현재 종가'],['tpEntry1',tech.entry1,'MA20/지지선'],['tpEntry2',tech.entry2,'지지선/MA60'],['tpAdd',tech.add,'하단 지지'],['tpTarget1',tech.target1,'저항/직전 고점/ATR'],['tpTarget2',tech.target2,'상단 저항/ATR'],['tpStop',tech.stop,'지지 기준 - 0.5 ATR']];
   ps.forEach(([k,v,b])=>{t[k]=v==null?'—':srFmt(v)+'원 [AI]';t[k+'Basis']=b+(k==='tpCurrent'?'':' [AI]')});
   if(tech.entry1)p.inputs.buy1=String(Math.round(tech.entry1));if(tech.entry2)p.inputs.buy2=String(Math.round(tech.entry2));if(tech.stop)p.inputs.stopPrice=String(Math.round(tech.stop));if(tech.target1)p.inputs.target1=String(Math.round(tech.target1));if(tech.target2)p.inputs.target2=String(Math.round(tech.target2));
-  t.technicalComment='Trading Score '+tech.total+'/100 ('+tech.grade+'/'+tech.label+'), M\'s '+tech.components.ms[0]+'/40 · '+tech.components.ms[1]+', 추세 '+tech.trend+', 과열도 '+tech.heat+'. [AI]';t.tradingConclusion='Trading Score '+tech.total+'/100 | M\'s '+tech.components.ms[0]+'/40 | 추세: '+tech.trend+' | 과열도: '+tech.heat+' | 전략: '+tech.action+' [AI]';t.tradingEntryCondition=tech.g20>8?'추격매수보다 MA20 괴리 축소 후 재진입 신호 확인이 우선입니다. [AI]':'MA20 방향과 MACD·Stochastic 동조를 확인해 분할 진입합니다. [AI]';
+  t.technicalComment='Trading Score '+tech.total+'/100 ('+tech.grade+'/'+tech.label+'), M\'s '+tech.components.ms[0]+'/40 · '+tech.components.ms[1]+', 추세 '+tech.trend+', 과열도 '+tech.heat+'. [AI]';
+  t.tradingConclusion=searchIct
+    ?('ICT Raw '+searchIct.rawScore+'/100 → Adjusted '+searchIct.adjustedScore+'/100 | Penalty '+searchIct.penalty+' | Setup: '+searchIct.setupType+' | Entry: '+searchIct.entryQuality+' | R:R '+searchIct.rr.toFixed(2)+':1 | 판단: '+searchIct.finalOpinion+' [AI]')
+    :('Trading Score '+tech.total+'/100 | M\'s '+tech.components.ms[0]+'/40 | 추세: '+tech.trend+' | 과열도: '+tech.heat+' | 전략: '+tech.action+' [AI]');
+  t.tradingEntryCondition=searchIct
+    ?('DOL '+srFmtPx(searchIct.dol)+' · Entry '+srFmtZone(searchIct.entryZone)+' · Structural Invalidation '+srFmtPx(searchIct.structuralInvalidation)+' · Target1 '+srFmtPx(searchIct.target1)+' [AI]')
+    :(tech.g20>8?'추격매수보다 MA20 괴리 축소 후 재진입 신호 확인이 우선입니다. [AI]':'MA20 방향과 MACD·Stochastic 동조를 확인해 분할 진입합니다. [AI]');
   const probs=tech.total>=80?[40,45,15]:tech.total>=70?[35,45,20]:tech.total>=60?[30,45,25]:tech.total>=50?[25,45,30]:[15,35,50],bull=tech.target2,base=tech.target1,bear=tech.stop;
   [['bull',bull,probs[0],'2차 기술목표 돌파 시나리오 [AI]'],['base',base,probs[1],'1차 기술목표/저항 테스트 시나리오 [AI]'],['bear',bear,probs[2],'기술적 지지 이탈 시나리오 [AI]']].forEach(([k,v,pr,c])=>{t[k+'Price']=v==null?'—':srFmt(v)+'원 [AI]';t[k+'Prob']=pr+'% [AI]';t[k+'Return']=v==null?'—':(srPct(v,tech.price)>=0?'+':'')+srPct(v,tech.price).toFixed(1)+'% [AI]';t[k+'Cond']=c});
   t.finalOpinion=tech.label.toUpperCase()+' · '+tech.action;t.finalLine='검색 종목 상세분석입니다. 추천 랭킹은 Fundamental 파이프라인 또는 ICT Trading 파이프라인에서 별도로 산정합니다. [AI]';
@@ -1494,9 +1537,36 @@ async function srRemoteSearch(q){
   return[];
 }
 function srEsc(s){return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+function srRenderSearchIctSummary(ict){
+  const card=document.getElementById('searchIctSummary');
+  if(!card)return;
+  if(!ict){card.classList.remove('show');return}
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
+  set('searchIctRaw',ict.rawScore+'/100');
+  set('searchIctAdjusted',ict.adjustedScore+'/100');
+  set('searchIctPenalty','-'+ict.penalty+'점');
+  set('searchIctEntryQuality',ict.entryQuality);
+  set('searchIctSetup',ict.setupType);
+  set('searchIctRR',ict.rr.toFixed(2)+':1');
+  set('searchIctDol',srFmtPx(ict.dol));
+  set('searchIctInvalidation',srFmtPx(ict.structuralInvalidation));
+  const eligibility=document.getElementById('searchIctEligibility');
+  if(eligibility){
+    eligibility.className='tag '+srEntryClass(ict.entryQuality);
+    eligibility.textContent=ict.finalEligible?'ICT 후보 · '+ict.entryQuality:('Entry '+ict.entryQuality);
+  }
+  const filter=document.getElementById('searchIctFilter');
+  if(filter){
+    const hard=ict.hardFilterPassed?'Hard Filter 통과':('Hard Filter 제외: '+(ict.hardFilterReasons||[]).join(' · '));
+    const penalties=(ict.reasons||[]).length?(' · Penalty: '+ict.reasons.join(' · ')):'';
+    filter.textContent=hard+penalties+' · 최종 판단: '+ict.finalOpinion;
+  }
+  card.classList.add('show');
+}
 async function analyzeSearchItem(item,status,box){
   box?.classList.remove('show');
-  status.textContent=(item.name||item.code)+' 데이터를 불러오는 중...';
+  document.getElementById('searchIctSummary')?.classList.remove('show');
+  status.textContent=(item.name||item.code)+' 데이터와 ICT 구조를 불러오는 중...';
   try{
     const p=await buildSearchProfile(item);
     if(!p.name||/^\d{6}$/.test(p.name)){
@@ -1508,10 +1578,11 @@ async function analyzeSearchItem(item,status,box){
       }
     }
     applyProfileText(p);
+    srRenderSearchIctSummary(p.searchIct);
     const badge=document.getElementById('selectedPickBadge');if(badge)badge.textContent='🔎 SEARCH RESULT';
     const note=document.getElementById('selectedStockNote');if(note)note.textContent=p.market+' · SEARCH · '+p.name;
     document.getElementById('stockSearchBadge')?.classList.add('show');
-    status.textContent=p.name+' 분석 완료 · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신')+' · 아래 상세분석을 검색 종목으로 전환했습니다.';
+    status.textContent=p.name+' 분석 완료 · 데이터 기준 '+(p.text.sourceMarketDate||stockUniverseMeta.as_of||'최신')+(p.searchIct?' · ICT Adjusted '+p.searchIct.adjustedScore+' · Entry '+p.searchIct.entryQuality:'')+' · 아래 상세분석을 검색 종목으로 전환했습니다.';
     document.title=p.name+' | Stock Research';
     document.getElementById('deepdive')?.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
@@ -1524,6 +1595,7 @@ async function searchStocks(){
   const q=input?.value.trim()||'';
   if(!q){box.classList.remove('show');status.textContent='종목명 또는 6자리 종목코드를 입력해주세요.';return}
   status.textContent='KOSPI·KOSDAQ 전체 종목에서 검색 중...';
+  document.getElementById('searchIctSummary')?.classList.remove('show');
   await loadStockUniverse();
   if(/^\d{6}$/.test(q)){
     try{
