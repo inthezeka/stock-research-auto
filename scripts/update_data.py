@@ -1323,116 +1323,133 @@ def fetch_us_sentiment(previous=None):
     }
 
 
+def _compute_index_sentiment(market, index_key, label):
+    """Index-specific Korea sentiment score with the index's own trend/volatility/flow [AI]."""
+    rows = (market.get(index_key) or {}).get("rows") or []
+    fx_rows = (market.get("usdkrw") or {}).get("rows") or []
+    closes = [x["close"] for x in rows]
+    fx_closes = [x["close"] for x in fx_rows]
+    if len(closes) < 100 or len(fx_closes) < 40:
+        raise RuntimeError(f"{label} insufficient history")
+
+    r5 = rolling_returns(closes, 5)
+    r20 = rolling_returns(closes, 20)
+    r60 = rolling_returns(closes, 60)
+    fx20 = rolling_returns(fx_closes, 20)
+    vols = rolling_realized_vol(closes, 20)
+    if not (r5 and r20 and r60 and fx20 and vols):
+        raise RuntimeError(f"{label} indicator series empty")
+
+    momentum5_score = percentile_rank(r5, r5[-1])
+    trend20_score = percentile_rank(r20, r20[-1])
+    trend60_score = percentile_rank(r60, r60[-1])
+    vol_score = 100.0 - percentile_rank(vols, vols[-1])
+    fx_score = 100.0 - percentile_rank(fx20, fx20[-1])
+
+    current_vol = vols[-1]
+    if current_vol >= 35:
+        vol_score = min(vol_score, 35.0)
+    elif current_vol >= 30:
+        vol_score = min(vol_score, 50.0)
+    elif current_vol >= 25:
+        vol_score = min(vol_score, 65.0)
+
+    flow = (market.get(index_key) or {}).get("flow") or {}
+    foreign = n(flow.get("foreign"))
+    institution = n(flow.get("institution"))
+    if foreign is None or institution is None:
+        flow_score = 50.0
+        flow_value = "수급 확인 중"
+    else:
+        weighted_flow = foreign * 0.60 + institution * 0.40
+        flow_score = 50.0 + 40.0 * math.tanh(weighted_flow / 10000.0)
+        flow_value = f"외인 {foreign:+,.0f}억 · 기관 {institution:+,.0f}억"
+
+    components = [
+        {"key": "trend20", "label": f"{label} 20D 추세", "score": round(clamp(trend20_score), 1), "weight": 30, "value": signed(r20[-1], 2)},
+        {"key": "trend60", "label": f"{label} 60D 추세", "score": round(clamp(trend60_score), 1), "weight": 20, "value": signed(r60[-1], 2)},
+        {"key": "volatility", "label": "변동성 · 20D RV", "score": round(clamp(vol_score), 1), "weight": 20, "value": f"{current_vol:.1f}%"},
+        {"key": "momentum5", "label": f"{label} 5D 모멘텀", "score": round(clamp(momentum5_score), 1), "weight": 15, "value": signed(r5[-1], 2)},
+        {"key": "flow", "label": "외국인·기관 수급", "score": round(clamp(flow_score), 1), "weight": 10, "value": flow_value},
+        {"key": "safe_haven", "label": "USD/KRW 20D", "score": round(clamp(fx_score), 1), "weight": 5, "value": signed(fx20[-1], 2)},
+    ]
+
+    raw_score = sum(x["score"] * x["weight"] for x in components) / 100.0
+    score = raw_score
+    gates = []
+    if r20[-1] <= -15:
+        score = min(score, 44.0)
+        gates.append(f"{label} 20D ≤ -15% → 상단 44")
+    elif r20[-1] <= -10:
+        score = min(score, 54.0)
+        gates.append(f"{label} 20D ≤ -10% → 상단 54")
+    elif r20[-1] <= -5:
+        score = min(score, 64.0)
+        gates.append(f"{label} 20D ≤ -5% → 상단 64")
+    if r60[-1] <= -20:
+        score = min(score, 49.0)
+        gates.append(f"{label} 60D ≤ -20% → 상단 49")
+
+    return {
+        "available": True,
+        "fresh": True,
+        "market": label,
+        "score": round(clamp(score), 1),
+        "raw_score": round(clamp(raw_score), 1),
+        "rating": sentiment_label(score),
+        "timestamp": NOW.isoformat(),
+        "source": f"{label}·USD/KRW·수급 · 자체 정규화 [AI]",
+        "method": f"{label} 20D 30% + 60D 20% + 20D 변동성 20% + 5D 모멘텀 15% + 수급 10% + FX 5% · Regime Gate",
+        "regime_gate": " · ".join(gates) if gates else "없음",
+        "flow": {
+            "foreign": foreign,
+            "institution": institution,
+            "text": flow_value,
+            "score": round(clamp(flow_score), 1),
+        },
+        "components": components,
+    }
+
+
 def compute_korea_sentiment(market):
-    """Korea sentiment with medium-term trend dominance and anti-whipsaw gates [AI].
+    """Return separate KOSPI and KOSDAQ sentiment while keeping a blended KR score for compatibility [AI]."""
+    results = {}
+    errors = []
+    for key, label in (("kospi", "KOSPI"), ("kosdaq", "KOSDAQ")):
+        try:
+            results[key] = _compute_index_sentiment(market, key, label)
+        except Exception as e:
+            errors.append(f"{label}: {e}")
+            results[key] = {
+                "available": False,
+                "fresh": False,
+                "market": label,
+                "score": None,
+                "rating": "데이터 확인 중",
+                "timestamp": NOW.isoformat(),
+                "source": f"{label}·USD/KRW·수급 · 자체 정규화 [AI]",
+                "error": str(e)[:250],
+                "flow": {"foreign": None, "institution": None, "text": "수급 확인 중", "score": 50.0},
+                "components": [],
+            }
 
-    The old formula over-weighted 1-day rebounds. This version emphasizes
-    20D/60D trend, penalizes absolute high volatility, includes KOSPI flow,
-    and caps the score when the 20D trend remains deeply negative.
-    """
-    try:
-        k_rows = (market.get("kospi") or {}).get("rows") or []
-        q_rows = (market.get("kosdaq") or {}).get("rows") or []
-        fx_rows = (market.get("usdkrw") or {}).get("rows") or []
-        kc = [x["close"] for x in k_rows]
-        qc = [x["close"] for x in q_rows]
-        fc = [x["close"] for x in fx_rows]
-
-        if len(kc) < 100 or len(qc) < 100 or len(fc) < 40:
-            raise RuntimeError("insufficient history")
-
-        k5 = rolling_returns(kc, 5)
-        q5 = rolling_returns(qc, 5)
-        k20 = rolling_returns(kc, 20)
-        k60 = rolling_returns(kc, 60)
-        fx20 = rolling_returns(fc, 20)
-        vols = rolling_realized_vol(kc, 20)
-        if not (k5 and q5 and k20 and k60 and fx20 and vols):
-            raise RuntimeError("indicator series empty")
-
-        # Relative scores.
-        k5_score = percentile_rank(k5, k5[-1])
-        q5_score = percentile_rank(q5, q5[-1])
-        trend20_score = percentile_rank(k20, k20[-1])
-        trend60_score = percentile_rank(k60, k60[-1])
-        vol_score = 100.0 - percentile_rank(vols, vols[-1])
-        fx_score = 100.0 - percentile_rank(fx20, fx20[-1])
-
-        # Absolute volatility guard: a 40% realized-volatility market should not
-        # receive a "greed" boost just because recent history was even more volatile.
-        current_vol = vols[-1]
-        if current_vol >= 35:
-            vol_score = min(vol_score, 35.0)
-        elif current_vol >= 30:
-            vol_score = min(vol_score, 50.0)
-        elif current_vol >= 25:
-            vol_score = min(vol_score, 65.0)
-
-        # Foreign/institutional KOSPI flow contributes 10%.
-        flow = (market.get("kospi") or {}).get("flow") or {}
-        foreign = n(flow.get("foreign"))
-        institution = n(flow.get("institution"))
-        if foreign is None or institution is None:
-            flow_score = 50.0
-            flow_value = "수급 확인 중"
-        else:
-            weighted_flow = foreign * 0.60 + institution * 0.40
-            flow_score = 50.0 + 40.0 * math.tanh(weighted_flow / 10000.0)
-            flow_value = f"외인 {foreign:+,.0f}억 · 기관 {institution:+,.0f}억"
-
-        components = [
-            {"key": "trend20", "label": "KOSPI 20D 추세", "score": round(clamp(trend20_score), 1), "weight": 30, "value": signed(k20[-1], 2)},
-            {"key": "trend60", "label": "KOSPI 60D 추세", "score": round(clamp(trend60_score), 1), "weight": 15, "value": signed(k60[-1], 2)},
-            {"key": "volatility", "label": "변동성 · 20D RV", "score": round(clamp(vol_score), 1), "weight": 20, "value": f"{current_vol:.1f}%"},
-            {"key": "momentum5", "label": "KOSPI 5D 모멘텀", "score": round(clamp(k5_score), 1), "weight": 10, "value": signed(k5[-1], 2)},
-            {"key": "kosdaq5", "label": "KOSDAQ 5D 모멘텀", "score": round(clamp(q5_score), 1), "weight": 10, "value": signed(q5[-1], 2)},
-            {"key": "flow", "label": "외국인·기관 수급", "score": round(clamp(flow_score), 1), "weight": 10, "value": flow_value},
-            {"key": "safe_haven", "label": "USD/KRW 20D", "score": round(clamp(fx_score), 1), "weight": 5, "value": signed(fx20[-1], 2)},
-        ]
-
-        raw_score = sum(x["score"] * x["weight"] for x in components) / 100.0
-        score = raw_score
-        gate = "없음"
-
-        # Medium-term regime gates prevent a single rebound day from flipping
-        # a deeply damaged market straight into Greed.
-        if k20[-1] <= -15:
-            score = min(score, 44.0)
-            gate = "KOSPI 20D ≤ -15% → 상단 44"
-        elif k20[-1] <= -10:
-            score = min(score, 54.0)
-            gate = "KOSPI 20D ≤ -10% → 상단 54"
-        elif k20[-1] <= -5:
-            score = min(score, 64.0)
-            gate = "KOSPI 20D ≤ -5% → 상단 64"
-
-        if k60[-1] <= -20:
-            score = min(score, 49.0)
-            gate += " · KOSPI 60D ≤ -20% → 상단 49"
-
-        return {
-            "available": True,
-            "fresh": True,
-            "score": round(clamp(score), 1),
-            "raw_score": round(clamp(raw_score), 1),
-            "rating": sentiment_label(score),
-            "timestamp": NOW.isoformat(),
-            "source": "KOSPI·KOSDAQ·USD/KRW·수급 · 자체 정규화 [AI]",
-            "method": "KOSPI 20D 추세 30% + 60D 추세 15% + 20D 변동성 20% + KOSPI 5D 10% + KOSDAQ 5D 10% + 수급 10% + FX 5% · 추세 Regime Gate 적용",
-            "regime_gate": gate,
-            "components": components,
-        }
-    except Exception as e:
-        return {
-            "available": False,
-            "fresh": False,
-            "score": None,
-            "rating": "데이터 확인 중",
-            "timestamp": NOW.isoformat(),
-            "source": "KOSPI·KOSDAQ·USD/KRW·수급 · 자체 정규화 [AI]",
-            "error": str(e)[:250],
-            "components": [],
-        }
+    valid_scores = [n((results.get(k) or {}).get("score")) for k in ("kospi", "kosdaq")]
+    valid_scores = [x for x in valid_scores if x is not None]
+    score = statistics.mean(valid_scores) if valid_scores else None
+    return {
+        "available": bool(valid_scores),
+        "fresh": all((results.get(k) or {}).get("fresh") for k in ("kospi", "kosdaq")),
+        "score": None if score is None else round(clamp(score), 1),
+        "raw_score": None if score is None else round(clamp(score), 1),
+        "rating": sentiment_label(score),
+        "timestamp": NOW.isoformat(),
+        "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
+        "method": "KOSPI와 KOSDAQ을 각각 추세·변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
+        "kospi": results["kospi"],
+        "kosdaq": results["kosdaq"],
+        "components": [],
+        "errors": errors,
+    }
 
 
 def build_sentiment(us, kr):
