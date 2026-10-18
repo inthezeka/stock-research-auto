@@ -54,7 +54,6 @@ jobs:
         run: python scripts/refresh_sector_membership.py
 
       - name: Update market data
-        if: github.event_name != 'push'
         env:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: python scripts/update_data.py
