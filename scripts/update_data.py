@@ -1746,6 +1746,59 @@ def find_nested_value(obj, candidate_keys):
     return None
 
 
+def fetch_annual_financials(code):
+    """Use Naver mobile JSON annual financial endpoint for Forward EPS/ROE."""
+    url = f"https://m.stock.naver.com/api/stock/{code}/finance/year"
+    j = req(url, 2).json()
+    info = j.get("financeInfo") or j.get("finance_info") or j
+    titles = info.get("trTitleList") or info.get("titleList") or []
+    row_list = info.get("rowList") or info.get("rows") or []
+    if not titles or not row_list:
+        raise RuntimeError("annual finance JSON incomplete")
+
+    cols = []
+    for x in titles:
+        key = str(x.get("key") or "").strip()
+        title = str(x.get("title") or "").strip().rstrip(".")
+        cons = str(x.get("isConsensus") or x.get("consensus") or "N").upper() == "Y"
+        if key and title:
+            cols.append({"key": key, "title": title, "estimate": cons})
+
+    rows = {}
+    for row in row_list:
+        label = str(row.get("title") or row.get("name") or "").replace(" ", "")
+        columns = row.get("columns") or {}
+        values = {}
+        for c in cols:
+            cell = columns.get(c["key"])
+            if isinstance(cell, dict):
+                cell = cell.get("value")
+            values[c["key"]] = fin_number(cell)
+        if label:
+            rows[label] = values
+
+    def series(*names):
+        for name in names:
+            key = name.replace(" ", "")
+            if key in rows:
+                return [rows[key].get(c["key"]) for c in cols]
+        return [None] * len(cols)
+
+    eps = series("EPS(원)", "EPS")
+    roe = series("ROE(%)", "ROE")
+    out = []
+    for i, c in enumerate(cols):
+        m = re.search(r"(20\d{2})", c["title"])
+        out.append({
+            "year": int(m.group(1)) if m else None,
+            "label": c["title"],
+            "estimate": c["estimate"],
+            "eps": eps[i],
+            "roe": roe[i],
+        })
+    return {"rows": out, "source": "Naver Stock · FnGuide annual", "url": url}
+
+
 def fetch_stock_valuation_snapshot(code):
     url = f"https://m.stock.naver.com/api/stock/{code}/integration"
     j = req(url, 2).json()
@@ -1758,7 +1811,7 @@ def fetch_stock_valuation_snapshot(code):
         j.get("consensusInfo") or {},
         ("targetPrice", "target_price", "consensusTargetPrice", "averageTargetPrice"),
     )
-    return {
+    snap = {
         "per": clean_metric_number(info.get("per")),
         "forward_per": clean_metric_number(info.get("cnsPer")),
         "pbr": clean_metric_number(info.get("pbr")),
@@ -1770,25 +1823,53 @@ def fetch_stock_valuation_snapshot(code):
         "source": "Naver Stock integration",
         "url": url,
     }
+    try:
+        annual = fetch_annual_financials(code)
+        est = next((x for x in annual.get("rows") or [] if x.get("estimate") and x.get("eps") not in (None, 0)), None)
+        if est:
+            snap["forward_eps"] = est.get("eps")
+            snap["forward_year"] = est.get("year")
+            snap["forward_roe"] = est.get("roe")
+            snap["forward_per"] = None  # recomputed from live current price in apply_valuation_snapshot
+            snap["annual_source"] = annual.get("source")
+    except Exception:
+        pass
+    return snap
 
 
 def apply_valuation_snapshot(profile, snap):
     txt = profile.setdefault("text", {})
+    inp = profile.setdefault("inputs", {})
     if snap.get("per") is not None:
         txt["per"] = f"{snap['per']:.2f}x"
-    if snap.get("forward_per") is not None:
-        txt["fper"] = f"{snap['forward_per']:.2f}x"
-        txt["fper2"] = f"{snap['forward_per']:.2f}x"
+
+    current = n(inp.get("currentPrice"))
+    forward_per = snap.get("forward_per")
+    if snap.get("forward_eps") not in (None, 0) and current not in (None, 0):
+        forward_per = current / snap["forward_eps"]
+    if forward_per is not None:
+        suffix = f" · {int(snap['forward_year'])}E" if snap.get("forward_year") else ""
+        txt["fper"] = f"{forward_per:.2f}x{suffix}"
+        txt["fper2"] = f"{forward_per:.2f}x{suffix}"
+
     if snap.get("pbr") is not None:
         txt["pbr"] = f"{snap['pbr']:.2f}x"
-    if snap.get("forward_eps") is not None and snap.get("bps") not in (None, 0):
+
+    if snap.get("forward_roe") is not None:
+        suffix = f" · {int(snap['forward_year'])}E" if snap.get("forward_year") else ""
+        txt["roe"] = f"{snap['forward_roe']:.1f}%{suffix}"
+    elif snap.get("forward_eps") is not None and snap.get("bps") not in (None, 0):
         roe_proxy = snap["forward_eps"] / snap["bps"] * 100
         txt["roe"] = f"{roe_proxy:.1f}% [AI]"
+
     if snap.get("target_price") is not None:
+        profile["fundamental_target_price"] = snap["target_price"]
         txt["fairPriceText"] = f"{fmt_price(snap['target_price'])}원 Cons."
         txt["fairB"] = f"{fmt_price(snap['target_price'])}원"
         txt["calcB"] = "네이버증권 Consensus 목표가 기준."
-        profile.setdefault("inputs", {})["target2"] = str(int(round(snap["target_price"])))
+    else:
+        txt["fairPriceText"] = "목표가 확인 중"
+        txt["upsideText"] = "—"
     profile["valuation_snapshot"] = snap
 
 
@@ -2672,11 +2753,7 @@ def profile_live_update(p, live):
         txt[text_key] = "—" if val is None else f"{fmt_price(val)}원 [AI]"
         txt[text_key + "Basis"] = reason + (" [AI]" if reason != "현재 종가" else "")
 
-    if "Consensus 목표가 확인 필요" in str(txt.get("fairPriceText", "")):
-        tech_target = (strategy.get("target2") or {}).get("price")
-        if tech_target is not None:
-            txt["fairPriceText"] = f"{fmt_price(tech_target)}원 기술목표 [AI]"
-            inp["target2"] = str(int(round(tech_target)))
+    # Fundamental header target must stay separate from the technical trade-plan target.
 
     # Keep the read-only Trade Plan synchronized with the new technical strategy.
     def set_input(input_key, strat_key):
