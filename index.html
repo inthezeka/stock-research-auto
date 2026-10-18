@@ -433,10 +433,9 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <a href="#screening"><span class="nav-num">04</span>SCREENING</a>
     <div class="nav-group">TOP PICK</div>
     <a href="#deepdive"><span class="nav-num">05</span>DEEP DIVE</a>
-    <a href="#valuation"><span class="nav-num">06</span>VALUATION</a>
-    <a href="#catalyst"><span class="nav-num">07</span>CATALYST / RISK</a>
+    <a href="#catalyst"><span class="nav-num">06</span>CATALYST / RISK</a>
     <div class="nav-group">FRAMEWORK</div>
-    <a href="#sources"><span class="nav-num">08</span>SOURCE RULE</a>
+    <a href="#sources"><span class="nav-num">07</span>SOURCE RULE</a>
   </nav>
 </aside>
 
@@ -674,7 +673,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">분석 종목</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
     <div class="metrics">
       <div class="metric"><div class="m-label">현재가</div><div class="m-val" data-edit data-key="currentPriceText">1,581,000원</div></div>
-      <div class="metric"><div class="m-label">적정주가</div><div class="m-val up" data-edit data-key="fairPriceText">2,280,000원</div></div>
+      <div class="metric"><div class="m-label">증권사 목표가</div><div class="m-val up" data-edit data-key="fairPriceText">목표가 확인 중</div></div>
       <div class="metric"><div class="m-label">상승여력</div><div class="m-val up" data-edit data-key="upsideText">+44.2%</div></div>
       <div class="metric"><div class="m-label">Forward PER</div><div class="m-val" data-edit data-key="fper">43.94x</div></div>
       <div class="metric"><div class="m-label">ROE</div><div class="m-val" data-edit data-key="roe">15.18% (2026E)</div></div>
@@ -705,34 +704,6 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <tr><td data-edit data-key="y4">2027E</td><td data-edit data-key="rev4">19.28조</td><td data-edit data-key="op4a">4.50조*</td><td data-edit data-key="opm4">23.3%</td><td data-edit data-key="ni4">≈3.25조</td><td data-edit data-key="eps4">42,990원</td><td class="up" data-edit data-key="yoy4">매출 +33.5%</td></tr>
   </tbody></table></div>
   <p class="note" style="margin-top:10px" data-edit data-key="financialNote">2024~2025는 회사 공시/IR, 2026E는 S&amp;P Global Consensus, 2027E 매출·EPS는 Consensus 요약, 영업이익 4.50조원은 미래에셋 2026-08-24 전망(*)입니다. 자체 계산은 표시.</p>
-</section>
-
-<section id="valuation" class="section-track" data-name="VALUATION">
-  <div class="section-head"><div><h2 class="section-title">Valuation & 적정주가</h2><p class="section-desc">단순 저PER가 아니라 성장률과 이익의 질을 함께 비교합니다.</p></div></div>
-  <div class="grid-4"><div class="card kpi"><div class="label">PER</div><div class="value" data-edit data-key="per">173.75x (2025A)</div></div><div class="card kpi"><div class="label">Forward PER</div><div class="value" data-edit data-key="fper2">43.94x</div></div><div class="card kpi"><div class="label">PBR</div><div class="value" data-edit data-key="pbr">12.52x (2025A)</div></div><div class="card kpi"><div class="label">EV / EBITDA</div><div class="value" data-edit data-key="evebitda">24.68x (Fwd.12M)</div></div></div>
-  <div class="grid-2" style="margin-top:14px">
-    <div class="card"><h3 class="subhead">방법 A · 다음 분기 EPS(E) × 4 × Forward PER</h3><div class="facts"><div class="fact-row"><span>다음 분기 EPS(E)</span><b data-edit data-key="valEps">[검증 필요]</b></div><div class="fact-row"><span>Forward PER</span><b data-edit data-key="targetPer">[검증 필요]</b></div><div class="fact-row"><span>연환산 적정주가</span><b class="up" data-edit data-key="fairA">[검증 필요]</b></div></div><p class="note" style="margin:12px 0 0" data-edit data-key="calcA">다음 분기 Consensus EPS를 4배 연환산한 뒤 Forward PER를 적용합니다. 계절성이 큰 종목은 참고치로 사용합니다.</p></div>
-    <div class="card"><h3 class="subhead">방법 B · Analyst Consensus</h3><div class="facts"><div class="fact-row"><span>Peer 평균</span><b data-edit data-key="peerMultiple">27명 평균 목표가</b></div><div class="fact-row"><span>할인 / 프리미엄</span><b data-edit data-key="discount">Median 2,400,000원</b></div><div class="fact-row"><span>적정주가</span><b class="up" data-edit data-key="fairB">2,408,519원</b></div></div><p class="note" style="margin:12px 0 0" data-edit data-key="calcB">S&P Global 집계 목표가 범위 950,000~3,200,000원, 평균 2,408,519원. 목표가 분산이 매우 커 보수적 적용이 필요합니다.</p></div>
-  </div>
-  <div class="card analyst-research-card" style="margin-top:14px" id="analystResearchCard">
-    <div class="analyst-research-head">
-      <div>
-        <h3 class="subhead" style="margin:0">최근 3개월 증권사 리포트</h3>
-        <p class="section-desc analyst-research-meta" id="analystResearchMeta">선택 종목의 최근 증권사 리포트를 불러오는 중입니다.</p>
-      </div>
-      <div class="analyst-consensus-box">
-        <span>Consensus 목표주가</span>
-        <b id="analystConsensusTarget">—</b>
-        <small id="analystConsensusDate">—</small>
-      </div>
-    </div>
-    <div class="table-wrap analyst-research-table-wrap">
-      <table class="table analyst-research-table">
-        <thead><tr><th>일자</th><th>증권사</th><th>애널리스트 리포트 핵심 내용</th><th>목표주가</th></tr></thead>
-        <tbody id="analystResearchBody"><tr><td colspan="4">최근 3개월 리포트 확인 중입니다...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
 </section>
 
 <section id="catalyst" class="section-track" data-name="CATALYST / RISK">
@@ -988,7 +959,7 @@ function applyTradingStateColors(){
   paint('actionStateCard',document.querySelector('#actionStateCard [data-key="tradingAction"]')?.textContent||'','action');
   paint('heatStateCard',document.querySelector('#heatStateCard [data-key="tradingOverheat"]')?.textContent||'','heat');
 }
-const PROFILE_DETAIL_SECTIONS=['deepdive','valuation','catalyst','sources'];
+const PROFILE_DETAIL_SECTIONS=['deepdive','catalyst','sources'];
 
 function srFundGroupLabel(k){
   return({
@@ -1614,8 +1585,8 @@ function srAnalystResearchFromIntegration(integration){
   };
 }
 async function srLoadAnalystResearch(profile){
-  const code=String(profile?.stock_code||profile?.code||'').replace(/D/g,'').padStart(6,'0').slice(-6);
-  if(!/^d{6}$/.test(code))return{rows:[],target:null,recommMean:null,consensusDate:'',source:'종목코드 확인 필요'};
+  const code=String(profile?.stock_code||profile?.code||'').replace(/\D/g,'').padStart(6,'0').slice(-6);
+  if(!/^\d{6}$/.test(code))return{rows:[],target:null,recommMean:null,consensusDate:'',source:'종목코드 확인 필요'};
   if(srAnalystResearchCache.has(code))return srAnalystResearchCache.get(code);
 
   const p=(async()=>{
@@ -1686,6 +1657,32 @@ async function srRenderAnalystResearch(profile){
 
   if(targetEl)targetEl.textContent=Number.isFinite(data.target)?Math.round(data.target).toLocaleString('ko-KR')+'원':'—';
   if(dateEl)dateEl.textContent=Number.isFinite(data.target)?((data.targetBasis||'Consensus')+' · '+(data.consensusDate?srResearchDateLabel(data.consensusDate):'최신')):'목표주가 없음';
+
+  // Header target is broker/fundamental research only. Never substitute a technical ATR target.
+  if(Number.isFinite(data.target)){
+    profile.fundamentalTargetPrice=data.target;
+    const current=srNum(profile?.inputs?.currentPrice);
+    const basis=data.targetBasis==='최근 3개월 리포트 평균'?'3M 평균':'Consensus';
+    profile.text=profile.text||{};
+    profile.text.fairPriceText=Math.round(data.target).toLocaleString('ko-KR')+'원 · '+basis;
+    profile.text.upsideText=Number.isFinite(current)&&current>0
+      ?((data.target/current-1)*100>=0?'+':'')+((data.target/current-1)*100).toFixed(1)+'% [AI]'
+      :'—';
+    const root=document.getElementById('deepdive');
+    const targetNode=root?.querySelector('[data-key="fairPriceText"]');
+    const upsideNode=root?.querySelector('[data-key="upsideText"]');
+    if(targetNode)targetNode.textContent=stripAiMarkerText(profile.text.fairPriceText);
+    if(upsideNode)upsideNode.textContent=stripAiMarkerText(profile.text.upsideText);
+  }else{
+    profile.text=profile.text||{};
+    profile.text.fairPriceText='목표가 없음';
+    profile.text.upsideText='—';
+    const root=document.getElementById('deepdive');
+    const targetNode=root?.querySelector('[data-key="fairPriceText"]');
+    const upsideNode=root?.querySelector('[data-key="upsideText"]');
+    if(targetNode)targetNode.textContent='목표가 없음';
+    if(upsideNode)upsideNode.textContent='—';
+  }
   const rows=data.rows||[];
   if(meta){
     const opinion=Number.isFinite(data.recommMean)?' · 평균 투자의견 '+data.recommMean.toFixed(2):'';
@@ -1871,16 +1868,47 @@ function srFirstSentence(s){
 }
 function srApplyKosaiQualitative(t,report){
   if(!report)return;
-  const biz=String(report.business?.ko||'');
+  const biz=String(report.business?.ko||'').replace(/\s+/g,' ').trim();
   if(biz)t.business=srFirstSentence(biz);
-  const cm=biz.match(/주요 고객사는\s*(.{1,120}?)(?:이며|이고|로 구성|다\.)/);
-  if(cm)t.customers=cm[1].trim();
-  const pm=biz.match(/경쟁사로는\s*(.{1,120}?)(?:등이|가 있으며|이 있으며|이며)/);
-  if(pm)t.competitors=pm[1].trim();
-  const kp=(report.keypoints||[]).map(x=>x?.ko).filter(Boolean);
+
+  const firstMatch=(patterns)=>{
+    for(const rx of patterns){
+      const m=biz.match(rx);
+      if(m?.[1])return m[1].replace(/\s+/g,' ').trim().replace(/[,.]$/,'');
+    }
+    return'';
+  };
+  const customers=firstMatch([
+    /주요 고객사는\s*(.{1,180}?)(?:이며|이고|로 구성|다\.|\.)/,
+    /고객 기반은\s*(.{1,220}?)(?:로 넓어지고|로 확대|이며|이고|\.)/,
+    /핵심 고객(?:은|에는|을 포함해)\s*(.{1,180}?)(?:이며|이고|와|과|\.)/
+  ]);
+  if(customers)t.customers=customers;
+
+  const competitors=firstMatch([
+    /경쟁사로는\s*(.{1,160}?)(?:등이|가 있으며|이 있으며|이며|\.)/,
+    /경쟁 구도는\s*(.{1,160}?)(?:와의 3사 구도가 기본|3사 구도가 기본|이며|이고|\.)/,
+    /주요 경쟁(?:사|업체)는\s*(.{1,160}?)(?:이며|이고|\.)/
+  ]);
+  if(competitors)t.competitors=competitors;
+
+  const kp=(report.keypoints||[]).map(x=>String(x?.ko||'').replace(/\s+/g,' ').trim()).filter(Boolean);
   if(kp[0])t.earningsReason=kp[0];
-  if(kp[3])t.moat=kp[3];
-  if(!t.barrier||t.barrier==='—')t.barrier='기술·고객 Qualification·CAPEX 진입장벽 확인';
+
+  const sentences=biz.split(/(?<=[.!?。])\s+/).filter(Boolean);
+  const moatRx=/점유율|시장점유|\b1위\b|선도|경쟁력|고객 공동개발|장기공급|LTA|수율|양산|고부가|수익성|qualification|인증|특허|공급 안정/i;
+  const capitalRx=/자사주|주주환원|소각|배당|유상증자|무상증자|전환사채|\bCB\b|\bBW\b|이사회|잉여현금흐름/i;
+  const moatParts=[...sentences,...kp]
+    .filter(x=>moatRx.test(x)&&!capitalRx.test(x))
+    .map(x=>srInsightSentence(x,170))
+    .filter(Boolean);
+  if(moatParts.length)t.moat=srInsightUnique(moatParts).slice(0,2).join(' · ');
+
+  if(/HBM|D램|DRAM|낸드|NAND|메모리 반도체/i.test(biz)){
+    t.barrier='미세공정·HBM/첨단 패키징·수율 안정화·고객 Qualification·대규모 CAPEX';
+  }else if(!t.barrier||t.barrier==='—'){
+    t.barrier='기술·고객 Qualification·CAPEX·IP 진입장벽 확인';
+  }
 }
 
 function srInsightSentence(s,max=110){
@@ -2206,9 +2234,10 @@ function srBlankProfile(item){
 }
 async function buildSearchProfile(item){
   const code=item.code,p=srBlankProfile(item),t=p.text;
-  const [chartR,finR,intR]=await Promise.allSettled([
+  const [chartR,finR,annualR,intR]=await Promise.allSettled([
     srLoadChartRows(item),
     srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/finance/quarter'),
+    srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/finance/year'),
     srFetchJson('https://m.stock.naver.com/api/stock/'+code+'/integration')
   ]);
   if(chartR.status!=='fulfilled')throw new Error('차트 데이터를 불러오지 못했습니다: '+(chartR.reason?.message||'Naver/KRX 백업 모두 실패'));
@@ -2229,6 +2258,7 @@ async function buildSearchProfile(item){
   if(intR.status==='fulfilled')p.naverIntegration=intR.value;
   let m=intR.status==='fulfilled'?srMetricMap(intR.value):{};
   let qs=finR.status==='fulfilled'?srFinance(finR.value):[];
+  const annuals=annualR.status==='fulfilled'?srAnnualFinance(annualR.value):[];
   let fundamentalSource=(qs.length||m.per!=null||m.pbr!=null)?'Naver/FnGuide':'';
   let kosaiReport=null;
   if(!qs.length||m.per==null||m.pbr==null||m.roe==null){
@@ -2266,6 +2296,19 @@ async function buildSearchProfile(item){
     m.evebitda=cons.evEbitda;
     m.target=cons.targetPrice;
   }
+  const annualEst=annuals.find(x=>x.est&&Number.isFinite(x.eps)&&x.eps>0)||annuals.find(x=>x.est);
+  if(annualEst){
+    m.forwardYear=annualEst.year||null;
+    if(Number.isFinite(annualEst.eps)&&annualEst.eps>0){
+      m.feps=annualEst.eps;
+      if(!cons)m.fper=tech.price/annualEst.eps;
+      m.forwardPerSource=cons?'snapshot':'annual-consensus';
+    }
+    if(Number.isFinite(annualEst.roe)){
+      m.roe=annualEst.roe;
+      m.roeSource='annual-consensus';
+    }
+  }
   p.score=tech.total;p.rating=tech.label;
   const searchDataDate=String(rows.at(-1)?.date||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
   t.topPickName=item.name;t.topPickTicker=code+' · '+p.market+' · 기준일 '+searchDataDate+' · SEARCH RESULT';
@@ -2275,21 +2318,23 @@ async function buildSearchProfile(item){
     :'“검색 종목은 추천 TOP5와 별개로 실시간 가격·분기 실적·Valuation·Trading Score를 기반으로 분석합니다. 세부 데이터는 확인이 필요합니다.” [AI]';
   t.currentPriceText=srFmt(tech.price)+'원';p.inputs.currentPrice=String(Math.round(tech.price));
   t.per=m.per!=null?m.per.toFixed(2)+'x'+(fundamentalSource.includes('KOSAI')?' [AI]':''):'N/A · 적자/TTM 확인';
-  t.fper=t.fper2=m.fper!=null?m.fper.toFixed(2)+'x'+(cons?' · 2026E':''):(m.fperAI!=null?m.fperAI.toFixed(2)+'x Run-rate [AI]':'N/A · 이익추정 불가');
+  t.fper=t.fper2=m.fper!=null?m.fper.toFixed(2)+'x'+(m.forwardYear?' · '+m.forwardYear+'E':(cons?' · 2026E':'')):(m.fperAI!=null?m.fperAI.toFixed(2)+'x Run-rate [AI]':'N/A · 이익추정 불가');
   t.pbr=m.pbr!=null?m.pbr.toFixed(2)+'x'+(fundamentalSource.includes('KOSAI')?' [AI]':''):'데이터 확인 필요';
   t.evebitda=m.evebitda!=null?m.evebitda.toFixed(2)+'x'+(cons?' · 2026E':''):(m.ebitProxy!=null?m.ebitProxy.toFixed(2)+'x EBIT Proxy [AI]':'N/A · 순차입금/D&A 필요');
-  t.roe=m.roe!=null?m.roe.toFixed(1)+'%'+(fundamentalSource.includes('KOSAI')?' TTM':''):(m.feps!=null&&m.bps?((m.feps/m.bps)*100).toFixed(1)+'% [AI]':'데이터 확인 필요');
+  t.roe=m.roe!=null?m.roe.toFixed(1)+'%'+(m.roeSource==='annual-consensus'&&m.forwardYear?' · '+m.forwardYear+'E':(fundamentalSource.includes('KOSAI')?' TTM':'')):(m.feps!=null&&m.bps?((m.feps/m.bps)*100).toFixed(1)+'% [AI]':'데이터 확인 필요');
   if(m.target!=null){
+    p.fundamentalTargetPrice=m.target;
     t.fairPriceText=srFmt(m.target)+'원'+(cons?' FnGuide Cons.':' Cons.');
     t.fairB=srFmt(m.target)+'원';
-    p.inputs.target2=String(Math.round(m.target));
     t.calcB=cons
       ?cons.source+' · '+cons.analysts+'개 기관 평균 목표가 · 기준 '+cons.asOf+'.'
       :'Consensus 목표가 기준.';
+  }else{
+    t.fairPriceText='목표가 확인 중';
+    t.fairB='목표가 없음';
+    t.calcB='최근 3개월 증권사 리포트에서 목표주가를 확인합니다.';
   }
-  else if(tech.target2!=null){t.fairPriceText=srFmt(tech.target2)+'원 기술목표 [AI]';t.fairB=t.fairPriceText;p.inputs.target2=String(Math.round(tech.target2));t.calcB='Consensus 목표가가 확인되지 않아 기술적 저항/ATR 기반 목표가를 사용합니다. [AI]'}
-  else {t.fairPriceText='—';t.fairB='—';t.calcB='검증 가능한 목표가 데이터가 없습니다.'}
-  const tgt=srNum(p.inputs.target2);t.upsideText=tgt?srPct(tgt,tech.price).toFixed(1).replace(/^/,(tgt>=tech.price?'+':''))+'% [AI]':'—';
+  const tgt=srNum(p.fundamentalTargetPrice);t.upsideText=tgt?srPct(tgt,tech.price).toFixed(1).replace(/^/,(tgt>=tech.price?'+':''))+'% [AI]':'—';
   if(!t.business||t.business==='—')t.business='사업구조는 공식 IR / 사업보고서 확인';if(!t.customers||t.customers==='—')t.customers='주요 고객은 공식 IR / 공시 확인';if(!t.competitors||t.competitors==='—')t.competitors='동종업계 Peer 추가 확인';if(!t.moat||t.moat==='—')t.moat='경쟁우위는 공식 IR·수주·시장점유율 자료 확인';if(!t.barrier||t.barrier==='—')t.barrier='기술·고객인증·CAPEX·IP 진입장벽 확인';
   t.earningsReason='최근 실제 분기와 다음 분기(E) Consensus를 기준으로 실적 방향을 확인합니다.';
   if(qs.length){
