@@ -1617,6 +1617,8 @@ def fetch_quarterly_financials(code):
         return [None] * len(cols)
 
     rev = series("매출액")
+    gross = series("매출총이익")
+    gpm_pct = series("매출총이익률(%)", "매출총이익률")
     op = series("영업이익")
     net = series("당기순이익", "당기순이익(지배)", "지배주주순이익")
     eps = series("EPS(원)", "EPS")
@@ -1637,6 +1639,9 @@ def fetch_quarterly_financials(code):
         if i > 0 and rev[i] is not None and rev[i - 1] not in (None, 0):
             qoq = pct(rev[i], rev[i - 1])
         opm = None if rev[i] in (None, 0) or op[i] is None else op[i] / rev[i] * 100
+        gpm = gpm_pct[i]
+        if gpm is None and rev[i] not in (None, 0) and gross[i] is not None:
+            gpm = gross[i] / rev[i] * 100
         raw_title = cols[i]["title"].rstrip(".")
         raw_for_label = raw_title + ("(E)" if cols[i]["estimate"] and "(E)" not in raw_title else "")
         quarters.append({
@@ -1644,6 +1649,8 @@ def fetch_quarterly_financials(code):
             "label": quarter_label(raw_for_label),
             "estimate": cols[i]["estimate"],
             "revenue": rev[i],
+            "gross": gross[i],
+            "gpm": gpm,
             "op": op[i],
             "opm": opm,
             "net": net[i],
@@ -1677,6 +1684,14 @@ def apply_quarterly_financials(profile, snapshot):
         txt[f"ni{i}"] = fmt_fin_100m(q.get("net"))
         txt[f"eps{i}"] = "—" if q.get("eps") is None else f"{q['eps']:,.0f}원"
         txt[f"yoy{i}"] = "—" if q.get("qoq") is None else f"매출 QoQ {q['qoq']:+.1f}% [AI]"
+
+    latest_actual = next((q for q in reversed(quarters) if not q.get("estimate")), None)
+    if latest_actual:
+        txt["gpmCard"] = "N/A" if latest_actual.get("gpm") is None else f"{latest_actual['gpm']:.1f}%"
+        txt["opmCard"] = "N/A" if latest_actual.get("opm") is None else f"{latest_actual['opm']:.1f}%"
+    else:
+        txt["gpmCard"] = "N/A"
+        txt["opmCard"] = "N/A"
 
     next_est = next((q for q in quarters if q.get("estimate")), None)
     if next_est and next_est.get("eps") is not None:
@@ -1864,7 +1879,7 @@ def apply_valuation_snapshot(profile, snap):
 
     if snap.get("target_price") is not None:
         profile["fundamental_target_price"] = snap["target_price"]
-        txt["fairPriceText"] = f"{fmt_price(snap['target_price'])}원 Cons."
+        txt["fairPriceText"] = f"{fmt_price(snap['target_price'])}원"
         txt["fairB"] = f"{fmt_price(snap['target_price'])}원"
         txt["calcB"] = "네이버증권 Consensus 목표가 기준."
     else:
