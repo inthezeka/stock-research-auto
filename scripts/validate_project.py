@@ -168,7 +168,18 @@ if meta.get("status")=="ok":
         kr_score=-1
     if not (0 <= kr_score <= 100):
         fail("Korea sentiment score missing/invalid")
-    if len(kr.get("components") or []) < 6:
+    kospi_sent=kr.get("kospi") or {}
+    kosdaq_sent=kr.get("kosdaq") or {}
+    if kospi_sent or kosdaq_sent:
+        if len(kospi_sent.get("components") or []) < 6:
+            fail("KOSPI sentiment components incomplete")
+        if len(kosdaq_sent.get("components") or []) < 6:
+            fail("KOSDAQ sentiment components incomplete")
+        for label,obj in (("KOSPI",kospi_sent),("KOSDAQ",kosdaq_sent)):
+            flow=obj.get("flow") or {}
+            if flow.get("foreign") is None or flow.get("institution") is None:
+                fail(f"{label} sentiment flow incomplete")
+    elif len(kr.get("components") or []) < 6:
         fail("Korea sentiment components incomplete")
     try:
         us_score=float(us.get("score"))
