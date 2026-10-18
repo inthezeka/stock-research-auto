@@ -67,7 +67,6 @@ jobs:
         run: python scripts/update_analyst_research_cache.py
 
       - name: Sync embedded fallback
-        if: github.event_name != 'push'
         run: python scripts/embed_fallback.py
 
       - name: Validate project
