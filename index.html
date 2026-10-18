@@ -706,6 +706,34 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <p class="note" style="margin-top:10px" data-edit data-key="financialNote">2024~2025는 회사 공시/IR, 2026E는 S&amp;P Global Consensus, 2027E 매출·EPS는 Consensus 요약, 영업이익 4.50조원은 미래에셋 2026-08-24 전망(*)입니다. 자체 계산은 표시.</p>
 </section>
 
+<section id="analyst-research" class="section-track" data-name="ANALYST RESEARCH">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">최근 3개월 증권사 애널리스트 리포트</h2>
+      <p class="section-desc">선택 종목의 최근 3개월 증권사 리포트 핵심 내용과 목표주가를 자동으로 갱신합니다.</p>
+    </div>
+  </div>
+  <div class="card analyst-research-card" id="analystResearchCard">
+    <div class="analyst-research-head">
+      <div>
+        <h3 class="subhead" style="margin:0">증권사 리포트 요약</h3>
+        <p class="section-desc analyst-research-meta" id="analystResearchMeta">선택 종목의 최근 증권사 리포트를 불러오는 중입니다.</p>
+      </div>
+      <div class="analyst-consensus-box">
+        <span>Consensus 목표주가</span>
+        <b id="analystConsensusTarget">—</b>
+        <small id="analystConsensusDate">—</small>
+      </div>
+    </div>
+    <div class="table-wrap analyst-research-table-wrap">
+      <table class="table analyst-research-table">
+        <thead><tr><th>일자</th><th>증권사</th><th>애널리스트 리포트 핵심 내용</th><th>목표주가</th></tr></thead>
+        <tbody id="analystResearchBody"><tr><td colspan="4">최근 3개월 리포트 확인 중입니다...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section id="catalyst" class="section-track" data-name="CATALYST / RISK">
   <div class="section-head"><div><h2 class="section-title">Catalyst & Risk</h2><p class="section-desc">선택 종목의 실적·Consensus·정성 Keypoint·Valuation·구조를 조합해 Catalyst와 Risk를 자동 갱신합니다.</p></div></div>
   <div class="two-col">
