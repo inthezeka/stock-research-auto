@@ -1617,8 +1617,10 @@ def fetch_quarterly_financials(code):
         return [None] * len(cols)
 
     rev = series("매출액")
-    gross = series("매출총이익")
-    gpm_pct = series("매출총이익률(%)", "매출총이익률")
+    gross = series("매출총이익", "매출총손익")
+    cogs = series("매출원가")
+    sga = series("판매비와관리비", "판관비")
+    gpm_pct = series("매출총이익률(%)", "매출총이익률", "GPM(%)", "GPM")
     op = series("영업이익")
     net = series("당기순이익", "당기순이익(지배)", "지배주주순이익")
     eps = series("EPS(원)", "EPS")
@@ -1639,9 +1641,14 @@ def fetch_quarterly_financials(code):
         if i > 0 and rev[i] is not None and rev[i - 1] not in (None, 0):
             qoq = pct(rev[i], rev[i - 1])
         opm = None if rev[i] in (None, 0) or op[i] is None else op[i] / rev[i] * 100
+        gp = gross[i]
+        if gp is None and rev[i] not in (None, 0) and cogs[i] is not None:
+            gp = rev[i] - cogs[i]
+        if gp is None and op[i] is not None and sga[i] is not None:
+            gp = op[i] + sga[i]
         gpm = gpm_pct[i]
-        if gpm is None and rev[i] not in (None, 0) and gross[i] is not None:
-            gpm = gross[i] / rev[i] * 100
+        if gpm is None and rev[i] not in (None, 0) and gp is not None:
+            gpm = gp / rev[i] * 100
         raw_title = cols[i]["title"].rstrip(".")
         raw_for_label = raw_title + ("(E)" if cols[i]["estimate"] and "(E)" not in raw_title else "")
         quarters.append({
@@ -1649,7 +1656,9 @@ def fetch_quarterly_financials(code):
             "label": quarter_label(raw_for_label),
             "estimate": cols[i]["estimate"],
             "revenue": rev[i],
-            "gross": gross[i],
+            "gross": gp,
+            "cogs": cogs[i],
+            "sga": sga[i],
             "gpm": gpm,
             "op": op[i],
             "opm": opm,
