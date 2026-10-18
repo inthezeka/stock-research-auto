@@ -48,28 +48,34 @@ jobs:
         run: python scripts/smoke_test.py
 
       - name: Refresh sector membership
+        if: github.event_name != 'push'
         env:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: python scripts/refresh_sector_membership.py
 
       - name: Update market data
+        if: github.event_name != 'push'
         env:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: python scripts/update_data.py
 
       - name: Refresh MY Trading intraday cache
+        if: github.event_name != 'push'
         run: python scripts/update_intraday_cache.py
 
       - name: Refresh 3-month analyst research cache
+        if: github.event_name != 'push'
         run: python scripts/update_analyst_research_cache.py
 
       - name: Sync embedded fallback
+        if: github.event_name != 'push'
         run: python scripts/embed_fallback.py
 
       - name: Validate project
         run: python scripts/validate_project.py
 
       - name: Commit verified data
+        if: github.event_name != 'push'
         env:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: |
