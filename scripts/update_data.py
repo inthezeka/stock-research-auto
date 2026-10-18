@@ -3334,12 +3334,14 @@ def main():
         errors.append(f"KOSPI TOP5 quarterly finance partial: {quarterly_ok}/5")
 
     for p in all_profiles:
+        # Price/technical fields first so Forward PER uses the same latest closing price
+        # shown in the selected-stock header.
+        profile_live_update(p, live_by_code.get(p.get("stock_code")))
         try:
             snap = fetch_stock_valuation_snapshot(p.get("stock_code"))
             apply_valuation_snapshot(p, snap)
         except Exception as e:
             errors.append(f"{p.get('name')} valuation: {e}")
-        profile_live_update(p, live_by_code.get(p.get("stock_code")))
 
     reset_profile_scores(profiles)
     reset_profile_scores(kosdaq_profiles)
