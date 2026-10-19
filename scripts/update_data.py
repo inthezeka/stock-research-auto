@@ -1324,7 +1324,7 @@ def fetch_us_sentiment(previous=None):
 
 
 def _compute_index_sentiment(market, index_key, label):
-    """Index-specific Korea sentiment score with the index's own trend/volatility/flow [AI]."""
+    """Index-specific Korea Sentiment v2 with short trend, medium trend, volatility and flow [AI]."""
     rows = (market.get(index_key) or {}).get("rows") or []
     fx_rows = (market.get("usdkrw") or {}).get("rows") or []
     closes = [x["close"] for x in rows]
@@ -1340,19 +1340,45 @@ def _compute_index_sentiment(market, index_key, label):
     if not (r5 and r20 and r60 and fx20 and vols):
         raise RuntimeError(f"{label} indicator series empty")
 
-    momentum5_score = percentile_rank(r5, r5[-1])
-    trend20_score = percentile_rank(r20, r20[-1])
-    trend60_score = percentile_rank(r60, r60[-1])
-    vol_score = 100.0 - percentile_rank(vols, vols[-1])
-    fx_score = 100.0 - percentile_rank(fx20, fx20[-1])
+    # 5D trend is deliberately different from 5D momentum.
+    # 60% = current price position vs MA5, 40% = MA5 slope over five sessions.
+    ma5_now = statistics.mean(closes[-5:])
+    ma5_prev = statistics.mean(closes[-10:-5])
+    position_vs_ma5 = pct(closes[-1], ma5_now) or 0.0
+    ma5_slope = pct(ma5_now, ma5_prev) or 0.0
+    position_score = clamp(50.0 + position_vs_ma5 * (50.0 / 3.0))
+    slope_score = clamp(50.0 + ma5_slope * (50.0 / 3.0))
+    trend5_score = position_score * 0.60 + slope_score * 0.40
 
+    # Trend scores mix absolute market condition (60%) and historical percentile (40%).
+    # This prevents a deeply negative return from looking neutral just because history was worse.
+    trend20_percentile = percentile_rank(r20, r20[-1])
+    trend60_percentile = percentile_rank(r60, r60[-1])
+    trend20_absolute = clamp(50.0 + r20[-1] * 2.5)       # -20%≈0, 0%=50, +20%≈100
+    trend60_absolute = clamp(50.0 + r60[-1] * (50.0 / 30.0))  # -30%≈0, 0%=50, +30%≈100
+    trend20_score = trend20_absolute * 0.60 + trend20_percentile * 0.40
+    trend60_score = trend60_absolute * 0.60 + trend60_percentile * 0.40
+
+    # Momentum remains a relative 5D acceleration measure.
+    momentum5_score = percentile_rank(r5, r5[-1])
+
+    # Volatility gets an absolute risk score rather than only a historical percentile.
+    # Piecewise anchors: 15%=100, 20%=80, 25%=65, 30%=50, 35%=35, 40%=20, 45%=5.
     current_vol = vols[-1]
-    if current_vol >= 35:
-        vol_score = min(vol_score, 35.0)
-    elif current_vol >= 30:
-        vol_score = min(vol_score, 50.0)
-    elif current_vol >= 25:
-        vol_score = min(vol_score, 65.0)
+    vol_points = [(15,100),(20,80),(25,65),(30,50),(35,35),(40,20),(45,5)]
+    if current_vol <= vol_points[0][0]:
+        vol_score = 100.0
+    elif current_vol >= vol_points[-1][0]:
+        vol_score = 5.0
+    else:
+        vol_score = 50.0
+        for (x1,y1),(x2,y2) in zip(vol_points, vol_points[1:]):
+            if x1 <= current_vol <= x2:
+                ratio = (current_vol - x1) / (x2 - x1)
+                vol_score = y1 + (y2 - y1) * ratio
+                break
+
+    fx_score = 100.0 - percentile_rank(fx20, fx20[-1])
 
     flow = (market.get(index_key) or {}).get("flow") or {}
     foreign = n(flow.get("foreign"))
@@ -1366,17 +1392,62 @@ def _compute_index_sentiment(market, index_key, label):
         flow_value = f"외인 {foreign:+,.0f}억 · 기관 {institution:+,.0f}억"
 
     components = [
-        {"key": "trend20", "label": f"{label} 20D 추세", "score": round(clamp(trend20_score), 1), "weight": 30, "value": signed(r20[-1], 2)},
-        {"key": "trend60", "label": f"{label} 60D 추세", "score": round(clamp(trend60_score), 1), "weight": 20, "value": signed(r60[-1], 2)},
-        {"key": "volatility", "label": "변동성 · 20D RV", "score": round(clamp(vol_score), 1), "weight": 20, "value": f"{current_vol:.1f}%"},
-        {"key": "momentum5", "label": f"{label} 5D 모멘텀", "score": round(clamp(momentum5_score), 1), "weight": 15, "value": signed(r5[-1], 2)},
-        {"key": "flow", "label": "외국인·기관 수급", "score": round(clamp(flow_score), 1), "weight": 10, "value": flow_value},
-        {"key": "safe_haven", "label": "USD/KRW 20D", "score": round(clamp(fx_score), 1), "weight": 5, "value": signed(fx20[-1], 2)},
+        {
+            "key": "trend5",
+            "label": f"{label} 5D 추세",
+            "score": round(clamp(trend5_score), 1),
+            "weight": 15,
+            "value": f"P/MA5 {position_vs_ma5:+.2f}% · MA5 {ma5_slope:+.2f}%",
+        },
+        {
+            "key": "trend20",
+            "label": f"{label} 20D 추세",
+            "score": round(clamp(trend20_score), 1),
+            "weight": 25,
+            "value": signed(r20[-1], 2),
+        },
+        {
+            "key": "trend60",
+            "label": f"{label} 60D 추세",
+            "score": round(clamp(trend60_score), 1),
+            "weight": 15,
+            "value": signed(r60[-1], 2),
+        },
+        {
+            "key": "volatility",
+            "label": "변동성 · 20D RV",
+            "score": round(clamp(vol_score), 1),
+            "weight": 15,
+            "value": f"{current_vol:.1f}%",
+        },
+        {
+            "key": "momentum5",
+            "label": f"{label} 5D 모멘텀",
+            "score": round(clamp(momentum5_score), 1),
+            "weight": 10,
+            "value": signed(r5[-1], 2),
+        },
+        {
+            "key": "flow",
+            "label": "외국인·기관 수급",
+            "score": round(clamp(flow_score), 1),
+            "weight": 15,
+            "value": flow_value,
+        },
+        {
+            "key": "safe_haven",
+            "label": "USD/KRW 20D",
+            "score": round(clamp(fx_score), 1),
+            "weight": 5,
+            "value": signed(fx20[-1], 2),
+        },
     ]
 
     raw_score = sum(x["score"] * x["weight"] for x in components) / 100.0
     score = raw_score
     gates = []
+
+    # Medium-term Regime Gate remains as the final safety cap.
     if r20[-1] <= -15:
         score = min(score, 44.0)
         gates.append(f"{label} 20D ≤ -15% → 상단 44")
@@ -1398,8 +1469,12 @@ def _compute_index_sentiment(market, index_key, label):
         "raw_score": round(clamp(raw_score), 1),
         "rating": sentiment_label(score),
         "timestamp": NOW.isoformat(),
-        "source": f"{label}·USD/KRW·수급 · 자체 정규화 [AI]",
-        "method": f"{label} 20D 30% + 60D 20% + 20D 변동성 20% + 5D 모멘텀 15% + 수급 10% + FX 5% · Regime Gate",
+        "source": f"{label}·USD/KRW·수급 · Sentiment v2 자체계산 [AI]",
+        "method": (
+            f"{label} 5D 추세 15% + 20D 추세 25% + 60D 추세 15% + "
+            "20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · "
+            "20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용"
+        ),
         "regime_gate": " · ".join(gates) if gates else "없음",
         "flow": {
             "foreign": foreign,
@@ -1408,6 +1483,20 @@ def _compute_index_sentiment(market, index_key, label):
             "score": round(clamp(flow_score), 1),
         },
         "components": components,
+        "trend5_detail": {
+            "price_vs_ma5": round(position_vs_ma5, 3),
+            "ma5_slope_5d": round(ma5_slope, 3),
+            "position_score": round(position_score, 1),
+            "slope_score": round(slope_score, 1),
+        },
+        "trend20_detail": {
+            "absolute_score": round(trend20_absolute, 1),
+            "percentile_score": round(trend20_percentile, 1),
+        },
+        "trend60_detail": {
+            "absolute_score": round(trend60_absolute, 1),
+            "percentile_score": round(trend60_percentile, 1),
+        },
     }
 
 
@@ -1444,7 +1533,7 @@ def compute_korea_sentiment(market):
         "rating": sentiment_label(score),
         "timestamp": NOW.isoformat(),
         "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
-        "method": "KOSPI와 KOSDAQ을 각각 추세·변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
+        "method": "KOSPI와 KOSDAQ을 각각 5D/20D/60D 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
         "kospi": results["kospi"],
         "kosdaq": results["kosdaq"],
         "components": [],
