@@ -7,7 +7,7 @@
       "usdkrw": "KRW=X",
       "us10y": "^TNX"
     },
-    "stock_fresh_min_ratio": 0.8,
+    "stock_fresh_min_ratio": 1,
     "market_fresh_min_ratio": 0.6,
     "timezone": "Asia/Seoul",
     "update_hour_kst": 7
@@ -203,17 +203,18 @@
       "period": "3~12개월"
     },
     {
-      "name": "더존비즈온",
-      "ticker": "012510.KS",
-      "stock_code": "012510",
+      "name": "삼성SDS",
+      "ticker": "018260.KS",
+      "stock_code": "018260",
       "sector": "AI_CLOUD",
       "base_score": 71,
-      "catalyst": "기업용 AI·ERP·클라우드 전환 수요",
-      "risk1": "실적 추정치 하향",
-      "risk2": "산업 수요 둔화",
+      "catalyst": "클라우드·기업용 AI·IT서비스와 물류 디지털 전환",
+      "risk1": "클라우드 수익화 지연",
+      "risk2": "IT서비스 수주 둔화",
       "risk3": "밸류에이션 조정",
-      "risk4": "Catalyst 지연",
-      "period": "3~12개월"
+      "risk4": "프로젝트 원가 상승",
+      "period": "3~12개월",
+      "ir_url": "https://www.samsungsds.com/kr/ir/ir_overview.html"
     },
     {
       "name": "카카오",
