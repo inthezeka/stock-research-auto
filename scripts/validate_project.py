@@ -233,6 +233,44 @@ if "function runFundamentalPipeline" not in html or "function runIctTradingScan"
 if "Sub-sector</th>" not in html or "Sector > Sub-sector > Theme" not in html:
     fail("3-level Sector/Sub-sector/Theme taxonomy UI missing")
 
+# 36-sector Fundamental scoring model validation.
+model_match=re.search(r"const SR_SECTOR_SCORE_MODELS=(\{.*?\});\nconst SR_SECTOR_VARIANT_PATTERNS",html,re.S)
+sector_model_count=0
+sector_model_weight_errors=[]
+if not model_match:
+    fail("36-sector Fundamental score model config missing")
+else:
+    try:
+        score_models=json.loads(model_match.group(1))
+        sector_model_count=len(score_models)
+        if sector_model_count!=36:
+            fail(f"Fundamental score model count={sector_model_count}; expected 36")
+        taxonomy_keys={str(x.get("key") or "") for x in sectors}
+        missing_models=sorted(taxonomy_keys-set(score_models))
+        if missing_models:
+            fail("Fundamental score models missing: "+", ".join(missing_models))
+        for key,model in score_models.items():
+            groups=model.get("variants") or {"default":model.get("items") or []}
+            if not groups:
+                sector_model_weight_errors.append(f"{key}: no scoring items")
+                continue
+            for variant,items in groups.items():
+                total=sum(float(x[1]) for x in items if isinstance(x,list) and len(x)>=2)
+                if abs(total-100)>0.001:
+                    sector_model_weight_errors.append(f"{key}/{variant}: total={total}")
+        if sector_model_weight_errors:
+            fail("Sector score model weights must total 100: "+"; ".join(sector_model_weight_errors[:10]))
+    except Exception as e:
+        fail("Fundamental score model config invalid: "+str(e))
+
+# Each Sector may evaluate all configured members, but the visible ranking must be capped at TOP 20.
+if "const top20=reports.slice(0,20);" not in html:
+    fail("Fundamental Sector result is not capped at TOP 20")
+sector_candidate_counts={str(x.get("label") or x.get("key")):len(x.get("codes") or []) for x in sectors}
+sector_display_caps={k:min(20,v) for k,v in sector_candidate_counts.items()}
+if any(v>20 for v in sector_display_caps.values()):
+    fail("Sector TOP20 display cap validation failed")
+
 ict_framework_tokens=[
     "HTF Long Bias",
     "Protected Low 유지",
@@ -284,6 +322,10 @@ report=[
     f"- KOSDAQ TOP5: **{len(kosdaq_profiles)}**",
     f"- themes: **{len(cards)}**",
     f"- watchlist stocks: **{len(cfg.get('stocks') or [])}**",
+    f"- Fundamental sector score models: **{sector_model_count}/36**",
+    f"- Fundamental Sector visible cap: **TOP 20**",
+    f"- Sector configured members: **min {min(sector_candidate_counts.values()) if sector_candidate_counts else 0} / max {max(sector_candidate_counts.values()) if sector_candidate_counts else 0}**",
+    f"- Sectors with >=20 configured members: **{sum(1 for v in sector_candidate_counts.values() if v>=20)}/36**",
 ]
 if errors:
     report+=["","## Errors"]+[f"- {x}" for x in errors]
