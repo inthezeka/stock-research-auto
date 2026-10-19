@@ -3611,18 +3611,23 @@ function srFundamentalScore(report,item,themeKey){
   add('sectorCycle','cycle','Sector Cycle / Structural Growth',5,cycleFive,cycleLabel+' · 수요·공급·CAPEX·Revision·구조적 성장/TAM 기준');
 
   const groups={};
-  ['growth','profitability','financial','revision','valuation','moat','sector','sectorCycle'].forEach(g=>groups[g]=detail.filter(x=>x.group===g).reduce((s,x)=>s+x.earned,0));
+  ['growth','profitability','financial','revision','valuation','moat','sector','sectorCycle'].forEach(g=>groups[g]=detail.filter(x=>x.group===g).reduce((sum,x)=>sum+x.earned,0));
+  const modelBuild=srBuildSectorModelDetail(themeKey,text,detail);
+  const modelDetail=modelBuild.rows;
   const rp=srFundRiskPenalty(report,annualHist);
+  const modelName=modelBuild.resolved.label+(modelBuild.resolved.variant?' · '+modelBuild.resolved.variant:'');
   const f={
-    total:0,base:0,riskPenalty:rp.penalty,grade:'',groups,detail,
+    total:0,base:0,riskPenalty:rp.penalty,grade:'',groups,detail:modelDetail,legacyDetail:detail,modelDetail,
     themeKey,sectorLabel:(srFundThemeByKey?.(themeKey)?.label||themeKey),cycle:cycleLabel,
+    modelName,modelVariant:modelBuild.resolved.variant||'',modelMax:modelBuild.max,
+    modelVariantFallback:!!modelBuild.resolved.fallbackVariant,
     forwardEpsGrowth:epsGrowth,
     peerMetrics:{opm:opmNow,roe,fper,peg},
     riskReasons:rp.reasons,
     growth:groups.growth,earnings:groups.profitability,valuation:groups.valuation,catalyst:groups.sector,
     profitability:groups.profitability,financial:groups.financial,quality:groups.sectorCycle,industry:groups.sector
   };
-  const contribution=detail.map(x=>({...x,ratio:x.weight?x.earned/x.weight:0}));
+  const contribution=modelDetail.map(x=>({...x,ratio:x.weight?x.earned/x.weight:0}));
   const topUp=[...contribution].sort((a,b)=>b.ratio-a.ratio||b.weight-a.weight).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+Number(x.weight).toFixed(1)+' · '+x.reason);
   const topDown=[...contribution].sort((a,b)=>a.ratio-b.ratio||b.weight-a.weight).slice(0,3).map(x=>x.label+': '+x.earned.toFixed(1)+'/'+Number(x.weight).toFixed(1)+' · '+x.reason);
   if(rp.reasons.length)topDown.unshift(...rp.reasons.slice(0,2).map(x=>'Risk Penalty -'+x.pts+': '+x.label));
