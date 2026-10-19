@@ -250,6 +250,39 @@ if meta.get("status")=="ok":
     if not (0 <= blend <= 100):
         fail("blended sentiment score missing/invalid")
 
+# A Fundamental TOP20 close must come from a dated OHLC series, not a
+# potentially delayed Naver list snapshot. Do not falsely count misses.
+try:
+    sector_prices=json.loads((ROOT/"data/sector-closes.json").read_text(encoding="utf-8"))
+    universe_dates=json.loads((ROOT/"stock-universe.json").read_text(encoding="utf-8"))
+    sector_codes={str(c).zfill(6) for sec in sectors for c in (sec.get("codes") or [])}
+    universe_lookup={x["code"]:x for x in (universe_dates.get("items") or [])}
+    active={c for c in sector_codes if c in universe_lookup}
+    quotes=sector_prices.get("items") or {}
+    if sector_prices.get("as_of") != universe_dates.get("as_of"):
+        fail("Fundamental sector close date != universe date")
+    if len(set(quotes)&active)/max(1,len(active)) < 0.95:
+        fail("Fundamental sector daily close coverage below 95%")
+    for code,record in quotes.items():
+        if code not in active:
+            fail("sector close contains delisted/unconfigured code: "+str(code))
+            continue
+        close=record.get("close")
+        if not isinstance(close,(int,float)) or close<=0 or record.get("date")!=sector_prices.get("as_of"):
+            fail("invalid/stale Fundamental close: "+code)
+        if record.get("status") == "DAILY_CLOSE":
+            rows=record.get("rows") or []
+            if len(rows)<65 or rows[-1].get("date")!=record.get("date") or round(rows[-1].get("close") or 0)!=round(close or 0):
+                fail("Fundamental sector close/day-bars disagree: "+code)
+        elif record.get("status") == "VERIFIED":
+            row=universe_lookup.get(code) or {}
+            if row.get("close_status")!="VERIFIED" or round(row.get("close") or 0)!=round(close or 0):
+                fail("verified watchlist/sector close disagree: "+code)
+        else:
+            fail("unknown sector price status: "+code)
+except Exception as exc:
+    fail("Fundamental sector dated closing prices unavailable: "+str(exc))
+
 html=(ROOT/"index.html").read_text(encoding="utf-8")
 # Fundamental TOP20 must display an explicit reference price, not a blank
 # placeholder, for stocks outside the 54 verified daily closing-price universe.
@@ -259,6 +292,9 @@ for marker in (
     "참고시세 ",
     "종가 미검증",
     "srRefreshFundTop20Quotes(top20,theme.key)",
+    "SECTOR_CLOSE_URL='data/sector-closes.json'",
+    "sectorCloseCacheData=prices",
+    "item.closeStatus==='DAILY_CLOSE'",
 ):
     if marker not in html:
         fail("Fundamental TOP20 safe quote display missing: " + marker)
