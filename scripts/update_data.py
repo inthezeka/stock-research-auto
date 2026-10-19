@@ -2313,6 +2313,12 @@ KOSDAQ_IR_LINKS = {
         "desc": "비에이치아이의 IR 자료·IR 일정이 제공되는 IRGO 페이지로 연결합니다.",
         "source": "IRGO",
     },
+    "054930": {
+        "url": "https://m.irgo.co.kr/IR-ROOM/054930/-IR-ROOM",
+        "title": "유신 IR 자료실",
+        "desc": "유신의 IR 자료·공시·IR 문의 페이지가 제공되는 IRGO 페이지로 연결합니다.",
+        "source": "IRGO",
+    },
 }
 
 KOSDAQ_CANDIDATE_CODES = {
