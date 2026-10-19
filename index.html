@@ -1942,7 +1942,8 @@ async function srKosaiReport(item){
     if(m.fper!=null)v.forward_per=m.fper;
     if(m.feps!=null)v.forward_eps=m.feps;
     if(m.feps!=null&&m.bps)v.roe_ttm=m.feps/m.bps*100;
-    v.price=srNum(item.close)||v.price;
+    // Never overwrite a chart-derived close with an unverified listing quote.
+    v.price=item.closeVerified?(srNum(item.close)||v.price):null;
   }
 
   j.dataDate=stockUniverseMeta?.as_of||autoData?.meta?.market_date||j.dataDate||'';
@@ -2598,7 +2599,13 @@ function srUniverseItem(x){
     typeName:market,
     market,
     reutersCode:x.ticker||x.reutersCode||((market==='KOSDAQ')?String(x.code||'').padStart(6,'0')+'.KQ':String(x.code||'').padStart(6,'0')+'.KS'),
-    shares:srNum(x.shares),close:srNum(x.close),marketcap:srNum(x.marketcap),volume:srNum(x.volume),turnover:srNum(x.turnover)
+    // Discovery quotes are not confirmed closing prices until reconciled.
+    shares:srNum(x.shares),
+    close:x.close_status==='VERIFIED'?srNum(x.close):null,
+    closeVerified:x.close_status==='VERIFIED',
+    closeDate:String(x.close_date||''),
+    marketcap:x.close_status==='VERIFIED'?srNum(x.marketcap):null,
+    volume:srNum(x.volume),turnover:srNum(x.turnover)
   };
 }
 async function loadStockUniverse(force=false){
@@ -2619,7 +2626,7 @@ async function loadStockUniverse(force=false){
         liquidity_coverage:d.liquidity_coverage||{},
         liquidity_mode:''
       };
-      if(status)status.textContent='전체 상장종목 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 검색 준비 완료'+(stockUniverseMeta.as_of?' · 최신 기준 '+stockUniverseMeta.as_of:'')+'.';
+      if(status)status.textContent='전체 상장종목 '+fullStockUniverse.length.toLocaleString('ko-KR')+'개 검색 가능 · 검증 종가 '+(d.verified_close_count||0)+'개 · 그 외 종가 검증 전'+(stockUniverseMeta.as_of?' · 데이터 기준 '+stockUniverseMeta.as_of:'')+'.';
       return fullStockUniverse;
     }catch(e){
       console.warn('stock-universe.json load failed',e);
