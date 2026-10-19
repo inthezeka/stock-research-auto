@@ -3798,7 +3798,7 @@ function srFundSnapshotPrice(item){
   const verified=srNum(item?.close);
   if(item?.closeVerified&&verified>0)return '확인 종가 '+fmt(verified);
   const last=srNum(item?.fundChartClose);
-  if(item?.fundChartConflict)return '가격 불일치 · 종가 검증 필요';
+  if(item?.fundChartConflict&&last>0)return '일봉 '+fmt(last)+' · 시세 불일치';
   if(last>0&&item?.fundChartDate===stockUniverseMeta?.as_of)
     return '일봉 '+fmt(last)+' · 외부 대조 전';
   const reference=srNum(item?.referenceClose);
