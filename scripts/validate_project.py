@@ -143,8 +143,43 @@ if len(cfg.get("sectors") or {})!=19:
 meta=data.get("meta") or {}
 if meta.get("status")=="ok":
     cov=meta.get("coverage") or {}
-    if float(cov.get("stock_fresh_ratio",0))<0.80:
-        fail("live stock coverage below 80%")
+    if (int(cov.get("stocks_fresh", 0)) != int(cov.get("stocks_total", -1))
+            or int(cov.get("stocks_total", 0)) != len(cfg.get("stocks") or [])):
+        fail("watchlist close coverage must be 100%")
+    if float(cov.get("stock_fresh_ratio",0)) < 1.0:
+        fail("live stock coverage below 100%")
+
+    # A green dashboard must NEVER mix historical/retired quotes and valid closes.
+    try:
+        universe = json.loads((ROOT / "stock-universe.json").read_text(encoding="utf-8"))
+        by_code = {x.get("code"): x for x in (universe.get("items") or [])}
+        active_codes = {x.get("stock_code") for x in (cfg.get("stocks") or [])}
+        market_day = str(meta.get("market_date") or "")
+        if universe.get("as_of") != market_day:
+            fail("universe trading date differs from market data date")
+        if int(universe.get("verified_close_count") or 0) != len(active_codes):
+            fail("universe verified-close coverage mismatch")
+        for code in active_codes:
+            row = by_code.get(code) or {}
+            if row.get("close_status") != "VERIFIED" or row.get("close_date") != market_day:
+                fail(f"unverified / stale universe close for {code}")
+            if not isinstance(row.get("close"), (int, float)) or row["close"] <= 0:
+                fail(f"invalid universe close for {code}")
+        for theme in cards:
+            for pick in theme.get("picks") or []:
+                code = str(pick.get("ticker") or "").split(".")[0]
+                item = by_code.get(code) or {}
+                if code not in active_codes:
+                    fail(f"retired/untracked theme pick: {theme.get('code')} {code}")
+                    continue
+                if pick.get("price_date") != market_day:
+                    fail(f"stale theme close date: {code}")
+                if pick.get("price_source") in (None, ""):
+                    fail(f"theme close source missing: {code}")
+                if pick.get("price") != item.get("close"):
+                    fail(f"theme/universe close mismatch: {code}: {pick.get('price')} vs {item.get('close')}")
+    except Exception as e:
+        fail("universe quote verification failed: " + str(e))
     if float(cov.get("market_fresh_ratio",0))<0.60:
         fail("live market coverage below 60%")
 
