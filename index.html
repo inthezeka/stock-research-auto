@@ -2622,6 +2622,8 @@ function srUniverseItem(x){
     // Discovery quotes are not confirmed closing prices until reconciled.
     shares:srNum(x.shares),
     close:x.close_status==='VERIFIED'?srNum(x.close):null,
+    // Keep the discovery quote separate: it is a reference, NOT a verified KRX close.
+    referenceClose:srNum(x.close),
     closeVerified:x.close_status==='VERIFIED',
     closeDate:String(x.close_date||''),
     marketcap:x.close_status==='VERIFIED'?srNum(x.marketcap):null,
@@ -3720,7 +3722,9 @@ async function srRunFundTheme(themeKey,status){
   }
   fundamentalScanResults={themeKey:theme.key,reports,top20};
   fundamentalThemeResultCache.set(theme.key,reports);
-  if(status)status.textContent='완료 · '+theme.label+' '+reports.length+'개 평가 → TOP '+top20.length+' · 기준 '+(stockUniverseMeta.as_of||'최신');
+  if(status)status.textContent='완료 · '+theme.label+' '+reports.length+'개 평가 → TOP '+top20.length+' · 기준 '+(stockUniverseMeta.as_of||'최신')+' · 미검증 조회가는 참고값';
+  // Recheck the visible names asynchronously so the screener stays responsive.
+  void srRefreshFundTop20Quotes(top20,theme.key).catch(e=>console.warn('Fundamental quote recheck error',e));
   return top20;
 }
 function srFindFundamentalResultByCode(code){
@@ -3790,8 +3794,42 @@ function srInitFundThemeUI(){
 
 
 function srFundSnapshotPrice(item){
-  const p=srNum(item?.close);
-  return p>0?'조회가 '+Math.round(p).toLocaleString('ko-KR')+'원':'조회가 확인 필요';
+  const fmt=p=>Math.round(p).toLocaleString('ko-KR')+'원';
+  const verified=srNum(item?.close);
+  if(item?.closeVerified&&verified>0)return '확인 종가 '+fmt(verified);
+  const last=srNum(item?.fundChartClose);
+  if(item?.fundChartConflict)return '가격 불일치 · 종가 검증 필요';
+  if(last>0&&item?.fundChartDate===stockUniverseMeta?.as_of)
+    return '일봉 '+fmt(last)+' · 외부 대조 전';
+  const reference=srNum(item?.referenceClose);
+  if(reference>0)return '참고시세 '+fmt(reference)+' · 종가 미검증';
+  return '종가 미확인 · 데이터 확인 필요';
+}
+// Non-watchlist TOP20 names are checked on demand. This does not falsely mark
+// a Naver listing quote as verified when a close differs across providers.
+async function srRefreshFundTop20Quotes(top20,themeKey){
+  const asOf=String(stockUniverseMeta?.as_of||autoData?.meta?.market_date||'');
+  const normalizeDate=d=>String(d||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
+  const unchecked=(top20||[]).filter(x=>!x.item.closeVerified);
+  if(!unchecked.length)return;
+  await srMapLimit(unchecked,6,async x=>{
+    const item=x.item;
+    try{
+      const j=await srFetchJson('https://api.stock.naver.com/chart/domestic/item/'+item.code+'?periodType=dayCandle');
+      const rows=srRows(j).sort((a,b)=>normalizeDate(a.date).localeCompare(normalizeDate(b.date)));
+      const last=rows.at(-1);
+      if(last&&normalizeDate(last.date)===asOf&&Number(last.close)>0){
+        item.fundChartClose=Number(last.close);
+        item.fundChartDate=asOf;
+        const ref=srNum(item.referenceClose);
+        item.fundChartConflict=ref>0&&Math.round(ref)!==Math.round(last.close);
+      }
+    }catch(e){console.warn('Fundamental TOP20 price cross-check unavailable:',item.code,e)}
+    return item;
+  });
+  if(activeFundThemeKey===themeKey&&fundamentalScanResults?.themeKey===themeKey){
+    srRenderFundTop20Rows(top20);
+  }
 }
 async function srApplyFundamentalTopPick(result){
   if(!result?.item)return;
