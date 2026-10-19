@@ -3454,6 +3454,19 @@ def sync_watchlist_universe_prices(universe_meta, live_by_code):
     if observed != set(live_by_code):
         raise RuntimeError(f"verified stock(s) absent from universe: {sorted(set(live_by_code)-observed)}")
     universe_meta["verified_close_count"] = len(observed)
+    history = {
+        "as_of": universe_meta.get("as_of"),
+        "generated_at": NOW.isoformat(),
+        "items": {
+            code: {"source": live["source"], "rows": live["rows"][-320:]}
+            for code, live in live_by_code.items()
+        },
+    }
+    history_path = ROOT / "data" / "verified-stock-bars.json"
+    history_tmp = history_path.with_suffix(".json.tmp")
+    history_tmp.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    json.loads(history_tmp.read_text(encoding="utf-8"))
+    history_tmp.replace(history_path)
     tmp = UNIVERSE_PATH.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(universe_meta, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     json.loads(tmp.read_text(encoding="utf-8"))
