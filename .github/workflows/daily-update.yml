@@ -58,6 +58,9 @@ jobs:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: python scripts/update_data.py
 
+      - name: Update sector closing prices
+        run: python scripts/update_sector_closes.py
+
       - name: Refresh MY Trading intraday cache
         if: github.event_name != 'push'
         run: python scripts/update_intraday_cache.py
@@ -88,6 +91,7 @@ jobs:
             git reset --hard origin/main
             python scripts/refresh_sector_membership.py
             python scripts/update_data.py
+            python scripts/update_sector_closes.py
             python scripts/update_intraday_cache.py
             python scripts/update_analyst_research_cache.py
             python scripts/embed_fallback.py
@@ -97,7 +101,7 @@ jobs:
           if git diff --quiet; then
             echo "No verified changes"
           else
-            git add config/fundamental_themes.json data/market-data.json data/verified-stock-bars.json data/intraday-cache.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
+            git add config/fundamental_themes.json data/market-data.json data/sector-closes.json data/verified-stock-bars.json data/intraday-cache.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
             git commit -m "chore: daily verified market data [skip ci]"
             git push origin HEAD:main
           fi
