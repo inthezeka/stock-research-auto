@@ -106,8 +106,8 @@
         {
           "code": "232140",
           "name": "와이씨",
-          "score": 30.0,
-          "marketcap": 1203605000000.0,
+          "score": 30,
+          "marketcap": 1203605000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -119,8 +119,8 @@
         {
           "code": "003160",
           "name": "디아이",
-          "score": 30.0,
-          "marketcap": 1134830000000.0,
+          "score": 30,
+          "marketcap": 1134830000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -132,8 +132,8 @@
         {
           "code": "092870",
           "name": "엑시콘",
-          "score": 29.0,
-          "marketcap": 706048000000.0,
+          "score": 29,
+          "marketcap": 706048000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -146,7 +146,7 @@
           "code": "095340",
           "name": "ISC",
           "score": 27.5,
-          "marketcap": 3391529000000.0,
+          "marketcap": 3391529000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -158,8 +158,8 @@
         {
           "code": "131290",
           "name": "티에스이",
-          "score": 24.0,
-          "marketcap": 3252060000000.0,
+          "score": 24,
+          "marketcap": 3252060000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -171,8 +171,8 @@
         {
           "code": "079370",
           "name": "제우스",
-          "score": 22.0,
-          "marketcap": 348630000000.0,
+          "score": 22,
+          "marketcap": 348630000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -185,7 +185,7 @@
           "code": "252990",
           "name": "샘씨엔에스",
           "score": 21.5,
-          "marketcap": 1014069000000.0,
+          "marketcap": 1014069000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -198,7 +198,7 @@
           "code": "160980",
           "name": "싸이맥스",
           "score": 21.5,
-          "marketcap": 240879000000.0,
+          "marketcap": 240879000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -211,7 +211,7 @@
           "code": "083500",
           "name": "에프엔에스테크",
           "score": 21.5,
-          "marketcap": 116123000000.0,
+          "marketcap": 116123000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -223,8 +223,8 @@
         {
           "code": "195870",
           "name": "해성디에스",
-          "score": 21.0,
-          "marketcap": 856800000000.0,
+          "score": 21,
+          "marketcap": 856800000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -236,8 +236,8 @@
         {
           "code": "183300",
           "name": "코미코",
-          "score": 19.0,
-          "marketcap": 1273809000000.0,
+          "score": 19,
+          "marketcap": 1273809000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -248,8 +248,8 @@
         {
           "code": "080580",
           "name": "오킨스전자",
-          "score": 19.0,
-          "marketcap": 600037000000.0,
+          "score": 19,
+          "marketcap": 600037000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -260,8 +260,8 @@
         {
           "code": "033160",
           "name": "엠케이전자",
-          "score": 19.0,
-          "marketcap": 418817000000.0,
+          "score": 19,
+          "marketcap": 418817000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -272,8 +272,8 @@
         {
           "code": "036200",
           "name": "유니셈",
-          "score": 19.0,
-          "marketcap": 272604000000.0,
+          "score": 19,
+          "marketcap": 272604000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -285,7 +285,7 @@
           "code": "353200",
           "name": "대덕전자",
           "score": 18.5,
-          "marketcap": 6340191000000.0,
+          "marketcap": 6340191000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -297,7 +297,7 @@
           "code": "222800",
           "name": "심텍",
           "score": 18.5,
-          "marketcap": 4868292000000.0,
+          "marketcap": 4868292000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -309,7 +309,7 @@
           "code": "080220",
           "name": "제주반도체",
           "score": 18.5,
-          "marketcap": 2373111000000.0,
+          "marketcap": 2373111000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -321,7 +321,7 @@
           "code": "036540",
           "name": "SFA반도체",
           "score": 18.5,
-          "marketcap": 1532770000000.0,
+          "marketcap": 1532770000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -333,7 +333,7 @@
           "code": "064760",
           "name": "티씨케이",
           "score": 17.5,
-          "marketcap": 2660701000000.0,
+          "marketcap": 2660701000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -345,7 +345,7 @@
           "code": "094360",
           "name": "칩스앤미디어",
           "score": 17.5,
-          "marketcap": 252419000000.0,
+          "marketcap": 252419000000,
           "hits": [
             "category:반도체",
             "반도체",
@@ -454,7 +454,7 @@
           "code": "281820",
           "name": "케이씨텍",
           "score": 19.5,
-          "marketcap": 2080839000000.0,
+          "marketcap": 2080839000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -465,8 +465,8 @@
         {
           "code": "265520",
           "name": "AP시스템",
-          "score": 17.0,
-          "marketcap": 263991000000.0,
+          "score": 17,
+          "marketcap": 263991000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -477,7 +477,7 @@
           "code": "327260",
           "name": "RF머트리얼즈",
           "score": 16.5,
-          "marketcap": 818427000000.0,
+          "marketcap": 818427000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -488,7 +488,7 @@
           "code": "033160",
           "name": "엠케이전자",
           "score": 16.5,
-          "marketcap": 418817000000.0,
+          "marketcap": 418817000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -499,7 +499,7 @@
           "code": "054450",
           "name": "텔레칩스",
           "score": 16.5,
-          "marketcap": 130694000000.0,
+          "marketcap": 130694000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -510,7 +510,7 @@
           "code": "092220",
           "name": "KEC",
           "score": 16.5,
-          "marketcap": 108612000000.0,
+          "marketcap": 108612000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -521,7 +521,7 @@
           "code": "297890",
           "name": "HB솔루션",
           "score": 16.5,
-          "marketcap": 103567000000.0,
+          "marketcap": 103567000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재",
@@ -531,8 +531,8 @@
         {
           "code": "000990",
           "name": "DB하이텍",
-          "score": 14.0,
-          "marketcap": 4633238000000.0,
+          "score": 14,
+          "marketcap": 4633238000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재"
@@ -541,8 +541,8 @@
         {
           "code": "440110",
           "name": "파두",
-          "score": 14.0,
-          "marketcap": 2871361000000.0,
+          "score": 14,
+          "marketcap": 2871361000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재"
@@ -551,8 +551,8 @@
         {
           "code": "420770",
           "name": "기가비스",
-          "score": 14.0,
-          "marketcap": 1486866000000.0,
+          "score": 14,
+          "marketcap": 1486866000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재"
@@ -561,8 +561,8 @@
         {
           "code": "456010",
           "name": "아이씨티케이",
-          "score": 14.0,
-          "marketcap": 289177000000.0,
+          "score": 14,
+          "marketcap": 289177000000,
           "hits": [
             "category:반도체 소재",
             "category:반도체 소재"
@@ -658,8 +658,8 @@
         {
           "code": "144960",
           "name": "뉴파워프라즈마",
-          "score": 19.0,
-          "marketcap": 514699000000.0,
+          "score": 19,
+          "marketcap": 514699000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -670,8 +670,8 @@
         {
           "code": "104830",
           "name": "원익머트리얼즈",
-          "score": 19.0,
-          "marketcap": 471539000000.0,
+          "score": 19,
+          "marketcap": 471539000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -683,7 +683,7 @@
           "code": "064760",
           "name": "티씨케이",
           "score": 16.5,
-          "marketcap": 2660701000000.0,
+          "marketcap": 2660701000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -694,7 +694,7 @@
           "code": "014680",
           "name": "한솔케미칼",
           "score": 16.5,
-          "marketcap": 2515010000000.0,
+          "marketcap": 2515010000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -705,7 +705,7 @@
           "code": "327260",
           "name": "RF머트리얼즈",
           "score": 16.5,
-          "marketcap": 818427000000.0,
+          "marketcap": 818427000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -716,7 +716,7 @@
           "code": "213420",
           "name": "덕산네오룩스",
           "score": 16.5,
-          "marketcap": 659267000000.0,
+          "marketcap": 659267000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -727,7 +727,7 @@
           "code": "297890",
           "name": "HB솔루션",
           "score": 16.5,
-          "marketcap": 103567000000.0,
+          "marketcap": 103567000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품",
@@ -737,8 +737,8 @@
         {
           "code": "000990",
           "name": "DB하이텍",
-          "score": 14.0,
-          "marketcap": 4633238000000.0,
+          "score": 14,
+          "marketcap": 4633238000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품"
@@ -747,8 +747,8 @@
         {
           "code": "420770",
           "name": "기가비스",
-          "score": 14.0,
-          "marketcap": 1486866000000.0,
+          "score": 14,
+          "marketcap": 1486866000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품"
@@ -757,8 +757,8 @@
         {
           "code": "456010",
           "name": "아이씨티케이",
-          "score": 14.0,
-          "marketcap": 289177000000.0,
+          "score": 14,
+          "marketcap": 289177000000,
           "hits": [
             "category:반도체 부품",
             "category:반도체 부품"
@@ -883,8 +883,8 @@
         {
           "code": "095340",
           "name": "ISC",
-          "score": 26.0,
-          "marketcap": 3391529000000.0,
+          "score": 26,
+          "marketcap": 3391529000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -896,8 +896,8 @@
         {
           "code": "074600",
           "name": "원익QnC",
-          "score": 24.0,
-          "marketcap": 729492000000.0,
+          "score": 24,
+          "marketcap": 729492000000,
           "hits": [
             "category:반도체 장비",
             "반도체 장비",
@@ -909,8 +909,8 @@
         {
           "code": "058470",
           "name": "리노공업",
-          "score": 23.0,
-          "marketcap": 5403420000000.0,
+          "score": 23,
+          "marketcap": 5403420000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -922,8 +922,8 @@
         {
           "code": "357780",
           "name": "솔브레인",
-          "score": 23.0,
-          "marketcap": 2605819000000.0,
+          "score": 23,
+          "marketcap": 2605819000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -935,8 +935,8 @@
         {
           "code": "089970",
           "name": "브이엠",
-          "score": 23.0,
-          "marketcap": 1310541000000.0,
+          "score": 23,
+          "marketcap": 1310541000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -948,8 +948,8 @@
         {
           "code": "064290",
           "name": "인텍플러스",
-          "score": 23.0,
-          "marketcap": 746106000000.0,
+          "score": 23,
+          "marketcap": 746106000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -962,7 +962,7 @@
           "code": "083500",
           "name": "에프엔에스테크",
           "score": 22.5,
-          "marketcap": 116123000000.0,
+          "marketcap": 116123000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -975,7 +975,7 @@
           "code": "144960",
           "name": "뉴파워프라즈마",
           "score": 20.5,
-          "marketcap": 514699000000.0,
+          "marketcap": 514699000000,
           "hits": [
             "category:반도체 장비",
             "반도체 장비",
@@ -987,8 +987,8 @@
         {
           "code": "067310",
           "name": "하나마이크론",
-          "score": 20.0,
-          "marketcap": 2712827000000.0,
+          "score": 20,
+          "marketcap": 2712827000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -999,8 +999,8 @@
         {
           "code": "080220",
           "name": "제주반도체",
-          "score": 20.0,
-          "marketcap": 2373111000000.0,
+          "score": 20,
+          "marketcap": 2373111000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1011,8 +1011,8 @@
         {
           "code": "131970",
           "name": "두산테스나",
-          "score": 20.0,
-          "marketcap": 2199439000000.0,
+          "score": 20,
+          "marketcap": 2199439000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1023,8 +1023,8 @@
         {
           "code": "140860",
           "name": "파크시스템스",
-          "score": 20.0,
-          "marketcap": 1813639000000.0,
+          "score": 20,
+          "marketcap": 1813639000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1035,8 +1035,8 @@
         {
           "code": "036540",
           "name": "SFA반도체",
-          "score": 20.0,
-          "marketcap": 1532770000000.0,
+          "score": 20,
+          "marketcap": 1532770000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1047,8 +1047,8 @@
         {
           "code": "252990",
           "name": "샘씨엔에스",
-          "score": 20.0,
-          "marketcap": 1014069000000.0,
+          "score": 20,
+          "marketcap": 1014069000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1059,8 +1059,8 @@
         {
           "code": "195870",
           "name": "해성디에스",
-          "score": 20.0,
-          "marketcap": 856800000000.0,
+          "score": 20,
+          "marketcap": 856800000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1071,8 +1071,8 @@
         {
           "code": "033640",
           "name": "네패스",
-          "score": 20.0,
-          "marketcap": 614527000000.0,
+          "score": 20,
+          "marketcap": 614527000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1083,8 +1083,8 @@
         {
           "code": "080580",
           "name": "오킨스전자",
-          "score": 20.0,
-          "marketcap": 600037000000.0,
+          "score": 20,
+          "marketcap": 600037000000,
           "hits": [
             "category:반도체 장비",
             "category:반도체 장비",
@@ -1095,8 +1095,8 @@
         {
           "code": "281820",
           "name": "케이씨텍",
-          "score": 18.0,
-          "marketcap": 2080839000000.0,
+          "score": 18,
+          "marketcap": 2080839000000,
           "hits": [
             "category:반도체 장비",
             "반도체 장비",
@@ -1107,8 +1107,8 @@
         {
           "code": "183300",
           "name": "코미코",
-          "score": 18.0,
-          "marketcap": 1273809000000.0,
+          "score": 18,
+          "marketcap": 1273809000000,
           "hits": [
             "category:반도체 장비",
             "반도체 장비",
@@ -1119,8 +1119,8 @@
         {
           "code": "101160",
           "name": "월덱스",
-          "score": 18.0,
-          "marketcap": 443320000000.0,
+          "score": 18,
+          "marketcap": 443320000000,
           "hits": [
             "category:반도체 장비",
             "반도체 장비",
@@ -1185,7 +1185,7 @@
           "code": "000670",
           "name": "영풍",
           "score": 20.5,
-          "marketcap": 618598000000.0,
+          "marketcap": 618598000000,
           "hits": [
             "pcb",
             "기판",
@@ -1197,8 +1197,8 @@
         {
           "code": "323280",
           "name": "태성",
-          "score": 11.0,
-          "marketcap": 1642943000000.0,
+          "score": 11,
+          "marketcap": 1642943000000,
           "hits": [
             "pcb",
             "기판",
@@ -1369,8 +1369,8 @@
         {
           "code": "060370",
           "name": "LS마린솔루션",
-          "score": 14.0,
-          "marketcap": 1601120000000.0,
+          "score": 14,
+          "marketcap": 1601120000000,
           "hits": [
             "전력망",
             "전선",
@@ -1498,8 +1498,8 @@
         {
           "code": "097520",
           "name": "엠씨넥스",
-          "score": 27.0,
-          "marketcap": 309224000000.0,
+          "score": 27,
+          "marketcap": 309224000000,
           "hits": [
             "category:부품",
             "자동차",
@@ -1511,8 +1511,8 @@
         {
           "code": "419050",
           "name": "삼기에너지솔루션즈",
-          "score": 27.0,
-          "marketcap": 122685000000.0,
+          "score": 27,
+          "marketcap": 122685000000,
           "hits": [
             "category:자동차",
             "자동차",
@@ -1525,7 +1525,7 @@
           "code": "082210",
           "name": "옵트론텍",
           "score": 24.5,
-          "marketcap": 60101000000.0,
+          "marketcap": 60101000000,
           "hits": [
             "category:부품",
             "자동차",
@@ -1538,7 +1538,7 @@
           "code": "053450",
           "name": "세코닉스",
           "score": 24.5,
-          "marketcap": 53771000000.0,
+          "marketcap": 53771000000,
           "hits": [
             "category:부품",
             "자동차",
@@ -1550,8 +1550,8 @@
         {
           "code": "091700",
           "name": "파트론",
-          "score": 24.0,
-          "marketcap": 239500000000.0,
+          "score": 24,
+          "marketcap": 239500000000,
           "hits": [
             "category:부품",
             "자동차",
@@ -1563,8 +1563,8 @@
         {
           "code": "031510",
           "name": "오스템",
-          "score": 24.0,
-          "marketcap": 31948000000.0,
+          "score": 24,
+          "marketcap": 31948000000,
           "hits": [
             "category:자동차",
             "자동차",
@@ -1576,8 +1576,8 @@
         {
           "code": "007340",
           "name": "DN오토모티브",
-          "score": 22.0,
-          "marketcap": 2355062000000.0,
+          "score": 22,
+          "marketcap": 2355062000000,
           "hits": [
             "category:자동차",
             "자동차",
@@ -1590,7 +1590,7 @@
           "code": "204270",
           "name": "제이앤티씨",
           "score": 21.5,
-          "marketcap": 1188785000000.0,
+          "marketcap": 1188785000000,
           "hits": [
             "category:부품",
             "자동차",
@@ -1603,7 +1603,7 @@
           "code": "015230",
           "name": "대창단조",
           "score": 21.5,
-          "marketcap": 171004000000.0,
+          "marketcap": 171004000000,
           "hits": [
             "category:자동차",
             "자동차",
@@ -1616,7 +1616,7 @@
           "code": "090460",
           "name": "비에이치",
           "score": 20.5,
-          "marketcap": 584558000000.0,
+          "marketcap": 584558000000,
           "hits": [
             "category:부품",
             "부품",
@@ -1628,8 +1628,8 @@
         {
           "code": "001820",
           "name": "삼화콘덴서",
-          "score": 19.0,
-          "marketcap": 1284822000000.0,
+          "score": 19,
+          "marketcap": 1284822000000,
           "hits": [
             "category:부품",
             "자동차",
@@ -1640,8 +1640,8 @@
         {
           "code": "010580",
           "name": "에스엠벡셀",
-          "score": 19.0,
-          "marketcap": 350443000000.0,
+          "score": 19,
+          "marketcap": 350443000000,
           "hits": [
             "category:자동차",
             "자동차",
@@ -1652,8 +1652,8 @@
         {
           "code": "033240",
           "name": "자화전자",
-          "score": 18.0,
-          "marketcap": 475321000000.0,
+          "score": 18,
+          "marketcap": 475321000000,
           "hits": [
             "category:부품",
             "부품",
@@ -1664,8 +1664,8 @@
         {
           "code": "101930",
           "name": "인화정공",
-          "score": 16.0,
-          "marketcap": 259545000000.0,
+          "score": 16,
+          "marketcap": 259545000000,
           "hits": [
             "category:자동차",
             "자동차",
@@ -1675,8 +1675,8 @@
         {
           "code": "066570",
           "name": "LG전자",
-          "score": 15.0,
-          "marketcap": 27804407000000.0,
+          "score": 15,
+          "marketcap": 27804407000000,
           "hits": [
             "category:부품",
             "부품",
@@ -1686,8 +1686,8 @@
         {
           "code": "178320",
           "name": "서진시스템",
-          "score": 15.0,
-          "marketcap": 2507519000000.0,
+          "score": 15,
+          "marketcap": 2507519000000,
           "hits": [
             "category:부품",
             "부품",
@@ -1697,8 +1697,8 @@
         {
           "code": "189300",
           "name": "인텔리안테크",
-          "score": 14.0,
-          "marketcap": 612037000000.0,
+          "score": 14,
+          "marketcap": 612037000000,
           "hits": [
             "category:부품",
             "category:부품"
@@ -1707,8 +1707,8 @@
         {
           "code": "009160",
           "name": "SIMPAC",
-          "score": 14.0,
-          "marketcap": 313453000000.0,
+          "score": 14,
+          "marketcap": 313453000000,
           "hits": [
             "자동차",
             "부품",
@@ -1720,7 +1720,7 @@
           "code": "086960",
           "name": "MDS테크",
           "score": 13.5,
-          "marketcap": 93988000000.0,
+          "marketcap": 93988000000,
           "hits": [
             "자동차",
             "부품",
@@ -1731,8 +1731,8 @@
         {
           "code": "007660",
           "name": "이수페타시스",
-          "score": 12.0,
-          "marketcap": 7267512000000.0,
+          "score": 12,
+          "marketcap": 7267512000000,
           "hits": [
             "category:부품",
             "부품"
@@ -1814,7 +1814,7 @@
           "code": "085310",
           "name": "엔케이",
           "score": 16.5,
-          "marketcap": 64388000000.0,
+          "marketcap": 64388000000,
           "hits": [
             "조선",
             "조선기자재",
@@ -1916,7 +1916,7 @@
           "code": "000880",
           "name": "한화",
           "score": 18.5,
-          "marketcap": 5663528000000.0,
+          "marketcap": 5663528000000,
           "hits": [
             "category:방산",
             "방산",
@@ -1928,7 +1928,7 @@
           "code": "003490",
           "name": "대한항공",
           "score": 17.5,
-          "marketcap": 9757846000000.0,
+          "marketcap": 9757846000000,
           "hits": [
             "category:방산",
             "방산",
@@ -1939,8 +1939,8 @@
         {
           "code": "020560",
           "name": "아시아나항공",
-          "score": 17.0,
-          "marketcap": 1479013000000.0,
+          "score": 17,
+          "marketcap": 1479013000000,
           "hits": [
             "category:방산",
             "category:방산",
@@ -1950,8 +1950,8 @@
         {
           "code": "089590",
           "name": "제주항공",
-          "score": 17.0,
-          "marketcap": 448363000000.0,
+          "score": 17,
+          "marketcap": 448363000000,
           "hits": [
             "category:방산",
             "category:방산",
@@ -1961,8 +1961,8 @@
         {
           "code": "272450",
           "name": "진에어",
-          "score": 17.0,
-          "marketcap": 311112000000.0,
+          "score": 17,
+          "marketcap": 311112000000,
           "hits": [
             "category:방산",
             "category:방산",
@@ -1973,7 +1973,7 @@
           "code": "347700",
           "name": "스피어",
           "score": 10.5,
-          "marketcap": 1100621000000.0,
+          "marketcap": 1100621000000,
           "hits": [
             "방산",
             "우주항공",
@@ -1984,7 +1984,7 @@
           "code": "126720",
           "name": "수산인더스트리",
           "score": 10.5,
-          "marketcap": 285720000000.0,
+          "marketcap": 285720000000,
           "hits": [
             "방산",
             "우주항공",
@@ -2070,8 +2070,8 @@
         {
           "code": "437730",
           "name": "삼현",
-          "score": 34.0,
-          "marketcap": 1246107000000.0,
+          "score": 34,
+          "marketcap": 1246107000000,
           "hits": [
             "category:로봇",
             "로봇",
@@ -2177,8 +2177,8 @@
         {
           "code": "097230",
           "name": "HJ중공업",
-          "score": 23.0,
-          "marketcap": 1163004000000.0,
+          "score": 23,
+          "marketcap": 1163004000000,
           "hits": [
             "category:건설",
             "건설",
@@ -2190,8 +2190,8 @@
         {
           "code": "043910",
           "name": "자연과환경",
-          "score": 23.0,
-          "marketcap": 33904000000.0,
+          "score": 23,
+          "marketcap": 33904000000,
           "hits": [
             "category:건설",
             "건설",
@@ -2204,7 +2204,7 @@
           "code": "006910",
           "name": "보성파워텍",
           "score": 22.5,
-          "marketcap": 284461000000.0,
+          "marketcap": 284461000000,
           "hits": [
             "category:건설",
             "category:건설",
@@ -2216,8 +2216,8 @@
         {
           "code": "079650",
           "name": "서산",
-          "score": 20.0,
-          "marketcap": 160600000000.0,
+          "score": 20,
+          "marketcap": 160600000000,
           "hits": [
             "category:건설",
             "건설",
@@ -2228,8 +2228,8 @@
         {
           "code": "025900",
           "name": "동화기업",
-          "score": 17.0,
-          "marketcap": 329633000000.0,
+          "score": 17,
+          "marketcap": 329633000000,
           "hits": [
             "category:건설",
             "category:건설",
@@ -2239,8 +2239,8 @@
         {
           "code": "300720",
           "name": "한일시멘트",
-          "score": 15.0,
-          "marketcap": 1246591000000.0,
+          "score": 15,
+          "marketcap": 1246591000000,
           "hits": [
             "category:건설",
             "건설",
@@ -2250,8 +2250,8 @@
         {
           "code": "010780",
           "name": "아이에스동서",
-          "score": 15.0,
-          "marketcap": 431899000000.0,
+          "score": 15,
+          "marketcap": 431899000000,
           "hits": [
             "category:건설",
             "건설",
@@ -2261,8 +2261,8 @@
         {
           "code": "241560",
           "name": "두산밥캣",
-          "score": 14.0,
-          "marketcap": 4898244000000.0,
+          "score": 14,
+          "marketcap": 4898244000000,
           "hits": [
             "건설",
             "인프라",
@@ -2273,8 +2273,8 @@
         {
           "code": "083650",
           "name": "비에이치아이",
-          "score": 14.0,
-          "marketcap": 1480688000000.0,
+          "score": 14,
+          "marketcap": 1480688000000,
           "hits": [
             "건설",
             "플랜트",
@@ -2286,7 +2286,7 @@
           "code": "017800",
           "name": "현대엘리베이터",
           "score": 13.5,
-          "marketcap": 2775559000000.0,
+          "marketcap": 2775559000000,
           "hits": [
             "건설",
             "인프라",
@@ -2297,8 +2297,8 @@
         {
           "code": "126720",
           "name": "수산인더스트리",
-          "score": 12.0,
-          "marketcap": 285720000000.0,
+          "score": 12,
+          "marketcap": 285720000000,
           "hits": [
             "category:건설",
             "건설"
@@ -2307,8 +2307,8 @@
         {
           "code": "039610",
           "name": "화성밸브",
-          "score": 12.0,
-          "marketcap": 76412000000.0,
+          "score": 12,
+          "marketcap": 76412000000,
           "hits": [
             "건설",
             "인프라",
@@ -2418,8 +2418,8 @@
         {
           "code": "098460",
           "name": "고영",
-          "score": 14.0,
-          "marketcap": 2216636000000.0,
+          "score": 14,
+          "marketcap": 2216636000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2428,8 +2428,8 @@
         {
           "code": "171090",
           "name": "선익시스템",
-          "score": 14.0,
-          "marketcap": 836541000000.0,
+          "score": 14,
+          "marketcap": 836541000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2438,8 +2438,8 @@
         {
           "code": "014620",
           "name": "성광벤드",
-          "score": 14.0,
-          "marketcap": 719704000000.0,
+          "score": 14,
+          "marketcap": 719704000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2448,8 +2448,8 @@
         {
           "code": "222080",
           "name": "SFA넥셀",
-          "score": 14.0,
-          "marketcap": 624574000000.0,
+          "score": 14,
+          "marketcap": 624574000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2458,8 +2458,8 @@
         {
           "code": "039440",
           "name": "에스티아이",
-          "score": 14.0,
-          "marketcap": 469088000000.0,
+          "score": 14,
+          "marketcap": 469088000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2468,8 +2468,8 @@
         {
           "code": "013030",
           "name": "하이록코리아",
-          "score": 14.0,
-          "marketcap": 381876000000.0,
+          "score": 14,
+          "marketcap": 381876000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2478,8 +2478,8 @@
         {
           "code": "452280",
           "name": "한선엔지니어링",
-          "score": 14.0,
-          "marketcap": 320088000000.0,
+          "score": 14,
+          "marketcap": 320088000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2488,8 +2488,8 @@
         {
           "code": "372170",
           "name": "윤성에프앤씨",
-          "score": 14.0,
-          "marketcap": 181523000000.0,
+          "score": 14,
+          "marketcap": 181523000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2498,8 +2498,8 @@
         {
           "code": "119650",
           "name": "KC코트렐",
-          "score": 14.0,
-          "marketcap": 100782000000.0,
+          "score": 14,
+          "marketcap": 100782000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2508,8 +2508,8 @@
         {
           "code": "039610",
           "name": "화성밸브",
-          "score": 14.0,
-          "marketcap": 76412000000.0,
+          "score": 14,
+          "marketcap": 76412000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2518,8 +2518,8 @@
         {
           "code": "036090",
           "name": "위지트",
-          "score": 14.0,
-          "marketcap": 52805000000.0,
+          "score": 14,
+          "marketcap": 52805000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2528,8 +2528,8 @@
         {
           "code": "237750",
           "name": "피앤씨테크",
-          "score": 14.0,
-          "marketcap": 20984000000.0,
+          "score": 14,
+          "marketcap": 20984000000,
           "hits": [
             "category:기계",
             "category:기계"
@@ -2538,8 +2538,8 @@
         {
           "code": "017800",
           "name": "현대엘리베이터",
-          "score": 12.0,
-          "marketcap": 2775559000000.0,
+          "score": 12,
+          "marketcap": 2775559000000,
           "hits": [
             "category:기계",
             "기계"
@@ -2548,8 +2548,8 @@
         {
           "code": "319400",
           "name": "현대무벡스",
-          "score": 12.0,
-          "marketcap": 2069366000000.0,
+          "score": 12,
+          "marketcap": 2069366000000,
           "hits": [
             "category:기계",
             "기계"
@@ -2558,8 +2558,8 @@
         {
           "code": "323280",
           "name": "태성",
-          "score": 12.0,
-          "marketcap": 1642943000000.0,
+          "score": 12,
+          "marketcap": 1642943000000,
           "hits": [
             "category:기계",
             "기계"
@@ -2568,8 +2568,8 @@
         {
           "code": "083650",
           "name": "비에이치아이",
-          "score": 12.0,
-          "marketcap": 1480688000000.0,
+          "score": 12,
+          "marketcap": 1480688000000,
           "hits": [
             "category:기계",
             "기계"
@@ -2665,8 +2665,8 @@
         {
           "code": "450080",
           "name": "에코프로머티",
-          "score": 24.0,
-          "marketcap": 2283747000000.0,
+          "score": 24,
+          "marketcap": 2283747000000,
           "hits": [
             "category:2차전지",
             "category:2차전지",
@@ -2679,7 +2679,7 @@
           "code": "282880",
           "name": "코윈로보틱스",
           "score": 21.5,
-          "marketcap": 120682000000.0,
+          "marketcap": 120682000000,
           "hits": [
             "category:2차전지",
             "2차전지",
@@ -2692,7 +2692,7 @@
           "code": "365340",
           "name": "성일하이텍",
           "score": 19.5,
-          "marketcap": 412829000000.0,
+          "marketcap": 412829000000,
           "hits": [
             "category:2차전지",
             "category:2차전지",
@@ -2703,8 +2703,8 @@
         {
           "code": "004490",
           "name": "세방전지",
-          "score": 18.0,
-          "marketcap": 837144000000.0,
+          "score": 18,
+          "marketcap": 837144000000,
           "hits": [
             "category:2차전지",
             "category:2차전지",
@@ -2714,8 +2714,8 @@
         {
           "code": "082920",
           "name": "비츠로셀",
-          "score": 14.0,
-          "marketcap": 1081090000000.0,
+          "score": 14,
+          "marketcap": 1081090000000,
           "hits": [
             "category:2차전지",
             "category:2차전지"
@@ -2876,8 +2876,8 @@
         {
           "code": "475150",
           "name": "SK이터닉스",
-          "score": 28.0,
-          "marketcap": 1408670000000.0,
+          "score": 28,
+          "marketcap": 1408670000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2889,8 +2889,8 @@
         {
           "code": "018670",
           "name": "SK가스",
-          "score": 22.0,
-          "marketcap": 2493426000000.0,
+          "score": 22,
+          "marketcap": 2493426000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2902,8 +2902,8 @@
         {
           "code": "094820",
           "name": "일진파워",
-          "score": 22.0,
-          "marketcap": 158326000000.0,
+          "score": 22,
+          "marketcap": 158326000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2916,7 +2916,7 @@
           "code": "052690",
           "name": "한전기술",
           "score": 21.5,
-          "marketcap": 3848754000000.0,
+          "marketcap": 3848754000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2928,8 +2928,8 @@
         {
           "code": "032820",
           "name": "우리기술",
-          "score": 19.0,
-          "marketcap": 1774497000000.0,
+          "score": 19,
+          "marketcap": 1774497000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2940,8 +2940,8 @@
         {
           "code": "119850",
           "name": "지엔씨에너지",
-          "score": 19.0,
-          "marketcap": 673582000000.0,
+          "score": 19,
+          "marketcap": 673582000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2953,7 +2953,7 @@
           "code": "000880",
           "name": "한화",
           "score": 17.5,
-          "marketcap": 5663528000000.0,
+          "marketcap": 5663528000000,
           "hits": [
             "에너지",
             "lng",
@@ -2965,8 +2965,8 @@
         {
           "code": "417200",
           "name": "LS머트리얼즈",
-          "score": 17.0,
-          "marketcap": 881514000000.0,
+          "score": 17,
+          "marketcap": 881514000000,
           "hits": [
             "에너지",
             "신재생",
@@ -2978,8 +2978,8 @@
         {
           "code": "051600",
           "name": "한전KPS",
-          "score": 16.0,
-          "marketcap": 1890000000000.0,
+          "score": 16,
+          "marketcap": 1890000000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -2989,8 +2989,8 @@
         {
           "code": "076080",
           "name": "웰크론한텍",
-          "score": 16.0,
-          "marketcap": 23475000000.0,
+          "score": 16,
+          "marketcap": 23475000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -3000,8 +3000,8 @@
         {
           "code": "322000",
           "name": "HD현대에너지솔루션",
-          "score": 15.0,
-          "marketcap": 1317120000000.0,
+          "score": 15,
+          "marketcap": 1317120000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -3011,8 +3011,8 @@
         {
           "code": "448280",
           "name": "에코아이",
-          "score": 15.0,
-          "marketcap": 266383000000.0,
+          "score": 15,
+          "marketcap": 266383000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -3022,8 +3022,8 @@
         {
           "code": "388050",
           "name": "지투파워",
-          "score": 15.0,
-          "marketcap": 157346000000.0,
+          "score": 15,
+          "marketcap": 157346000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -3034,7 +3034,7 @@
           "code": "015760",
           "name": "한국전력",
           "score": 14.5,
-          "marketcap": 18360172000000.0,
+          "marketcap": 18360172000000,
           "hits": [
             "category:에너지",
             "에너지",
@@ -3044,8 +3044,8 @@
         {
           "code": "452280",
           "name": "한선엔지니어링",
-          "score": 14.0,
-          "marketcap": 320088000000.0,
+          "score": 14,
+          "marketcap": 320088000000,
           "hits": [
             "에너지",
             "정유",
@@ -3056,8 +3056,8 @@
         {
           "code": "105840",
           "name": "우진",
-          "score": 14.0,
-          "marketcap": 219700000000.0,
+          "score": 14,
+          "marketcap": 219700000000,
           "hits": [
             "category:에너지",
             "category:에너지"
@@ -3066,8 +3066,8 @@
         {
           "code": "457550",
           "name": "우진엔텍",
-          "score": 14.0,
-          "marketcap": 106329000000.0,
+          "score": 14,
+          "marketcap": 106329000000,
           "hits": [
             "category:에너지",
             "category:에너지"
@@ -3076,8 +3076,8 @@
         {
           "code": "100840",
           "name": "SNT에너지",
-          "score": 12.0,
-          "marketcap": 563191000000.0,
+          "score": 12,
+          "marketcap": 563191000000,
           "hits": [
             "에너지",
             "lng",
@@ -3195,7 +3195,7 @@
           "code": "002380",
           "name": "KCC",
           "score": 27.5,
-          "marketcap": 3694945000000.0,
+          "marketcap": 3694945000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3208,7 +3208,7 @@
           "code": "017960",
           "name": "한국카본",
           "score": 27.5,
-          "marketcap": 922425000000.0,
+          "marketcap": 922425000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3221,7 +3221,7 @@
           "code": "121600",
           "name": "나노신소재",
           "score": 27.5,
-          "marketcap": 701397000000.0,
+          "marketcap": 701397000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3234,7 +3234,7 @@
           "code": "298050",
           "name": "HS효성첨단소재",
           "score": 27.5,
-          "marketcap": 682744000000.0,
+          "marketcap": 682744000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3246,8 +3246,8 @@
         {
           "code": "033500",
           "name": "동성화인텍",
-          "score": 27.0,
-          "marketcap": 432148000000.0,
+          "score": 27,
+          "marketcap": 432148000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3259,8 +3259,8 @@
         {
           "code": "093370",
           "name": "후성",
-          "score": 26.0,
-          "marketcap": 1279556000000.0,
+          "score": 26,
+          "marketcap": 1279556000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3273,7 +3273,7 @@
           "code": "002350",
           "name": "넥센타이어",
           "score": 25.5,
-          "marketcap": 575263000000.0,
+          "marketcap": 575263000000,
           "hits": [
             "category:화학",
             "category:화학",
@@ -3285,8 +3285,8 @@
         {
           "code": "011790",
           "name": "SKC",
-          "score": 25.0,
-          "marketcap": 4597762000000.0,
+          "score": 25,
+          "marketcap": 4597762000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3298,8 +3298,8 @@
         {
           "code": "102710",
           "name": "이엔에프테크놀로지",
-          "score": 25.0,
-          "marketcap": 628664000000.0,
+          "score": 25,
+          "marketcap": 628664000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3311,8 +3311,8 @@
         {
           "code": "178920",
           "name": "PI첨단소재",
-          "score": 25.0,
-          "marketcap": 519490000000.0,
+          "score": 25,
+          "marketcap": 519490000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3325,7 +3325,7 @@
           "code": "457190",
           "name": "이수스페셜티케미컬",
           "score": 23.5,
-          "marketcap": 2626019000000.0,
+          "marketcap": 2626019000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3338,7 +3338,7 @@
           "code": "281740",
           "name": "레이크머티리얼즈",
           "score": 23.5,
-          "marketcap": 807171000000.0,
+          "marketcap": 807171000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3351,7 +3351,7 @@
           "code": "317330",
           "name": "덕산테코피아",
           "score": 23.5,
-          "marketcap": 229337000000.0,
+          "marketcap": 229337000000,
           "hits": [
             "category:화학",
             "소재",
@@ -3363,8 +3363,8 @@
         {
           "code": "250030",
           "name": "진코스텍",
-          "score": 23.0,
-          "marketcap": 55207000000.0,
+          "score": 23,
+          "marketcap": 55207000000,
           "hits": [
             "category:화학",
             "category:화학",
@@ -3375,8 +3375,8 @@
         {
           "code": "060260",
           "name": "뉴보텍",
-          "score": 23.0,
-          "marketcap": 13355000000.0,
+          "score": 23,
+          "marketcap": 13355000000,
           "hits": [
             "category:화학",
             "category:화학",
@@ -3387,8 +3387,8 @@
         {
           "code": "006110",
           "name": "삼아알미늄",
-          "score": 22.0,
-          "marketcap": 1114598000000.0,
+          "score": 22,
+          "marketcap": 1114598000000,
           "hits": [
             "category:철강",
             "category:철강",
@@ -3399,8 +3399,8 @@
         {
           "code": "023160",
           "name": "태광",
-          "score": 22.0,
-          "marketcap": 674706000000.0,
+          "score": 22,
+          "marketcap": 674706000000,
           "hits": [
             "category:화학",
             "화학",
@@ -3412,8 +3412,8 @@
         {
           "code": "107600",
           "name": "새빗켐",
-          "score": 21.0,
-          "marketcap": 65314000000.0,
+          "score": 21,
+          "marketcap": 65314000000,
           "hits": [
             "category:화학",
             "화학",
@@ -3424,8 +3424,8 @@
         {
           "code": "083660",
           "name": "CSA 코스믹",
-          "score": 21.0,
-          "marketcap": 22895000000.0,
+          "score": 21,
+          "marketcap": 22895000000,
           "hits": [
             "category:화학",
             "화학",
@@ -3436,8 +3436,8 @@
         {
           "code": "024840",
           "name": "KBI메탈",
-          "score": 18.0,
-          "marketcap": 210377000000.0,
+          "score": 18,
+          "marketcap": 210377000000,
           "hits": [
             "category:철강",
             "category:철강",
@@ -3651,7 +3651,7 @@
           "code": "039200",
           "name": "오스코텍",
           "score": 39.5,
-          "marketcap": 1394510000000.0,
+          "marketcap": 1394510000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3663,8 +3663,8 @@
         {
           "code": "237690",
           "name": "에스티팜",
-          "score": 36.0,
-          "marketcap": 1897686000000.0,
+          "score": 36,
+          "marketcap": 1897686000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3676,8 +3676,8 @@
         {
           "code": "086450",
           "name": "동국제약",
-          "score": 34.0,
-          "marketcap": 1142068000000.0,
+          "score": 34,
+          "marketcap": 1142068000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3689,8 +3689,8 @@
         {
           "code": "068760",
           "name": "셀트리온제약",
-          "score": 33.0,
-          "marketcap": 1727250000000.0,
+          "score": 33,
+          "marketcap": 1727250000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3702,8 +3702,8 @@
         {
           "code": "445680",
           "name": "큐리옥스바이오시스템즈",
-          "score": 33.0,
-          "marketcap": 1173002000000.0,
+          "score": 33,
+          "marketcap": 1173002000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3716,7 +3716,7 @@
           "code": "322510",
           "name": "제이엘케이",
           "score": 30.5,
-          "marketcap": 122969000000.0,
+          "marketcap": 122969000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3728,8 +3728,8 @@
         {
           "code": "950160",
           "name": "코오롱티슈진",
-          "score": 30.0,
-          "marketcap": 1224420000000.0,
+          "score": 30,
+          "marketcap": 1224420000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3742,7 +3742,7 @@
           "code": "226950",
           "name": "올릭스",
           "score": 29.5,
-          "marketcap": 2241736000000.0,
+          "marketcap": 2241736000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3755,7 +3755,7 @@
           "code": "007390",
           "name": "네이처셀",
           "score": 29.5,
-          "marketcap": 1404684000000.0,
+          "marketcap": 1404684000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3767,8 +3767,8 @@
         {
           "code": "140410",
           "name": "메지온",
-          "score": 29.0,
-          "marketcap": 1840223000000.0,
+          "score": 29,
+          "marketcap": 1840223000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3780,8 +3780,8 @@
         {
           "code": "096530",
           "name": "씨젠",
-          "score": 28.0,
-          "marketcap": 1768897000000.0,
+          "score": 28,
+          "marketcap": 1768897000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3792,8 +3792,8 @@
         {
           "code": "491000",
           "name": "리브스메드",
-          "score": 28.0,
-          "marketcap": 1116282000000.0,
+          "score": 28,
+          "marketcap": 1116282000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3804,8 +3804,8 @@
         {
           "code": "145720",
           "name": "덴티움",
-          "score": 28.0,
-          "marketcap": 338918000000.0,
+          "score": 28,
+          "marketcap": 338918000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3816,8 +3816,8 @@
         {
           "code": "200130",
           "name": "콜마비앤에이치",
-          "score": 28.0,
-          "marketcap": 227326000000.0,
+          "score": 28,
+          "marketcap": 227326000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3828,8 +3828,8 @@
         {
           "code": "338220",
           "name": "뷰노",
-          "score": 28.0,
-          "marketcap": 92412000000.0,
+          "score": 28,
+          "marketcap": 92412000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3840,8 +3840,8 @@
         {
           "code": "310210",
           "name": "보로노이",
-          "score": 27.0,
-          "marketcap": 2306592000000.0,
+          "score": 27,
+          "marketcap": 2306592000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3853,8 +3853,8 @@
         {
           "code": "214370",
           "name": "케어젠",
-          "score": 27.0,
-          "marketcap": 2116371000000.0,
+          "score": 27,
+          "marketcap": 2116371000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3866,8 +3866,8 @@
         {
           "code": "347850",
           "name": "디앤디파마텍",
-          "score": 27.0,
-          "marketcap": 1763953000000.0,
+          "score": 27,
+          "marketcap": 1763953000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3879,8 +3879,8 @@
         {
           "code": "014950",
           "name": "삼익제약",
-          "score": 27.0,
-          "marketcap": 80902000000.0,
+          "score": 27,
+          "marketcap": 80902000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3893,7 +3893,7 @@
           "code": "087010",
           "name": "펩트론",
           "score": 26.5,
-          "marketcap": 2343393000000.0,
+          "marketcap": 2343393000000,
           "hits": [
             "category:바이오",
             "category:제약",
@@ -3956,8 +3956,8 @@
         {
           "code": "108860",
           "name": "셀바스AI",
-          "score": 14.0,
-          "marketcap": 211819000000.0,
+          "score": 14,
+          "marketcap": 211819000000,
           "hits": [
             "의료기기",
             "헬스케어",
@@ -4038,8 +4038,8 @@
         {
           "code": "483650",
           "name": "달바글로벌",
-          "score": 24.0,
-          "marketcap": 2179726000000.0,
+          "score": 24,
+          "marketcap": 2179726000000,
           "hits": [
             "category:화장품",
             "화장품",
@@ -4051,8 +4051,8 @@
         {
           "code": "250030",
           "name": "진코스텍",
-          "score": 22.0,
-          "marketcap": 55207000000.0,
+          "score": 22,
+          "marketcap": 55207000000,
           "hits": [
             "화장품",
             "뷰티",
@@ -4065,7 +4065,7 @@
           "code": "031430",
           "name": "신세계인터내셔날",
           "score": 13.5,
-          "marketcap": 384146000000.0,
+          "marketcap": 384146000000,
           "hits": [
             "화장품",
             "뷰티",
@@ -4076,8 +4076,8 @@
         {
           "code": "014710",
           "name": "사조씨푸드",
-          "score": 11.0,
-          "marketcap": 167364000000.0,
+          "score": 11,
+          "marketcap": 167364000000,
           "hits": [
             "브랜드",
             "원료",
@@ -4169,8 +4169,8 @@
         {
           "code": "037710",
           "name": "광주신세계",
-          "score": 20.0,
-          "marketcap": 257798000000.0,
+          "score": 20,
+          "marketcap": 257798000000,
           "hits": [
             "category:소비재",
             "category:소비재",
@@ -4181,8 +4181,8 @@
         {
           "code": "021240",
           "name": "코웨이",
-          "score": 15.0,
-          "marketcap": 7741956000000.0,
+          "score": 15,
+          "marketcap": 7741956000000,
           "hits": [
             "category:소비재",
             "소비재",
@@ -4192,8 +4192,8 @@
         {
           "code": "047050",
           "name": "포스코인터내셔널",
-          "score": 14.0,
-          "marketcap": 9939637000000.0,
+          "score": 14,
+          "marketcap": 9939637000000,
           "hits": [
             "category:소비재",
             "category:소비재"
@@ -4202,8 +4202,8 @@
         {
           "code": "001120",
           "name": "LX인터내셔널",
-          "score": 14.0,
-          "marketcap": 1728696000000.0,
+          "score": 14,
+          "marketcap": 1728696000000,
           "hits": [
             "category:소비재",
             "category:소비재"
@@ -4212,8 +4212,8 @@
         {
           "code": "001740",
           "name": "SK네트웍스",
-          "score": 14.0,
-          "marketcap": 1143385000000.0,
+          "score": 14,
+          "marketcap": 1143385000000,
           "hits": [
             "category:소비재",
             "category:소비재"
@@ -4303,8 +4303,8 @@
         {
           "code": "035620",
           "name": "바른손이앤에이",
-          "score": 40.0,
-          "marketcap": 13696000000.0,
+          "score": 40,
+          "marketcap": 13696000000,
           "hits": [
             "category:엔터",
             "category:미디어",
@@ -4316,8 +4316,8 @@
         {
           "code": "030000",
           "name": "제일기획",
-          "score": 30.0,
-          "marketcap": 2245604000000.0,
+          "score": 30,
+          "marketcap": 2245604000000,
           "hits": [
             "category:엔터",
             "category:미디어",
@@ -4329,8 +4329,8 @@
         {
           "code": "030960",
           "name": "양지사",
-          "score": 28.0,
-          "marketcap": 92524000000.0,
+          "score": 28,
+          "marketcap": 92524000000,
           "hits": [
             "category:엔터",
             "category:미디어",
@@ -4342,7 +4342,7 @@
           "code": "363260",
           "name": "모비데이즈",
           "score": 18.5,
-          "marketcap": 24251000000.0,
+          "marketcap": 24251000000,
           "hits": [
             "미디어",
             "콘텐츠 제작",
@@ -4354,8 +4354,8 @@
         {
           "code": "950190",
           "name": "고스트스튜디오",
-          "score": 18.0,
-          "marketcap": 126265000000.0,
+          "score": 18,
+          "marketcap": 126265000000,
           "hits": [
             "엔터",
             "콘텐츠 제작",
@@ -4440,7 +4440,7 @@
           "code": "462870",
           "name": "시프트업",
           "score": 20.5,
-          "marketcap": 1856243000000.0,
+          "marketcap": 1856243000000,
           "hits": [
             "category:게임",
             "게임",
@@ -4523,7 +4523,7 @@
           "code": "006730",
           "name": "서부T&D",
           "score": 19.5,
-          "marketcap": 821459000000.0,
+          "marketcap": 821459000000,
           "hits": [
             "category:레저",
             "레저",
@@ -4601,8 +4601,8 @@
         {
           "code": "139480",
           "name": "이마트",
-          "score": 23.0,
-          "marketcap": 2017254000000.0,
+          "score": 23,
+          "marketcap": 2017254000000,
           "hits": [
             "category:유통",
             "유통",
@@ -4615,7 +4615,7 @@
           "code": "089860",
           "name": "롯데렌탈",
           "score": 16.5,
-          "marketcap": 1819100000000.0,
+          "marketcap": 1819100000000,
           "hits": [
             "category:유통",
             "category:유통",
@@ -4625,8 +4625,8 @@
         {
           "code": "001740",
           "name": "SK네트웍스",
-          "score": 16.0,
-          "marketcap": 1143385000000.0,
+          "score": 16,
+          "marketcap": 1143385000000,
           "hits": [
             "category:유통",
             "유통",
@@ -4636,8 +4636,8 @@
         {
           "code": "047050",
           "name": "포스코인터내셔널",
-          "score": 14.0,
-          "marketcap": 9939637000000.0,
+          "score": 14,
+          "marketcap": 9939637000000,
           "hits": [
             "category:유통",
             "category:유통"
@@ -4646,8 +4646,8 @@
         {
           "code": "021240",
           "name": "코웨이",
-          "score": 14.0,
-          "marketcap": 7741956000000.0,
+          "score": 14,
+          "marketcap": 7741956000000,
           "hits": [
             "category:유통",
             "category:유통"
@@ -4656,8 +4656,8 @@
         {
           "code": "001120",
           "name": "LX인터내셔널",
-          "score": 14.0,
-          "marketcap": 1728696000000.0,
+          "score": 14,
+          "marketcap": 1728696000000,
           "hits": [
             "category:유통",
             "category:유통"
@@ -4667,7 +4667,7 @@
           "code": "383220",
           "name": "F&F",
           "score": 13.5,
-          "marketcap": 2781093000000.0,
+          "marketcap": 2781093000000,
           "hits": [
             "유통",
             "리테일",
@@ -4678,8 +4678,8 @@
         {
           "code": "453340",
           "name": "현대그린푸드",
-          "score": 11.0,
-          "marketcap": 639040000000.0,
+          "score": 11,
+          "marketcap": 639040000000,
           "hits": [
             "유통",
             "커머스",
@@ -4689,8 +4689,8 @@
         {
           "code": "017810",
           "name": "풀무원",
-          "score": 8.0,
-          "marketcap": 327836000000.0,
+          "score": 8,
+          "marketcap": 327836000000,
           "hits": [
             "유통",
             "리테일"
@@ -4798,7 +4798,7 @@
           "code": "323410",
           "name": "카카오뱅크",
           "score": 31.5,
-          "marketcap": 9709400000000.0,
+          "marketcap": 9709400000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4811,7 +4811,7 @@
           "code": "029780",
           "name": "삼성카드",
           "score": 31.5,
-          "marketcap": 4947174000000.0,
+          "marketcap": 4947174000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4823,8 +4823,8 @@
         {
           "code": "279570",
           "name": "케이뱅크",
-          "score": 29.0,
-          "marketcap": 2121785000000.0,
+          "score": 29,
+          "marketcap": 2121785000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4836,8 +4836,8 @@
         {
           "code": "175330",
           "name": "JB금융지주",
-          "score": 27.0,
-          "marketcap": 5026763000000.0,
+          "score": 27,
+          "marketcap": 5026763000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4849,8 +4849,8 @@
         {
           "code": "138930",
           "name": "BNK금융지주",
-          "score": 27.0,
-          "marketcap": 4504407000000.0,
+          "score": 27,
+          "marketcap": 4504407000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4862,8 +4862,8 @@
         {
           "code": "139130",
           "name": "iM금융지주",
-          "score": 27.0,
-          "marketcap": 2684259000000.0,
+          "score": 27,
+          "marketcap": 2684259000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4876,7 +4876,7 @@
           "code": "377300",
           "name": "카카오페이",
           "score": 26.5,
-          "marketcap": 4837243000000.0,
+          "marketcap": 4837243000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4889,7 +4889,7 @@
           "code": "001720",
           "name": "신영증권",
           "score": 25.5,
-          "marketcap": 2061576000000.0,
+          "marketcap": 2061576000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4902,7 +4902,7 @@
           "code": "060250",
           "name": "NHN KCP",
           "score": 23.5,
-          "marketcap": 506826000000.0,
+          "marketcap": 506826000000,
           "hits": [
             "category:금융",
             "금융",
@@ -4915,7 +4915,7 @@
           "code": "413640",
           "name": "비아이매트릭스",
           "score": 16.5,
-          "marketcap": 40142000000.0,
+          "marketcap": 40142000000,
           "hits": [
             "금융",
             "증권",
@@ -4927,8 +4927,8 @@
         {
           "code": "361610",
           "name": "SK아이이테크놀로지",
-          "score": 16.0,
-          "marketcap": 1429638000000.0,
+          "score": 16,
+          "marketcap": 1429638000000,
           "hits": [
             "금융",
             "증권",
@@ -4940,8 +4940,8 @@
         {
           "code": "018260",
           "name": "삼성에스디에스",
-          "score": 14.0,
-          "marketcap": 15374968000000.0,
+          "score": 14,
+          "marketcap": 15374968000000,
           "hits": [
             "금융",
             "증권",
@@ -4953,7 +4953,7 @@
           "code": "010130",
           "name": "고려아연",
           "score": 13.5,
-          "marketcap": 19766701000000.0,
+          "marketcap": 19766701000000,
           "hits": [
             "금융",
             "증권",
@@ -4965,7 +4965,7 @@
           "code": "181710",
           "name": "NHN",
           "score": 13.5,
-          "marketcap": 1661708000000.0,
+          "marketcap": 1661708000000,
           "hits": [
             "금융",
             "증권",
@@ -4977,7 +4977,7 @@
           "code": "006040",
           "name": "동원산업",
           "score": 13.5,
-          "marketcap": 1595690000000.0,
+          "marketcap": 1595690000000,
           "hits": [
             "금융",
             "증권",
@@ -4989,7 +4989,7 @@
           "code": "042510",
           "name": "라온시큐어",
           "score": 13.5,
-          "marketcap": 231001000000.0,
+          "marketcap": 231001000000,
           "hits": [
             "금융",
             "증권",
@@ -5001,7 +5001,7 @@
           "code": "023590",
           "name": "다우기술",
           "score": 10.5,
-          "marketcap": 1519384000000.0,
+          "marketcap": 1519384000000,
           "hits": [
             "금융",
             "증권",
@@ -5012,7 +5012,7 @@
           "code": "192080",
           "name": "더블유게임즈",
           "score": 10.5,
-          "marketcap": 1189948000000.0,
+          "marketcap": 1189948000000,
           "hits": [
             "금융",
             "증권",
@@ -5023,7 +5023,7 @@
           "code": "030520",
           "name": "한컴",
           "score": 10.5,
-          "marketcap": 394855000000.0,
+          "marketcap": 394855000000,
           "hits": [
             "금융",
             "증권",
@@ -5034,7 +5034,7 @@
           "code": "263860",
           "name": "지니언스",
           "score": 10.5,
-          "marketcap": 198843000000.0,
+          "marketcap": 198843000000,
           "hits": [
             "금융",
             "증권",
@@ -5094,7 +5094,7 @@
           "code": "064400",
           "name": "LG씨엔에스",
           "score": 12.5,
-          "marketcap": 6316963000000.0,
+          "marketcap": 6316963000000,
           "hits": [
             "보험",
             "생명보험",
@@ -5189,7 +5189,6 @@
         "SaaS"
       ],
       "codes": [
-        "012510",
         "022100",
         "181710",
         "079940",
@@ -5229,7 +5228,6 @@
       "growth": "AI Agent · Enterprise AI · Cloud Migration · SaaS",
       "structural_base": 88,
       "seed_codes": [
-        "012510",
         "022100",
         "181710",
         "079940",
@@ -5272,8 +5270,8 @@
         {
           "code": "093320",
           "name": "케이아이엔엑스",
-          "score": 18.0,
-          "marketcap": 654408000000.0,
+          "score": 18,
+          "marketcap": 654408000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어",
@@ -5283,8 +5281,8 @@
         {
           "code": "451760",
           "name": "컨텍",
-          "score": 17.0,
-          "marketcap": 106805000000.0,
+          "score": 17,
+          "marketcap": 106805000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어",
@@ -5294,8 +5292,8 @@
         {
           "code": "307950",
           "name": "현대오토에버",
-          "score": 15.0,
-          "marketcap": 9022490000000.0,
+          "score": 15,
+          "marketcap": 9022490000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어",
@@ -5305,8 +5303,8 @@
         {
           "code": "035420",
           "name": "NAVER",
-          "score": 14.0,
-          "marketcap": 27425233000000.0,
+          "score": 14,
+          "marketcap": 27425233000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5315,8 +5313,8 @@
         {
           "code": "035720",
           "name": "카카오",
-          "score": 14.0,
-          "marketcap": 14043116000000.0,
+          "score": 14,
+          "marketcap": 14043116000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5325,8 +5323,8 @@
         {
           "code": "012750",
           "name": "에스원",
-          "score": 14.0,
-          "marketcap": 3697320000000.0,
+          "score": 14,
+          "marketcap": 3697320000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5335,8 +5333,8 @@
         {
           "code": "042000",
           "name": "카페24",
-          "score": 14.0,
-          "marketcap": 397730000000.0,
+          "score": 14,
+          "marketcap": 397730000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5345,8 +5343,8 @@
         {
           "code": "203650",
           "name": "드림시큐리티",
-          "score": 14.0,
-          "marketcap": 262397000000.0,
+          "score": 14,
+          "marketcap": 262397000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5355,8 +5353,8 @@
         {
           "code": "042510",
           "name": "라온시큐어",
-          "score": 14.0,
-          "marketcap": 231001000000.0,
+          "score": 14,
+          "marketcap": 231001000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5365,8 +5363,8 @@
         {
           "code": "039570",
           "name": "HDC랩스",
-          "score": 14.0,
-          "marketcap": 191567000000.0,
+          "score": 14,
+          "marketcap": 191567000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5375,8 +5373,8 @@
         {
           "code": "205500",
           "name": "넥써쓰",
-          "score": 14.0,
-          "marketcap": 143987000000.0,
+          "score": 14,
+          "marketcap": 143987000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5385,8 +5383,8 @@
         {
           "code": "136540",
           "name": "윈스테크넷",
-          "score": 14.0,
-          "marketcap": 133358000000.0,
+          "score": 14,
+          "marketcap": 133358000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5395,8 +5393,8 @@
         {
           "code": "052460",
           "name": "아이크래프트",
-          "score": 14.0,
-          "marketcap": 89108000000.0,
+          "score": 14,
+          "marketcap": 89108000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5405,8 +5403,8 @@
         {
           "code": "067920",
           "name": "이글루",
-          "score": 14.0,
-          "marketcap": 67406000000.0,
+          "score": 14,
+          "marketcap": 67406000000,
           "hits": [
             "category:소프트웨어",
             "category:소프트웨어"
@@ -5415,8 +5413,8 @@
         {
           "code": "018260",
           "name": "삼성에스디에스",
-          "score": 12.0,
-          "marketcap": 15374968000000.0,
+          "score": 12,
+          "marketcap": 15374968000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어"
@@ -5425,8 +5423,8 @@
         {
           "code": "064400",
           "name": "LG씨엔에스",
-          "score": 12.0,
-          "marketcap": 6316963000000.0,
+          "score": 12,
+          "marketcap": 6316963000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어"
@@ -5435,8 +5433,8 @@
         {
           "code": "023590",
           "name": "다우기술",
-          "score": 12.0,
-          "marketcap": 1519384000000.0,
+          "score": 12,
+          "marketcap": 1519384000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어"
@@ -5445,8 +5443,8 @@
         {
           "code": "347700",
           "name": "스피어",
-          "score": 12.0,
-          "marketcap": 1100621000000.0,
+          "score": 12,
+          "marketcap": 1100621000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어"
@@ -5455,8 +5453,8 @@
         {
           "code": "053800",
           "name": "안랩",
-          "score": 12.0,
-          "marketcap": 981357000000.0,
+          "score": 12,
+          "marketcap": 981357000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어"
@@ -5465,8 +5463,8 @@
         {
           "code": "356680",
           "name": "엑스게이트",
-          "score": 12.0,
-          "marketcap": 468113000000.0,
+          "score": 12,
+          "marketcap": 468113000000,
           "hits": [
             "category:소프트웨어",
             "소프트웨어"
@@ -5534,8 +5532,8 @@
         {
           "code": "072130",
           "name": "유엔젤",
-          "score": 16.0,
-          "marketcap": 57827000000.0,
+          "score": 16,
+          "marketcap": 57827000000,
           "hits": [
             "통신",
             "네트워크",
@@ -5547,8 +5545,8 @@
         {
           "code": "046970",
           "name": "우리로",
-          "score": 15.0,
-          "marketcap": 391357000000.0,
+          "score": 15,
+          "marketcap": 391357000000,
           "hits": [
             "통신",
             "통신사",
@@ -5560,8 +5558,8 @@
         {
           "code": "035510",
           "name": "신세계 I&C",
-          "score": 14.0,
-          "marketcap": 202443000000.0,
+          "score": 14,
+          "marketcap": 202443000000,
           "hits": [
             "통신",
             "네트워크",
@@ -5572,8 +5570,8 @@
         {
           "code": "052460",
           "name": "아이크래프트",
-          "score": 14.0,
-          "marketcap": 89108000000.0,
+          "score": 14,
+          "marketcap": 89108000000,
           "hits": [
             "통신",
             "네트워크",
@@ -5584,8 +5582,8 @@
         {
           "code": "189300",
           "name": "인텔리안테크",
-          "score": 13.0,
-          "marketcap": 612037000000.0,
+          "score": 13,
+          "marketcap": 612037000000,
           "hits": [
             "통신",
             "네트워크",
@@ -5596,8 +5594,8 @@
         {
           "code": "007660",
           "name": "이수페타시스",
-          "score": 11.0,
-          "marketcap": 7267512000000.0,
+          "score": 11,
+          "marketcap": 7267512000000,
           "hits": [
             "통신",
             "네트워크",
@@ -5608,7 +5606,7 @@
           "code": "011070",
           "name": "LG이노텍",
           "score": 10.5,
-          "marketcap": 9597011000000.0,
+          "marketcap": 9597011000000,
           "hits": [
             "통신",
             "네트워크",
@@ -5712,8 +5710,8 @@
         {
           "code": "086280",
           "name": "현대글로비스",
-          "score": 21.0,
-          "marketcap": 13980000000000.0,
+          "score": 21,
+          "marketcap": 13980000000000,
           "hits": [
             "category:물류",
             "해운",
@@ -5725,8 +5723,8 @@
         {
           "code": "060370",
           "name": "LS마린솔루션",
-          "score": 14.0,
-          "marketcap": 1601120000000.0,
+          "score": 14,
+          "marketcap": 1601120000000,
           "hits": [
             "category:물류",
             "category:물류"
@@ -5823,7 +5821,7 @@
           "code": "004800",
           "name": "효성",
           "score": 28.5,
-          "marketcap": 2069114000000.0,
+          "marketcap": 2069114000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5835,8 +5833,8 @@
         {
           "code": "001800",
           "name": "오리온홀딩스",
-          "score": 26.0,
-          "marketcap": 1371571000000.0,
+          "score": 26,
+          "marketcap": 1371571000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5848,8 +5846,8 @@
         {
           "code": "036830",
           "name": "솔브레인홀딩스",
-          "score": 26.0,
-          "marketcap": 838612000000.0,
+          "score": 26,
+          "marketcap": 838612000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5862,7 +5860,7 @@
           "code": "006120",
           "name": "SK디스커버리",
           "score": 24.5,
-          "marketcap": 1131893000000.0,
+          "marketcap": 1131893000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5875,7 +5873,7 @@
           "code": "063080",
           "name": "컴투스홀딩스",
           "score": 24.5,
-          "marketcap": 75712000000.0,
+          "marketcap": 75712000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5888,7 +5886,7 @@
           "code": "402340",
           "name": "SK스퀘어",
           "score": 23.5,
-          "marketcap": 103164566000000.0,
+          "marketcap": 103164566000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5901,7 +5899,7 @@
           "code": "138040",
           "name": "메리츠금융지주",
           "score": 23.5,
-          "marketcap": 21704941000000.0,
+          "marketcap": 21704941000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5914,7 +5912,7 @@
           "code": "180640",
           "name": "한진칼",
           "score": 23.5,
-          "marketcap": 7877948000000.0,
+          "marketcap": 7877948000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5927,7 +5925,7 @@
           "code": "010060",
           "name": "OCI홀딩스",
           "score": 23.5,
-          "marketcap": 3709775000000.0,
+          "marketcap": 3709775000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5940,7 +5938,7 @@
           "code": "008930",
           "name": "한미사이언스",
           "score": 23.5,
-          "marketcap": 3207563000000.0,
+          "marketcap": 3207563000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5953,7 +5951,7 @@
           "code": "005440",
           "name": "현대지에프홀딩스",
           "score": 23.5,
-          "marketcap": 2272291000000.0,
+          "marketcap": 2272291000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5966,7 +5964,7 @@
           "code": "009970",
           "name": "영원무역홀딩스",
           "score": 23.5,
-          "marketcap": 2263031000000.0,
+          "marketcap": 2263031000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5979,7 +5977,7 @@
           "code": "081660",
           "name": "미스토홀딩스",
           "score": 23.5,
-          "marketcap": 1988289000000.0,
+          "marketcap": 1988289000000,
           "hits": [
             "category:지주",
             "지주",
@@ -5992,7 +5990,7 @@
           "code": "002790",
           "name": "아모레퍼시픽홀딩스",
           "score": 23.5,
-          "marketcap": 1957329000000.0,
+          "marketcap": 1957329000000,
           "hits": [
             "category:지주",
             "지주",
@@ -6005,7 +6003,7 @@
           "code": "030530",
           "name": "원익홀딩스",
           "score": 23.5,
-          "marketcap": 1780335000000.0,
+          "marketcap": 1780335000000,
           "hits": [
             "category:지주",
             "지주",
@@ -6018,7 +6016,7 @@
           "code": "012630",
           "name": "HDC",
           "score": 23.5,
-          "marketcap": 1269511000000.0,
+          "marketcap": 1269511000000,
           "hits": [
             "category:지주",
             "지주",
@@ -6031,7 +6029,7 @@
           "code": "000210",
           "name": "DL",
           "score": 23.5,
-          "marketcap": 927297000000.0,
+          "marketcap": 927297000000,
           "hits": [
             "category:지주",
             "지주",
@@ -6043,8 +6041,8 @@
         {
           "code": "000240",
           "name": "한국앤컴퍼니",
-          "score": 22.0,
-          "marketcap": 2477809000000.0,
+          "score": 22,
+          "marketcap": 2477809000000,
           "hits": [
             "category:지주",
             "지주",
@@ -6056,8 +6054,8 @@
         {
           "code": "005490",
           "name": "POSCO홀딩스",
-          "score": 21.0,
-          "marketcap": 23534733000000.0,
+          "score": 21,
+          "marketcap": 23534733000000,
           "hits": [
             "category:지주",
             "지주",
@@ -6068,8 +6066,8 @@
         {
           "code": "086520",
           "name": "에코프로",
-          "score": 21.0,
-          "marketcap": 11065756000000.0,
+          "score": 21,
+          "marketcap": 11065756000000,
           "hits": [
             "category:지주",
             "지주",
