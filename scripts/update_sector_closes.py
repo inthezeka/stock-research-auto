@@ -29,6 +29,8 @@ def normalize_close(item, rows, provider, asof):
     low = stock.n(last.get("low"))
     if close is None or close <= 0 or high is None or low is None or not low <= close <= high:
         raise ValueError(f"invalid OHLC for {item['code']}: {low}, {close}, {high}")
+    if len(rows) < 65:
+        raise ValueError("fewer than 65 daily bars for technical analysis")
     price = int(round(close))
     listing_price = stock.n(item.get("close"))
     listing_agrees = listing_price is not None and int(round(listing_price)) == price
@@ -39,18 +41,19 @@ def normalize_close(item, rows, provider, asof):
         "status": "DAILY_CLOSE",
         "reference_agrees": listing_agrees,
         "listing_reference_close": int(round(listing_price)) if listing_price is not None else None,
+        "rows": rows[-160:],
     }
 
 
 def get_close(item, asof):
     failures = []
     try:
-        rows, _ = stock.yahoo_chart(item["ticker"], range_="3mo")
+        rows, _ = stock.yahoo_chart(item["ticker"], range_="6mo")
         return normalize_close(item, rows, "Yahoo Finance daily unadjusted close", asof), None
     except Exception as exc:
         failures.append("Yahoo: " + str(exc)[:180])
     try:
-        rows, _ = stock.naver_stock_chart(item["code"], 90)
+        rows, _ = stock.naver_stock_chart(item["code"], 160)
         return normalize_close(item, rows, "Naver Stock daily candle (single source)", asof), None
     except Exception as exc:
         failures.append("Naver: " + str(exc)[:180])
