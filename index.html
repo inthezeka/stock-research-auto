@@ -2383,12 +2383,32 @@ async function srKrxBatchHistory(items,statusEl){
   return out;
 }
 async function srLoadChartRows(item){
+  const asOf=String(item.closeDate||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'');
+  const dateOf=x=>String(x||'').replace(/^(\\d{4})(\\d{2})(\\d{2})$/,'$1-$2-$3');
+  if(item.closeVerified){
+    // All 54 verified stocks must use the very same backend daily candles
+    // that produced their prices, indicators and recommendation ranks.
+    const d=await srFetchJson('data/verified-stock-bars.json?v='+encodeURIComponent(asOf));
+    const hit=d?.items?.[item.code];
+    const rows=srRows(hit?.rows||[]).sort((a,b)=>dateOf(a.date).localeCompare(dateOf(b.date)));
+    const last=rows.at(-1);
+    if(d?.as_of!==asOf||rows.length<65||dateOf(last?.date)!==asOf||Number(last?.close)!==Number(item.close)){
+      throw new Error('종가 검증 오류: 검색 종목 '+item.code+'의 상세분석을 차단했습니다.');
+    }
+    return rows;
+  }
+  // Unverified stocks have no safe close to present as a verified result.
+  // At least reject old candles instead of labelling them today's close.
   try{
     const j=await srFetchJson('https://api.stock.naver.com/chart/domestic/item/'+item.code+'?periodType=dayCandle');
     const rows=srRows(j);
-    if(rows.length>=65)return rows;
+    if(rows.length>=65 && dateOf(rows.at(-1)?.date)===asOf)return rows;
   }catch(_){}
-  return srKrxHistory(item);
+  const backup=await srKrxHistory(item);
+  if(backup.length<65||dateOf(backup.at(-1)?.date)!==asOf){
+    throw new Error('최신 거래일의 일봉을 확인할 수 없어 투자 분석을 중단했습니다.');
+  }
+  return backup;
 }
 function srBlankProfile(item){
   const template=profileGroups.KOSPI?.[0]||stockProfiles?.[0]||{},keys=Object.keys(template.text||{}),text={};keys.forEach(k=>text[k]='—');
