@@ -2384,7 +2384,7 @@ async function srKrxBatchHistory(items,statusEl){
 }
 async function srLoadChartRows(item){
   const asOf=String(item.closeDate||stockUniverseMeta?.as_of||autoData?.meta?.market_date||'');
-  const dateOf=x=>String(x||'').replace(/^(\\d{4})(\\d{2})(\\d{2})$/,'$1-$2-$3');
+  const dateOf=x=>String(x||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
   if(item.closeVerified){
     // All 54 verified stocks must use the very same backend daily candles
     // that produced their prices, indicators and recommendation ranks.
