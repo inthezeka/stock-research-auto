@@ -3339,6 +3339,138 @@ function srApplyPeerRelativeScoring(reports){
   return reports;
 }
 
+
+const SR_SECTOR_SCORE_MODELS={"semi_memory_ai":{"label":"반도체 / 메모리 / AI Chip","items":[["Forward 매출 / EPS 성장",15],["HBM / AI / High-end Mix",15],["ASP / Bit Growth",10],["재고 / 가동률 / Supply Balance",10],["고객 / End Demand / CSP CAPEX",10],["OPM / ROIC",10],["Earnings Revision",10],["기술력 / 점유율 / 차세대 제품",10],["Valuation",10]]},"semi_materials":{"label":"반도체 소재","items":[["Forward 실적 성장",15],["고객 Qualification",15],["고객 Fab CAPEX / 가동률",10],["국산화 / 점유율 확대",10],["신규제품 / 신규고객",10],["OPM / ROIC",10],["FCF / 재무",5],["Earnings Revision",10],["Valuation",10],["기술 진입장벽",5]]},"semi_parts":{"label":"반도체 부품","items":[["Forward 성장",15],["Recurring / 소모품 매출",15],["장비당 Content 증가",10],["고객 점유율",10],["Qualification / 기술장벽",10],["Margin / ROIC",10],["신규제품 / 신규고객",10],["Earnings Revision",10],["Valuation",10]]},"semi_equipment":{"label":"반도체 장비","items":[["신규수주 / Backlog",20],["고객사 CAPEX",15],["신규장비 Qualification",15],["Forward 매출 / OP 성장",10],["고객 다변화",10],["OPM / Service Mix",10],["Earnings Revision",10],["Valuation",10]]},"pcb_packaging":{"label":"PCB / 기판 / 패키징","items":[["Forward 매출 / EPS 성장",15],["AI Server / High-end Exposure",15],["ASP / 층수 / Product Mix",10],["고객 Qualification / 점유율",10],["가동률 / CAPA",10],["수주 / Backlog",10],["Yield / 생산성",5],["Earnings Revision",10],["Valuation",10],["FCF / 재무",5]]},"it_hardware":{"label":"전자부품 / IT Hardware","items":[["Forward 성장",15],["High-end Product Mix",15],["ASP",10],["End Market 수요",10],["고객다변화",10],["기술 / 점유율",10],["OPM / ROIC",10],["Earnings Revision",10],["Valuation",10]]},"display_oled":{"label":"디스플레이 / OLED","items":[["Panel / 고객 가동률",15],["IT OLED / 신규 Application",15],["고객 CAPEX",15],["Forward 실적",10],["Content 증가",10],["ASP / 공급 Balance",10],["기술 / Qualification",10],["Earnings Revision",5],["Valuation",10]]},"power_grid":{"label":"전력기기 / 전력망 / 전선","items":[["Backlog / Book-to-Bill",20],["북미 / 유럽 Grid 수요",15],["AI Data Center Exposure",10],["CAPA / Lead Time / 공급부족",10],["Forward 실적",10],["Margin / Pricing Power",10],["Earnings Revision",10],["Valuation",10],["FCF",5]]},"auto":{"label":"자동차 / 부품","items":[["글로벌 판매량",15],["ASP / Product Mix",15],["Incentive / Inventory",10],["HEV / EV / SDV 경쟁력",10],["Forward EPS",10],["OPM / ROIC",10],["현금흐름 / 주주환원",10],["Earnings Revision",5],["Valuation",15]]},"shipbuilding":{"label":"조선 / 조선기자재","items":[["수주잔고 Quality",20],["신규수주 / Book-to-Bill",15],["선가 / 고선가 매출인식",15],["LNG / 암모니아 Mix",10],["원가 / 생산성",10],["Forward Margin",10],["Earnings Revision",10],["Valuation",10]]},"defense_space":{"label":"방산 / 우주항공","items":[["확정 Backlog",20],["해외 수출계약",15],["후속수주 / 국가다변화",10],["생산 CAPA / 납기",10],["Export Margin",10],["MRO / Recurring",5],["Forward EPS",10],["Earnings Revision",10],["Valuation",10]]},"robot":{"label":"로봇 / 자동화","items":[["실제 매출 성장",15],["실제 수주",15],["대기업 / 반복고객",10],["Gross Margin / Unit Economics",10],["CAPA / 양산능력",10],["기술 Moat",15],["Forward EPS",5],["Earnings Revision",5],["Valuation",10],["현금 / Cash Runway",5]]},"construction":{"label":"건설 / 인프라 / 플랜트","items":[["신규수주",15],["수주잔고",15],["프로젝트 Margin / 원가율",15],["PF / 미분양 / 우발채무",15],["해외 / EPC / Data Center",10],["FCF / Cash Conversion",10],["Forward EPS",5],["Earnings Revision",5],["Valuation",10]]},"industrial":{"label":"기계 / 산업재","items":[["Order Intake",15],["Backlog",15],["고객산업 CAPEX",15],["ASP / 가동률",10],["Aftermarket / Service",10],["Forward EPS",10],["ROIC / Margin",10],["Earnings Revision",5],["Valuation",10]]},"battery_ess":{"label":"2차전지 / ESS","items":[["가동률",15],["장기공급계약 / Backlog",15],["EV 수요",10],["ESS 수요",10],["ASP / 원재료 Spread",10],["차세대 기술",10],["Forward 실적",10],["Earnings Revision",5],["재무 / FCF",5],["Valuation",10]]},"nuclear_smr":{"label":"원전 / SMR","items":[["확정수주",20],["Backlog",15],["해외원전 수출",15],["SMR 상용화",10],["CAPA / 공급망",10],["유지보수 / Recurring",10],["Forward EPS",5],["Earnings Revision",5],["Valuation",10]]},"energy_lng_refining":{"label":"에너지 / LNG / 정유 / 신재생","variants":{"정유":[["Refining Margin",20],["Crack Spread",15],["가동률",10],["Inventory Effect",10],["석유화학 Spread",10],["FCF / 배당",15],["Forward EPS",5],["Revision",5],["Valuation",10]],"LNG / GAS":[["장기계약",20],["LNG Spread",15],["Capacity / 가동률",10],["Trading Margin",10],["신규 Project",10],["FCF",15],["Forward EPS",5],["Revision",5],["Valuation",10]],"신재생":[["Backlog / PPA",20],["Project IRR",15],["설치량 성장",15],["금리 / Financing Cost",10],["원가 / 공급망",10],["CAPA",10],["Revision",5],["Valuation",10],["FCF",5]]}},"materials":{"label":"철강 / 소재 / 화학","items":[["제품 Spread",20],["중국 Supply",15],["Inventory Cycle",10],["가동률",10],["원재료 가격",10],["Normalized Earnings",10],["재무 / FCF",10],["Earnings Revision",5],["Valuation",10]]},"nonferrous":{"label":"비철금속 / 구리 / 희토류","items":[["Commodity Price Exposure",15],["Cost Curve",15],["생산량 / 매장량",15],["증설",10],["공급망 / 지정학",10],["Downstream Value-add",10],["FCF",10],["Revision",5],["Valuation",10]]},"environment":{"label":"환경 / 폐기물 / 수처리","items":[["장기계약 / Recurring",20],["처리량 / 가동률",15],["허가 / 규제진입장벽",15],["Pricing Power",10],["FCF",10],["M&A / 신규시설",10],["Forward 성장",10],["Valuation",10]]},"bio":{"label":"바이오 / 제약","items":[["Pipeline / rNPV",25],["임상단계 / 데이터 Quality",20],["임상 성공확률",10],["Cash Runway",10],["기술이전 / Partner",10],["Peak Sales / TAM",10],["특허 / 경쟁약",5],["Valuation",10]]},"medical_device":{"label":"의료기기 / 헬스케어","items":[["Procedure Growth",15],["Installed Base",15],["Consumable / Recurring Revenue",15],["해외허가 / 지역확장",10],["Gross Margin",10],["신제품 Pipeline",10],["Forward EPS",10],["Revision",5],["Valuation",10]]},"beauty":{"label":"화장품 / 뷰티","items":[["해외매출 성장",20],["국가 / 채널다변화",10],["Brand / ODM Momentum",15],["SKU / 고객 증가",10],["Marketing Efficiency",10],["Gross Margin",10],["재고",5],["Forward EPS",5],["Revision",5],["Valuation",10]]},"food":{"label":"음식료 / 소비재","items":[["Volume Growth",15],["ASP",10],["원재료 Spread",15],["해외매출 성장",15],["브랜드 / 시장점유율",10],["유통채널",5],["FCF",10],["Forward EPS",5],["Revision",5],["Valuation",10]]},"entertainment":{"label":"엔터 / 미디어","variants":{"엔터":[["Artist IP",20],["Concert / Tour",15],["Album / Streaming",10],["MD / 해외매출",10],["신인 Pipeline",10],["재계약 Risk",10],["Forward EPS",5],["Revision",5],["Valuation",15]],"미디어":[["Content Pipeline",20],["IP Ownership",15],["OTT / 해외판매",15],["제작비 / ROI",10],["광고 / 플랫폼",10],["Forward EPS",10],["Revision",5],["Valuation",15]]}},"game":{"label":"게임","items":[["신작 Pipeline",20],["DAU / MAU",10],["Retention",10],["ARPU / Paying User",10],["글로벌 출시",10],["IP 경쟁력",10],["개발비 / ROI",10],["Forward EPS",5],["Revision",5],["Valuation",10]]},"travel":{"label":"여행 / 레저 / 항공","variants":{"호텔":[["Occupancy",15],["ADR",15],["RevPAR",15],["예약 / 관광객",10],["Margin",10],["CAPA",5],["Forward EPS",10],["Revision",5],["Valuation",15]],"카지노":[["Drop Amount",20],["방문객",15],["Hold Rate",10],["VIP / Mass Mix",10],["CAPA",10],["규제",5],["Forward EPS",10],["Revision",5],["Valuation",15]],"항공":[["RPK",15],["ASK",10],["Load Factor",15],["Yield",15],["유가",10],["환율",5],["Forward EPS",10],["Revision",5],["Valuation",15]]}},"retail":{"label":"유통 / 리테일 / 커머스","items":[["Same Store Sales / GMV",20],["Gross Margin / Take Rate",15],["Inventory Turnover",10],["Online / Offline Mix",10],["Store Economics",10],["FCF",10],["Forward EPS",10],["Revision",5],["Valuation",10]]},"finance":{"label":"금융 / 증권","variants":{"은행":[["ROE",20],["CET1",15],["NIM",15],["Credit Cost / NPL",15],["주주환원",15],["PBR / ROE Valuation",15],["Earnings Revision",5]],"증권":[["Brokerage",15],["IB / ECM / DCM",15],["Trading Income",10],["PF Risk",15],["ROE",15],["자본건전성",10],["주주환원",10],["PBR / ROE Valuation",5],["Revision",5]]}},"insurance":{"label":"보험","items":[["CSM",20],["신계약 CSM 성장",15],["K-ICS",15],["손해율 / Combined Ratio",10],["ROE",10],["주주환원",15],["PBR / ROE Valuation",10],["Revision",5]]},"platform":{"label":"인터넷 / 플랫폼","items":[["MAU / Engagement",15],["ARPU / Monetization",15],["광고 성장",10],["Commerce Growth",10],["AI Monetization",15],["Operating Leverage",10],["FCF",10],["Revision",5],["Valuation",10]]},"software_cloud_ai":{"label":"소프트웨어 / Cloud / AI SW","items":[["ARR / Revenue Growth",20],["NRR / Retention",15],["Gross Margin",10],["FCF Margin",10],["AI Monetization",15],["Enterprise Pipeline",10],["Rule of 40",5],["Revision",5],["Valuation",10]]},"telecom_network":{"label":"통신 / 네트워크","variants":{"통신사":[["ARPU",15],["Churn",10],["FCF",15],["CAPEX Efficiency",10],["배당 / 주주환원",20],["AI / IDC / B2B 성장",15],["Revision",5],["Valuation",10]],"네트워크 장비":[["신규수주",20],["통신사 CAPEX",15],["고객다변화",15],["5G / 6G / AI Network",15],["Margin",10],["Forward EPS",10],["Revision",5],["Valuation",10]]}},"security_quantum":{"label":"보안 / 양자","items":[["Recurring Revenue",15],["Customer Retention",10],["Enterprise / 공공 수주",15],["보안 수요 / 규제",15],["기술 / 특허",15],["Forward 성장",10],["FCF",5],["Revision",5],["Valuation",10]]},"shipping_logistics":{"label":"해운 / 물류","variants":{"해운":[["Freight Rate",20],["글로벌 Capacity / Orderbook",15],["선박 가동률",10],["Fuel Cost",10],["장기계약",10],["FCF",15],["주주환원",5],["Revision",5],["Valuation",10]],"물류":[["물동량 성장",20],["Yield",10],["Network 가동률",15],["자동화 / 원가효율",10],["장기계약",15],["고객다변화",10],["FCF",10],["Revision",5],["Valuation",5]]}},"holding_conglomerate":{"label":"지주 / 복합기업","items":[["SOTP / NAV 할인율",25],["핵심 자회사 NAV 성장",20],["자체사업 성장",10],["현금흐름 / 순차입금",10],["Capital Allocation",10],["주주환원",10],["사업재편 / Catalyst",5],["Earnings Revision",5],["Governance",5]]}};
+const SR_SECTOR_VARIANT_PATTERNS={
+  energy_lng_refining:[
+    ['신재생',/태양광|풍력|신재생|ppa|renewable|연료전지|수소/i],
+    ['LNG / GAS',/\blng\b|\bgas\b|가스|도시가스/i],
+    ['정유',/정유|refin|crack spread|석유화학/i]
+  ],
+  entertainment:[
+    ['미디어',/미디어|방송|영화|드라마|콘텐츠 제작|ott|제작사/i],
+    ['엔터',/엔터|아티스트|artist|콘서트|concert|album|음원|아이돌/i]
+  ],
+  travel:[
+    ['항공',/항공|airline|rpk|ask|load factor|여객기|운임/i],
+    ['카지노',/카지노|casino|drop amount|hold rate|vip|mass/i],
+    ['호텔',/호텔|hotel|occupancy|adr|revpar|리조트|여행/i]
+  ],
+  finance:[
+    ['증권',/증권|brokerage|브로커리지|ib\b|ecm|dcm|trading income/i],
+    ['은행',/은행|bank|금융지주|nim|cet1|npl|credit cost|카드/i]
+  ],
+  telecom_network:[
+    ['네트워크 장비',/네트워크 장비|통신장비|광통신|5g|6g|radio|안테나|중계기/i],
+    ['통신사',/통신사|통신 서비스|arpu|churn|가입자|idc/i]
+  ],
+  shipping_logistics:[
+    ['물류',/물류|logistics|택배|parcel|3pl|창고|warehouse/i],
+    ['해운',/해운|shipping|컨테이너선|벌크|tanker|freight|운임/i]
+  ]
+};
+function srResolveSectorScoreModel(themeKey,text){
+  const cfg=SR_SECTOR_SCORE_MODELS[themeKey]||SR_SECTOR_SCORE_MODELS.industrial;
+  if(!cfg.variants)return{themeKey,label:cfg.label,variant:'',items:cfg.items||[]};
+  const pats=SR_SECTOR_VARIANT_PATTERNS[themeKey]||[];
+  const src=String(text||'');
+  for(const row of pats){
+    if(row[1].test(src)&&cfg.variants[row[0]])return{themeKey,label:cfg.label,variant:row[0],items:cfg.variants[row[0]]};
+  }
+  const first=Object.keys(cfg.variants)[0];
+  return{themeKey,label:cfg.label,variant:first,items:cfg.variants[first]||[],fallbackVariant:true};
+}
+function srModelRaw(detail,key){
+  const x=(detail||[]).find(r=>r.key===key);
+  return x?Number(x.score):null;
+}
+function srModelAvg(){
+  const vals=[...arguments].filter(Number.isFinite);
+  return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;
+}
+function srModelTokens(label){
+  const stop=new Set(['forward','growth','margin','revenue','quality','score','the','and','mix','value','market','product','customer','income','actual','price']);
+  return String(label||'').toLowerCase().replace(/[()]/g,' ').split(/[\s\/·,+-]+/).map(x=>x.trim()).filter(x=>x.length>=2&&!stop.has(x));
+}
+function srModelSectorFactor(themeKey,label){
+  try{
+    const row=(typeof srSectorFreshRows==='function'?srSectorFreshRows():[]).find(x=>x.key===themeKey||x.name===(srFundThemeByKey?.(themeKey)?.label||''));
+    if(!row)return null;
+    const l=String(label||'').toLowerCase();
+    let k='';
+    if(/revision/.test(l))k='revision';
+    else if(/capex|수주|backlog|order|project|증설|capa|설치량/.test(l))k='capex';
+    else if(/재고|inventory|supply|공급|가동률|capacity|lead time/.test(l))k='supply';
+    else if(/asp|spread|margin|pricing|yield|운임|원가|cost|refining|crack/.test(l))k='price';
+    else if(/수요|판매량|volume|mau|dau|traffic|방문객|예약|rpk|gmv|procedure|매출 성장/.test(l))k='demand';
+    else if(/기술|moat|ai|hbm|pipeline|ip|특허|경쟁력|상용화|구조/.test(l))k='structural';
+    else if(/규제|정책|catalyst|국가다변화|지역확장|허가/.test(l))k='catalyst';
+    const v=k?Number(row?.factors?.[k]?.score):NaN;
+    return Number.isFinite(v)?srClamp(v/20,0,5):null;
+  }catch(e){return null}
+}
+function srModelQualEvidenceScore(label,text,themeKey){
+  const src=String(text||'').toLowerCase(),tokens=srModelTokens(label);
+  const hits=tokens.filter(t=>src.includes(t)).length;
+  let q=hits>=4?4.5:hits===3?4:hits===2?3.5:hits===1?3:2.5;
+  const positive=/확대|증가|성장|개선|상승|회복|우수|강화|확정|장기계약|수주잔고|점유율 확대|신규 고객|고부가|공급 부족|가격 전가|글로벌 1위|선도/i.test(src);
+  const negative=/감소|둔화|악화|하락|지연|과잉|부진|이탈|미분양|우발채무|손해율 상승|재계약 리스크|규제 리스크|원가 상승|재고 증가/i.test(src);
+  if(positive)q+=.5;if(negative)q-=.5;
+  const rules=SR_SECTOR_KPI_RULES[srFundRuleKey(themeKey)]||[];
+  let best=null,bestOverlap=0;
+  const lt=new Set(tokens);
+  for(const row of rules){
+    const rt=srModelTokens(row[0]);
+    const overlap=rt.filter(t=>lt.has(t)).length;
+    if(overlap>bestOverlap){bestOverlap=overlap;best=row}
+  }
+  if(best&&bestOverlap>0)q=(q+srSectorKpiScore(src,best))/2;
+  const sf=srModelSectorFactor(themeKey,label);
+  if(Number.isFinite(sf))q=q*.7+sf*.3;
+  return srRoundHalf(srClamp(q,0,5));
+}
+function srSectorModelItemScore(label,ctx){
+  const l=String(label||'').toLowerCase(),d=ctx.detail||[];
+  const revenue=srModelRaw(d,'revenue'),opGrowth=srModelRaw(d,'opGrowth'),epsGrowth=srModelRaw(d,'epsGrowth');
+  const margin=srModelRaw(d,'margin'),roe=srModelRaw(d,'roe'),pricing=srModelRaw(d,'pricing');
+  const fcf=srModelRaw(d,'fcf'),debt=srModelRaw(d,'debt'),liquidity=srModelRaw(d,'liquidity');
+  const revision=srModelRaw(d,'revision'),valuation=srModelRaw(d,'sectorValuation');
+  const moat=srModelAvg(srModelRaw(d,'barrier'),srModelRaw(d,'lockin'));
+  const q=(label2)=>srModelQualEvidenceScore(label2,ctx.text,ctx.themeKey);
+  let score=null,reason='';
+
+  if(/valuation|pbr|nav|sotp/.test(l)){score=valuation;reason='Sector별 Valuation 원칙 · Forward/Peer/Historical 자료 범위 내 평가';}
+  else if(/revision/.test(l)){score=revision;reason='최근 Forward EPS/영업이익 Consensus 변화 기준';}
+  else if(/forward.*매출.*eps|forward 실적 성장|forward 성장|forward 실적|arr.*revenue growth/.test(l)){score=srModelAvg(revenue,opGrowth,epsGrowth);reason='Forward 매출·영업이익·EPS를 과거 실적보다 우선 평가';}
+  else if(/forward.*매출.*op/.test(l)){score=srModelAvg(revenue,opGrowth);reason='Forward 매출·영업이익 성장 기준';}
+  else if(/forward eps/.test(l)){score=epsGrowth;reason='Forward EPS 성장/흑자전환 기준';}
+  else if(/실제 매출 성장|해외매출 성장|volume growth|물동량 성장|procedure growth|광고 성장|commerce growth|설치량 성장|자체사업 성장|nav 성장/.test(l)){score=srModelAvg(revenue,q(label));reason='실제/Forward 성장률 + 해당 KPI Evidence';}
+  else if(/opm|roic|gross margin|unit economics|forward margin|trading margin|export margin|operating leverage|project margin|margin/.test(l)){score=srModelAvg(margin,roe,pricing,q(label));reason='Margin 추세·ROE/ROIC·Pricing Power와 Sector Evidence';}
+  else if(/^roe$|roe \/|\/ roe/.test(l)){score=roe;reason='ROE/ROIC 수익성 기준';}
+  else if(/fcf|현금흐름|cash runway|자본건전성|순차입금|capital allocation|주주환원|배당/.test(l)){score=srModelAvg(fcf,debt,liquidity,q(label));reason='현금흐름·재무건전성·자본배분 Evidence';}
+  else if(/기술|moat|점유율|qualification|특허|ip 경쟁력|ip ownership|진입장벽|브랜드|경쟁력|허가/.test(l)){score=srModelAvg(moat,q(label));reason='기술/인증/점유율/고객 Lock-in 및 Sector Evidence';}
+  else if(/asp|pricing power|spread|yield|freight rate|crack|refining|원재료|cost curve|선가|가격|take rate|adr|revpar/.test(l)){score=srModelAvg(pricing,q(label));reason='ASP·Spread·Pricing Power·원가 구조 Evidence';}
+  else if(/재고|inventory|가동률|capacity|capa|supply|공급|lead time|생산성|yield \/ 생산성/.test(l)){score=q(label);reason='가동률·재고·공급 Balance·CAPA Evidence';}
+  else if(/수주|backlog|book-to-bill|order|pipeline|project|ppa|장기계약|recurring|소모품|retention|installed base|고객|mau|dau|arpu|churn|nim|cet1|npl|csm|k-ics|occupancy|rpk|ask|load factor|hold rate|drop amount|gmv|store economics|rule of 40|governance|regulation|규제/.test(l)){score=q(label);reason='해당 Sector 핵심 KPI의 공식/IR/산업 Evidence 기준';}
+  else {score=srModelAvg(q(label),moat);reason='Sector Specific KPI Evidence 기준';}
+
+  if(!Number.isFinite(score))score=2.5;
+  if(ctx.themeKey==='security_quantum'&&/양자|quantum/i.test(ctx.text)&&!/양자.{0,20}(매출|계약|수주)|quantum.{0,20}(revenue|contract|order)/i.test(ctx.text)&&!/revision|valuation|fcf/i.test(l)){
+    score=Math.min(score,2.5);reason+=' · 양자 관련 실제 매출/계약 미확인 → KPI 상한 50%';
+  }
+  if(ctx.themeKey==='robot'&&/휴머노이드|humanoid/i.test(ctx.text)&&!/실제 매출|매출 증가|신규수주|수주잔고|계약/i.test(ctx.text)&&!/revision|valuation|cash|현금|forward eps/i.test(l)){
+    score=Math.min(score,3);reason+=' · 테마만 있고 실제 매출/수주 미확인 → 고득점 제한';
+  }
+  return{score:srRoundHalf(srClamp(score,0,5)),reason};
+}
+function srBuildSectorModelDetail(themeKey,text,legacyDetail){
+  const resolved=srResolveSectorScoreModel(themeKey,text);
+  const rows=resolved.items.map((it,i)=>{
+    const label=it[0],weight=Number(it[1]||0),r=srSectorModelItemScore(label,{themeKey,text,detail:legacyDetail});
+    return{group:'sectorModel',key:'model'+(i+1),label,weight,score:r.score,earned:srWeightedSub(r.score,weight),reason:r.reason};
+  });
+  return{resolved,rows,max:rows.reduce((a,b)=>a+b.weight,0)};
+}
 function srFundamentalScore(report,item,themeKey){
   if(!report?.quant)return null;
   themeKey=themeKey||srInferFundThemeKey(report);
