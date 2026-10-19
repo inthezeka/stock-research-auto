@@ -159,6 +159,18 @@ if meta.get("status")=="ok":
             fail("universe trading date differs from market data date")
         if int(universe.get("verified_close_count") or 0) != len(active_codes):
             fail("universe verified-close coverage mismatch")
+        # Deep-dive charts must match the verified prices used in Theme Radar.
+        history = json.loads((ROOT / "data" / "verified-stock-bars.json").read_text(encoding="utf-8"))
+        hist_items = history.get("items") or {}
+        if history.get("as_of") != market_day or set(hist_items) != active_codes:
+            fail("verified chart history coverage/date mismatch")
+        for code in active_codes:
+            hh = hist_items.get(code) or {}
+            rows = hh.get("rows") or []
+            last = rows[-1] if rows else {}
+            uni = by_code.get(code) or {}
+            if len(rows) < 65 or last.get("date") != market_day or last.get("close") != uni.get("close"):
+                fail(f"verified chart/close mismatch for {code}")
         for code in active_codes:
             row = by_code.get(code) or {}
             if row.get("close_status") != "VERIFIED" or row.get("close_date") != market_day:
