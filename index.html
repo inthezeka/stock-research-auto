@@ -486,7 +486,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   <div class="section-head">
     <div>
       <h2 class="section-title">①-1 Market Sentiment · 공포탐욕지수</h2>
-      <p class="section-desc">CNN Fear &amp; Greed와 국내 KOSPI·KOSDAQ 심리를 분리해 비교합니다. 국내 점수는 각 시장의 추세·변동성·외국인/기관 수급·환율을 개별 반영합니다.</p>
+      <p class="section-desc">CNN Fear &amp; Greed와 국내 KOSPI·KOSDAQ 심리를 분리해 비교합니다. 국내 점수는 각 시장의 5D/20D/60D 추세·변동성·모멘텀·외국인/기관 수급·환율을 개별 반영합니다.</p>
     </div>
     <span class="score-pill">SENTIMENT OVERLAY</span>
   </div>
@@ -551,7 +551,10 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
       <div class="sent-method" id="kosdaqSentMethod">KOSDAQ 개별 심리를 계산합니다.</div>
     </div>
   </div>
-  <p class="note" style="margin-top:10px">국내 KOSPI·KOSDAQ 점수는 각 시장의 20D/60D 추세, 20D 실현변동성, 5D 모멘텀, 외국인·기관 수급, USD/KRW를 조합한 자체 계산값입니다.</p>
+  <div class="note" style="margin-top:10px;line-height:1.7">
+    <div>국내 KOSPI·KOSDAQ 점수는 각 시장의 <b>5D 추세, 20D/60D 추세, 20D 실현변동성, 5D 모멘텀, 외국인·기관 수급, USD/KRW</b>를 조합한 자체 계산값입니다.</div>
+    <div style="margin-top:4px"><b>계산식</b> = 5D 추세 15% + 20D 추세 25% + 60D 추세 15% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용</div>
+  </div>
 </section>
 
 <section id="sector" class="section-track" data-name="SECTOR">
@@ -1457,8 +1460,8 @@ function renderSentiment(s){
   srRenderFlow('kospi',kospi,autoData?.text?.kospiFlow);
   srRenderFlow('kosdaq',kosdaq,autoData?.text?.kosdaqFlow);
 
-  const km=document.getElementById('kospiSentMethod');if(km)km.textContent=kospi.method||'KOSPI 추세·변동성·수급·환율 기반 자체 계산 [AI]';
-  const qm=document.getElementById('kosdaqSentMethod');if(qm)qm.textContent=kosdaq.method||'KOSDAQ 추세·변동성·수급·환율 기반 자체 계산 [AI]';
+  const km=document.getElementById('kospiSentMethod');if(km)km.textContent=kospi.method||'KOSPI Sentiment v2 · 5D/20D/60D 추세·변동성·모멘텀·수급·환율 기반 자체 계산 [AI]';
+  const qm=document.getElementById('kosdaqSentMethod');if(qm)qm.textContent=kosdaq.method||'KOSDAQ Sentiment v2 · 5D/20D/60D 추세·변동성·모멘텀·수급·환율 기반 자체 계산 [AI]';
 }
 
 function srNum(v){
