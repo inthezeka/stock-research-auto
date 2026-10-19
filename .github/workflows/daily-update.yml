@@ -3,7 +3,7 @@ name: Daily stock research update + GitHub Pages
 on:
   schedule:
     - cron: "0 22 * * *" # 07:00 KST · overnight refresh
-    - cron: "30 8 * * 1-5" # 17:30 KST · after Korea market close
+    - cron: "45 6 * * 1-5" # 15:45 KST · collect 15:30 Korea market closing prices
     - cron: "15 22 1 * *" # 07:15 KST on the 1st · monthly theme refresh using prior month close
   workflow_dispatch:
   push:
