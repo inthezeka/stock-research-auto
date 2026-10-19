@@ -1324,7 +1324,7 @@ def fetch_us_sentiment(previous=None):
 
 
 def _compute_index_sentiment(market, index_key, label):
-    """Index-specific Korea Sentiment v2 with short trend, medium trend, volatility and flow [AI]."""
+    """Index-specific Korea Sentiment v3 with recency-weighted 5D > 20D > 60D trend hierarchy [AI]."""
     rows = (market.get(index_key) or {}).get("rows") or []
     fx_rows = (market.get("usdkrw") or {}).get("rows") or []
     closes = [x["close"] for x in rows]
@@ -1396,21 +1396,21 @@ def _compute_index_sentiment(market, index_key, label):
             "key": "trend5",
             "label": f"{label} 5D 추세",
             "score": round(clamp(trend5_score), 1),
-            "weight": 15,
+            "weight": 25,
             "value": f"P/MA5 {position_vs_ma5:+.2f}% · MA5 {ma5_slope:+.2f}%",
         },
         {
             "key": "trend20",
             "label": f"{label} 20D 추세",
             "score": round(clamp(trend20_score), 1),
-            "weight": 25,
+            "weight": 20,
             "value": signed(r20[-1], 2),
         },
         {
             "key": "trend60",
             "label": f"{label} 60D 추세",
             "score": round(clamp(trend60_score), 1),
-            "weight": 15,
+            "weight": 10,
             "value": signed(r60[-1], 2),
         },
         {
@@ -1469,9 +1469,9 @@ def _compute_index_sentiment(market, index_key, label):
         "raw_score": round(clamp(raw_score), 1),
         "rating": sentiment_label(score),
         "timestamp": NOW.isoformat(),
-        "source": f"{label}·USD/KRW·수급 · Sentiment v2 자체계산 [AI]",
+        "source": f"{label}·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": (
-            f"{label} 5D 추세 15% + 20D 추세 25% + 60D 추세 15% + "
+            f"{label} 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + "
             "20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · "
             "20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용"
         ),
@@ -1533,7 +1533,7 @@ def compute_korea_sentiment(market):
         "rating": sentiment_label(score),
         "timestamp": NOW.isoformat(),
         "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
-        "method": "KOSPI와 KOSDAQ을 각각 5D/20D/60D 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
+        "method": "KOSPI와 KOSDAQ을 각각 최근성 우선(5D > 20D > 60D) 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
         "kospi": results["kospi"],
         "kosdaq": results["kosdaq"],
         "components": [],
@@ -3557,7 +3557,7 @@ def main():
         "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
         "kosdaq_selection_policy": "Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading Score 40% [AI].",
         "kospi_selection_policy": "Watchlist 전체 재스크리닝 · Fundamental/Catalyst 60% + Trading Score 40% · Trading 50 미만 기본 제외 · 70 이상 우선 [AI].",
-        "korea_sentiment_policy": "Sentiment v2 · 5D 추세 15% + 20D 추세 25% + 60D 추세 15% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
+        "korea_sentiment_policy": "Sentiment v3 · 최근성 우선 5D > 20D > 60D · 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
         "theme_selection_policy": "테마 추천 3종목은 월 종가 확정 후 월 1회 재평가. Base Fundamental/Catalyst 50% + Trading Score 35% + 20D/60D Momentum 15% [AI].",
         "theme_selection_month": (md[:7] if refresh_theme_selection and md else prev_theme_month),
         "theme_selection_as_of": (md if refresh_theme_selection and md else (d.get("meta") or {}).get("theme_selection_as_of")),
