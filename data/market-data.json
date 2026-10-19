@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-19T21:41:49.457252+09:00",
+    "generated_at": "2026-10-19T21:47:00.768475+09:00",
     "market_date": "2026-10-19",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -57,8 +57,8 @@
         "source": "Naver Stock world-index polling v2"
       },
       "usdkrw": {
-        "value": 1330.9,
-        "change_pct": -0.53,
+        "value": 1331.1,
+        "change_pct": -0.52,
         "date": "2026-10-19",
         "source": "Naver Stock majors RPC"
       },
@@ -73,7 +73,7 @@
     "korea_sentiment_policy": "Sentiment v3 · 최근성 우선 5D > 20D > 60D · 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
     "stock_universe": {
       "as_of": "2026-10-19",
-      "generated_at": "2026-10-19T21:41:49.457252+09:00",
+      "generated_at": "2026-10-19T21:47:00.768475+09:00",
       "count": 2675,
       "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop"
     },
@@ -84,7 +84,7 @@
     "theme_selection_refreshed_this_run": false,
     "sector_cycle": {
       "as_of": "2026-10-19",
-      "generated_at": "2026-10-19T21:41:49.457252+09:00",
+      "generated_at": "2026-10-19T21:47:00.768475+09:00",
       "sector_count": 36,
       "theme_count": 36,
       "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
@@ -101,13 +101,13 @@
     "nasdaq": "26,140",
     "nasdaqDelta": "-2.15% · 10-16",
     "fx": "1,331",
-    "fxDelta": "-0.53% · 10-19",
+    "fxDelta": "-0.52% · 10-19",
     "us10y": "5.1%",
     "us10yDelta": "+0.08% · 10-19",
     "flowState": "기관 매수 / 외인 매수",
     "flowDesc": "기관 +5,302억 · 외인 +947억",
     "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-    "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+    "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
     "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
     "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
     "sector1": "AI 서버 부품 / 메모리",
@@ -1837,7 +1837,7 @@
         "nasdaq": "26,140",
         "nasdaqDelta": "-2.15% · 10-16",
         "fx": "1,331",
-        "fxDelta": "-0.53% · 10-19",
+        "fxDelta": "-0.52% · 10-19",
         "us10y": "5.1%",
         "us10yDelta": "+0.08% · 10-19",
         "flowState": "기관 매수 / 외인 매수",
@@ -1845,7 +1845,7 @@
         "kospiFlow": "외국인 +947억 · 기관 +5,302억",
         "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
         "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+        "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -1935,7 +1935,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-        "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+        "fetched_at": "2026-10-19T21:47:00.768475+09:00"
       },
       "valuation_snapshot": {
         "per": 21.35,
@@ -2134,7 +2134,7 @@
         "stochScoreState": "50~70 상승 우위",
         "maGapInfo": "MA20 괴리 +0.2% · MA60 괴리 +1.5% [AI]",
         "volumeInfo": "20D 평균 대비 0.75배 [AI]",
-        "atrInfo": "ATR14 5,586원 [AI]",
+        "atrInfo": "ATR14 5,579원 [AI]",
         "gapInfo": "시가 Gap +0.00% [AI]",
         "turnoverInfo": "193억원",
         "high52Info": "52주 고점 165,100원 [AI]",
@@ -2152,7 +2152,7 @@
         "tpTarget1Basis": "저항선 [AI]",
         "tpTarget2": "145,000원 [AI]",
         "tpTarget2Basis": "직전 20일 고점 [AI]",
-        "tpStop": "129,347원 [AI]",
+        "tpStop": "129,351원 [AI]",
         "tpStopBasis": "지지 기준 - 0.5 ATR [AI]",
         "tradingConclusion": "Trading Score 65/100 | 추세: 횡보 | 모멘텀: 상승 전환 가능성 | 과열도: 보통 | 전략: 관망 [AI]",
         "tradingEntryCondition": "MA20 방향과 MACD·Stochastic 동조가 확인될 때까지 신규 진입은 보수적으로 접근. [AI]",
@@ -2183,7 +2183,7 @@
         "nasdaq": "26,140",
         "nasdaqDelta": "-2.15% · 10-16",
         "fx": "1,331",
-        "fxDelta": "-0.53% · 10-19",
+        "fxDelta": "-0.52% · 10-19",
         "us10y": "5.1%",
         "us10yDelta": "+0.08% · 10-19",
         "flowState": "기관 매수 / 외인 매수",
@@ -2191,7 +2191,7 @@
         "kospiFlow": "외국인 +947억 · 기관 +5,302억",
         "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
         "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+        "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -2203,7 +2203,7 @@
         "currentPrice": "138500",
         "buy1": "138265",
         "buy2": "136467",
-        "stopPrice": "129347",
+        "stopPrice": "129351",
         "target1": "142780",
         "target2": "145000",
         "tradePeriod": "",
@@ -2281,7 +2281,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-        "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+        "fetched_at": "2026-10-19T21:47:00.768475+09:00"
       },
       "valuation_snapshot": {
         "per": 33.17,
@@ -2394,9 +2394,9 @@
         "pbr": "0.78x",
         "evebitda": "—",
         "valEps": "882원 · 2026Q3E",
-        "targetPer": "10.47x · Forward PER",
-        "fairA": "36,938원 [AI]",
-        "calcA": "2026Q3E EPS 882원 × 4 × Forward PER 10.47x = 36,938원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "10.52x · Forward PER",
+        "fairA": "37,115원 [AI]",
+        "calcA": "2026Q3E EPS 882원 × 4 × Forward PER 10.52x = 37,115원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 확인 필요",
         "discount": "Peer/과거 밴드 확인 필요",
         "fairB": "Consensus 목표가 확인 필요",
@@ -2463,8 +2463,8 @@
         "maSignal": "정배열 · 상승 추세 · 괴리과열 -4",
         "newsTitle": "HMM 최신 주요기사",
         "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
-        "valTargetPer": "10.47x · Forward PER",
-        "fairValueA": "36,938원 [AI]",
+        "valTargetPer": "10.52x · Forward PER",
+        "fairValueA": "37,115원 [AI]",
         "tradingScore": "63",
         "tradingGrade": "C / Neutral",
         "tradingTrend": "상승",
@@ -2529,7 +2529,7 @@
         "nasdaq": "26,140",
         "nasdaqDelta": "-2.15% · 10-16",
         "fx": "1,331",
-        "fxDelta": "-0.53% · 10-19",
+        "fxDelta": "-0.52% · 10-19",
         "us10y": "5.1%",
         "us10yDelta": "+0.08% · 10-19",
         "flowState": "기관 매수 / 외인 매수",
@@ -2537,7 +2537,7 @@
         "kospiFlow": "외국인 +947억 · 기관 +5,302억",
         "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
         "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+        "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -2627,7 +2627,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-        "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+        "fetched_at": "2026-10-19T21:47:00.768475+09:00"
       },
       "valuation_snapshot": {
         "per": 16.06,
@@ -2877,7 +2877,7 @@
         "nasdaq": "26,140",
         "nasdaqDelta": "-2.15% · 10-16",
         "fx": "1,331",
-        "fxDelta": "-0.53% · 10-19",
+        "fxDelta": "-0.52% · 10-19",
         "us10y": "5.1%",
         "us10yDelta": "+0.08% · 10-19",
         "flowState": "기관 매수 / 외인 매수",
@@ -2885,7 +2885,7 @@
         "kospiFlow": "외국인 +947억 · 기관 +5,302억",
         "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
         "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+        "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -2973,7 +2973,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/373220/finance/quarter",
-        "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+        "fetched_at": "2026-10-19T21:47:00.768475+09:00"
       },
       "valuation_snapshot": {
         "per": null,
@@ -3086,9 +3086,9 @@
         "pbr": "5.00x",
         "evebitda": "—",
         "valEps": "3,861원 · 2026Q3E",
-        "targetPer": "18.31x · Forward PER",
-        "fairA": "282,780원 [AI]",
-        "calcA": "2026Q3E EPS 3,861원 × 4 × Forward PER 18.31x = 282,780원. 분기 EPS 연환산 방식 [AI]",
+        "targetPer": "18.28x · Forward PER",
+        "fairA": "282,316원 [AI]",
+        "calcA": "2026Q3E EPS 3,861원 × 4 × Forward PER 18.28x = 282,316원. 분기 EPS 연환산 방식 [AI]",
         "peerMultiple": "Consensus 확인 필요",
         "discount": "Peer/과거 밴드 확인 필요",
         "fairB": "Consensus 목표가 확인 필요",
@@ -3155,8 +3155,8 @@
         "maSignal": "정배열 · 상승 추세",
         "newsTitle": "코스맥스 최신 주요기사",
         "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
-        "valTargetPer": "18.31x · Forward PER",
-        "fairValueA": "282,780원 [AI]",
+        "valTargetPer": "18.28x · Forward PER",
+        "fairValueA": "282,316원 [AI]",
         "tradingScore": "56",
         "tradingGrade": "D / Caution",
         "tradingTrend": "상승",
@@ -3223,7 +3223,7 @@
         "nasdaq": "26,140",
         "nasdaqDelta": "-2.15% · 10-16",
         "fx": "1,331",
-        "fxDelta": "-0.53% · 10-19",
+        "fxDelta": "-0.52% · 10-19",
         "us10y": "5.1%",
         "us10yDelta": "+0.08% · 10-19",
         "flowState": "기관 매수 / 외인 매수",
@@ -3231,7 +3231,7 @@
         "kospiFlow": "외국인 +947억 · 기관 +5,302억",
         "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
         "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+        "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -3319,7 +3319,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-        "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+        "fetched_at": "2026-10-19T21:47:00.768475+09:00"
       },
       "valuation_snapshot": {
         "per": 17.55,
@@ -3339,13 +3339,13 @@
     "us": {
       "available": true,
       "fresh": true,
-      "score": 26.4,
+      "score": 26.9,
       "rating": "공포",
       "rating_en": "fear",
       "previous_close": 17.9383219954649,
       "previous_1_week": 46.3428571428571,
       "previous_1_month": 30.4285714285714,
-      "timestamp": "2026-10-19T12:22:24+00:00",
+      "timestamp": "2026-10-19T12:27:16+00:00",
       "source": "CNN Fear & Greed"
     },
     "kr": {
@@ -3354,7 +3354,7 @@
       "score": 38.1,
       "raw_score": 38.1,
       "rating": "공포",
-      "timestamp": "2026-10-19T21:41:49.457252+09:00",
+      "timestamp": "2026-10-19T21:47:00.768475+09:00",
       "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
       "method": "KOSPI와 KOSDAQ을 각각 최근성 우선(5D > 20D > 60D) 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
       "kospi": {
@@ -3364,7 +3364,7 @@
         "score": 32.6,
         "raw_score": 32.6,
         "rating": "공포",
-        "timestamp": "2026-10-19T21:41:49.457252+09:00",
+        "timestamp": "2026-10-19T21:47:00.768475+09:00",
         "source": "KOSPI·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSPI 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSPI 20D ≤ -10% → 상단 54",
@@ -3422,7 +3422,7 @@
             "label": "USD/KRW 20D",
             "score": 83.7,
             "weight": 5,
-            "value": "-3.93%"
+            "value": "-3.96%"
           }
         ],
         "trend5_detail": {
@@ -3447,7 +3447,7 @@
         "score": 43.6,
         "raw_score": 43.6,
         "rating": "공포",
-        "timestamp": "2026-10-19T21:41:49.457252+09:00",
+        "timestamp": "2026-10-19T21:47:00.768475+09:00",
         "source": "KOSDAQ·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSDAQ 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "없음",
@@ -3505,7 +3505,7 @@
             "label": "USD/KRW 20D",
             "score": 83.7,
             "weight": 5,
-            "value": "-3.93%"
+            "value": "-3.96%"
           }
         ],
         "trend5_detail": {
@@ -3526,16 +3526,16 @@
       "components": [],
       "errors": []
     },
-    "blended_score": 32.8,
+    "blended_score": 33.1,
     "blended_rating": "공포",
-    "kr_us_gap": 11.7,
+    "kr_us_gap": 11.2,
     "regime": "SELECTIVE RISK-OFF",
     "recommendation": {
       "base_modifier": -1,
       "note": "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-19T21:41:49.457252+09:00"
+    "updated_at": "2026-10-19T21:47:00.768475+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3772,7 +3772,7 @@
           "nasdaq": "26,140",
           "nasdaqDelta": "-2.15% · 10-16",
           "fx": "1,331",
-          "fxDelta": "-0.53% · 10-19",
+          "fxDelta": "-0.52% · 10-19",
           "us10y": "5.1%",
           "us10yDelta": "+0.08% · 10-19",
           "flowState": "기관 매수 / 외인 매수",
@@ -3780,7 +3780,7 @@
           "kospiFlow": "외국인 +947억 · 기관 +5,302억",
           "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
           "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+          "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -3870,7 +3870,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-          "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+          "fetched_at": "2026-10-19T21:47:00.768475+09:00"
         },
         "valuation_snapshot": {
           "per": 21.35,
@@ -4069,7 +4069,7 @@
           "stochScoreState": "50~70 상승 우위",
           "maGapInfo": "MA20 괴리 +0.2% · MA60 괴리 +1.5% [AI]",
           "volumeInfo": "20D 평균 대비 0.75배 [AI]",
-          "atrInfo": "ATR14 5,586원 [AI]",
+          "atrInfo": "ATR14 5,579원 [AI]",
           "gapInfo": "시가 Gap +0.00% [AI]",
           "turnoverInfo": "193억원",
           "high52Info": "52주 고점 165,100원 [AI]",
@@ -4087,7 +4087,7 @@
           "tpTarget1Basis": "저항선 [AI]",
           "tpTarget2": "145,000원 [AI]",
           "tpTarget2Basis": "직전 20일 고점 [AI]",
-          "tpStop": "129,347원 [AI]",
+          "tpStop": "129,351원 [AI]",
           "tpStopBasis": "지지 기준 - 0.5 ATR [AI]",
           "tradingConclusion": "Trading Score 65/100 | 추세: 횡보 | 모멘텀: 상승 전환 가능성 | 과열도: 보통 | 전략: 관망 [AI]",
           "tradingEntryCondition": "MA20 방향과 MACD·Stochastic 동조가 확인될 때까지 신규 진입은 보수적으로 접근. [AI]",
@@ -4118,7 +4118,7 @@
           "nasdaq": "26,140",
           "nasdaqDelta": "-2.15% · 10-16",
           "fx": "1,331",
-          "fxDelta": "-0.53% · 10-19",
+          "fxDelta": "-0.52% · 10-19",
           "us10y": "5.1%",
           "us10yDelta": "+0.08% · 10-19",
           "flowState": "기관 매수 / 외인 매수",
@@ -4126,7 +4126,7 @@
           "kospiFlow": "외국인 +947억 · 기관 +5,302억",
           "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
           "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+          "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -4138,7 +4138,7 @@
           "currentPrice": "138500",
           "buy1": "138265",
           "buy2": "136467",
-          "stopPrice": "129347",
+          "stopPrice": "129351",
           "target1": "142780",
           "target2": "145000",
           "tradePeriod": "",
@@ -4216,7 +4216,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-          "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+          "fetched_at": "2026-10-19T21:47:00.768475+09:00"
         },
         "valuation_snapshot": {
           "per": 33.17,
@@ -4329,9 +4329,9 @@
           "pbr": "0.78x",
           "evebitda": "—",
           "valEps": "882원 · 2026Q3E",
-          "targetPer": "10.47x · Forward PER",
-          "fairA": "36,938원 [AI]",
-          "calcA": "2026Q3E EPS 882원 × 4 × Forward PER 10.47x = 36,938원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "10.52x · Forward PER",
+          "fairA": "37,115원 [AI]",
+          "calcA": "2026Q3E EPS 882원 × 4 × Forward PER 10.52x = 37,115원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 확인 필요",
           "discount": "Peer/과거 밴드 확인 필요",
           "fairB": "Consensus 목표가 확인 필요",
@@ -4398,8 +4398,8 @@
           "maSignal": "정배열 · 상승 추세 · 괴리과열 -4",
           "newsTitle": "HMM 최신 주요기사",
           "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
-          "valTargetPer": "10.47x · Forward PER",
-          "fairValueA": "36,938원 [AI]",
+          "valTargetPer": "10.52x · Forward PER",
+          "fairValueA": "37,115원 [AI]",
           "tradingScore": "63",
           "tradingGrade": "C / Neutral",
           "tradingTrend": "상승",
@@ -4464,7 +4464,7 @@
           "nasdaq": "26,140",
           "nasdaqDelta": "-2.15% · 10-16",
           "fx": "1,331",
-          "fxDelta": "-0.53% · 10-19",
+          "fxDelta": "-0.52% · 10-19",
           "us10y": "5.1%",
           "us10yDelta": "+0.08% · 10-19",
           "flowState": "기관 매수 / 외인 매수",
@@ -4472,7 +4472,7 @@
           "kospiFlow": "외국인 +947억 · 기관 +5,302억",
           "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
           "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+          "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -4562,7 +4562,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-          "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+          "fetched_at": "2026-10-19T21:47:00.768475+09:00"
         },
         "valuation_snapshot": {
           "per": 16.06,
@@ -4812,7 +4812,7 @@
           "nasdaq": "26,140",
           "nasdaqDelta": "-2.15% · 10-16",
           "fx": "1,331",
-          "fxDelta": "-0.53% · 10-19",
+          "fxDelta": "-0.52% · 10-19",
           "us10y": "5.1%",
           "us10yDelta": "+0.08% · 10-19",
           "flowState": "기관 매수 / 외인 매수",
@@ -4820,7 +4820,7 @@
           "kospiFlow": "외국인 +947억 · 기관 +5,302억",
           "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
           "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+          "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -4908,7 +4908,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/373220/finance/quarter",
-          "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+          "fetched_at": "2026-10-19T21:47:00.768475+09:00"
         },
         "valuation_snapshot": {
           "per": null,
@@ -5021,9 +5021,9 @@
           "pbr": "5.00x",
           "evebitda": "—",
           "valEps": "3,861원 · 2026Q3E",
-          "targetPer": "18.31x · Forward PER",
-          "fairA": "282,780원 [AI]",
-          "calcA": "2026Q3E EPS 3,861원 × 4 × Forward PER 18.31x = 282,780원. 분기 EPS 연환산 방식 [AI]",
+          "targetPer": "18.28x · Forward PER",
+          "fairA": "282,316원 [AI]",
+          "calcA": "2026Q3E EPS 3,861원 × 4 × Forward PER 18.28x = 282,316원. 분기 EPS 연환산 방식 [AI]",
           "peerMultiple": "Consensus 확인 필요",
           "discount": "Peer/과거 밴드 확인 필요",
           "fairB": "Consensus 목표가 확인 필요",
@@ -5090,8 +5090,8 @@
           "maSignal": "정배열 · 상승 추세",
           "newsTitle": "코스맥스 최신 주요기사",
           "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
-          "valTargetPer": "18.31x · Forward PER",
-          "fairValueA": "282,780원 [AI]",
+          "valTargetPer": "18.28x · Forward PER",
+          "fairValueA": "282,316원 [AI]",
           "tradingScore": "56",
           "tradingGrade": "D / Caution",
           "tradingTrend": "상승",
@@ -5158,7 +5158,7 @@
           "nasdaq": "26,140",
           "nasdaqDelta": "-2.15% · 10-16",
           "fx": "1,331",
-          "fxDelta": "-0.53% · 10-19",
+          "fxDelta": "-0.52% · 10-19",
           "us10y": "5.1%",
           "us10yDelta": "+0.08% · 10-19",
           "flowState": "기관 매수 / 외인 매수",
@@ -5166,7 +5166,7 @@
           "kospiFlow": "외국인 +947억 · 기관 +5,302억",
           "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
           "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+          "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -5254,7 +5254,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-          "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+          "fetched_at": "2026-10-19T21:47:00.768475+09:00"
         },
         "valuation_snapshot": {
           "per": 17.55,
@@ -5510,7 +5510,7 @@
           "nasdaq": "26,140",
           "nasdaqDelta": "-2.15% · 10-16",
           "fx": "1,331",
-          "fxDelta": "-0.53% · 10-19",
+          "fxDelta": "-0.52% · 10-19",
           "us10y": "5.1%",
           "us10yDelta": "+0.08% · 10-19",
           "flowState": "기관 매수 / 외인 매수",
@@ -5518,7 +5518,7 @@
           "kospiFlow": "외국인 +947억 · 기관 +5,302억",
           "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
           "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+          "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -5606,7 +5606,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/035900/finance/quarter",
-          "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+          "fetched_at": "2026-10-19T21:47:00.768475+09:00"
         },
         "valuation_snapshot": {
           "per": 13.15,
@@ -5863,7 +5863,7 @@
         "nasdaq": "26,140",
         "nasdaqDelta": "-2.15% · 10-16",
         "fx": "1,331",
-        "fxDelta": "-0.53% · 10-19",
+        "fxDelta": "-0.52% · 10-19",
         "us10y": "5.1%",
         "us10yDelta": "+0.08% · 10-19",
         "flowState": "기관 매수 / 외인 매수",
@@ -5871,7 +5871,7 @@
         "kospiFlow": "외국인 +947억 · 기관 +5,302억",
         "kosdaqFlow": "외국인 -1,618억 · 기관 +686억",
         "marketReason1": "KOSPI 5,768 (+1.76% · 10-19), KOSDAQ 809 (+1.78% · 10-19), Nasdaq 26,140 (-2.15% · 10-16)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,331 (-0.53% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
+        "marketReason2": "USD/KRW 1,331 (-0.52% · 10-19), 미 10년물 5.1% (+0.08% · 10-19). KOSPI 수급은 외국인 +947억 · 기관 +5,302억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,768 · KOSDAQ 809 · USD/KRW 1,331",
@@ -5959,7 +5959,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/035900/finance/quarter",
-        "fetched_at": "2026-10-19T21:41:49.457252+09:00"
+        "fetched_at": "2026-10-19T21:47:00.768475+09:00"
       },
       "valuation_snapshot": {
         "per": 13.15,
@@ -5977,29 +5977,11 @@
   ],
   "kosdaq_selection_diagnostics": [
     {
-      "code": "035900",
-      "name": "JYP Ent.",
-      "fundamental_score": 61.5,
-      "trading_score": 65.0,
-      "final_score": 62.9,
-      "eligible": true,
-      "priority": "60~69"
-    },
-    {
       "code": "054930",
       "name": "유신",
       "fundamental_score": 64.8,
       "trading_score": 59.0,
       "final_score": 62.48,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "277810",
-      "name": "레인보우로보틱스",
-      "fundamental_score": 54.2,
-      "trading_score": 44.0,
-      "final_score": 50.12,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -6011,6 +5993,24 @@
       "final_score": 49.64,
       "eligible": false,
       "priority": "<60 제외"
+    },
+    {
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 58.2,
+      "trading_score": 49.0,
+      "final_score": 54.52,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "035900",
+      "name": "JYP Ent.",
+      "fundamental_score": 61.5,
+      "trading_score": 65.0,
+      "final_score": 62.9,
+      "eligible": true,
+      "priority": "60~69"
     },
     {
       "code": "189300",
@@ -6031,11 +6031,11 @@
       "priority": "<60 제외"
     },
     {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 58.2,
-      "trading_score": 49.0,
-      "final_score": 54.52,
+      "code": "277810",
+      "name": "레인보우로보틱스",
+      "fundamental_score": 54.2,
+      "trading_score": 44.0,
+      "final_score": 50.12,
       "eligible": false,
       "priority": "<60 제외"
     }
@@ -6071,27 +6071,27 @@
     {
       "code": "035420",
       "name": "NAVER",
-      "fundamental_score": 58.1,
+      "fundamental_score": 58.3,
       "trading_score": 47.0,
-      "final_score": 53.66,
+      "final_score": 53.78,
       "eligible": false,
       "priority": "<50"
     },
     {
       "code": "018260",
       "name": "삼성SDS",
-      "fundamental_score": 0.0,
+      "fundamental_score": 60.3,
       "trading_score": 52.0,
-      "final_score": 20.8,
+      "final_score": 56.98,
       "eligible": false,
       "priority": "50~59"
     },
     {
       "code": "035720",
       "name": "카카오",
-      "fundamental_score": 56.3,
+      "fundamental_score": 56.7,
       "trading_score": 47.0,
-      "final_score": 52.58,
+      "final_score": 52.82,
       "eligible": false,
       "priority": "<50"
     },
@@ -6465,10 +6465,10 @@
       "priority": "70+"
     }
   ],
-  "kospi_selection_updated_at": "2026-10-19T21:41:49.457252+09:00",
+  "kospi_selection_updated_at": "2026-10-19T21:47:00.768475+09:00",
   "sector_cycle": {
     "as_of": "2026-10-19",
-    "generated_at": "2026-10-19T21:41:49.457252+09:00",
+    "generated_at": "2026-10-19T21:47:00.768475+09:00",
     "sector_count": 36,
     "theme_count": 36,
     "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
