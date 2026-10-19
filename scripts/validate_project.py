@@ -179,6 +179,15 @@ if meta.get("status")=="ok":
             flow=obj.get("flow") or {}
             if flow.get("foreign") is None or flow.get("institution") is None:
                 fail(f"{label} sentiment flow incomplete")
+            comps={str(x.get("key") or ""):x for x in (obj.get("components") or [])}
+            expected_weights={"trend5":25,"trend20":20,"trend60":10,"volatility":15,"momentum5":10,"flow":15,"safe_haven":5}
+            actual_weights={k:float((comps.get(k) or {}).get("weight",-1)) for k in expected_weights}
+            if actual_weights!=expected_weights:
+                fail(f"{label} sentiment weights mismatch: {actual_weights}")
+            if not (actual_weights["trend5"] > actual_weights["trend20"] > actual_weights["trend60"]):
+                fail(f"{label} sentiment recency hierarchy must be 5D > 20D > 60D")
+            if abs(sum(actual_weights.values())-100)>0.001:
+                fail(f"{label} sentiment weights total != 100")
     elif len(kr.get("components") or []) < 6:
         fail("Korea sentiment components incomplete")
     try:
