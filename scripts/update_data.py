@@ -333,9 +333,9 @@ def fetch_stock(s):
             naver_close = float(rows[-1]["close"])
             yahoo_close = float(yahoo_rows[-1]["close"])
             discrepancy = abs(naver_close / yahoo_close - 1) if yahoo_close > 0 else 0
-            if source == "Naver Stock" and discrepancy > 0.005:
+            if source == "Naver Stock" and discrepancy > 0:
                 # Do not mix inconsistent candles into technical indicators.
-                rows, source = yahoo_rows, "Yahoo Finance (price discrepancy fallback)"
+                rows, source = yahoo_rows, "Yahoo Finance (cross-checked exact close)"
         elif expected_date and yahoo_rows[-1]["date"] == expected_date and rows[-1]["date"] != expected_date:
             rows, source = yahoo_rows, "Yahoo Finance (fresh close fallback)"
     except Exception:
@@ -2970,8 +2970,31 @@ def update_theme_cards(d, live_by_code, refresh_selection=False, selection_as_of
     is not churned by short-term noise.
     """
     cards = d.get("theme_cards") or []
+    configured = {x["stock_code"]: x for x in (CFG.get("stocks") or [])}
     for card in cards:
-        for p in card.get("picks") or []:
+        # Replace any retired/unavailable ticker rather than displaying frozen old prices.
+        card_changed = False
+        picks = card.get("picks") or []
+        existing = {str(p.get("ticker", "")).split(".")[0] for p in picks}
+        eligible = [x for x in configured.values()
+                    if x.get("sector") == card.get("code") and x["stock_code"] in live_by_code]
+        for p in picks:
+            code = str(p.get("ticker", "")).split(".")[0]
+            if code not in configured or code not in live_by_code:
+                candidate = next((x for x in eligible if x["stock_code"] not in existing), None)
+                if candidate is None:
+                    raise RuntimeError(f"Theme {card.get('code')} contains unavailable stock {code}")
+                existing.discard(code)
+                existing.add(candidate["stock_code"])
+                p.update({
+                    "name": candidate["name"],
+                    "ticker": candidate["ticker"],
+                    "reason": candidate.get("catalyst", "") + " [AI]",
+                    "base_score": candidate.get("base_score", 50),
+                    "score": candidate.get("base_score", 50),
+                })
+                card_changed = True
+        for p in picks:
             code = str(p.get("ticker", "")).split(".")[0]
             live = live_by_code.get(code)
             if not live:
@@ -2979,11 +3002,13 @@ def update_theme_cards(d, live_by_code, refresh_selection=False, selection_as_of
             tech = live["tech"]
             p["price"] = tech["price"]
             p["price_label"] = f"{fmt_price(tech['price'])}원"
+            p["price_date"] = tech.get("date")
+            p["price_source"] = live.get("source")
             p["r20"] = None if tech.get("r20") is None else round(tech["r20"], 2)
             p["r60"] = None if tech.get("r60") is None else round(tech["r60"], 2)
             p["state"] = tech.get("state") or "관망"
 
-            if refresh_selection:
+            if refresh_selection or card_changed:
                 base_score = float(p.get("base_score") or p.get("score") or 50)
                 p["base_score"] = round(base_score, 2)
                 trading_score = float((((tech.get("trading_score") or {}).get("total")) or 50))
@@ -3000,7 +3025,7 @@ def update_theme_cards(d, live_by_code, refresh_selection=False, selection_as_of
                 p["monthly_momentum_score"] = round(momentum_score, 1)
                 p["selection_as_of"] = selection_as_of or tech.get("date") or NOW.date().isoformat()
 
-        if refresh_selection:
+        if refresh_selection or card_changed:
             card["picks"] = sorted(
                 card.get("picks") or [],
                 key=lambda x: (
@@ -3401,6 +3426,40 @@ def validate_financial_snapshot(d):
     return bad
 
 
+def sync_watchlist_universe_prices(universe_meta, live_by_code):
+    """Use the very same verified close for search and recommendation surfaces."""
+    if not isinstance(universe_meta, dict) or not universe_meta.get("items"):
+        raise RuntimeError("stock universe unavailable for closing-price synchronization")
+    observed = set()
+    for item in universe_meta["items"]:
+        code = item.get("code")
+        live = live_by_code.get(code)
+        if live:
+            price = live["tech"]["price"]
+            trade_date = live["tech"].get("date")
+            if price is None or trade_date is None:
+                raise RuntimeError(f"missing verified close/date for {code}")
+            item["close"] = price
+            item["close_date"] = trade_date
+            item["close_status"] = "VERIFIED"
+            item["close_source"] = live.get("source")
+            if item.get("shares"):
+                item["marketcap"] = round(float(item["shares"]) * float(price))
+            observed.add(code)
+        else:
+            # Other listed stocks retain Naver discovery data, but it is NOT
+            # verified against the KRX close. Never claim its price is verified.
+            item["close_status"] = "UNVERIFIED"
+            item["close_source"] = "Naver listing quote (unverified)"
+    if observed != set(live_by_code):
+        raise RuntimeError(f"verified stock(s) absent from universe: {sorted(set(live_by_code)-observed)}")
+    universe_meta["verified_close_count"] = len(observed)
+    tmp = UNIVERSE_PATH.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(universe_meta, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    json.loads(tmp.read_text(encoding="utf-8"))
+    tmp.replace(UNIVERSE_PATH)
+
+
 def main():
     d = PREV
     stocks = CFG.get("stocks") or []
@@ -3425,6 +3484,9 @@ def main():
                 live_by_code[s["stock_code"]] = live
             except Exception as e:
                 errors.append(f"{s.get('name')}: {e}")
+
+    # Reuse verified historical closes across all page data sources.
+    sync_watchlist_universe_prices(universe_meta, live_by_code)
 
     market, market_errors = market_series()
     errors.extend(market_errors)
@@ -3605,6 +3667,7 @@ def main():
             "method": (d.get("sector_cycle") or {}).get("method"),
         },
         "coverage": {
+            "universe_verified_close_count": (universe_meta or {}).get("verified_close_count", 0),
             "stocks_fresh": len(live_by_code),
             "stocks_total": len(stocks),
             "stock_fresh_ratio": round(stock_ratio, 4),
