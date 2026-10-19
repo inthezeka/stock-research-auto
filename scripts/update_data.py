@@ -3551,7 +3551,7 @@ def main():
         "stock_sentiment_policy": "시장 공포탐욕지수는 종목 투자점수에 반영하지 않음.",
         "kosdaq_selection_policy": "Trading Score 60 미만 제외 · 70 이상 우선 · Fundamental/Catalyst 60% + Trading Score 40% [AI].",
         "kospi_selection_policy": "Watchlist 전체 재스크리닝 · Fundamental/Catalyst 60% + Trading Score 40% · Trading 50 미만 기본 제외 · 70 이상 우선 [AI].",
-        "korea_sentiment_policy": "20D/60D 추세 우선 · 절대 변동성 패널티 · 외인/기관 수급 포함 · 20D 급락 Regime Gate [AI].",
+        "korea_sentiment_policy": "Sentiment v2 · 5D 추세 15% + 20D 추세 25% + 60D 추세 15% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
         "theme_selection_policy": "테마 추천 3종목은 월 종가 확정 후 월 1회 재평가. Base Fundamental/Catalyst 50% + Trading Score 35% + 20D/60D Momentum 15% [AI].",
         "theme_selection_month": (md[:7] if refresh_theme_selection and md else prev_theme_month),
         "theme_selection_as_of": (md if refresh_theme_selection and md else (d.get("meta") or {}).get("theme_selection_as_of")),
