@@ -251,6 +251,19 @@ if meta.get("status")=="ok":
         fail("blended sentiment score missing/invalid")
 
 html=(ROOT/"index.html").read_text(encoding="utf-8")
+# Fundamental TOP20 must display an explicit reference price, not a blank
+# placeholder, for stocks outside the 54 verified daily closing-price universe.
+for marker in (
+    "referenceClose:srNum(x.close)",
+    "function srFundSnapshotPrice(item)",
+    "참고시세 ",
+    "종가 미검증",
+    "srRefreshFundTop20Quotes(top20,theme.key)",
+):
+    if marker not in html:
+        fail("Fundamental TOP20 safe quote display missing: " + marker)
+if "조회가 확인 필요" in html:
+    fail("legacy blank Fundamental TOP20 quote placeholder remains")
 if "TOP5 추천점수 시장심리 조정" in html or "심리 0 [AI]" in html:
     fail("stock sentiment score wording remains in HTML")
 if '<section id="blueprint"' in html or "Theme Radar · 테마별 추천 3종목" in html:
