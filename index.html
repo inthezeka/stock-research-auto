@@ -3839,7 +3839,7 @@ function srFundSnapshotPrice(item){
   const verified=srNum(item?.close);
   if(item?.closeStatus==='VERIFIED'&&verified>0)return '확인 종가 '+fmt(verified);
   if(item?.closeStatus==='DAILY_CLOSE'&&verified>0)
-    return '일봉 종가 '+fmt(verified)+' · '+(item.closeSource?.includes('Yahoo')?'Yahoo':'네이버');
+    return '일봉 종가 '+fmt(verified);
   const last=srNum(item?.fundChartClose);
   if(item?.fundChartConflict&&last>0)return '일봉 '+fmt(last)+' · 시세 불일치';
   if(last>0&&item?.fundChartDate===stockUniverseMeta?.as_of)
