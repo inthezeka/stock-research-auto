@@ -3292,10 +3292,20 @@ function srAttractiveness7(valScore,fwdEpsGrowth){
   return{label,score:x,reason:'Forward EPS 성장 '+(fwdEpsGrowth==null?'[Consensus 없음]':fwdEpsGrowth.toFixed(1)+'%')+' · Valuation '+Number(valScore||0).toFixed(1)+'/15 (정규화 '+normalizedVal.toFixed(1)+'/10) · 성장조정 '+x.toFixed(1)+'/10'};
 }
 function srRecalcFundamental(f){
-  f.base=Object.values(f.groups).reduce((s,v)=>s+Number(v||0),0);
+  if(Array.isArray(f.modelDetail)&&f.modelDetail.length){
+    f.modelDetail.forEach(x=>{x.score=srRoundHalf(srClamp(Number(x.score)||0,0,5));x.earned=srWeightedSub(x.score,Number(x.weight)||0)});
+    f.base=f.modelDetail.reduce((sum,x)=>sum+Number(x.earned||0),0);
+  }else{
+    f.base=Object.values(f.groups||{}).reduce((sum,v)=>sum+Number(v||0),0);
+  }
   f.total=srClamp(f.base-Number(f.riskPenalty||0),0,100);
   f.grade=srFundGrade(f.total);
-  const a=srAttractiveness7(f.groups.valuation, f.forwardEpsGrowth);
+  let valEarn=0,valMax=0;
+  if(Array.isArray(f.modelDetail)){
+    f.modelDetail.filter(x=>/valuation|pbr|nav|sotp/i.test(x.label||'')).forEach(x=>{valEarn+=Number(x.earned||0);valMax+=Number(x.weight||0)});
+  }
+  const val15=valMax>0?valEarn/valMax*15:Number(f.groups?.valuation||0);
+  const a=srAttractiveness7(val15, f.forwardEpsGrowth);
   f.attractiveness=a.label;f.attractivenessReason=a.reason;
   return f;
 }
@@ -3325,14 +3335,22 @@ function srApplyPeerRelativeScoring(reports){
     const pp=[srPercentile(m.opm,opms,true),srPercentile(m.roe,roes,true)].filter(v=>v!=null);
     const vp=srPercentile(m.peg??m.fper,vals,false);
     if(pp.length){
-      const p=pp.reduce((a,b)=>a+b,0)/pp.length,adj=srPeerAdj(p);
-      f.groups.profitability=srClamp(f.groups.profitability+adj,0,15);
-      f.peerProfitabilityNote='동일 테마 Peer 수익성 백분위 '+Math.round(p*100)+'% · 조정 '+(adj>=0?'+':'')+adj.toFixed(1);
+      const p=pp.reduce((a,b)=>a+b,0)/pp.length,adj=srPeerAdj(p),rawAdj=adj/3;
+      if(f.groups?.profitability!=null)f.groups.profitability=srClamp(f.groups.profitability+adj,0,15);
+      (f.modelDetail||[]).filter(r=>/opm|roic|roe|margin|gross margin|unit economics|operating leverage/i.test(r.label||'')).forEach(r=>{
+        r.score=srClamp(Number(r.score||0)+rawAdj,0,5);
+        r.reason+=' · Sector Peer 수익성 '+Math.round(p*100)+' percentile';
+      });
+      f.peerProfitabilityNote='동일 Sector Peer 수익성 백분위 '+Math.round(p*100)+'%';
     }
     if(vp!=null){
-      const adj=srPeerAdj(vp);
-      f.groups.valuation=srClamp(f.groups.valuation+adj,0,15);
-      f.peerValuationNote='동일 테마 Valuation 백분위 '+Math.round(vp*100)+'% · 조정 '+(adj>=0?'+':'')+adj.toFixed(1);
+      const adj=srPeerAdj(vp),rawAdj=adj/3;
+      if(f.groups?.valuation!=null)f.groups.valuation=srClamp(f.groups.valuation+adj,0,15);
+      (f.modelDetail||[]).filter(r=>/valuation|pbr|nav|sotp/i.test(r.label||'')).forEach(r=>{
+        r.score=srClamp(Number(r.score||0)+rawAdj,0,5);
+        r.reason+=' · Sector Peer Valuation '+Math.round(vp*100)+' percentile';
+      });
+      f.peerValuationNote='동일 Sector Peer Valuation 백분위 '+Math.round(vp*100)+'%';
     }
     srRecalcFundamental(f);
   });
