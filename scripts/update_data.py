@@ -313,19 +313,38 @@ def refresh_stock_universe():
     return payload
 
 def fetch_stock(s):
+    """Collect a dated, non-adjusted daily close and cross-check two providers."""
+    code = s["stock_code"]
+    naver_error = None
     try:
-        rows, source = naver_stock_chart(s["stock_code"])
-    except Exception:
+        rows, source = naver_stock_chart(code)
+    except Exception as exc:
+        naver_error = exc
         rows, source = yahoo_chart(s["ticker"])
-    # Reject stale candles on weekdays after the KRX close.
-    expected_date = NOW.date().isoformat() if NOW.weekday() < 5 and NOW.hour >= 15 else None
+
+    # On a completed trading day, a previous-session bar must not be called fresh.
+    expected_date = NOW.date().isoformat() if NOW.weekday() < 5 and (NOW.hour, NOW.minute) >= (15, 40) else None
+
+    # Cross-check independently supplied closing candles. Naver's fchart may
+    # carry an inconsistent last bar even when its trading date is current.
+    try:
+        yahoo_rows, _ = yahoo_chart(s["ticker"])
+        if yahoo_rows[-1]["date"] == rows[-1]["date"]:
+            naver_close = float(rows[-1]["close"])
+            yahoo_close = float(yahoo_rows[-1]["close"])
+            discrepancy = abs(naver_close / yahoo_close - 1) if yahoo_close > 0 else 0
+            if source == "Naver Stock" and discrepancy > 0.005:
+                # Do not mix inconsistent candles into technical indicators.
+                rows, source = yahoo_rows, "Yahoo Finance (price discrepancy fallback)"
+        elif expected_date and yahoo_rows[-1]["date"] == expected_date and rows[-1]["date"] != expected_date:
+            rows, source = yahoo_rows, "Yahoo Finance (fresh close fallback)"
+    except Exception:
+        pass
+
     if expected_date and rows[-1]["date"] != expected_date:
-        if source == "Naver Stock":
-            rows, source = yahoo_chart(s["ticker"])
-        if rows[-1]["date"] != expected_date:
-            raise RuntimeError(
-                f"stale close for {s['stock_code']}: {rows[-1]['date']} != {expected_date} ({source})"
-            )
+        raise RuntimeError(
+            f"stale close for {code}: {rows[-1]['date']} != {expected_date} ({source}); naver={naver_error}"
+        )
     tech = technicals(rows)
     return {
         **s,
