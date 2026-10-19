@@ -320,9 +320,12 @@ def fetch_stock(s):
     # Reject stale candles on weekdays after the KRX close.
     expected_date = NOW.date().isoformat() if NOW.weekday() < 5 and NOW.hour >= 15 else None
     if expected_date and rows[-1]["date"] != expected_date:
-        raise RuntimeError(
-            f"stale close for {s['stock_code']}: {rows[-1]['date']} != {expected_date} ({source})"
-        )
+        if source == "Naver Stock":
+            rows, source = yahoo_chart(s["ticker"])
+        if rows[-1]["date"] != expected_date:
+            raise RuntimeError(
+                f"stale close for {s['stock_code']}: {rows[-1]['date']} != {expected_date} ({source})"
+            )
     tech = technicals(rows)
     return {
         **s,
