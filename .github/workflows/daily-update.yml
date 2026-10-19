@@ -97,7 +97,7 @@ jobs:
           if git diff --quiet; then
             echo "No verified changes"
           else
-            git add config/fundamental_themes.json data/market-data.json data/intraday-cache.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
+            git add config/fundamental_themes.json data/market-data.json data/verified-stock-bars.json data/intraday-cache.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
             git commit -m "chore: daily verified market data [skip ci]"
             git push origin HEAD:main
           fi
