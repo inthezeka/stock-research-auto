@@ -3485,9 +3485,6 @@ def main():
             except Exception as e:
                 errors.append(f"{s.get('name')}: {e}")
 
-    # Reuse verified historical closes across all page data sources.
-    sync_watchlist_universe_prices(universe_meta, live_by_code)
-
     market, market_errors = market_series()
     errors.extend(market_errors)
 
@@ -3516,6 +3513,9 @@ def main():
             "errors": errors[:12],
         }, ensure_ascii=False))
         return 2
+
+    # Persist only a complete and current watchlist quote set.
+    sync_watchlist_universe_prices(universe_meta, live_by_code)
 
     md = update_market_text(d, market)
 
