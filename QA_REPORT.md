@@ -4,7 +4,7 @@
 - errors: **0**
 - warnings: **0**
 - KOSPI TOP5: **5**
-- KOSDAQ TOP5: **1**
+- KOSDAQ TOP5: **2**
 - themes: **19**
 - watchlist stocks: **54**
 - Fundamental sector score models: **36/36**
