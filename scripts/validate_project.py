@@ -405,6 +405,49 @@ else:
     except Exception as e:
         fail("embedded fallback invalid: "+str(e))
 
+# Individual investor flow: avoid silently labeling delayed/estimated rows as verified.
+try:
+    fcache=json.loads((ROOT/"data/investor-flow.json").read_text(encoding="utf-8"))
+    fmeta=fcache.get("meta") or {}
+    if fmeta.get("unit")!="shares":
+        fail("investor-flow cache unit must be shares (never estimated KRW)")
+    if fmeta.get("market_date") not in (None, str(data.get("meta",{}).get("market_date") or "")):
+        fail("investor-flow cache trading date differs from market-data date")
+    good=0
+    for code,info in (fcache.get("items") or {}).items():
+        if not re.fullmatch(r"[0-9]{6}",str(code)) or info.get("unit")!="shares":
+            fail("invalid investor-flow code/unit: "+str(code))
+            continue
+        rows=info.get("rows") or []
+        dates=[str(x.get("date") or "") for x in rows]
+        if dates!=sorted(set(dates)):
+            fail("investor-flow history dates not unique and ascending: "+str(code))
+        for row in rows:
+            if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}",str(row.get("date") or "")):
+                fail("invalid investor flow trade date: "+str(code))
+            for field in ("foreign","institution","individual"):
+                v=row.get(field)
+                if v is not None and (isinstance(v,bool) or not isinstance(v,int)):
+                    fail("invalid investor flow net-buy shares: "+str(code)+"/"+field)
+        if (not info.get("stale") and rows and
+                dates[-1]==fmeta.get("market_date") and len(rows)>=5):
+            good+=1
+    if not good:
+        warnings.append("individual investor 5D flow not collected; show unavailable rather than estimates")
+except Exception as e:
+    fail("investor-flow cache malformed: "+str(e))
+if 'scripts/investor-flow-ui.js' not in html or 'id="stockInvestorFlow"' not in html or 'srFlowMini(x.item.code)' not in html:
+    fail("MY Trading/deep-dive investor flow UI not connected")
+try:
+    extjs=(ROOT/"scripts/investor-flow-ui.js").read_text(encoding="utf-8")
+    with tempfile.NamedTemporaryFile("w",suffix=".js",encoding="utf-8",delete=False) as jfile:
+        jfile.write(extjs); jspath=jfile.name
+    result=subprocess.run(["node","--check",jspath],capture_output=True,text=True)
+    if result.returncode:
+        fail("investor flow JS syntax: "+result.stderr.strip()[:500])
+except FileNotFoundError:
+    warnings.append("node unavailable for investor flow UI")
+
 # Validate inline JavaScript syntax when Node is available.
 scripts=re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>",html,re.S|re.I)
 js="\n".join(scripts)
