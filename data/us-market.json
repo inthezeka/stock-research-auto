@@ -1,0 +1,387 @@
+{
+  "meta": {
+    "as_of": null,
+    "generated_at": "2026-10-22",
+    "status": "bootstrap",
+    "currency": "USD",
+    "market_timezone": "America/New_York",
+    "universe_total": 10,
+    "verified_close_count": 0,
+    "price_source": "Pending US close verification",
+    "source_member_counts": {
+      "SP500": 0,
+      "NASDAQ100": 0,
+      "DOW30": 0
+    }
+  },
+  "indices": {},
+  "sectors": [
+    {
+      "key": "semi_memory_ai",
+      "label": "반도체 / 메모리 / AI Chip"
+    },
+    {
+      "key": "semi_materials",
+      "label": "반도체 소재"
+    },
+    {
+      "key": "semi_parts",
+      "label": "반도체 부품"
+    },
+    {
+      "key": "semi_equipment",
+      "label": "반도체 장비"
+    },
+    {
+      "key": "pcb_packaging",
+      "label": "PCB / 기판 / 패키징"
+    },
+    {
+      "key": "it_hardware",
+      "label": "전자부품 / IT Hardware"
+    },
+    {
+      "key": "display_oled",
+      "label": "디스플레이 / OLED"
+    },
+    {
+      "key": "power_grid",
+      "label": "전력기기 / 전력망 / 전선"
+    },
+    {
+      "key": "auto",
+      "label": "자동차 / 부품"
+    },
+    {
+      "key": "shipbuilding",
+      "label": "조선 / 조선기자재"
+    },
+    {
+      "key": "defense_space",
+      "label": "방산 / 우주항공"
+    },
+    {
+      "key": "robot",
+      "label": "로봇 / 자동화"
+    },
+    {
+      "key": "construction",
+      "label": "건설 / 인프라 / 플랜트"
+    },
+    {
+      "key": "industrial",
+      "label": "기계 / 산업재"
+    },
+    {
+      "key": "battery_ess",
+      "label": "2차전지 / ESS"
+    },
+    {
+      "key": "nuclear_smr",
+      "label": "원전 / SMR"
+    },
+    {
+      "key": "energy_lng_refining",
+      "label": "에너지 / LNG / 정유 / 신재생"
+    },
+    {
+      "key": "materials",
+      "label": "철강 / 소재 / 화학"
+    },
+    {
+      "key": "nonferrous",
+      "label": "비철금속 / 구리 / 희토류"
+    },
+    {
+      "key": "environment",
+      "label": "환경 / 폐기물 / 수처리"
+    },
+    {
+      "key": "bio",
+      "label": "바이오 / 제약"
+    },
+    {
+      "key": "medical_device",
+      "label": "의료기기 / 헬스케어"
+    },
+    {
+      "key": "beauty",
+      "label": "화장품 / 뷰티"
+    },
+    {
+      "key": "food",
+      "label": "음식료 / 소비재"
+    },
+    {
+      "key": "entertainment",
+      "label": "엔터 / 미디어"
+    },
+    {
+      "key": "game",
+      "label": "게임"
+    },
+    {
+      "key": "travel",
+      "label": "여행 / 레저 / 항공"
+    },
+    {
+      "key": "retail",
+      "label": "유통 / 리테일 / 커머스"
+    },
+    {
+      "key": "finance",
+      "label": "금융 / 증권"
+    },
+    {
+      "key": "insurance",
+      "label": "보험"
+    },
+    {
+      "key": "platform",
+      "label": "인터넷 / 플랫폼"
+    },
+    {
+      "key": "software_cloud_ai",
+      "label": "소프트웨어 / Cloud / AI SW"
+    },
+    {
+      "key": "telecom_network",
+      "label": "통신 / 네트워크"
+    },
+    {
+      "key": "security_quantum",
+      "label": "보안 / 양자"
+    },
+    {
+      "key": "shipping_logistics",
+      "label": "해운 / 물류"
+    },
+    {
+      "key": "holding_conglomerate",
+      "label": "지주 / 복합기업"
+    }
+  ],
+  "items": [
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA",
+      "gics": "Information Technology",
+      "subindustry": "Semiconductors",
+      "sector_key": "semi_memory_ai",
+      "sector_label": "반도체 / 메모리 / AI Chip",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple",
+      "gics": "Information Technology",
+      "subindustry": "Technology Hardware",
+      "sector_key": "it_hardware",
+      "sector_label": "전자부품 / IT Hardware",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft",
+      "gics": "Information Technology",
+      "subindustry": "Systems Software",
+      "sector_key": "software_cloud_ai",
+      "sector_label": "소프트웨어 / Cloud / AI SW",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "AMZN",
+      "name": "Amazon",
+      "gics": "Consumer Discretionary",
+      "subindustry": "Broadline Retail",
+      "sector_key": "retail",
+      "sector_label": "유통 / 리테일 / 커머스",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "AVGO",
+      "name": "Broadcom",
+      "gics": "Information Technology",
+      "subindustry": "Semiconductors",
+      "sector_key": "semi_memory_ai",
+      "sector_label": "반도체 / 메모리 / AI Chip",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "Alphabet Class A",
+      "gics": "Communication Services",
+      "subindustry": "Interactive Media",
+      "sector_key": "platform",
+      "sector_label": "인터넷 / 플랫폼",
+      "indices": [
+        "SP500",
+        "NASDAQ100",
+        "DOW30"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "GOOG",
+      "name": "Alphabet Class C",
+      "gics": "Communication Services",
+      "subindustry": "Interactive Media",
+      "sector_key": "platform",
+      "sector_label": "인터넷 / 플랫폼",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "META",
+      "name": "Meta Platforms",
+      "gics": "Communication Services",
+      "subindustry": "Interactive Media",
+      "sector_key": "platform",
+      "sector_label": "인터넷 / 플랫폼",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "MU",
+      "name": "Micron Technology",
+      "gics": "Information Technology",
+      "subindustry": "Semiconductors",
+      "sector_key": "semi_memory_ai",
+      "sector_label": "반도체 / 메모리 / AI Chip",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    },
+    {
+      "ticker": "TSLA",
+      "name": "Tesla",
+      "gics": "Consumer Discretionary",
+      "subindustry": "Automobile Manufacturers",
+      "sector_key": "auto",
+      "sector_label": "자동차 / 부품",
+      "indices": [
+        "SP500",
+        "NASDAQ100"
+      ],
+      "close": null,
+      "price_date": null,
+      "return5d": null,
+      "return20d": null,
+      "return60d": null,
+      "trading_score": null,
+      "fundamental_score": null,
+      "financials": {},
+      "chart": [],
+      "data_confidence": "LOW"
+    }
+  ]
+}
