@@ -8,6 +8,7 @@ const pct=v=>valid(v)?(Number(v)>0?'+':'')+number(v,2)+'%':'—';
 const css=v=>!valid(v)?'muted':Number(v)>0?'pos':Number(v)<0?'neg':'muted';
 const usd=v=>valid(v)&&Number(v)>0?'$'+number(v):'—';
 const billions=v=>valid(v)?'$'+number(Number(v)/1e9,2)+'B':'—';
+const marketCapUSD=v=>!valid(v)||Number(v)<=0?'—':Number(v)>=1e12?'$'+number(Number(v)/1e12,2)+'T':Number(v)>=1e9?'$'+number(Number(v)/1e9,2)+'B':'$'+number(Number(v)/1e6,1)+'M';
 const confidence=v=>['HIGH','MEDIUM','LOW','INSUFFICIENT'].includes(v)?v:'INSUFFICIENT';
 const chip=(txt,extra='')=>'<span class="status-chip '+extra+'">'+esc(txt)+'</span>';
 let data={meta:{},indices:{},sectors:[],items:[],sector_cycles:[],theme_popularity:[]};
@@ -124,15 +125,18 @@ function renderFundamental(){
 
  const watch=rows.filter(t=>valid(t.close)&&t.sector_key)
   .sort((a,b)=>Number((b.indices||[]).length>0)-Number((a.indices||[]).length>0)||
+    Number(b.screener_marketcap_usd||0)-Number(a.screener_marketcap_usd||0)||
     Number((b.indices||[]).length)-Number((a.indices||[]).length)||
     a.ticker.localeCompare(b.ticker)).slice(0,30);
  $('fundWatchRows').innerHTML=watch.map(t=>domRow(t,[
    '<b>'+esc(t.ticker)+'</b><small>'+esc(t.name)+'</small>',
    esc(t.sector_label||'업종 검증 필요'),
    usd(t.close)+'<small>확인일 '+esc(t.price_date||'미확인')+' · ET</small>',
+   marketCapUSD(t.screener_marketcap_usd)+
+    '<small>Nasdaq Screener · '+esc(t.screener_marketcap_date||'기준일 미확인')+'</small>',
    '<span class="'+css(t.return5d)+'">'+pct(t.return5d)+'</span>',
    chip(t.fundamental_confidence==='INSUFFICIENT'?'SEC/핵심 KPI 확인 필요':confidence(t.fundamental_confidence),'low')
- ])).join('')||'<tr><td colspan="5">현재 범위에서 종가와 업종이 함께 확인된 기업이 없습니다. 지수 필터를 전체로 변경하거나 검색어를 바꿔주세요.</td></tr>';
+ ])).join('')||'<tr><td colspan="6">현재 범위에서 종가와 업종이 함께 확인된 기업이 없습니다. 지수 필터를 전체로 변경하거나 검색어를 바꿔주세요.</td></tr>';
  $('fundPendingRows').innerHTML=[...low,...missing].slice(0,30).map(t=>{
   const f=t.financials||{},d=f.score_detail||{},lv=confidence(t.fundamental_confidence);
   return domRow(t,['<b>'+esc(t.ticker)+'</b><small>'+esc(t.name)+'</small>',esc(t.sector_label||'업종 확인 필요'),
@@ -315,7 +319,7 @@ function details(t){
   chip(grade,grade==='HIGH'?'good':grade==='LOW'?'low':'')+'</div>'+
   '<div class="principal">US 전용 모델: <b>'+esc(model)+'</b> · 점수 '+score+' / 100 · Evidence Coverage '+number(Number(t.fundamental_coverage||0)*100,1)+
   '% · '+esc(d.profile||'NO_CONSENSUS_PROFILE 검증 전')+'. 리포트와 Guidance가 없다고 Revision을 임의 산출하지 않습니다.</div>'+
-  facts([['현재 종가',usd(t.close)],['Fundamental Score',score],['Trading Score',number(t.trading_score,0)],['FY 매출',billions(f.revenue)],
+  facts([['현재 종가',usd(t.close)],['Fundamental Score',score],['Trading Score',number(t.trading_score,0)],['Nasdaq 시가총액',marketCapUSD(t.screener_marketcap_usd)],['FY 매출',billions(f.revenue)],
    ['FY 매출 성장',pct(f.revenue_growth)],['영업이익률',pct(f.opm)],['FY EPS',usd(f.eps_fy)],['FY P/E',valid(v.pe_fy)?number(v.pe_fy)+'×':'—']])+
   '<div class="twocol section-spacing"><div><h3>최근 일봉 · 가격 추이</h3>'+chart(t.chart||[])+
   '<p class="detail-note">USD 종가 · '+esc(t.price_date||'거래일 미확인')+' · '+esc(t.price_source||'검증 소스 미확인')+'. Chart/M’s Trading은 Fundamental에 혼합하지 않습니다.</p></div>'+
