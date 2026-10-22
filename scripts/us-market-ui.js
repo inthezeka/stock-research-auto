@@ -11,7 +11,7 @@ const billions=v=>valid(v)?'$'+number(Number(v)/1e9,2)+'B':'—';
 const confidence=v=>['HIGH','MEDIUM','LOW','INSUFFICIENT'].includes(v)?v:'INSUFFICIENT';
 const chip=(txt,extra='')=>'<span class="status-chip '+extra+'">'+esc(txt)+'</span>';
 let data={meta:{},indices:{},sectors:[],items:[],sector_cycles:[],theme_popularity:[]};
-let byTicker=new Map(), selectedIndex='ALL', sectorKey='ALL', query='', selected=null;
+let byTicker=new Map(), selectedIndex='ALL', sectorKey='ALL', query='', selected=null, activeUsMode='trading';
 
 function scope(t){return (selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex))&&
  (sectorKey==='ALL'||t.sector_key===sectorKey) &&
@@ -28,6 +28,34 @@ function listenRows(){
   tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}});
  });
 }
+
+function setUsMode(mode,scroll=false){
+ activeUsMode=mode==='fundamental'?'fundamental':'trading';
+ // When sector controls become hidden they may not silently restrict Trading.
+ if(activeUsMode==='trading'&&sectorKey!=='ALL'){
+   sectorKey='ALL';renderSectors();renderAll();
+ }
+ document.body.classList.toggle('us-trading-selected',activeUsMode==='trading');
+ for(const btn of document.querySelectorAll('[data-us-mode]')){
+   const on=btn.dataset.usMode===activeUsMode;
+   btn.classList.toggle('active',on);btn.setAttribute('aria-selected',on?'true':'false');
+   btn.tabIndex=on?0:-1;
+ }
+ for(const pane of document.querySelectorAll('.us-mode-panel')){
+   const on=pane.id===(activeUsMode==='fundamental'?'usFundamentalPanel':'usTradingPanel');
+   pane.classList.toggle('active',on);
+   pane.setAttribute('aria-hidden',on?'false':'true');
+ }
+ const meta=data.meta||{};
+ const focus=activeUsMode==='trading'
+   ?'MY Trading · 현재 종가 기반 '+data.items.filter(t=>valid(t.trading_score)).length+'개 기술지표 분석 / Long Only 후보만 TOP10 표기'
+   :'Fundamental · 발행된 SEC 점수 '+data.items.filter(t=>valid(t.fundamental_score)).length+
+     '개 / 미확인 시 임의점수 미발행';
+ $('usModeStatus').textContent=focus+' · 선택한 분석만 표시합니다.';
+ $('sectorFilterTitle').textContent=activeUsMode==='trading'?'MY Trading 종목검색·지수 선택':'Fundamental Sector별 종목검색';
+ if(scroll)$('us-analysis').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 function indexCards(){
  const names=[['NASDAQ100','NASDAQ-100'],['SP500','S&P 500'],['DOW30','DOW 30'],['NASDAQCOMP','NASDAQ Composite']];
  $('indexCards').innerHTML=names.map(([key,label])=>{
@@ -60,8 +88,11 @@ function renderFundamental(){
  const low=fundamentalOrder(rows.filter(x=>x.fundamental_confidence==='LOW'&&valid(x.fundamental_score)));
  const missing=rows.filter(x=>!valid(x.fundamental_score)||
     !['HIGH','MEDIUM','LOW'].includes(x.fundamental_confidence)).sort((a,b)=>
+    Number((b.indices||[]).length>0)-Number((a.indices||[]).length>0)||
+    Number(b.close!=null)-Number(a.close!=null)||
+    Number(b.sector_key!=null)-Number(a.sector_key!=null)||
     (Number(b.fundamental_coverage||0)-Number(a.fundamental_coverage||0))||
-    Number(b.close!=null)-Number(a.close!=null)||a.ticker.localeCompare(b.ticker));
+    a.ticker.localeCompare(b.ticker));
  $('fundTitle').textContent=(sectorKey==='ALL'?'미국':(data.sectors.find(s=>s.key===sectorKey)?.label||'미국'))+' Fundamental TOP20';
  const met=(data.meta||{});
  const issued=rated.length;
@@ -88,6 +119,18 @@ function renderFundamental(){
     kpis.slice(0,2).map(esc).join('<br>')||'—',
     esc(detail.missing?.join(', ')||'자료 출처·기간 추가 확인')]);
  }).join('')||'<tr><td colspan="10">검증된 미국 Fundamental TOP20 미발행 · SEC/GUIDANCE/CONSENSUS 데이터 확보 대기</td></tr>';
+
+ const watch=rows.filter(t=>valid(t.close)&&t.sector_key)
+  .sort((a,b)=>Number((b.indices||[]).length>0)-Number((a.indices||[]).length>0)||
+    Number((b.indices||[]).length)-Number((a.indices||[]).length)||
+    a.ticker.localeCompare(b.ticker)).slice(0,30);
+ $('fundWatchRows').innerHTML=watch.map(t=>domRow(t,[
+   '<b>'+esc(t.ticker)+'</b><small>'+esc(t.name)+'</small>',
+   esc(t.sector_label||'업종 검증 필요'),
+   usd(t.close)+'<small>확인일 '+esc(t.price_date||'미확인')+' · ET</small>',
+   '<span class="'+css(t.return5d)+'">'+pct(t.return5d)+'</span>',
+   chip(t.fundamental_confidence==='INSUFFICIENT'?'SEC/핵심 KPI 확인 필요':confidence(t.fundamental_confidence),'low')
+ ])).join('')||'<tr><td colspan="5">현재 범위에서 종가와 업종이 함께 확인된 기업이 없습니다. 지수 필터를 전체로 변경하거나 검색어를 바꿔주세요.</td></tr>';
  $('fundPendingRows').innerHTML=[...low,...missing].slice(0,30).map(t=>{
   const f=t.financials||{},d=f.score_detail||{},lv=confidence(t.fundamental_confidence);
   return domRow(t,['<b>'+esc(t.ticker)+'</b><small>'+esc(t.name)+'</small>',esc(t.sector_label||'업종 확인 필요'),
@@ -198,8 +241,10 @@ function renderInvestment(){
 function renderAll(){
  const scopeRows=relevant(),met=data.meta||{},fund=scopeRows.filter(t=>valid(t.fundamental_score));
  $('universeInfo').textContent='현재 필터 '+scopeRows.length.toLocaleString('ko-KR')+
-  '개 / 기준일 일봉 확인 '+scopeRows.filter(t=>valid(t.close)).length+
-  '개 / SEC Fundamental 평가 '+fund.length+'개 · 투자섹터는 공식 GICS와 구분한 Internal Classification입니다.';
+  '개 / 동일 거래일 종가 '+scopeRows.filter(t=>valid(t.close)).length+
+  '개 / 기술점수 '+scopeRows.filter(t=>valid(t.trading_score)).length+
+  '개 / SEC Fundamental 점수 '+fund.length+
+  '개 · 미확인 값은 계산하지 않습니다.';
  renderFundamental();renderTrading();renderCycles();renderThemes();
  renderSectorTop3();renderThemeTop3();renderInvestment();listenRows();
  document.querySelectorAll('[data-choose]').forEach(btn=>btn.addEventListener('click',()=>choose(btn.dataset.choose)));
@@ -289,6 +334,10 @@ async function boot(){
   const payload=await response.json();if(!payload||!Array.isArray(payload.items))throw new Error('Invalid US market payload');
   data=payload;byTicker=new Map(data.items.map(t=>[t.ticker,t]));
   const meta=data.meta||{},stats=data.items.filter(t=>valid(t.close)).length;
+  $('usUniverseCount').textContent=number(data.items.length,0);
+  $('usQuoteCount').textContent=number(stats,0);
+  $('usSectorCount').textContent=number(data.items.filter(t=>t.sector_key),0);
+  $('usFundCount').textContent=number(data.items.filter(t=>valid(t.fundamental_score)).length,0);
   $('updated').textContent='미국장 기준 '+(meta.as_of||'미확인')+' ET · '+(meta.status||'unknown');
   $('marketNotice').textContent='미국 상장 후보 '+data.items.length+'개 / 일봉 확보 '+stats+'개 / SEC Fundamental 점수 '+(meta.fundamental_scored_count||0)+
    '개. US Investment Sector 44개는 독립적인 내부 투자분류이며, 공식 GICS 검증 여부를 구분합니다. '+
@@ -298,6 +347,8 @@ async function boot(){
    $('marketNotice').textContent+=' · 이전 데이터 구조가 표시 중입니다. 신규 44개 Sector 배포 데이터를 확인하세요.';
   }
   indexCards();renderSectors();renderAll();
+  const mode=new URLSearchParams(location.search).get('mode');
+  setUsMode(mode==='fundamental'?'fundamental':'trading',false);
   if(!data.items.length)$('stockDetail').textContent='미국장 검증 대상이 없습니다.';
  }catch(e){
   $('updated').textContent='미국장 데이터 확인 실패';
@@ -306,6 +357,8 @@ async function boot(){
   $('tradeRows').innerHTML='<tr><td colspan="8">일봉 데이터가 없습니다.</td></tr>';
  }
 }
+document.querySelectorAll('[data-us-mode]').forEach(btn=>btn.addEventListener('click',()=>setUsMode(btn.dataset.usMode,true)));
+document.querySelectorAll('[data-nav-mode]').forEach(btn=>btn.addEventListener('click',()=>setUsMode(btn.dataset.navMode,false)));
 document.querySelectorAll('[data-index]').forEach(btn=>btn.addEventListener('click',()=>{
  selectedIndex=btn.dataset.index;sectorKey='ALL';
  document.querySelectorAll('[data-index]').forEach(x=>x.classList.toggle('active',x===btn));
