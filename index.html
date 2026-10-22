@@ -438,6 +438,24 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .sector-ranking-table th:nth-child(9),.sector-ranking-table td:nth-child(9){min-width:230px}
 @media(max-width:720px){.fund-taxonomy-detail{grid-template-columns:1fr}}
 
+
+/* Per-stock investor net-buy quantity overlays; unchanged Trading Score */
+.flow-mini{min-width:245px;font-size:10px;line-height:1.6;white-space:nowrap}
+.flow-mini-row{display:grid;grid-template-columns:28px repeat(3,minmax(61px,1fr));gap:5px}
+.flow-pos{color:#0A8555}.flow-neg{color:#D94343}.flow-zero{color:#667085}
+.flow-no-data,.flow-meta{color:#667085;font-size:11px;line-height:1.5}
+.flow-detail{border:1px solid var(--border);border-radius:12px;margin:13px 0;padding:13px;background:#FBFCFF}
+.flow-detail-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+.flow-detail table{border-collapse:collapse;width:100%;font-size:12px}
+.flow-detail th,.flow-detail td{padding:7px 9px;text-align:right;border-bottom:1px solid #E5EAF2;white-space:nowrap}
+.flow-detail th:first-child,.flow-detail td:first-child{text-align:left}
+.flow-chart{width:100%;height:auto;max-height:210px;display:block}
+.flow-legend{display:flex;gap:14px;font-size:11px;flex-wrap:wrap}
+.flow-legend i{display:inline-block;width:13px;height:3px;vertical-align:middle;margin-right:4px}
+.flow-source{font-size:10px;color:#667085;margin-top:8px}.flow-source a{color:#1769E0}
+.flow-card{padding:17px;margin-bottom:14px}
+@media(max-width:720px){.flow-mini{min-width:230px}.flow-detail th,.flow-detail td{padding:5px}.flow-card{padding:11px}}
+
 </style>
 </head>
 <body>
@@ -695,7 +713,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card">
       <h3 class="subhead">① MY Trading TOP 10</h3>
       <p class="note" style="margin:0 0 10px">국내주식 Long Only 기준입니다. HTF Bias는 STRONG BULLISH → BULLISH → BULLISH TRANSITION 순으로 우선하며, 상방 DOL이 명확하고 S/A/B Long Setup인 종목만 상대순위로 표시합니다. BEARISH / BEARISH TRANSITION은 Bullish Reversal 확인 전까지 제외합니다.</p>
-      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="15">자동 분석 중입니다...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>수급(1D·5D·20D / 주)</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="16">자동 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3 class="subhead">② ENTRY READY</h3>
@@ -715,6 +733,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
   <div class="note" style="margin-bottom:12px">상단 Fundamental / 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
   <div id="fundamentalScoreDetail" class="card fund-score-detail" style="display:none;margin-bottom:14px"></div>
+  <div id="stockInvestorFlow" class="card flow-card" aria-live="polite">종목별 수급 조회 준비 중</div>
   <div class="card top-pick">
     <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">분석 종목</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill fund-score-interest" id="topFundScorePill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
     <div class="metrics">
@@ -835,6 +854,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 </div>
 
+<script src="scripts/investor-flow-ui.js"></script>
 <script>
 const TEXT_KEY='stock-research-auto-overrides-v4';
 const INPUT_KEY='stock-research-auto-inputs-v4';
@@ -1345,7 +1365,7 @@ function applyProfileText(profile){
   }
   const inp=profile.inputs||{};
   tradeIds.forEach(id=>{if(inp[id]!=null)setTradeValue(id,inp[id])});
-  updateProfileLinks(profile);srApplyFundScoreColor(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);srRenderEarningsTrend(profile);srRefreshMarginCards(profile);srRenderAnalystResearch(profile);srLoadCapitalDisclosureRisk(profile);
+  updateProfileLinks(profile);srApplyFundScoreColor(profile);calcRR();applyTradingStateColors();srApplyRiskLevelClasses(document.getElementById('catalyst')||document);srRenderFundamentalDetail(profile);srRenderEarningsTrend(profile);srRefreshMarginCards(profile);srRenderAnalystResearch(profile);srLoadCapitalDisclosureRisk(profile);srRenderDeepDiveInvestorFlow(profile);
 }
 function updateProfileLinks(profile){
   const links=srCanonicalLinks(profile);
@@ -4876,8 +4896,8 @@ function srMyTradingStatus(result){
 }
 function srRenderIctTop10(list){
   const el=document.getElementById('ictTop10Body');if(!el)return;
-  if(!list.length){el.innerHTML='<tr><td colspan="15">Daily 데이터 또는 최소 구조 기준을 충족한 종목이 없습니다. Adjusted 80 미만이라는 이유만으로 빈 목록 처리하지 않습니다.</td></tr>';return}
-  el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" class="screening-stock-row"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td title="획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+' → Normalize">'+x.rawScore+'</td><td><b>'+x.adjustedScore+'</b></td><td>'+srEsc(x.setupType)+'</td><td><span class="tag '+srEntryClass(x.entryQuality)+'">'+x.entryQuality+'</span></td><td>'+srEsc(srHtfBias(x))+'</td><td><b>'+srEsc(srIctConfidenceTag(x))+'</b></td><td>'+srFmtPx(x.price)+'</td><td>'+srEsc(srIctDolText(x))+'</td><td>'+srFmtZone(x.entryZone)+'</td><td>'+srFmtPx(x.structuralInvalidation)+'</td><td>'+srFmtPx(x.target1)+'</td><td>'+srFmtPx(x.target2)+'</td><td>'+srIctRrText(x)+'</td></tr>').join('');
+  if(!list.length){el.innerHTML='<tr><td colspan="16">Daily 데이터 또는 최소 구조 기준을 충족한 종목이 없습니다. Adjusted 80 미만이라는 이유만으로 빈 목록 처리하지 않습니다.</td></tr>';return}
+  el.innerHTML=list.map((x,i)=>'<tr data-code="'+x.item.code+'" class="screening-stock-row"><td>'+(i+1)+'</td><td><b>'+srEsc(x.item.name)+'</b></td><td title="획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+' → Normalize">'+x.rawScore+'</td><td><b>'+x.adjustedScore+'</b></td><td>'+srEsc(x.setupType)+'</td><td><span class="tag '+srEntryClass(x.entryQuality)+'">'+x.entryQuality+'</span></td><td>'+srEsc(srHtfBias(x))+'</td><td><b>'+srEsc(srIctConfidenceTag(x))+'</b></td><td>'+srFmtPx(x.price)+'</td><td>'+srFlowMini(x.item.code)+'</td><td>'+srEsc(srIctDolText(x))+'</td><td>'+srFmtZone(x.entryZone)+'</td><td>'+srFmtPx(x.structuralInvalidation)+'</td><td>'+srFmtPx(x.target1)+'</td><td>'+srFmtPx(x.target2)+'</td><td>'+srIctRrText(x)+'</td></tr>').join('');
 }
 async function srRunTradingUniverse(status){
   const candidates=srLiquidityCandidates(),totalUniverse=fullStockUniverse.length;
@@ -4918,7 +4938,7 @@ function srRenderIctDetails(list){
       '<div><b>⑩ Risk / Reward</b><br>'+srIctRrText(x)+'</div>'+
       '<div><b>⑪ MY Trading Quality</b><br>획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+'<br>Normalized: '+x.rawScore+'<br>Bearish Risk Penalty: -'+x.penalty+'<br>Adjusted: '+x.adjustedScore+'<br>'+srEsc(penalty)+'</div>'+
       '<div><b>⑫ Long Reject Reason</b><br>TOP10: '+srEsc((x.rejectReason?.top10||[]).join(' · '))+'<br>ENTRY READY: '+srEsc((x.rejectReason?.entryReady||[]).join(' · '))+'<br>Hard Filter: '+srEsc(hard)+'</div>'+
-      '</div><p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 신규 Long 제한·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
+      '</div>'+srFlowDetails(x.item.code)+'<p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 신규 Long 제한·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
   }).join('');
 }
 async function runIctTradingScan(){
@@ -5051,7 +5071,7 @@ bindTop5TableRows();
 
 async function boot(){
   initAiMarkerCleaner();
-  await Promise.all([loadStockUniverse(),loadFundamentalThemeConfig()]);
+  await Promise.all([loadStockUniverse(),loadFundamentalThemeConfig(),srLoadInvestorFlowCache()]);
   initStockSearch();
   initScreeningModes();
   srRenderSectorRanking();
