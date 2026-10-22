@@ -24,7 +24,7 @@ UNIVERSE = ROOT / "stock-universe.json"
 WATCHLIST = ROOT / "config" / "watchlist.json"
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
-WORKERS = min(18, max(1, int(os.getenv("FLOW_WORKERS", "12"))))
+WORKERS = min(24, max(1, int(os.getenv("FLOW_WORKERS", "18"))))
 MAX_CANDIDATES = min(800, max(50, int(os.getenv("FLOW_MAX_CANDIDATES", "500"))))
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
@@ -133,7 +133,7 @@ def pc_rows(code, session, as_of):
         url = f"https://finance.naver.com/item/frgn.naver?code={code}&page={page}"
         try:
             resp = session.get(url, headers={**HEADERS, "Referer": "https://finance.naver.com/"},
-                               timeout=(3, 8))
+                               timeout=(2.5, 6.0))
             if resp.status_code != 200:
                 break
             resp.encoding = "euc-kr"
@@ -167,7 +167,7 @@ def fetch_code(code, as_of):
         for url, referer, source in json_sources(code):
             try:
                 resp = session.get(url, headers={**HEADERS, "Referer": referer},
-                                   timeout=(3, 8))
+                                   timeout=(2.5, 6.0))
                 resp.raise_for_status()
                 rows = [x for x in extract_rows(resp.json()) if x["date"] <= as_of]
                 if len(rows) > len(best):
