@@ -439,32 +439,83 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 @media(max-width:720px){.fund-taxonomy-detail{grid-template-columns:1fr}}
 
 
-/* Per-stock investor net-buy quantity overlays; unchanged Trading Score */
-.flow-mini{min-width:245px;font-size:10px;line-height:1.6;white-space:nowrap}
-.flow-mini-row{display:grid;grid-template-columns:28px repeat(3,minmax(61px,1fr));gap:5px}
-.flow-pos{color:#0A8555}.flow-neg{color:#D94343}.flow-zero{color:#667085}
-.flow-no-data,.flow-meta{color:#667085;font-size:11px;line-height:1.5}
-.flow-detail{border:1px solid var(--border);border-radius:12px;margin:13px 0;padding:13px;background:#FBFCFF}
-.flow-detail-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-bottom:12px}
-.flow-detail table{border-collapse:collapse;width:100%;font-size:12px}
-.flow-detail th,.flow-detail td{padding:7px 9px;text-align:right;border-bottom:1px solid #E5EAF2;white-space:nowrap}
-.flow-detail th:first-child,.flow-detail td:first-child{text-align:left}
-.flow-chart{width:100%;height:auto;max-height:210px;display:block}
-.flow-legend{display:flex;gap:14px;font-size:11px;flex-wrap:wrap}
-.flow-legend i{display:inline-block;width:13px;height:3px;vertical-align:middle;margin-right:4px}
-.flow-source{font-size:10px;color:#667085;margin-top:8px}.flow-source a{color:#1769E0}
-.flow-card{padding:17px;margin-bottom:14px}
-@media(max-width:720px){.flow-mini{min-width:230px}.flow-detail th,.flow-detail td{padding:5px}.flow-card{padding:11px}}
-
-
-.flow-chart-controls{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 0 4px}
-.flow-chart-controls .flow-meta{margin-left:7px}
-.flow-period-btn{border:1px solid var(--border);border-radius:8px;background:#FFF;color:var(--text);padding:6px 12px;cursor:pointer;font-size:12px;font-weight:700}
-.flow-period-btn.active{background:#102A4D;color:#FFF;border-color:#102A4D}
-.flow-period-btn:disabled{cursor:not-allowed;opacity:.38}
-.flow-card>.subhead{margin:0 0 12px}
-.flow-card>.flow-detail{margin:0;padding:0;border:0;background:transparent}
-.flow-card .flow-chart{max-height:300px}
+/* 5D investor flows: compact TOP10 preview + readable detailed analysis */
+.flow-pos{color:#078568}
+.flow-neg{color:#D14B50}
+.flow-neutral{color:#526478}
+.flow-top10-scroll{scrollbar-width:thin;scrollbar-color:#BBCBDC transparent;overscroll-behavior-x:contain}
+.flow-top10-table th{font-size:12px;letter-spacing:0;font-weight:800;white-space:nowrap}
+.flow-top10-table td{font-size:13px;line-height:1.5;padding:11px 12px}
+.flow-top10-table th:nth-child(10),
+.flow-top10-table td:nth-child(10){min-width:332px;max-width:355px;background:#F8FAFF;border-left:1px solid #EDF1F8;border-right:1px solid #EDF1F8}
+.flow-top10-table .flow-th-caption{display:block;font-size:11.5px;font-weight:600;color:#6F8092;margin-top:3px}
+.flow-mini{width:100%;min-width:305px;line-height:1.5;font-variant-numeric:tabular-nums}
+.flow-mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.flow-mini-item{min-width:0;display:flex;flex-direction:column;gap:3px}
+.flow-mini-name{font-size:12px;color:#536579;font-weight:650}
+.flow-mini-value{font-size:13.5px;font-weight:850;white-space:nowrap;letter-spacing:-.025em}
+.flow-mini-date{font-size:12px;color:#63758A;margin-top:7px;padding-top:5px;border-top:1px dashed #DCE6F0}
+.flow-mini-empty{display:flex;flex-direction:column;justify-content:center;min-height:62px;gap:3px}
+.flow-mini-empty strong{font-size:12.5px;color:#5F7082}
+.flow-mini-empty small{font-size:12px;color:#758497}
+#stock-flow-section .section-title{font-size:28px;letter-spacing:-.027em}
+#stock-flow-section .section-desc{font-size:14.5px;line-height:1.65;max-width:810px}
+#stockInvestorFlow.flow-card{padding:26px 28px;border:1px solid #DCE5F0;border-radius:16px;box-shadow:0 6px 22px rgba(19,39,70,.035);background:#FFF}
+.flow-panel-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:19px}
+.flow-eyebrow{font-size:12px;font-weight:850;letter-spacing:.09em;color:#4674A3;margin:0 0 5px}
+.flow-panel-title{font-size:20px;line-height:1.4;letter-spacing:-.03em;margin:0;color:#192E46;font-weight:850}
+.flow-date{font-size:12.5px;font-weight:600;line-height:1.65;color:#5E7186;text-align:right}
+.flow-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.flow-stat{border:1px solid #E0E7F0;border-radius:13px;padding:16px 18px;background:linear-gradient(180deg,#FBFCFF 0%,#FFF 100%);min-width:0;display:flex;flex-direction:column;gap:6px}
+.flow-stat-name{font-size:13.5px;font-weight:780;color:#3C5067}
+.flow-stat-value{display:block;font-size:clamp(20px,2vw,25px);letter-spacing:-.03em;font-weight:870;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;line-height:1.35}
+.flow-stat-state{font-size:12.5px;font-weight:650;color:#6D8094}
+.flow-viz{background:#FBFCFE;border:1px solid #E3EAF2;border-radius:14px;padding:20px 19px 14px;margin-top:18px}
+.flow-viz-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.flow-viz-heading h4{font-size:17px;font-weight:850;color:#1D344C;letter-spacing:-.02em;margin:0 0 6px}
+.flow-viz-heading p{font-size:12.5px;color:#6D7F91;margin:0;line-height:1.6}
+.flow-unit{font-size:12.5px;font-weight:750;color:#6C7E91;white-space:nowrap}
+.flow-chart-frame{margin-top:15px;padding:0 2px 2px}
+.flow-chart{width:100%;max-height:310px;height:auto;display:block;overflow:visible}
+.flow-chart-legend{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;padding-top:7px}
+.flow-legend-item{font-size:13px;color:#486074;font-weight:720}
+.flow-legend-item i{display:inline-block;width:18px;height:4px;border-radius:5px;vertical-align:middle;margin-right:7px}
+.flow-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-top:15px;margin-top:15px;border-top:1px solid #E7EDF4;font-size:12.5px;color:#697B8E;line-height:1.65}
+.flow-foot a,.flow-source a{font-weight:800;color:#2065B5;text-decoration:none}
+.flow-foot a:hover,.flow-source a:hover{text-decoration:underline}
+.flow-detail-empty{text-align:center;padding:30px 12px}
+.flow-detail-empty .flow-empty-icon{height:42px;width:42px;margin:0 auto 12px;display:grid;place-items:center;border-radius:11px;background:#EEF4FB;color:#2762AC;font-size:23px}
+.flow-detail-empty strong{font-size:17px;color:#31465D}
+.flow-detail-empty p{margin:9px 0 13px;font-size:13.5px;color:#738297;line-height:1.6}
+.flow-source{font-size:12.5px;margin-top:10px;color:#607289}
+.flow-viz-empty{padding:35px 10px;text-align:center;color:#677B8F;font-size:13px}
+@media(max-width:840px){
+  #stockInvestorFlow.flow-card{padding:20px}
+  .flow-stats{gap:10px}
+  .flow-stat{padding:14px}
+  .flow-stat-value{font-size:20px}
+}
+@media(max-width:580px){
+  #stock-flow-section .section-title{font-size:24px}
+  #stock-flow-section .section-desc{font-size:13.5px}
+  #stockInvestorFlow.flow-card{padding:16px}
+  .flow-panel-heading{align-items:flex-start;gap:7px}
+  .flow-panel-title{font-size:18px}
+  .flow-date{text-align:left;font-size:12px}
+  .flow-stats{grid-template-columns:1fr;gap:9px}
+  .flow-stat{padding:12px 14px;display:grid;grid-template-columns:1fr auto;align-items:center}
+  .flow-stat-name{font-size:13px}
+  .flow-stat-value{font-size:20px;text-align:right;grid-column:2;grid-row:1 / span 2}
+  .flow-stat-state{font-size:12px;grid-column:1}
+  .flow-viz{padding:16px 10px 13px;margin-top:13px}
+  .flow-viz-heading{gap:7px;flex-wrap:wrap}
+  .flow-viz-heading h4{font-size:16px}
+  .flow-viz-heading p{font-size:12px}
+  .flow-chart{min-width:0}
+  .flow-chart-legend{gap:10px}
+  .flow-legend-item{font-size:12px}
+  .flow-foot{font-size:12px}
+}
 
 </style>
 </head>
@@ -723,7 +774,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card">
       <h3 class="subhead">① MY Trading TOP 10</h3>
       <p class="note" style="margin:0 0 10px">국내주식 Long Only 기준입니다. HTF Bias는 STRONG BULLISH → BULLISH → BULLISH TRANSITION 순으로 우선하며, 상방 DOL이 명확하고 S/A/B Long Setup인 종목만 상대순위로 표시합니다. BEARISH / BEARISH TRANSITION은 Bullish Reversal 확인 전까지 제외합니다.</p>
-      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>수급(5D·20D·60D / 주)</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="16">자동 분석 중입니다...</td></tr></tbody></table></div>
+      <div class="table-wrap flow-top10-scroll"><table class="table flow-top10-table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>5D 수급<span class="flow-th-caption">순매수 · 주</span></th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="16">자동 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3 class="subhead">② ENTRY READY</h3>
@@ -785,8 +836,8 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 <section id="stock-flow-section" class="section-track" data-name="INVESTOR FLOW">
   <div class="section-head">
     <div>
-      <h2 class="section-title">종목별 투자자 수급 분석</h2>
-      <p class="section-desc">외국인 · 기관 · 개인의 5D / 20D / 60D 순매수 수량을 비교합니다. 데이터 미확보 기간은 임의 추정하지 않습니다.</p>
+      <h2 class="section-title">5D 투자자별 수급 분석</h2>
+      <p class="section-desc">최근 5거래일 외국인 · 기관 · 개인의 누적 순매수 수량과 일별 흐름을 비교합니다. 수급 기준일은 주가 기준일과 다를 수 있습니다.</p>
     </div>
   </div>
   <div id="stockInvestorFlow" class="card flow-card" aria-live="polite">종목을 선택하면 수급 자료를 표시합니다.</div>
@@ -873,7 +924,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 </div>
 
-<script src="scripts/investor-flow-ui.js?v=20261022-5d20d60d"></script>
+<script src="scripts/investor-flow-ui.js?v=20261022-5d-final"></script>
 <script>
 const TEXT_KEY='stock-research-auto-overrides-v4';
 const INPUT_KEY='stock-research-auto-inputs-v4';
