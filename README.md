@@ -138,26 +138,57 @@ python -m http.server 8080
 - 사이트: https://inthezeka.github.io/stock-research-auto/
 
 
-## 글로벌 시장 선택 (2026-10-22 신규)
+## 미국장 MASTER v2 · 44개 독립 투자섹터
 
-- 시장선택: [markets.html](markets.html) (사이트 첫 방문 시 진입)
-- 국내장: [index.html?market=kr](index.html?market=kr) (기존 데이터 파이프라인과 분석 화면 보존)
-- 미국장: [us.html](us.html) (NASDAQ-100 / S&P 500 / Dow 30)
-- 국내와 미국 데이터는 각각 data/market-data.json, data/us-market.json에 저장하며 덮어쓰지 않습니다.
-- 미국 36개 Sector는 config/fundamental_themes.json의 **기존 36개 명칭**을 사용하며 GICS / ICB 산업명으로 별도 매핑합니다.
-- 미국 구성종목은 S&P 500 / Nasdaq-100 / Dow Jones 공개 구성종목 표를 매일 조회합니다. 출처 조회 실패 시 이전 정상 구성종목 또는 명시적인 seed 데이터로 폴백하고 커버리지 부족을 표기합니다.
-- 미국 종가는 Yahoo Finance 일별 OHLC에서 미 증시 시간대(ET)로 거래일을 정렬하고, 같은 기준일의 종가만 화면에 반영합니다.
-- Trading Score 계산은 한국 대시보드의 RSI / MACD / MA / Stochastic 엔진을 공유합니다. 미국 화면의 S/A/B 후보는 **가격 기반 사전 스크리닝**으로, ICT FVG / MSS / OB 확정을 의미하지 않습니다.
-- 미국 5D 수급 화면은 5일 가격 변화 / OBV / 평균 거래량 대비 상대거래량을 보여줍니다. KRX의 주체별 순매수와 혼동하지 않도록 표시합니다.
-- 미국 SEC Company Facts 재무자료는 사용자가 SEC Fair Access에 적합한 GitHub Actions Secret \`US_SEC_USER_AGENT\` (기관명 및 연락 가능한 이메일 포함)을 제공했을 때 제한된 종목 수부터 수집합니다. 인증하지 않은 매출·EPS·P/E·목표주가를 생성하지 않습니다.
-- 재무자료가 부족하면 미국 Fundamental Score는 null로 두어 TOP20 표에 "자료 미확인"을 노출합니다. **국내장의 36 Sector별 전용 Fundamental 가중치 전체를 미국 데이터에 이전한 단계는 아닙니다.**
-- 미국 증권사 리포트/Consensus 데이터의 안정적인 자동수집은 별도 데이터 제공권 및 품질 검증이 필요합니다. 현재 미국 종목 상세에 SEC / Nasdaq / 외부 애널리스트 전망 원문 링크를 제공합니다.
+- 시장선택: [markets.html](markets.html)
+- 기존 국내장: [index.html?market=kr](index.html?market=kr) · 국내 36개 Sector 코드/점수/수집기 보존
+- 신규 미국장: [us.html](us.html) · 미국 전용 44개 US Investment Sector, 32개 Theme, 12개 업종형 Fundamental 100점 모델
+- 분류 기준: `config/us_investment_sectors.json` / `scripts/us_investment.py`
+- SEC XBRL/업종별 Fundamental: `scripts/us_fundamental.py`
+- 미국 데이터 수집: `scripts/update_us_market.py` → `data/us-market.json`
+- 화면: `scripts/us-market-ui.js` · 국내 데이터/코드는 변경하지 않음
 
-### US dataset command / QA
+### 미국장 데이터 범위
 
-\`\`\`sh
-python scripts/update_us_market.py
-python scripts/validate_us_market.py
-\`\`\`
+NASDAQ-100 / S&P 500 / Dow 30 구성종목을 중복 제거하여 수집합니다. NasdaqTrader Symbol Directory로 NASDAQ/NYSE/NYSE American 상장 보통주 후보를 발굴하고 Nasdaq 공개 Stock Screener의 sector·industry와 SEC SIC를 산업 분류 보조 자료로 활용합니다. 공개 screener는 공식 GICS 데이터가 아닙니다. 기업별 표기 `Internal Sector Classification`은 내부 투자섹터로 분류되었다는 뜻이며, 공식 GICS 인증이 아닙니다.
 
-Actions \`Daily stock research update + GitHub Pages\`는 미국 데이터를 별도 단계에서 수집하고 검증합니다. 구성종목·종가·SEC 호출 제한을 검사한 뒤 \`data/us-market.json\`만 갱신합니다. 수집 실패 시 국내장과 기존 페이지가 함께 실패하지 않도록 미국 수집 단계에 \`continue-on-error: true\`를 적용했습니다. 별도의 \`Publish MY Stock Room market pages\` 워크플로는 시장선택/미국장 페이지를 국내 데이터 수집과 독립적으로 배포합니다.
+시장 전체 후보 종목의 가격과 재무가 매일 100% 수집되는 것은 아닙니다. 3대 지수 우선 + 나머지 거래소 상장 후보 로테이션이며 `US_MAX_CHARTS=950` 기본값을 사용합니다. 실제 검증된 비율과 `meta.status=partial`을 명확히 표시합니다. 미국 종가는 Yahoo Finance 일봉 OHLC/ET 거래일을 검증하나 제2 공급자 독립 교차검증은 아직 없습니다.
+
+### SEC 연동 (운영자 설정 필요)
+
+SEC Company Facts / Submissions는 API Key를 요구하지 않지만, Fair Access 정책에 따라 실제 요청 주체와 연락처가 담긴 User-Agent가 필요합니다.
+
+1. GitHub → Settings → Secrets and variables → Actions → New repository secret
+2. 이름: `US_SEC_USER_AGENT`
+3. 값: `OrganizationName ContactEmail@example.com` (가상 이메일이 아니라 실제 관리 가능한 연락처)
+4. GitHub Actions → US market close update + Pages → Run workflow
+
+SEC 미설정은 `meta.sec.status=not_configured`로 표시하며 Fundamental 점수는 임의 생성하지 않습니다. US SEC requests는 순차 수집으로 제한하고 `US_SEC_LIMIT=120` 종목씩 증분 갱신합니다. 20-F/IFRS/ADR은 별도 지원과 증권 유형 검증 없이는 US GAAP 점수로 처리하지 않습니다.
+
+### US MASTER 100점 점수
+
+Fundamental = G(Forward Growth) + Q(Quality) + B(Balance/FCF) + V(Valuation) + K(Sector KPI) + R(Revision).
+
+미국 44개 Sector는 사용자 정의 12개 업종별 배점표 중 하나를 사용합니다. 재무/Valuation 증거가 SEC FY 실제 값에만 존재하면 `HISTORICAL ACTUAL`로 표시하며 역사적 성장률을 Forward EPS로 표기하지 않습니다. Consensus가 없으면 `NO_CONSENSUS_PROFILE`로 R 배점을 G/K에 절반씩 재배분합니다. 검증되지 않은 산업 KPIs, Guidance, Analyst Consensus 또는 계약매출을 생성하지 않습니다.
+
+Evidence Coverage ≥85% HIGH, ≥70% MEDIUM, ≥50% LOW (점수 상한 75점), <50% INSUFFICIENT (점수 미발행). 중립적으로 대체한 배점의 근거는 상세페이지에 공개합니다. Fundamental TOP20에는 차트·RSI·거래량·M's Trading 점수를 사용하지 않습니다.
+
+### 화면별 역할
+
+- Sector Cycle TOP10: 수요/공급/가격/CAPEX/Guidance/구조적 성장/Macro 7요인을 근거로 분석. 사업 정보가 부족하면 Cycle Score·실제 Phase·매력도 미발행.
+- Theme Popularity TOP10: 거래대금/상대수익률/시장확산/뉴스/실적 Catalyst 등을 별도로 평가. 근거가 없다면 인기 점수 미발행.
+- Fundamental TOP20: HIGH/MEDIUM 우선. LOW / INSUFFICIENT 기업은 추가 분석 필요 목록에서만 표시.
+- Sector TOP3 및 Theme TOP3: 검증 안 된 종목은 `후보`로 표시하며 Verified Revenue를 추정하지 않음.
+- Investment BEST5: Fundamental60 + Valuation/RR20 + Catalyst10 + Technical5 + Liquidity5. 근거 없으면 발행하지 않음.
+- M's Trading TOP10: Long Only 차트 기반 스크리닝, MSS/FVG/Order Block 확정 진입신호와 구별.
+- 미국 5D 수급: 5D 가격변화/OBV/상대거래량이며 국내의 외국인/기관/개인별 순매수 지표와 다른 자료입니다.
+- 종목 Deep Dive: 업종·테마·SEC 연간 재무·KPI·결측/신뢰도·6개 배점 구성과 차트를 분리 표기.
+
+### 자동 검증
+
+- `scripts/test_us_fundamental.py`: SEC XBRL 샘플과 업종별 배점, Confidence, NO_CONSENSUS 동작 검사
+- `scripts/validate_us_market.py`: 44개 Sector, 출처/거래일/점수/차트/페이지 구조 검사
+- `.github/workflows/us-market-update.yml`: 미국장 데이터 독립 실행
+- `.github/workflows/daily-update.yml`: 기존 국내장 업데이트 독립 실행
+
+**잔여 한계:** SEC User-Agent가 없으면 Fundamental Score 0개가 정상입니다. US 상장 종목 전체의 완전한 일봉·재무 커버리지, 회사별 Backlog·ARR·NIM·CET1 등 핵심 KPI, 증권사 3개월 리포트/목표주가, 검증된 실제 Sector Cycle/Theme Popularity/Investment BEST5, ADR IFRS, 완전 자동 ICT MSS/FVG/OB는 아직 완료되지 않았습니다.
