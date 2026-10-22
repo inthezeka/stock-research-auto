@@ -2,9 +2,9 @@
 (()=>{'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let data={meta:{},indices:{},sectors:[],items:[]},byTicker=new Map(),selectedIndex='ALL',sectorKey='ALL',searchText='',selected=null;
-const n=(x,d=2)=>Number.isFinite(Number(x))?Number(x).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
-const pct=x=>Number.isFinite(Number(x))?(Number(x)>0?'+':'')+n(x,2)+'%':'—';
-const css=x=>Number(x)>0?'pos':Number(x)<0?'neg':'muted';
+const n=(x,d=2)=>x!=null&&x!==''&&Number.isFinite(Number(x))?Number(x).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const pct=x=>x!=null&&x!==''&&Number.isFinite(Number(x))?(Number(x)>0?'+':'')+n(x,2)+'%':'—';
+const css=x=>x==null?'muted':Number(x)>0?'pos':Number(x)<0?'neg':'muted';
 const price=x=>Number.isFinite(Number(x))&&Number(x)>0?'$'+n(x):'—';
 const allOf=t=>selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex);
 const sectorOf=t=>sectorKey==='ALL'||t.sector_key===sectorKey;
@@ -29,7 +29,7 @@ function renderSectors(){
  $('sectorButtons').querySelectorAll('[data-sector]').forEach(b=>b.addEventListener('click',()=>{sectorKey=b.dataset.sector;renderSectors();renderTables()}));
 }
 function sortedFund(){
- return relevant().slice().sort((a,b)=>(Number.isFinite(Number(b.fundamental_score))?1:0)-(Number.isFinite(Number(a.fundamental_score))?1:0)||Number(b.fundamental_score??-1)-Number(a.fundamental_score??-1)||Number(b.trading_score??-1)-Number(a.trading_score??-1)||a.ticker.localeCompare(b.ticker));
+ return relevant().slice().sort((a,b)=>(b.fundamental_score!=null?1:0)-(a.fundamental_score!=null?1:0)||Number(b.fundamental_score??-1)-Number(a.fundamental_score??-1)||Number(b.trading_score??-1)-Number(a.trading_score??-1)||a.ticker.localeCompare(b.ticker));
 }
 function sortedTrade(){
  return relevant().filter(x=>Number.isFinite(Number(x.trading_score))&&x.close>0&&['상승','상승초기'].includes(x.trend)&&Number(x.rsi||0)<78)
