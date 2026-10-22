@@ -449,37 +449,51 @@ except FileNotFoundError:
     warnings.append("node unavailable for investor flow UI")
 
 
-# Investor-flow UI must be between company deep-dive and analyst research.
+# 5D-only flow UI, collection and responsive typography QA.
 sections=(
     html.find('<section id="deepdive"'),
     html.find('<section id="stock-flow-section"'),
     html.find('<section id="analyst-research"'),
 )
 if -1 in sections or sections!=tuple(sorted(sections)):
-    fail("Investor flow chart must appear between Deep Dive and the 3M analyst research section")
+    fail("5D investor flow must appear between company details and analyst reports")
 if html.count('id="stockInvestorFlow"') != 1:
-    fail("Exactly one per-stock investor flow chart container is required")
-if '수급(5D·20D·60D / 주)' not in html:
-    fail("MY Trading TOP10 investor flow horizon must be 5D/20D/60D")
-if "'</div>'+srFlowDetails(x.item.code)" in html:
-    fail("Duplicate investor graph remains in MY Trading accordion")
+    fail("Exactly one investor flow panel is required")
+if '<th>5D 수급<span class="flow-th-caption">' not in html:
+    fail("TOP10 must show five-day investor flow only")
+if '5D / 20D / 60D' in html or '수급(5D·20D·60D' in html:
+    fail("Old 20D / 60D investor flow labels remain on the page")
+if 'flow-top10-table' not in html or 'flow-mini-value{font-size:13.5px' not in html:
+    fail("Readable 5D TOP10 typography is missing")
+if '#stock-flow-section .section-title{font-size:28px' not in html:
+    fail("5D section typography is missing")
+if "srFlowMini(x.item.code)" not in html or "srRenderDeepDiveInvestorFlow(profile)" not in html:
+    fail("5D investor flow is disconnected from TOP10 or Deep Dive")
+if "srFlowDetails(x.item.code)" in html:
+    fail("Duplicate detailed graph remains inside MY Trading TOP10")
 try:
-    flow_ui=(ROOT/"scripts/investor-flow-ui.js").read_text(encoding="utf-8")
-    for token in (
-        "[5,20,60].map(n=>", "function srFlowChart(o,days=60)",
-        'flow-chart-controls', 'flow-chart-target', '60거래일',
-        "o.rows.length>=60?60", "root.querySelector('.flow-chart-target')"
-    ):
-        if token not in flow_ui:
-            fail("5D/20D/60D investor-flow chart component missing: "+token)
+    ui=(ROOT/"scripts/investor-flow-ui.js").read_text(encoding="utf-8")
+    required=("const FLOW_DAYS=5", "flow-mini-grid", "flow-stats",
+              "flow-chart-frame", "function srFlowChart(flow)",
+              "function srFlowDetails(code)")
+    for token in required:
+        if token not in ui:
+            fail("5D investor flow JS missing: "+token)
+    for obsolete in ("flow-period-btn", "[5,20,60]", "data-days=", "srFlowChart(o,days=60)"):
+        if obsolete in ui:
+            fail("Obsolete multi-period investor control remains: "+obsolete)
     collector=(ROOT/"scripts/update_investor_flow.py").read_text(encoding="utf-8")
-    if "HISTORY_DAYS = 90" not in collector or '"valid_60d": ready60' not in collector:
-        fail("Investor-flow 60D history and coverage monitoring missing")
-    fc=json.loads((ROOT/"data/investor-flow.json").read_text(encoding="utf-8"))
-    if int((fc.get("meta") or {}).get("valid_60d") or 0)==0:
-        warnings.append("60D actual investor net-buy history not yet confirmed; UI shows missing, not estimates")
+    if "FLOW_ACTIVE_DAYS = 5" not in collector or "disabled_5d_only" not in collector:
+        fail("Investor data collection is not in five-day-only mode")
+    flow_cache=json.loads((ROOT/"data/investor-flow.json").read_text(encoding="utf-8"))
+    if (flow_cache.get("meta") or {}).get("active_history_sessions") not in (None,5):
+        fail("Flow cache history scope is not five days")
+    for code,record in (flow_cache.get("items") or {}).items():
+        if len(record.get("rows") or []) > 5:
+            fail("Too many investor flow rows in 5D mode: "+str(code))
+            break
 except Exception as e:
-    fail("Investor-flow 60D layout and data configuration failed: "+str(e))
+    fail("5D investor flow validation error: "+str(e))
 
 # Validate inline JavaScript syntax when Node is available.
 scripts=re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>",html,re.S|re.I)
