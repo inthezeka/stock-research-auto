@@ -1,54 +1,91 @@
 #!/usr/bin/env python3
-"""Independent non-mutating validation for US market page and dated snapshot."""
+"""US market production QA independent of Korean stock data and scores."""
+from __future__ import annotations
 import json
+import math
 import re
-from datetime import datetime
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-d=json.loads((ROOT/"data/us-market.json").read_text(encoding="utf-8"))
-sector_cfg=json.loads((ROOT/"config/fundamental_themes.json").read_text(encoding="utf-8"))
-sectors=d.get("sectors") or []
-expected=[x["key"] for x in sector_cfg["sectors"]]
-assert len(sectors)==36 and [s["key"] for s in sectors]==expected,"US/KR taxonomy differs"
-assert d["meta"]["currency"]=="USD"
-assert d["meta"]["market_timezone"]=="America/New_York"
-items=d.get("items") or []
+data=json.loads((ROOT/"data/us-market.json").read_text(encoding="utf-8"))
+cfg=json.loads((ROOT/"config/us_investment_sectors.json").read_text(encoding="utf-8"))
+sectors=data.get("sectors") or []
+required=[s["key"] for s in cfg["sectors"]]
+assert len(required)==44 and len(sectors)==44 and [x["key"] for x in sectors]==required, "US must use US-only 44 investment sectors"
+assert len(set(required))==44 and all(x.startswith("US") for x in required)
+assert len(cfg["performance_models"])==12
+assert len(cfg["themes"])>=30
+assert all(sum(m.values())==100 and set(m)==set("GQB VKR".replace(" ","")) for m in cfg["performance_models"].values())
+assert data["meta"]["currency"]=="USD"
+assert data["meta"]["market_timezone"]=="America/New_York"
+for s in sectors:
+    assert sum(s["score_weights"].values())==100
+    assert len(s["kpis"])>0
+items=data.get("items") or []
 assert isinstance(items,list)
-symbols=set()
-for t in items:
-    tick=str(t.get("ticker") or "")
-    assert re.fullmatch(r"[A-Z]{1,5}(?:-[A-Z])?",tick),f"bad symbol {tick}"
-    assert tick not in symbols,f"duplicate {tick}"
-    symbols.add(tick)
-    assert t.get("sector_key") in expected,(tick,t.get("sector_key"))
-    assert set(t.get("indices") or []) <= {"NASDAQ100","SP500","DOW30"}
-    close=t.get("close")
-    if close is not None:
-        assert isinstance(close,(int,float)) and 0<close<1e8,(tick,close)
-        assert t.get("price_date")==d["meta"].get("as_of"),"stale quote incorrectly shown for "+tick
-        assert t.get("price_source"),f"missing quote source for {tick}"
-    if t.get("fundamental_score") is not None:
-        score=t["fundamental_score"]
+symbols=set();quoted=0;scored=0
+for row in items:
+    symbol=row.get("ticker")
+    assert re.fullmatch(r"[A-Z]{1,5}(?:-[A-Z])?",str(symbol)),f"invalid ticker {symbol}"
+    assert symbol not in symbols,"duplicate ticker "+symbol
+    symbols.add(symbol)
+    assert row.get("sector_key") in (None,*required), (symbol,row.get("sector_key"))
+    assert row.get("sector_classification")=="Internal Sector Classification","GICS mislabel"
+    assert set(row.get("indices") or [])<= {"NASDAQ100","SP500","DOW30"}
+    assert len(row.get("primary_themes") or [])<=3
+    assert len(row.get("secondary_themes") or [])<=5
+    for t in row.get("primary_themes") or []:
+        assert t.get("status") in ("NARRATIVE ONLY","CONTRACT / PIPELINE","VERIFIED REVENUE")
+        if t.get("status")!="NARRATIVE ONLY":
+            assert str(t.get("source_url","")).startswith("https://")
+    if row.get("close") is not None:
+        quoted+=1
+        assert 0<float(row["close"])<1e9
+        assert row.get("price_date")==data["meta"].get("as_of"),"US stale daily quote marked current: "+symbol
+        assert row.get("price_source"),"missing OHLC source for "+symbol
+    if row.get("trading_score") is not None:
+        assert 0<=row["trading_score"]<=100 and row.get("close") is not None
+    score=row.get("fundamental_score")
+    if score is not None:
+        scored+=1
         assert 0<=score<=100
-        assert (t.get("financials") or {}).get("scoring_status")=="verified","unverified US financial score"
-    if t.get("trading_score") is not None:
-        assert 0<=t["trading_score"]<=100
-        assert close is not None, "trading score lacks verified close"
-    if t.get("flow5d"):
-        assert t["flow5d"].get("obv_trend") in ("상승","하락","횡보")
-        assert "foreign" not in t["flow5d"] and "institution" not in t["flow5d"]
-assert sum(t.get("close") is not None for t in items)==d["meta"].get("verified_close_count"),"coverage count mismatch"
+        assert row.get("fundamental_confidence")!="INSUFFICIENT"
+        assert row.get("fundamental_coverage",0)>=.5
+        if row.get("fundamental_confidence")=="LOW":assert score<=75
+        fi=row.get("financials") or {}
+        sd=(fi.get("score_detail") or {})
+        assert fi.get("status")=="EXTRACTED" and sd.get("profile")=="NO_CONSENSUS_PROFILE"
+        assert sum(sd.get("effective_weights",{}).values())==100
+        assert fi.get("source_basis")=="HISTORICAL ACTUAL"
+        assert row.get("investment_score") is None,"Investment / Fundamental must not mix"
+    assert row.get("fundamental_confidence") in ("HIGH","MEDIUM","LOW","INSUFFICIENT")
+    assert row.get("investment_score") is None or row.get("investment_score")>=0
+    flow=row.get("flow5d") or {}
+    assert "foreign" not in flow and "institution" not in flow
+    if flow:assert flow.get("obv_trend") in ("상승","하락","횡보")
+assert quoted==data["meta"]["verified_close_count"],"US quote coverage mismatch"
+assert scored==data["meta"]["fundamental_scored_count"],"US Fundamental scored count mismatch"
+assert data["meta"]["full_us_market_fundamental_rank_verified"] is False,"full market not fully verified"
+assert len(data.get("sector_cycles") or [])==44
+assert len(data.get("theme_popularity") or [])==len(cfg["themes"])
+for cyc in data["sector_cycles"]:
+    assert cyc["key"] in required
+    if cyc.get("cycle_score") is not None:
+        assert cyc.get("evidence_coverage",0)>=.7
+for th in data["theme_popularity"]:
+    if th.get("popularity_score") is not None:
+        assert th.get("evidence_coverage",0)>=.85
+assert data["investment_best5"]["status"] in ("INSUFFICIENT","PARTIAL","VERIFIED")
+for path in ("markets.html","us.html","scripts/us-market-ui.js"):
+    assert (ROOT/path).exists(),path+" missing"
 us=(ROOT/"us.html").read_text(encoding="utf-8")
-portal=(ROOT/"markets.html").read_text(encoding="utf-8")
-kr=(ROOT/"index.html").read_text(encoding="utf-8")
 ui=(ROOT/"scripts/us-market-ui.js").read_text(encoding="utf-8")
-assert '<script src="./scripts/us-market-ui.js' in us
+home=(ROOT/"markets.html").read_text(encoding="utf-8")
+assert "scripts/us-market-ui.js" in us
 assert "data/us-market.json" in ui
 assert "US Stock Research" in us
-assert "MY Stock Room" in portal
-assert "index.html?market=kr" in portal and "us.html" in portal
-assert "EMBEDDED_FALLBACK_DATA" in kr
-assert not re.search(r"(?:0|00)\.[0-9]+[Ee]\+?0*0",json.dumps(items)), "unexpected numeric notation"
-print(json.dumps({"status":"OK","US_status":d["meta"].get("status"),"stocks":len(items),
-                  "verified_closes":d["meta"].get("verified_close_count"),"sectors":len(sectors)},ensure_ascii=False))
+assert "index.html?market=kr" in home and "us.html" in home
+assert "EMBEDDED_FALLBACK_DATA" in (ROOT/"index.html").read_text(encoding="utf-8")
+print(json.dumps({"status":"OK","stocks":len(items),"dated_quotes":quoted,
+                  "fundamental_scores":scored,"sectors":len(sectors),
+                  "themes":len(cfg["themes"]),"universe_status":data["meta"]["status"]},ensure_ascii=False))
