@@ -29,7 +29,8 @@ KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
 WORKERS = min(24, max(1, int(os.getenv("FLOW_WORKERS", "18"))))
 MAX_CANDIDATES = min(800, max(50, int(os.getenv("FLOW_MAX_CANDIDATES", "500"))))
-HISTORY_DAYS = 90  # retain at least 60 completed sessions, with validation headroom
+HISTORY_DAYS = 90  # historical backfill modules are retained but disabled
+FLOW_ACTIVE_DAYS = 5  # public site only collects, stores and displays 5 trading days
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
     "Accept": "application/json,text/plain,*/*",
@@ -124,7 +125,7 @@ def json_sources(code):
     return [
         (f"https://m.stock.naver.com/front-api/stock/domestic/trend?code={code}",
          f"https://m.stock.naver.com/domestic/stock/{code}/total", "Naver front-api investor trend"),
-        (f"https://api.stock.naver.com/api/domestic/detail/{code}/trend?tradeType=KRX&startIdx=0&pageSize=90",
+        (f"https://api.stock.naver.com/api/domestic/detail/{code}/trend?tradeType=KRX&startIdx=0&pageSize=5",
          f"https://stock.naver.com/domestic/stock/{code}/trend", "Naver stock investor trend"),
         (f"https://m.stock.naver.com/api/stock/{code}/integration",
          f"https://m.stock.naver.com/domestic/stock/{code}", "Naver integration investor trend"),
@@ -133,7 +134,7 @@ def json_sources(code):
 
 def pc_rows(code, session, as_of):
     rows = []
-    for page in range(1, 9):
+    for page in range(1, 3):
         url = f"https://finance.naver.com/item/frgn.naver?code={code}&page={page}"
         try:
             resp = session.get(url, headers={**HEADERS, "Referer": "https://finance.naver.com/"},
@@ -156,7 +157,7 @@ def pc_rows(code, session, as_of):
                     continue
                 rows.append({"date": day, "foreign": foreign,
                              "institution": institutional, "individual": None})
-            if len(rows) >= 65 or len(rows) == previous_count:
+            if len(rows) >= FLOW_ACTIVE_DAYS or len(rows) == previous_count:
                 break
         except requests.RequestException:
             break
@@ -175,11 +176,11 @@ def fetch_code(code, as_of):
                 rows = [x for x in extract_rows(resp.json()) if x["date"] <= as_of]
                 if len(rows) > len(best):
                     best, best_source = rows, source
-                if len(best) >= 20:
+                if len(best) >= FLOW_ACTIVE_DAYS:
                     break
             except (requests.RequestException, ValueError, TypeError) as exc:
                 errors.append(type(exc).__name__)
-        if len(best) < 20:
+        if len(best) < FLOW_ACTIVE_DAYS:
             pc = pc_rows(code, session, as_of)
             # PC HTML has only two investor categories, so keep richer JSON if 5D
             # already exists unless PC meaningfully expands the trading window.
@@ -195,7 +196,7 @@ def fetch_code(code, as_of):
                 best_source = (best_source + " + " if best_source else "") + "Naver PC investor trend"
     finally:
         session.close()
-    best = best[-HISTORY_DAYS:]
+    best = best[-FLOW_ACTIVE_DAYS:]
     return {"source": best_source or "UNAVAILABLE", "unit": "shares",
             "rows": best, "last_date": best[-1]["date"] if best else None,
             "row_count": len(best), "error": ",".join(errors[-3:]) if not best else None}
@@ -425,26 +426,30 @@ def main():
                 result = previous
             results[code] = result
 
-    kis_report = optional_kis_backfill(codes, results, old, cutoff)
-    csv_report = optional_csv_backfill(codes, results, cutoff)
+    # The public dashboard is currently 5D only. Keep long-range KIS/CSV
+    # adapters dormant for future use; do not request authenticated or
+    # historical backfill data, even if GitHub repository secrets exist.
+    kis_report = {"status": "disabled_5d_only", "requested": 0,
+                  "covered_20d": 0, "covered_60d": 0, "errors": 0}
+    csv_report = {"status": "disabled_5d_only", "imported": 0,
+                  "covered_20d": 0, "covered_60d": 0}
+    for result in results.values():
+        rows = (result.get("rows") or [])[-FLOW_ACTIVE_DAYS:]
+        result["rows"] = rows
+        result["row_count"] = len(rows)
+        result["last_date"] = rows[-1]["date"] if rows else None
 
     ready = sum(1 for item in results.values()
                 if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
                 and len(item.get("rows") or []) >= 5)
-    ready20 = sum(1 for item in results.values()
-                  if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
-                  and len(item.get("rows") or []) >= 20)
-    ready60 = sum(1 for item in results.values()
-                  if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
-                  and len(item.get("rows") or []) >= 60)
     payload = {
         "meta": {
             "generated_at": NOW.isoformat(), "market_date": as_of,
             "published_cutoff": cutoff,
-            "unit": "shares", "source": "Naver base + optional KIS/KRX verified history",
+            "unit": "shares", "source": "Naver public investor trends (5D)",
             "note": "Daily investor net-buy quantities (shares), never estimated KRW. Missing periods are unavailable.",
-            "candidate_count": len(codes), "valid_5d": ready, "valid_20d": ready20,
-            "valid_60d": ready60, "history_retention_sessions": HISTORY_DAYS,
+            "candidate_count": len(codes), "valid_5d": ready,
+            "active_history_sessions": FLOW_ACTIVE_DAYS,
             "elapsed_seconds": round(time.monotonic() - started, 1),
             "kis_backfill": kis_report,
             "krx_csv_backfill": csv_report,
@@ -458,10 +463,9 @@ def main():
     json.loads(tmp.read_text(encoding="utf-8"))
     tmp.replace(OUT)
     print(json.dumps({"date": as_of, "candidates": len(codes),
-                      "valid_5d": ready, "valid_20d": ready20, "valid_60d": ready60,
+                      "valid_5d": ready,
                       "seconds": payload["meta"]["elapsed_seconds"],
-                      "kis_status": kis_report["status"], "kis60": kis_report["covered_60d"],
-                      "krx_csv_status": csv_report["status"], "csv60": csv_report["covered_60d"]}, ensure_ascii=False))
+                      "history": FLOW_ACTIVE_DAYS, "backfill": "disabled_5d_only"}, ensure_ascii=False))
     return 0
 
 
