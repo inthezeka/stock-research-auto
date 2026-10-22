@@ -38,6 +38,11 @@ function sortedTrade(){
 function linkedRow(t,cols){return '<tr tabindex="0" data-ticker="'+esc(t.ticker)+'">'+cols.map(c=>'<td>'+c+'</td>').join('')+'</tr>'}
 function renderTables(){
  const found=sortedFund(),top=found.slice(0,20);
+ const verifiedFund=found.filter(t=>t.fundamental_score!=null).length;
+ const chosenSector=$('sectorLabel').textContent||'전체 Sector';
+ $('fundTitle').textContent=chosenSector+' · '+(verifiedFund?'Fundamental TOP 20':'미국장 종목 탐색 (Fundamental 자료 연동 대기)');
+ const firstHeader=$('fundRows').closest('table')?.querySelector('thead th');
+ if(firstHeader)firstHeader.textContent=verifiedFund?'순위':'목록';
  $('universeInfo').textContent='필터 '+found.length.toLocaleString('ko-KR')+'종목 · 검증 종가 '+found.filter(x=>x.close>0).length+'종목 · Fundamental 산출 '+found.filter(x=>x.fundamental_score!=null).length+'종목';
  $('fundRows').innerHTML=top.length?top.map((t,i)=>linkedRow(t,[i+1,'<b>'+esc(t.ticker)+'</b><br><span class="tiny">'+esc(t.name)+'</span>',esc(t.sector_label||'미분류'),(t.indices||[]).map(x=>'<span class="chip">'+esc(x==='NASDAQ100'?'NDX':x==='SP500'?'S&P':'DOW')+'</span>').join(' '),price(t.close)+'<br><span class="tiny">'+esc(sourceDate(t))+'</span>','<span class="'+css(t.return5d)+'">'+pct(t.return5d)+'</span>',t.fundamental_score!=null?n(t.fundamental_score,1):'<span class="muted">자료 미확인</span>',t.trading_score!=null?n(t.trading_score,0):'—'])).join(''):'<tr><td colspan="8">현재 필터에 해당하는 검증 종목이 없습니다.</td></tr>';
  const tr=sortedTrade().slice(0,10);
