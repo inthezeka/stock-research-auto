@@ -86,12 +86,35 @@ GICS_FALLBACK={
 def classify_company(item):
     ticker=str(item.get("ticker") or "").upper()
     industry=(str(item.get("subindustry") or "")+" "+str(item.get("industry") or "")).lower()
+    sic_description=str(item.get("sic_description") or "").lower()
+    sic_code=str(item.get("sic") or "")
     market_sector=str(item.get("gics") or "")
     key=None;method="UNCLASSIFIED"
     # Specific industry wording takes priority over the generic company-name match.
     for sid,keys in KEYWORDS:
         if any(term in industry for term in keys):
             key=sid;method="PUBLIC_INDUSTRY_TEXT";break
+    # SEC SIC is an industry identifier, not an official GICS or segment revenue weight.
+    if not key and sic_description:
+        for sid,keys in KEYWORDS:
+            if any(term in sic_description for term in keys):
+                key=sid;method="SEC_SIC_DESCRIPTION";break
+        if not key:
+            try: code=int(sic_code)
+            except ValueError:code=0
+            sic_buckets=[
+                (100,999,"US27"),(1300,1389,"US19"),(1400,1499,"US27"),
+                (2000,2099,"US44"),(2300,2399,"US44"),(2700,2749,"US40"),
+                (2833,2836,"US28"),(2840,2899,"US26"),(3500,3599,"US24"),
+                (3570,3579,"US14"),(3600,3669,"US16"),(3670,3679,"US01"),
+                (3720,3769,"US23"),(3800,3849,"US30"),(3900,3999,"US24"),
+                (4800,4899,"US41"),(4910,4949,"US17"),(5100,5199,"US42"),
+                (5200,5999,"US38"),(6000,6099,"US32"),(6100,6199,"US35"),
+                (6200,6299,"US33"),(6300,6499,"US34"),(6500,6599,"US37"),
+                (6798,6798,"US37"),(7000,7099,"US39"),(7300,7399,"US10"),
+                (7810,7849,"US40"),(8000,8099,"US31"),(8700,8799,"US24")]
+            key=next((sid for lo,hi,sid in sic_buckets if lo<=code<=hi),None)
+            if key:method="SEC_SIC_INTERNAL_MAP"
     # Candidate dictionary is provisional. It is not a verified segment-revenue mix.
     if ticker in SEED_LOOKUP:
         key=SEED_LOOKUP[ticker];method="CURATED_TICKER_CANDIDATE"
@@ -103,7 +126,7 @@ def classify_company(item):
                 "sector_classification":"Internal Sector Classification",
                 "classification_method":"UNCLASSIFIED","classification_review":True}
     group=SECTORS[key]
-    review=method!="PUBLIC_INDUSTRY_TEXT" or ticker in ("GOOGL","GOOG","AMZN","ETN")
+    review=method not in ("PUBLIC_INDUSTRY_TEXT","SEC_SIC_DESCRIPTION") or ticker in ("GOOGL","GOOG","AMZN","ETN")
     return {"sector_key":key,"sector_label":group["label"],
             "sector_classification":"Internal Sector Classification",
             "classification_method":method,"classification_review":review}
@@ -126,13 +149,18 @@ def classify_themes(sector_key,verification=None):
 def is_common_stock(name, etf):
     text=str(name or "").lower()
     if etf=="Y" or not text:return False
-    if any(t in text for t in ("warrant", "right to buy","subscription rights","preferred stock",
-                               "preferred shares","depositary shares representing preferred",
-                               "unit consisting","trust unit","exchange-traded fund",
-                               "exchange traded fund","etn","exchange traded note",
-                               "  units")):return False
-    # Securities such as ETFs, warrants and units use separate risk models.
+    # A true American Depositary Share is allowed, but depositary preferred shares are not.
+    if re.search(r"\b(etf|etn|warrant|warrants|right|rights|unit|units|debenture|debentures|bond|bonds|note|notes)\b",text):
+        return False
+    if any(x in text for x in ("preferred","preference share","exchange-traded","exchange traded",
+                               "perpetual capital","fixed-rate","fixed to floating","fixed-to-floating",
+                               "structured product","securitized","redeemable convertible preferred")):
+        return False
+    if "depositary shares" in text and not (
+        "american depositary" in text or "ads" in text or "adr" in text):
+        return False
     return True
+
 
 def normalize_symbol(s):
     s=str(s or "").strip().upper().replace(".","-").replace("/","-")
