@@ -126,3 +126,12 @@ python -m http.server 8080
 - 최신값을 가져오지 못하면 직전 검증값을 유지합니다.
 - 실적/Consensus처럼 신뢰할 수 있는 무료 자동 소스가 제한적인 값은 검증일을 함께 관리합니다.
 - `[AI]`는 자체 계산·해석이며 외부 확정값과 구분합니다.
+
+## MY Trading 5D·20D·60D 수급 확장
+
+- 종목별 외국인·기관·개인 순매수 **수량(주)**를 5D·20D·60D로 확인합니다. 최초 5거래일은 기존 네이버 데이터를 사용합니다.
+- 과거 자료 수집 경로: KIS `investor-trade-by-stock-daily`(APP Key/Secret 필요) 또는 사용자가 제공한 정상화된 KRX CSV.
+- 인증 및 사용 방법: [KIS 인증과 KRX CSV 입력 가이드](docs/INVESTOR_FLOW_60D_SETUP.md).
+- 데이터가 실제로 20·60거래일치 없으면 임의 계산하지 않고 `—`로 표시합니다.
+- **시장 데이터 제3자 재배포 조건**을 확인한 후 공개 사이트에서 이용하세요.
+- 현재 공개 사이트: https://inthezeka.github.io/stock-research-auto/
