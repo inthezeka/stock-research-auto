@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "0 22 * * *" # 07:00 KST · overnight refresh
     - cron: "45 6 * * 1-5" # 15:45 KST · collect 15:30 Korea market closing prices
+    - cron: "30 11 * * 1-5" # 20:30 KST · refresh settled institutional/foreign/individual flow
     - cron: "15 22 1 * *" # 07:15 KST on the 1st · monthly theme refresh using prior month close
   workflow_dispatch:
   push:
@@ -27,7 +28,7 @@ concurrency:
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -45,7 +46,9 @@ jobs:
         run: pip install -r scripts/requirements.txt
 
       - name: Smoke test
-        run: python scripts/smoke_test.py
+        run: |
+          python scripts/smoke_test.py
+          python scripts/test_investor_flow_backfill.py
 
       - name: Refresh sector membership
         if: github.event_name != 'push'
@@ -66,6 +69,12 @@ jobs:
         run: python scripts/update_intraday_cache.py
 
       - name: Refresh individual-stock investor net-buy quantities
+        env:
+          # Set as GitHub Actions secrets; never put keys in source or HTML.
+          KIS_APP_KEY: ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET: ${{ secrets.KIS_APP_SECRET }}
+          # Avoid token issuance on every source-code push; run on schedule/manual.
+          KIS_FLOW_ENABLED: ${{ github.event_name == 'push' && '0' || '1' }}
         run: python scripts/update_investor_flow.py
 
       - name: Refresh 3-month analyst research cache
@@ -80,6 +89,9 @@ jobs:
 
       - name: Commit verified data
         env:
+          KIS_APP_KEY: ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET: ${{ secrets.KIS_APP_SECRET }}
+          KIS_FLOW_ENABLED: ${{ github.event_name == 'push' && '0' || '1' }}
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: |
           git config user.name "stock-research-bot"
