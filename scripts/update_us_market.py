@@ -157,7 +157,8 @@ def merge_universe(old):
                         universe[ticker]["indices"] = sorted(set(universe[ticker]["indices"] + [idx]))
     if not universe:
         # Verified official-index examples; intentionally marked bootstrap / not a full universe.
-        universe = {x[0]: dict(ticker=x[0], name=x[1], gics=x[2], subindustry=x[3], indices=x[4]) for x in SEED}
+        universe = {x[0]: dict(ticker=x[0], name=x[1], gics=x[2], subindustry=x[3], indices=[],
+                                  membership_status="SEED_UNVERIFIED") for x in SEED}
         failures["universe"] = "seed-only: live constituent lists unavailable"
     return universe, ok, failures
 
@@ -375,12 +376,13 @@ def main():
     investment_best5=aggregate_investment_best5(items)
     membership=initial_membership_check(items)
     complete_universe=(coverage.get("SP500",0)>=480 and coverage.get("NASDAQ100",0)>=95 and coverage.get("DOW30",0)>=29)
+    universe_price_coverage=sum(bool(x.get("close")) for x in items)/max(1,len(items))
     common_candidate_count=len(listings)
     scored_count=sum(x.get("fundamental_score") is not None for x in items)
     mapped_count=sum(x.get("sector_key") in sector_labels for x in items)
     meta={"as_of":asof,"generated_at":datetime.now(timezone.utc).isoformat(),
           "status":"ok" if complete_universe and asof and len(results)>=max(10,int(len(candidates)*.8)) and
-                   sum(v.get("close") is not None for v in results.values())>=max(10,int(len(candidates)*.8)) else "partial",
+                   universe_price_coverage>=.80 and scored_count/max(1,len(items))>=.70 else "partial",
           "market_timezone":"America/New_York","currency":"USD",
           "universe_total":len(items),"verified_close_count":sum(bool(x.get("close")) for x in items),
           "source_member_counts":coverage,"constituent_errors":universe_errors,
@@ -388,7 +390,9 @@ def main():
           "directory_status":"ok" if len(listing_coverage)==2 and common_candidate_count>3000 else "partial",
           "exchange_counts":listing_coverage,"directory_errors":listing_errors,
           "coverage_scope":"US index 3 plus exchange-listed common-stock candidates; nightly quote/SEC sampling",
-          "priced_universe_fraction":round(sum(bool(x.get("close")) for x in items)/max(1,len(items)),4),
+          "priced_universe_fraction":round(universe_price_coverage,4),
+          "screened_market_status":"partial" if universe_price_coverage<.8 else "broad_quote_coverage",
+          "full_market_scoring_status":"partial" if scored_count/max(1,len(items))<.70 else "broad_score_coverage",
           "mapped_sector_count":mapped_count,"fundamental_scored_count":scored_count,
           "fundamental_eligible_high_medium":sum(x.get("fundamental_confidence") in ("HIGH","MEDIUM") for x in items),
           "full_us_market_fundamental_rank_verified":False,
