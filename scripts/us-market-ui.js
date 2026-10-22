@@ -11,9 +11,10 @@ const billions=v=>valid(v)?'$'+number(Number(v)/1e9,2)+'B':'—';
 const confidence=v=>['HIGH','MEDIUM','LOW','INSUFFICIENT'].includes(v)?v:'INSUFFICIENT';
 const chip=(txt,extra='')=>'<span class="status-chip '+extra+'">'+esc(txt)+'</span>';
 let data={meta:{},indices:{},sectors:[],items:[],sector_cycles:[],theme_popularity:[]};
-let byTicker=new Map(), selectedIndex='ALL', sectorKey='ALL', query='', selected=null, activeUsMode='trading';
+let byTicker=new Map(), selectedIndex='INDEX3', sectorKey='ALL', query='', selected=null, activeUsMode='trading';
 
-function scope(t){return (selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex))&&
+function inIndexScope(t){return selectedIndex==='ALL'||(selectedIndex==='INDEX3'?(t.indices||[]).length>0:(t.indices||[]).includes(selectedIndex))}
+function scope(t){return inIndexScope(t)&&
  (sectorKey==='ALL'||t.sector_key===sectorKey) &&
  (!query||(String(t.ticker||'')+' '+String(t.name||'')).toLowerCase().includes(query))}
 function relevant(){return data.items.filter(scope)}
@@ -66,7 +67,7 @@ function indexCards(){
  }).join('');
 }
 function renderSectors(){
- const arr=data.items.filter(t=>selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex));
+ const arr=data.items.filter(inIndexScope);
  const counts=new Map();arr.forEach(t=>counts.set(t.sector_key,(counts.get(t.sector_key)||0)+1));
  const controls=[{key:'ALL',label:'전체 US Sector'},...(data.sectors||[])];
  $('sectorButtons').innerHTML=controls.map(t=>'<button class="sector'+(sectorKey===t.key?' active':'')+'" data-sector="'+esc(t.key)+'">'+
@@ -198,7 +199,7 @@ function renderThemes(){
  }).join('')||'<tr><td colspan="9">Theme 가격 확인 대상이 없습니다.</td></tr>';
 }
 function renderSectorTop3(){
- const inScope=data.items.filter(x=>(selectedIndex==='ALL'||(x.indices||[]).includes(selectedIndex))&&
+ const inScope=data.items.filter(x=>inIndexScope(x)&&
    (!query||(x.ticker+' '+x.name).toLowerCase().includes(query)));
  const rows=[];let present=0;
  for(const sec of data.sectors||[]){
@@ -224,7 +225,7 @@ function renderSectorTop3(){
 }
 function renderThemeTop3(){
  const byName=new Map();
- data.items.filter(t=>(selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex)) &&
+ data.items.filter(t=>inIndexScope(t) &&
  (!query||(t.ticker+' '+t.name).toLowerCase().includes(query))).forEach(t=>{
   (t.primary_themes||[]).forEach(theme=>{
    if(!byName.has(theme.theme))byName.set(theme.theme,[]);
@@ -262,7 +263,8 @@ function renderInvestment(){
 }
 function renderAll(){
  const scopeRows=relevant(),met=data.meta||{},fund=scopeRows.filter(t=>valid(t.fundamental_score));
- $('universeInfo').textContent='현재 필터 '+scopeRows.length.toLocaleString('ko-KR')+
+ $('universeInfo').textContent=(selectedIndex==='INDEX3'?'3대 대표지수 통합 · ':selectedIndex==='ALL'?'미국 전체 (부분 스캔) · ':'선택 지수 · ')+
+  '현재 '+scopeRows.length.toLocaleString('ko-KR')+
   '개 / 동일 거래일 종가 '+scopeRows.filter(t=>valid(t.close)).length+
   '개 / 기술점수 '+scopeRows.filter(t=>valid(t.trading_score)).length+
   '개 / SEC Fundamental 점수 '+fund.length+
