@@ -120,7 +120,7 @@ def json_sources(code):
     return [
         (f"https://m.stock.naver.com/front-api/stock/domestic/trend?code={code}",
          f"https://m.stock.naver.com/domestic/stock/{code}/total", "Naver front-api investor trend"),
-        (f"https://stock.naver.com/api/domestic/detail/{code}/trend?tradeType=KRX&startIdx=0&pageSize=40",
+        (f"https://api.stock.naver.com/api/domestic/detail/{code}/trend?tradeType=KRX&startIdx=0&pageSize=40",
          f"https://stock.naver.com/domestic/stock/{code}/trend", "Naver stock investor trend"),
         (f"https://m.stock.naver.com/api/stock/{code}/integration",
          f"https://m.stock.naver.com/domestic/stock/{code}", "Naver integration investor trend"),
@@ -178,7 +178,11 @@ def fetch_code(code, as_of):
             pc = pc_rows(code, session, as_of)
             # PC HTML has only two investor categories, so keep richer JSON if 5D
             # already exists unless PC meaningfully expands the trading window.
-            if len(pc) > len(best):
+            # Ignore an out-of-date public PC HTML snapshot (can lag weeks).
+            recent_pc = bool(pc and (not best or
+                               (datetime.strptime(best[-1]["date"], "%Y-%m-%d") -
+                                datetime.strptime(pc[-1]["date"], "%Y-%m-%d")).days <= 7))
+            if len(pc) > len(best) and recent_pc:
                 by_day = {r["date"]: r for r in pc}
                 for row in best:
                     by_day[row["date"]] = row
@@ -240,6 +244,16 @@ def main():
             except Exception as exc:
                 result = {"source": "UNAVAILABLE", "unit": "shares", "rows": [],
                           "last_date": None, "row_count": 0, "error": type(exc).__name__}
+            if result["rows"] and old.get(code, {}).get("rows"):
+                # Merge dates captured on previous days, so a 5-day provider
+                # eventually yields a true 20-day record without inventing data.
+                historical = {r["date"]: r for r in old[code]["rows"]
+                              if r.get("date") and r["date"] <= cutoff}
+                historical.update({r["date"]: r for r in result["rows"]})
+                combined = sorted(historical.values(), key=lambda r: r["date"])[-35:]
+                result["rows"] = combined
+                result["row_count"] = len(combined)
+                result["last_date"] = combined[-1]["date"]
             if not result["rows"] and old.get(code, {}).get("rows"):
                 previous = dict(old[code])
                 previous["stale"] = True
