@@ -52,7 +52,7 @@ def num(value):
         s = str(value).replace(",", "").replace(" ", "").replace("주", "").strip()
         if not s or s in ("-", "—", "N/A", "null"):
             return None
-        if not re.fullmatch(r"[+-]?\\d+(?:\\.0+)?", s):
+        if not re.fullmatch(r"[+-]?\d+(?:\.0+)?", s):
             return None
         return int(float(s))
     except (ValueError, OverflowError):
@@ -61,7 +61,7 @@ def num(value):
 
 def date_iso(value):
     s = str(value or "").strip()
-    m = re.match(r"^(20\\d{2})[-./]?(\\d{2})[-./]?(\\d{2})", s)
+    m = re.match(r"^(20\d{2})[-./]?(\d{2})[-./]?(\d{2})", s)
     if not m:
         return None
     day = "-".join(m.groups())
@@ -211,11 +211,11 @@ def candidates(universe):
         for stock in watch.get("stocks", []):
             code = str(stock.get("code") or stock.get("stock_code") or
                        stock.get("ticker") or "").split(".")[0].zfill(6)
-            if re.fullmatch(r"\\d{6}", code):
+            if re.fullmatch(r"\d{6}", code):
                 codes.append(code)
     except (ValueError, OSError, AttributeError):
         pass
-    return list(dict.fromkeys(c for c in codes if re.fullmatch(r"\\d{6}", c)))
+    return list(dict.fromkeys(c for c in codes if re.fullmatch(r"\d{6}", c)))
 
 
 def main():
