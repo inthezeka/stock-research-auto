@@ -2,7 +2,7 @@
 
 - passed: **True**
 - errors: **0**
-- warnings: **1**
+- warnings: **2**
 - KOSPI TOP5: **5**
 - KOSDAQ TOP5: **2**
 - themes: **19**
@@ -14,3 +14,4 @@
 
 ## Warnings
 - individual investor 5D flow not collected; show unavailable rather than estimates
+- 60D actual investor net-buy history not yet confirmed; UI shows missing, not estimates
