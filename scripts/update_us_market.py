@@ -304,10 +304,12 @@ def main():
         data=industry_by_ticker.get(ticker)
         if data:
             company.update(data)
+            company["screener_marketcap_date"]=NOW.date().isoformat()
         else:
             historic=previous_items.get(ticker) or {}
-            for key in ("industry","nasdaq_sector","industry_source","sic","sic_description"):
-                if not company.get(key) and historic.get(key):
+            for key in ("industry","nasdaq_sector","industry_source","sic","sic_description",
+                        "screener_marketcap_usd","screener_marketcap_source","screener_marketcap_date"):
+                if company.get(key) in (None,"") and historic.get(key) not in (None,""):
                     company[key]=historic[key]
     sector_labels={s["key"]:s["label"] for s in US_CONFIG["sectors"]}
     classifications={ticker:classify_company(item) for ticker,item in universe.items()}
