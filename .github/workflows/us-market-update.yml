@@ -1,0 +1,64 @@
+name: US market close update + Pages
+on:
+  schedule:
+    - cron: "20 22 * * 1-5" # 07:20 KST Tue-Sat; after 16:00 ET US close in both DST and standard time
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/update_us_market.py"
+      - "scripts/us-market-ui.js"
+      - "scripts/validate_us_market.py"
+      - "us.html"
+      - "markets.html"
+      - ".github/workflows/us-market-update.yml"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: us-market-daily-data
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scripts/requirements.txt
+      - name: Refresh US index members and dated market closes
+        env:
+          US_SEC_USER_AGENT: ${{ secrets.US_SEC_USER_AGENT }}
+          US_SEC_LIMIT: "80"
+          US_WORKERS: "12"
+        run: python scripts/update_us_market.py
+      - name: Validate US 36-sector dataset
+        run: python scripts/validate_us_market.py
+      - name: Commit verified US snapshot
+        run: |
+          git config user.name "stock-research-bot"
+          git config user.email "stock-research-bot@users.noreply.github.com"
+          git add data/us-market.json
+          if git diff --cached --quiet; then
+            echo "US snapshot unchanged"
+          else
+            git commit -m "data: refresh US market close [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      - id: deployment
+        uses: actions/deploy-pages@v4
