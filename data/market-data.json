@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-22T16:31:16.785761+09:00",
+    "generated_at": "2026-10-22T16:46:32.034610+09:00",
     "market_date": "2026-10-22",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -57,14 +57,14 @@
         "source": "Naver Stock world-index polling v2"
       },
       "usdkrw": {
-        "value": 1322.1,
+        "value": 1322.0,
         "change_pct": -0.41,
         "date": "2026-10-22",
         "source": "Naver Stock majors RPC"
       },
       "us10y": {
-        "value": 5.082,
-        "change_pct": -1.25,
+        "value": 5.084,
+        "change_pct": -1.21,
         "date": "2026-10-22",
         "source": "Naver Stock majors bond"
       }
@@ -73,7 +73,7 @@
     "korea_sentiment_policy": "Sentiment v3 · 최근성 우선 5D > 20D > 60D · 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
     "stock_universe": {
       "as_of": "2026-10-22",
-      "generated_at": "2026-10-22T16:31:16.785761+09:00",
+      "generated_at": "2026-10-22T16:46:32.034610+09:00",
       "count": 2675,
       "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop"
     },
@@ -84,7 +84,7 @@
     "theme_selection_refreshed_this_run": false,
     "sector_cycle": {
       "as_of": "2026-10-22",
-      "generated_at": "2026-10-22T16:31:16.785761+09:00",
+      "generated_at": "2026-10-22T16:46:32.034610+09:00",
       "sector_count": 36,
       "theme_count": 36,
       "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
@@ -103,11 +103,11 @@
     "fx": "1,322",
     "fxDelta": "-0.41% · 10-22",
     "us10y": "5.1%",
-    "us10yDelta": "-1.25% · 10-22",
+    "us10yDelta": "-1.21% · 10-22",
     "flowState": "기관 매도 / 외인 매수",
-    "flowDesc": "기관 -4,615억 · 외인 +601억",
+    "flowDesc": "기관 -4,602억 · 외인 +580억",
     "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-    "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+    "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
     "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
     "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
     "sector1": "AI 서버 부품 / 메모리",
@@ -201,9 +201,9 @@
     "ni4": "—",
     "eps4": "—",
     "yoy4": "—",
-    "per": "20.92x",
+    "per": "20.81x",
     "fper2": "—",
-    "pbr": "0.73x",
+    "pbr": "0.72x",
     "evebitda": "—",
     "valEps": "[검증 필요]",
     "targetPer": "[검증 필요]",
@@ -280,8 +280,8 @@
     "macdSignal": "Histogram 둔화",
     "maValue": "5D 5,426 / 20D 5,179 / 60D 5,164 / 120D 5,391",
     "maSignal": "정배열 · 상승 추세 · 괴리과열 -1",
-    "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-    "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+    "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+    "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
     "newsTitle": "도화엔지니어링 최신 주요기사",
     "newsDesc": "네이버증권 종목 뉴스에서 최신 기사를 확인합니다.",
     "valTargetPer": "[검증 필요]",
@@ -454,7 +454,7 @@
           "score": 58.3,
           "price": 214500.0,
           "price_label": "214,500원",
-          "r20": -17.5,
+          "r20": -17.82,
           "r60": -20.56,
           "state": "하락 추세",
           "reason": "메모리 업사이클 · HBM4 · 파운드리 개선 [AI]",
@@ -463,7 +463,7 @@
           "monthly_momentum_score": 28.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Naver Stock"
+          "price_source": "Yahoo Finance (cross-checked exact close)"
         },
         {
           "name": "SK하이닉스",
@@ -657,7 +657,7 @@
           "score": 57.4,
           "price": 166800.0,
           "price_label": "166,800원",
-          "r20": -9.0,
+          "r20": -9.3,
           "r60": 9.59,
           "state": "조정",
           "reason": "양극재·음극재 가동률과 북미 배터리 공급망 [AI]",
@@ -666,7 +666,7 @@
           "monthly_momentum_score": 53.1,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Naver Stock"
+          "price_source": "Yahoo Finance (cross-checked exact close)"
         }
       ],
       "selection_as_of": "2026-10-16",
@@ -1153,7 +1153,7 @@
           "score": 46.2,
           "price": 90300.0,
           "price_label": "90,300원",
-          "r20": -17.98,
+          "r20": -18.72,
           "r60": -13.01,
           "state": "하락 추세",
           "reason": "자사주·배당·자본비율 개선과 밸류업 [AI]",
@@ -1162,7 +1162,7 @@
           "monthly_momentum_score": 22.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Yahoo Finance (cross-checked exact close)"
+          "price_source": "Naver Stock"
         }
       ],
       "selection_as_of": "2026-10-16",
@@ -1305,7 +1305,7 @@
           "score": 58.0,
           "price": 286000.0,
           "price_label": "286,000원",
-          "r20": -11.46,
+          "r20": -12.14,
           "r60": -11.59,
           "state": "하락 추세",
           "reason": "철강 스프레드·리튬/소재 가치 회복 [AI]",
@@ -1314,7 +1314,7 @@
           "monthly_momentum_score": 39.0,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Yahoo Finance (cross-checked exact close)"
+          "price_source": "Naver Stock"
         },
         {
           "name": "고려아연",
@@ -1384,7 +1384,7 @@
           "score": 55.6,
           "price": 66300.0,
           "price_label": "66,300원",
-          "r20": -5.96,
+          "r20": -6.62,
           "r60": -13.56,
           "state": "하락 추세",
           "reason": "물류 자동화·택배 단가·글로벌 사업 개선 [AI]",
@@ -1393,7 +1393,7 @@
           "monthly_momentum_score": 43.2,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Yahoo Finance (cross-checked exact close)"
+          "price_source": "Naver Stock"
         },
         {
           "name": "대한항공",
@@ -1401,7 +1401,7 @@
           "score": 48.5,
           "price": 26450.0,
           "price_label": "26,450원",
-          "r20": -9.26,
+          "r20": -9.73,
           "r60": 2.72,
           "state": "조정",
           "reason": "국제선 수요·화물 운임·통합 시너지 [AI]",
@@ -1410,7 +1410,7 @@
           "monthly_momentum_score": 37.3,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Naver Stock"
+          "price_source": "Yahoo Finance (cross-checked exact close)"
         }
       ],
       "selection_as_of": "2026-10-16",
@@ -1570,7 +1570,7 @@
           "score": 58.3,
           "price": 214500.0,
           "price_label": "214,500원",
-          "r20": -17.5,
+          "r20": -17.82,
           "r60": -20.56,
           "state": "하락 추세",
           "reason": "메모리 업사이클 · HBM4 · 파운드리 개선 [AI]",
@@ -1579,7 +1579,7 @@
           "monthly_momentum_score": 28.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-22",
-          "price_source": "Naver Stock"
+          "price_source": "Yahoo Finance (cross-checked exact close)"
         },
         {
           "name": "SK하이닉스",
@@ -1697,9 +1697,9 @@
         "ni4": "—",
         "eps4": "—",
         "yoy4": "—",
-        "per": "20.92x",
+        "per": "20.81x",
         "fper2": "—",
-        "pbr": "0.73x",
+        "pbr": "0.72x",
         "evebitda": "—",
         "valEps": "[검증 필요]",
         "targetPer": "[검증 필요]",
@@ -1839,13 +1839,13 @@
         "fx": "1,322",
         "fxDelta": "-0.41% · 10-22",
         "us10y": "5.1%",
-        "us10yDelta": "-1.25% · 10-22",
+        "us10yDelta": "-1.21% · 10-22",
         "flowState": "기관 매도 / 외인 매수",
-        "flowDesc": "기관 -4,615억 · 외인 +601억",
-        "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-        "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+        "flowDesc": "기관 -4,602억 · 외인 +580억",
+        "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+        "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
         "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -1935,17 +1935,17 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-        "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+        "fetched_at": "2026-10-22T16:46:32.034610+09:00"
       },
       "valuation_snapshot": {
-        "per": 20.92,
+        "per": 20.81,
         "forward_per": null,
-        "pbr": 0.73,
+        "pbr": 0.72,
         "eps": 260.0,
         "forward_eps": null,
         "bps": 7481.0,
         "target_price": null,
-        "market_value": "1,834억",
+        "market_value": "1,824억",
         "source": "Naver Stock integration",
         "url": "https://m.stock.naver.com/api/stock/002150/integration"
       }
@@ -2043,9 +2043,9 @@
         "ni4": "401억",
         "eps4": "3,861원",
         "yoy4": "매출 QoQ +2.4% [AI]",
-        "per": "16.66x",
+        "per": "16.63x",
         "fper2": "17.43x",
-        "pbr": "4.75x",
+        "pbr": "4.74x",
         "evebitda": "—",
         "valEps": "3,861원 · 2026Q3E",
         "targetPer": "17.43x · Forward PER",
@@ -2187,13 +2187,13 @@
         "fx": "1,322",
         "fxDelta": "-0.41% · 10-22",
         "us10y": "5.1%",
-        "us10yDelta": "-1.25% · 10-22",
+        "us10yDelta": "-1.21% · 10-22",
         "flowState": "기관 매도 / 외인 매수",
-        "flowDesc": "기관 -4,615억 · 외인 +601억",
-        "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-        "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+        "flowDesc": "기관 -4,602억 · 외인 +580억",
+        "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+        "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
         "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -2281,17 +2281,17 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-        "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+        "fetched_at": "2026-10-22T16:46:32.034610+09:00"
       },
       "valuation_snapshot": {
-        "per": 16.66,
-        "forward_per": 17.3,
-        "pbr": 4.75,
+        "per": 16.63,
+        "forward_per": 17.27,
+        "pbr": 4.74,
         "eps": 16236.0,
         "forward_eps": 15638.0,
         "bps": 56990.0,
         "target_price": null,
-        "market_value": "3조 700억",
+        "market_value": "3조 644억",
         "source": "Naver Stock integration",
         "url": "https://m.stock.naver.com/api/stock/192820/integration"
       }
@@ -2389,7 +2389,7 @@
         "ni4": "1.04조",
         "eps4": "898원",
         "yoy4": "매출 QoQ +11.1% [AI]",
-        "per": "15.12x",
+        "per": "15.15x",
         "fper2": "9.58x",
         "pbr": "0.74x",
         "evebitda": "—",
@@ -2482,7 +2482,7 @@
         "volumeInfo": "20D 평균 대비 0.72배 [AI]",
         "atrInfo": "ATR14 932원 [AI]",
         "gapInfo": "시가 Gap -1.28% [AI]",
-        "turnoverInfo": "270억원",
+        "turnoverInfo": "271억원",
         "high52Info": "52주 고점 24,500원 [AI]",
         "divergence": "Bullish Divergence · RSI · Bullish Divergence · MACD [AI]",
         "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -2531,13 +2531,13 @@
         "fx": "1,322",
         "fxDelta": "-0.41% · 10-22",
         "us10y": "5.1%",
-        "us10yDelta": "-1.25% · 10-22",
+        "us10yDelta": "-1.21% · 10-22",
         "flowState": "기관 매도 / 외인 매수",
-        "flowDesc": "기관 -4,615억 · 외인 +601억",
-        "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-        "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+        "flowDesc": "기관 -4,602억 · 외인 +580억",
+        "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+        "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
         "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -2627,17 +2627,17 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-        "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+        "fetched_at": "2026-10-22T16:46:32.034610+09:00"
       },
       "valuation_snapshot": {
-        "per": 15.12,
-        "forward_per": 9.51,
+        "per": 15.15,
+        "forward_per": 9.53,
         "pbr": 0.74,
         "eps": 1488.0,
         "forward_eps": 2365.0,
         "bps": 30457.0,
         "target_price": null,
-        "market_value": "21조 2,229억",
+        "market_value": "21조 2,700억",
         "source": "Naver Stock integration",
         "url": "https://m.stock.naver.com/api/stock/011200/integration"
       }
@@ -2737,7 +2737,7 @@
         "yoy4": "매출 QoQ +23.6% [AI]",
         "per": "—",
         "fper2": "-376.81x",
-        "pbr": "4.08x",
+        "pbr": "4.07x",
         "evebitda": "—",
         "valEps": "755원 · 2026Q3E",
         "targetPer": "-376.81x · Forward PER",
@@ -2825,10 +2825,10 @@
         "rsiScoreState": "건강한 상승구간 · RSI 급락",
         "stochScoreState": "방향 확인 필요",
         "maGapInfo": "MA20 괴리 +1.0% · MA60 괴리 +7.3% [AI]",
-        "volumeInfo": "20D 평균 대비 0.95배 [AI]",
+        "volumeInfo": "20D 평균 대비 0.91배 [AI]",
         "atrInfo": "ATR14 22,321원 [AI]",
         "gapInfo": "시가 Gap -0.97% [AI]",
-        "turnoverInfo": "1543억원",
+        "turnoverInfo": "1475억원",
         "high52Info": "52주 고점 514,000원 [AI]",
         "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
         "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -2879,13 +2879,13 @@
         "fx": "1,322",
         "fxDelta": "-0.41% · 10-22",
         "us10y": "5.1%",
-        "us10yDelta": "-1.25% · 10-22",
+        "us10yDelta": "-1.21% · 10-22",
         "flowState": "기관 매도 / 외인 매수",
-        "flowDesc": "기관 -4,615억 · 외인 +601억",
-        "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-        "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+        "flowDesc": "기관 -4,602억 · 외인 +580억",
+        "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+        "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
         "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -2973,17 +2973,17 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/373220/finance/quarter",
-        "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+        "fetched_at": "2026-10-22T16:46:32.034610+09:00"
       },
       "valuation_snapshot": {
         "per": null,
-        "forward_per": -376.33,
-        "pbr": 4.08,
+        "forward_per": -375.85,
+        "pbr": 4.07,
         "eps": -7193.0,
         "forward_eps": -1035.0,
         "bps": 95479.0,
         "target_price": null,
-        "market_value": "91조 1,430억",
+        "market_value": "91조 260억",
         "source": "Naver Stock integration",
         "url": "https://m.stock.naver.com/api/stock/373220/integration"
       }
@@ -3225,13 +3225,13 @@
         "fx": "1,322",
         "fxDelta": "-0.41% · 10-22",
         "us10y": "5.1%",
-        "us10yDelta": "-1.25% · 10-22",
+        "us10yDelta": "-1.21% · 10-22",
         "flowState": "기관 매도 / 외인 매수",
-        "flowDesc": "기관 -4,615억 · 외인 +601억",
-        "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-        "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+        "flowDesc": "기관 -4,602억 · 외인 +580억",
+        "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+        "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
         "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -3319,7 +3319,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/018260/finance/quarter",
-        "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+        "fetched_at": "2026-10-22T16:46:32.034610+09:00"
       },
       "valuation_snapshot": {
         "per": 24.56,
@@ -3339,13 +3339,13 @@
     "us": {
       "available": true,
       "fresh": true,
-      "score": 32.0,
+      "score": 29.2,
       "rating": "공포",
       "rating_en": "fear",
       "previous_close": 31.3714285714286,
       "previous_1_week": 30.3428571428571,
       "previous_1_month": 35.0285714285714,
-      "timestamp": "2026-10-22T00:59:46+00:00",
+      "timestamp": "2026-10-22T07:31:16+00:00",
       "source": "CNN Fear & Greed"
     },
     "kr": {
@@ -3354,7 +3354,7 @@
       "score": 26.5,
       "raw_score": 26.5,
       "rating": "공포",
-      "timestamp": "2026-10-22T16:31:16.785761+09:00",
+      "timestamp": "2026-10-22T16:46:32.034610+09:00",
       "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
       "method": "KOSPI와 KOSDAQ을 각각 최근성 우선(5D > 20D > 60D) 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
       "kospi": {
@@ -3364,14 +3364,14 @@
         "score": 22.5,
         "raw_score": 22.5,
         "rating": "극단적 공포",
-        "timestamp": "2026-10-22T16:31:16.785761+09:00",
+        "timestamp": "2026-10-22T16:46:32.034610+09:00",
         "source": "KOSPI·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSPI 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSPI 20D ≤ -15% → 상단 44 · KOSPI 60D ≤ -20% → 상단 49",
         "flow": {
-          "foreign": 601.0,
-          "institution": -4615.0,
-          "text": "외인 +601억 · 기관 -4,615억",
+          "foreign": 580.0,
+          "institution": -4602.0,
+          "text": "외인 +580억 · 기관 -4,602억",
           "score": 44.1
         },
         "components": [
@@ -3415,14 +3415,14 @@
             "label": "외국인·기관 수급",
             "score": 44.1,
             "weight": 15,
-            "value": "외인 +601억 · 기관 -4,615억"
+            "value": "외인 +580억 · 기관 -4,602억"
           },
           {
             "key": "safe_haven",
             "label": "USD/KRW 20D",
             "score": 81.2,
             "weight": 5,
-            "value": "-2.99%"
+            "value": "-3.00%"
           }
         ],
         "trend5_detail": {
@@ -3447,15 +3447,15 @@
         "score": 30.5,
         "raw_score": 30.5,
         "rating": "공포",
-        "timestamp": "2026-10-22T16:31:16.785761+09:00",
+        "timestamp": "2026-10-22T16:46:32.034610+09:00",
         "source": "KOSDAQ·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSDAQ 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSDAQ 20D ≤ -5% → 상단 64",
         "flow": {
-          "foreign": -1195.0,
-          "institution": -1002.0,
-          "text": "외인 -1,195억 · 기관 -1,002억",
-          "score": 45.5
+          "foreign": -1189.0,
+          "institution": -995.0,
+          "text": "외인 -1,189억 · 기관 -995억",
+          "score": 45.6
         },
         "components": [
           {
@@ -3496,16 +3496,16 @@
           {
             "key": "flow",
             "label": "외국인·기관 수급",
-            "score": 45.5,
+            "score": 45.6,
             "weight": 15,
-            "value": "외인 -1,195억 · 기관 -1,002억"
+            "value": "외인 -1,189억 · 기관 -995억"
           },
           {
             "key": "safe_haven",
             "label": "USD/KRW 20D",
             "score": 81.2,
             "weight": 5,
-            "value": "-2.99%"
+            "value": "-3.00%"
           }
         ],
         "trend5_detail": {
@@ -3526,16 +3526,16 @@
       "components": [],
       "errors": []
     },
-    "blended_score": 29.0,
+    "blended_score": 27.7,
     "blended_rating": "공포",
-    "kr_us_gap": -5.5,
+    "kr_us_gap": -2.7,
     "regime": "SELECTIVE RISK-OFF",
     "recommendation": {
       "base_modifier": -1,
       "note": "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-22T16:31:16.785761+09:00"
+    "updated_at": "2026-10-22T16:46:32.034610+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -3632,9 +3632,9 @@
           "ni4": "—",
           "eps4": "—",
           "yoy4": "—",
-          "per": "20.92x",
+          "per": "20.81x",
           "fper2": "—",
-          "pbr": "0.73x",
+          "pbr": "0.72x",
           "evebitda": "—",
           "valEps": "[검증 필요]",
           "targetPer": "[검증 필요]",
@@ -3774,13 +3774,13 @@
           "fx": "1,322",
           "fxDelta": "-0.41% · 10-22",
           "us10y": "5.1%",
-          "us10yDelta": "-1.25% · 10-22",
+          "us10yDelta": "-1.21% · 10-22",
           "flowState": "기관 매도 / 외인 매수",
-          "flowDesc": "기관 -4,615억 · 외인 +601억",
-          "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-          "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+          "flowDesc": "기관 -4,602억 · 외인 +580억",
+          "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+          "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
           "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -3870,17 +3870,17 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-          "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+          "fetched_at": "2026-10-22T16:46:32.034610+09:00"
         },
         "valuation_snapshot": {
-          "per": 20.92,
+          "per": 20.81,
           "forward_per": null,
-          "pbr": 0.73,
+          "pbr": 0.72,
           "eps": 260.0,
           "forward_eps": null,
           "bps": 7481.0,
           "target_price": null,
-          "market_value": "1,834억",
+          "market_value": "1,824억",
           "source": "Naver Stock integration",
           "url": "https://m.stock.naver.com/api/stock/002150/integration"
         }
@@ -3978,9 +3978,9 @@
           "ni4": "401억",
           "eps4": "3,861원",
           "yoy4": "매출 QoQ +2.4% [AI]",
-          "per": "16.66x",
+          "per": "16.63x",
           "fper2": "17.43x",
-          "pbr": "4.75x",
+          "pbr": "4.74x",
           "evebitda": "—",
           "valEps": "3,861원 · 2026Q3E",
           "targetPer": "17.43x · Forward PER",
@@ -4122,13 +4122,13 @@
           "fx": "1,322",
           "fxDelta": "-0.41% · 10-22",
           "us10y": "5.1%",
-          "us10yDelta": "-1.25% · 10-22",
+          "us10yDelta": "-1.21% · 10-22",
           "flowState": "기관 매도 / 외인 매수",
-          "flowDesc": "기관 -4,615억 · 외인 +601억",
-          "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-          "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+          "flowDesc": "기관 -4,602억 · 외인 +580억",
+          "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+          "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
           "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -4216,17 +4216,17 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/192820/finance/quarter",
-          "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+          "fetched_at": "2026-10-22T16:46:32.034610+09:00"
         },
         "valuation_snapshot": {
-          "per": 16.66,
-          "forward_per": 17.3,
-          "pbr": 4.75,
+          "per": 16.63,
+          "forward_per": 17.27,
+          "pbr": 4.74,
           "eps": 16236.0,
           "forward_eps": 15638.0,
           "bps": 56990.0,
           "target_price": null,
-          "market_value": "3조 700억",
+          "market_value": "3조 644억",
           "source": "Naver Stock integration",
           "url": "https://m.stock.naver.com/api/stock/192820/integration"
         }
@@ -4324,7 +4324,7 @@
           "ni4": "1.04조",
           "eps4": "898원",
           "yoy4": "매출 QoQ +11.1% [AI]",
-          "per": "15.12x",
+          "per": "15.15x",
           "fper2": "9.58x",
           "pbr": "0.74x",
           "evebitda": "—",
@@ -4417,7 +4417,7 @@
           "volumeInfo": "20D 평균 대비 0.72배 [AI]",
           "atrInfo": "ATR14 932원 [AI]",
           "gapInfo": "시가 Gap -1.28% [AI]",
-          "turnoverInfo": "270억원",
+          "turnoverInfo": "271억원",
           "high52Info": "52주 고점 24,500원 [AI]",
           "divergence": "Bullish Divergence · RSI · Bullish Divergence · MACD [AI]",
           "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -4466,13 +4466,13 @@
           "fx": "1,322",
           "fxDelta": "-0.41% · 10-22",
           "us10y": "5.1%",
-          "us10yDelta": "-1.25% · 10-22",
+          "us10yDelta": "-1.21% · 10-22",
           "flowState": "기관 매도 / 외인 매수",
-          "flowDesc": "기관 -4,615억 · 외인 +601억",
-          "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-          "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+          "flowDesc": "기관 -4,602억 · 외인 +580억",
+          "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+          "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
           "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -4562,17 +4562,17 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-          "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+          "fetched_at": "2026-10-22T16:46:32.034610+09:00"
         },
         "valuation_snapshot": {
-          "per": 15.12,
-          "forward_per": 9.51,
+          "per": 15.15,
+          "forward_per": 9.53,
           "pbr": 0.74,
           "eps": 1488.0,
           "forward_eps": 2365.0,
           "bps": 30457.0,
           "target_price": null,
-          "market_value": "21조 2,229억",
+          "market_value": "21조 2,700억",
           "source": "Naver Stock integration",
           "url": "https://m.stock.naver.com/api/stock/011200/integration"
         }
@@ -4672,7 +4672,7 @@
           "yoy4": "매출 QoQ +23.6% [AI]",
           "per": "—",
           "fper2": "-376.81x",
-          "pbr": "4.08x",
+          "pbr": "4.07x",
           "evebitda": "—",
           "valEps": "755원 · 2026Q3E",
           "targetPer": "-376.81x · Forward PER",
@@ -4760,10 +4760,10 @@
           "rsiScoreState": "건강한 상승구간 · RSI 급락",
           "stochScoreState": "방향 확인 필요",
           "maGapInfo": "MA20 괴리 +1.0% · MA60 괴리 +7.3% [AI]",
-          "volumeInfo": "20D 평균 대비 0.95배 [AI]",
+          "volumeInfo": "20D 평균 대비 0.91배 [AI]",
           "atrInfo": "ATR14 22,321원 [AI]",
           "gapInfo": "시가 Gap -0.97% [AI]",
-          "turnoverInfo": "1543억원",
+          "turnoverInfo": "1475억원",
           "high52Info": "52주 고점 514,000원 [AI]",
           "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
           "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -4814,13 +4814,13 @@
           "fx": "1,322",
           "fxDelta": "-0.41% · 10-22",
           "us10y": "5.1%",
-          "us10yDelta": "-1.25% · 10-22",
+          "us10yDelta": "-1.21% · 10-22",
           "flowState": "기관 매도 / 외인 매수",
-          "flowDesc": "기관 -4,615억 · 외인 +601억",
-          "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-          "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+          "flowDesc": "기관 -4,602억 · 외인 +580억",
+          "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+          "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
           "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -4908,17 +4908,17 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/373220/finance/quarter",
-          "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+          "fetched_at": "2026-10-22T16:46:32.034610+09:00"
         },
         "valuation_snapshot": {
           "per": null,
-          "forward_per": -376.33,
-          "pbr": 4.08,
+          "forward_per": -375.85,
+          "pbr": 4.07,
           "eps": -7193.0,
           "forward_eps": -1035.0,
           "bps": 95479.0,
           "target_price": null,
-          "market_value": "91조 1,430억",
+          "market_value": "91조 260억",
           "source": "Naver Stock integration",
           "url": "https://m.stock.naver.com/api/stock/373220/integration"
         }
@@ -5160,13 +5160,13 @@
           "fx": "1,322",
           "fxDelta": "-0.41% · 10-22",
           "us10y": "5.1%",
-          "us10yDelta": "-1.25% · 10-22",
+          "us10yDelta": "-1.21% · 10-22",
           "flowState": "기관 매도 / 외인 매수",
-          "flowDesc": "기관 -4,615억 · 외인 +601억",
-          "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-          "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+          "flowDesc": "기관 -4,602억 · 외인 +580억",
+          "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+          "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
           "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -5254,7 +5254,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/018260/finance/quarter",
-          "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+          "fetched_at": "2026-10-22T16:46:32.034610+09:00"
         },
         "valuation_snapshot": {
           "per": 24.56,
@@ -5512,13 +5512,13 @@
           "fx": "1,322",
           "fxDelta": "-0.41% · 10-22",
           "us10y": "5.1%",
-          "us10yDelta": "-1.25% · 10-22",
+          "us10yDelta": "-1.21% · 10-22",
           "flowState": "기관 매도 / 외인 매수",
-          "flowDesc": "기관 -4,615억 · 외인 +601억",
-          "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-          "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+          "flowDesc": "기관 -4,602억 · 외인 +580억",
+          "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+          "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
           "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+          "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -5606,7 +5606,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/054930/finance/quarter",
-          "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+          "fetched_at": "2026-10-22T16:46:32.034610+09:00"
         },
         "valuation_snapshot": {
           "per": 4.92,
@@ -5616,7 +5616,7 @@
           "forward_eps": null,
           "bps": 52640.0,
           "target_price": null,
-          "market_value": "583억",
+          "market_value": "582억",
           "source": "Naver Stock integration",
           "url": "https://m.stock.naver.com/api/stock/054930/integration"
         }
@@ -5865,13 +5865,13 @@
         "fx": "1,322",
         "fxDelta": "-0.41% · 10-22",
         "us10y": "5.1%",
-        "us10yDelta": "-1.25% · 10-22",
+        "us10yDelta": "-1.21% · 10-22",
         "flowState": "기관 매도 / 외인 매수",
-        "flowDesc": "기관 -4,615억 · 외인 +601억",
-        "kospiFlow": "외국인 +601억 · 기관 -4,615억",
-        "kosdaqFlow": "외국인 -1,195억 · 기관 -1,002억",
+        "flowDesc": "기관 -4,602억 · 외인 +580억",
+        "kospiFlow": "외국인 +580억 · 기관 -4,602억",
+        "kosdaqFlow": "외국인 -1,189억 · 기관 -995억",
         "marketReason1": "KOSPI 5,534 (-3.52% · 10-22), KOSDAQ 764 (-3.62% · 10-22), Nasdaq 26,703 (+1.05% · 10-21)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.25% · 10-22). KOSPI 수급은 외국인 +601억 · 기관 -4,615억입니다.",
+        "marketReason2": "USD/KRW 1,322 (-0.41% · 10-22), 미 10년물 5.1% (-1.21% · 10-22). KOSPI 수급은 외국인 +580억 · 기관 -4,602억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,534 · KOSDAQ 764 · USD/KRW 1,322",
@@ -5959,7 +5959,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/054930/finance/quarter",
-        "fetched_at": "2026-10-22T16:31:16.785761+09:00"
+        "fetched_at": "2026-10-22T16:46:32.034610+09:00"
       },
       "valuation_snapshot": {
         "per": 4.92,
@@ -5969,7 +5969,7 @@
         "forward_eps": null,
         "bps": 52640.0,
         "target_price": null,
-        "market_value": "583억",
+        "market_value": "582억",
         "source": "Naver Stock integration",
         "url": "https://m.stock.naver.com/api/stock/054930/integration"
       }
@@ -5977,13 +5977,13 @@
   ],
   "kosdaq_selection_diagnostics": [
     {
-      "code": "054930",
-      "name": "유신",
-      "fundamental_score": 64.8,
-      "trading_score": 62.0,
-      "final_score": 63.68,
-      "eligible": true,
-      "priority": "60~69"
+      "code": "196170",
+      "name": "알테오젠",
+      "fundamental_score": 64.1,
+      "trading_score": 48.0,
+      "final_score": 57.66,
+      "eligible": false,
+      "priority": "<60 제외"
     },
     {
       "code": "189300",
@@ -6004,29 +6004,20 @@
       "priority": "<60 제외"
     },
     {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 58.2,
-      "trading_score": 38.0,
-      "final_score": 50.12,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "196170",
-      "name": "알테오젠",
-      "fundamental_score": 64.1,
-      "trading_score": 48.0,
-      "final_score": 57.66,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
       "code": "083650",
       "name": "비에이치아이",
       "fundamental_score": 55.4,
       "trading_score": 35.0,
       "final_score": 47.24,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 58.2,
+      "trading_score": 38.0,
+      "final_score": 50.12,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -6038,6 +6029,15 @@
       "final_score": 55.7,
       "eligible": false,
       "priority": "<60 제외"
+    },
+    {
+      "code": "054930",
+      "name": "유신",
+      "fundamental_score": 64.8,
+      "trading_score": 62.0,
+      "final_score": 63.68,
+      "eligible": true,
+      "priority": "60~69"
     }
   ],
   "kospi_selection_diagnostics": [
@@ -6306,8 +6306,8 @@
       "code": "055550",
       "name": "신한지주",
       "fundamental_score": 46.2,
-      "trading_score": 32.0,
-      "final_score": 40.52,
+      "trading_score": 29.0,
+      "final_score": 39.32,
       "eligible": false,
       "priority": "<50"
     },
@@ -6378,8 +6378,8 @@
       "code": "005490",
       "name": "POSCO홀딩스",
       "fundamental_score": 58.0,
-      "trading_score": 27.0,
-      "final_score": 45.6,
+      "trading_score": 31.0,
+      "final_score": 47.2,
       "eligible": false,
       "priority": "<50"
     },
@@ -6396,8 +6396,8 @@
       "code": "003490",
       "name": "대한항공",
       "fundamental_score": 48.5,
-      "trading_score": 34.0,
-      "final_score": 42.7,
+      "trading_score": 32.0,
+      "final_score": 41.9,
       "eligible": false,
       "priority": "<50"
     },
@@ -6465,10 +6465,10 @@
       "priority": "70+"
     }
   ],
-  "kospi_selection_updated_at": "2026-10-22T16:31:16.785761+09:00",
+  "kospi_selection_updated_at": "2026-10-22T16:46:32.034610+09:00",
   "sector_cycle": {
     "as_of": "2026-10-22",
-    "generated_at": "2026-10-22T16:31:16.785761+09:00",
+    "generated_at": "2026-10-22T16:46:32.034610+09:00",
     "sector_count": 36,
     "theme_count": 36,
     "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
@@ -6512,7 +6512,7 @@
           },
           "structural": {
             "level": 95.0,
-            "momentum": 81.2,
+            "momentum": 81.1,
             "score": 86.7
           },
           "catalyst": {
@@ -6575,9 +6575,9 @@
             "005930": 45521.0,
             "000660": 353888.0
           },
-          "median_fper_or_pbr": 4.7,
+          "median_fper_or_pbr": 4.69,
           "median_r20": -18.765957446808514,
-          "median_r60": -20.740740740740737,
+          "median_r60": -20.925925925925924,
           "median_rev_qoq": 50.86398244075754,
           "median_fwd_rev_growth": 20.450819560905586,
           "median_opm": 52.18230956941565,
@@ -6591,9 +6591,9 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "우호적 확장",
         "cycle_score": 70.2,
-        "investment_score": 69.0,
+        "investment_score": 68.9,
         "valuation_score": 64.0,
-        "relative_strength_score": 46.8,
+        "relative_strength_score": 46.6,
         "catalyst_score": 90.5,
         "factors": {
           "demand": {
@@ -6681,9 +6681,9 @@
             "353200": 4516.0,
             "222800": 5233.0
           },
-          "median_fper_or_pbr": 24.09,
-          "median_r20": -5.003971405877683,
-          "median_r60": 3.1655844155844104,
+          "median_fper_or_pbr": 24.06,
+          "median_r20": -5.242255758538528,
+          "median_r60": 3.0844155844155896,
           "median_rev_qoq": 15.795552988738093,
           "median_fwd_rev_growth": 8.744656043528964,
           "median_opm": 17.531172069825438,
@@ -6699,7 +6699,7 @@
         "cycle_score": 56.7,
         "investment_score": 63.4,
         "valuation_score": 92.0,
-        "relative_strength_score": 57.7,
+        "relative_strength_score": 58.0,
         "catalyst_score": 69.5,
         "factors": {
           "demand": {
@@ -6730,7 +6730,7 @@
           "structural": {
             "level": 60.0,
             "momentum": 58.4,
-            "score": 59.0
+            "score": 59.1
           },
           "catalyst": {
             "level": 73.0,
@@ -6783,8 +6783,8 @@
             "028670": 908.0
           },
           "median_fper_or_pbr": 8.15,
-          "median_r20": 7.398568019093088,
-          "median_r60": 7.14285714285714,
+          "median_r20": 7.637231503579955,
+          "median_r60": 7.380952380952377,
           "median_rev_qoq": 25.133335785485713,
           "median_fwd_rev_growth": -3.1039347860166155,
           "median_opm": 10.121753670899306,
@@ -6798,10 +6798,10 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
         "cycle_score": 62.0,
-        "investment_score": 62.7,
+        "investment_score": 62.6,
         "valuation_score": 84.0,
-        "relative_strength_score": 30.3,
-        "catalyst_score": 67.5,
+        "relative_strength_score": 29.8,
+        "catalyst_score": 67.4,
         "factors": {
           "demand": {
             "level": 73.1,
@@ -6830,13 +6830,13 @@
           },
           "structural": {
             "level": 81.0,
-            "momentum": 69.5,
+            "momentum": 69.6,
             "score": 74.1
           },
           "catalyst": {
             "level": 73.0,
-            "momentum": 63.8,
-            "score": 67.5
+            "momentum": 63.7,
+            "score": 67.4
           }
         },
         "peak_warning": false,
@@ -6885,9 +6885,9 @@
             "145020": 11869.0,
             "214150": 2254.0
           },
-          "median_fper_or_pbr": 13.23,
-          "median_r20": -15.3953488372093,
-          "median_r60": -29.72222222222223,
+          "median_fper_or_pbr": 13.25,
+          "median_r20": -16.04651162790698,
+          "median_r60": -29.58333333333333,
           "median_rev_qoq": 20.9862385321101,
           "median_fwd_rev_growth": 1.175153889199776,
           "median_opm": 40.609137055837564,
@@ -6903,7 +6903,7 @@
         "cycle_score": 63.4,
         "investment_score": 62.5,
         "valuation_score": 74.0,
-        "relative_strength_score": 25.3,
+        "relative_strength_score": 25.2,
         "catalyst_score": 76.4,
         "factors": {
           "demand": {
@@ -6991,13 +6991,111 @@
             "042660": 6367.0,
             "272210": 724.0
           },
-          "median_fper_or_pbr": 18.34,
-          "median_r20": -26.007326007326004,
-          "median_r60": -15.65762004175365,
+          "median_fper_or_pbr": 18.32,
+          "median_r20": -26.098901098901095,
+          "median_r60": -15.762004175365341,
           "median_rev_qoq": 61.58754999130587,
           "median_fwd_rev_growth": -19.2200497153741,
           "median_opm": 13.523295120517343,
           "median_opm_delta": 3.5846414263098367,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
+        "key": "retail",
+        "name": "유통 / 리테일 / 커머스",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 58.2,
+        "investment_score": 62.3,
+        "valuation_score": 92.0,
+        "relative_strength_score": 43.1,
+        "catalyst_score": 63.3,
+        "factors": {
+          "demand": {
+            "level": 59.3,
+            "momentum": 50.2,
+            "score": 53.9
+          },
+          "supply": {
+            "level": 64.0,
+            "momentum": 53.0,
+            "score": 57.4
+          },
+          "price": {
+            "level": 65.1,
+            "momentum": 56.2,
+            "score": 59.8
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 62.7,
+            "momentum": 50.0,
+            "score": 55.1
+          },
+          "structural": {
+            "level": 61.0,
+            "momentum": 57.5,
+            "score": 58.9
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 60.9,
+            "score": 63.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "수주/CAPEX 회복"
+        ],
+        "reason": "Catalyst 63 · CAPEX/수주 62 | 대표: 포스코인터내셔널, 코웨이, F&F",
+        "growth": "내수회복 · 관광객 · 소비회복 · 온라인 Commerce",
+        "subsectors": [
+          "백화점",
+          "편의점",
+          "홈쇼핑",
+          "면세",
+          "E-Commerce"
+        ],
+        "themes": [
+          "내수회복",
+          "관광객",
+          "소비회복",
+          "온라인 Commerce"
+        ],
+        "representatives": [
+          {
+            "code": "047050",
+            "name": "포스코인터내셔널"
+          },
+          {
+            "code": "021240",
+            "name": "코웨이"
+          },
+          {
+            "code": "383220",
+            "name": "F&F"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "047050": 5355.0,
+            "021240": 9885.0,
+            "383220": 12361.0
+          },
+          "median_fper_or_pbr": 9.92,
+          "median_r20": -6.666666666666665,
+          "median_r60": -6.183745583038869,
+          "median_rev_qoq": 8.460555012408811,
+          "median_fwd_rev_growth": 0.187213978643741,
+          "median_opm": 17.556510886146164,
+          "median_opm_delta": -1.3124069148615831,
           "median_revision_pct": 0.0
         }
       },
@@ -7009,7 +7107,7 @@
         "cycle_score": 64.2,
         "investment_score": 62.2,
         "valuation_score": 64.0,
-        "relative_strength_score": 40.9,
+        "relative_strength_score": 41.0,
         "catalyst_score": 68.1,
         "factors": {
           "demand": {
@@ -7095,9 +7193,9 @@
             "058470": 2476.0,
             "222800": 5233.0
           },
-          "median_fper_or_pbr": 22.85,
-          "median_r20": -8.18965517241379,
-          "median_r60": -10.081743869209813,
+          "median_fper_or_pbr": 22.8,
+          "median_r20": -8.045977011494255,
+          "median_r60": -10.445049954586738,
           "median_rev_qoq": 21.827651515151516,
           "median_fwd_rev_growth": 0.8443908323281013,
           "median_opm": 25.37997587454765,
@@ -7111,9 +7209,9 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
         "cycle_score": 58.7,
-        "investment_score": 62.0,
+        "investment_score": 62.1,
         "valuation_score": 92.0,
-        "relative_strength_score": 42.3,
+        "relative_strength_score": 42.7,
         "catalyst_score": 58.4,
         "factors": {
           "demand": {
@@ -7144,11 +7242,11 @@
           "structural": {
             "level": 72.0,
             "momentum": 65.6,
-            "score": 68.1
+            "score": 68.2
           },
           "catalyst": {
             "level": 61.0,
-            "momentum": 56.6,
+            "momentum": 56.7,
             "score": 58.4
           }
         },
@@ -7201,9 +7299,9 @@
             "015760": 6224.0,
             "010950": 27139.0
           },
-          "median_fper_or_pbr": 5.11,
-          "median_r20": -7.2812291249165,
-          "median_r60": -7.343124165554071,
+          "median_fper_or_pbr": 5.13,
+          "median_r20": -6.947227788911158,
+          "median_r60": -7.009345794392519,
           "median_rev_qoq": 20.424085477922205,
           "median_fwd_rev_growth": 1.8230704808921416,
           "median_opm": 8.50707453607793,
@@ -7219,7 +7317,7 @@
         "cycle_score": 58.8,
         "investment_score": 61.9,
         "valuation_score": 84.0,
-        "relative_strength_score": 47.8,
+        "relative_strength_score": 47.7,
         "catalyst_score": 63.4,
         "factors": {
           "demand": {
@@ -7300,9 +7398,9 @@
             "003230": 74313.0,
             "021240": 9885.0
           },
-          "median_fper_or_pbr": 10.75,
-          "median_r20": -5.478395061728392,
-          "median_r60": 8.695652173913038,
+          "median_fper_or_pbr": 10.68,
+          "median_r20": -5.555555555555558,
+          "median_r60": 8.606921029281267,
           "median_rev_qoq": 8.460555012408811,
           "median_fwd_rev_growth": 0.187213978643741,
           "median_opm": 17.556510886146164,
@@ -7318,7 +7416,7 @@
         "cycle_score": 60.0,
         "investment_score": 61.6,
         "valuation_score": 84.0,
-        "relative_strength_score": 28.6,
+        "relative_strength_score": 28.5,
         "catalyst_score": 71.9,
         "factors": {
           "demand": {
@@ -7401,9 +7499,9 @@
             "009150": 20873.0,
             "011070": 34068.0
           },
-          "median_fper_or_pbr": 11.57,
+          "median_fper_or_pbr": 11.58,
           "median_r20": -20.512820512820518,
-          "median_r60": -20.027624309392266,
+          "median_r60": -20.37292817679558,
           "median_rev_qoq": -0.1373130013731294,
           "median_fwd_rev_growth": 10.45013750180923,
           "median_opm": 9.566326530612244,
@@ -7419,7 +7517,7 @@
         "cycle_score": 66.8,
         "investment_score": 61.6,
         "valuation_score": 64.0,
-        "relative_strength_score": 14.9,
+        "relative_strength_score": 15.0,
         "catalyst_score": 70.8,
         "factors": {
           "demand": {
@@ -7450,7 +7548,7 @@
           "structural": {
             "level": 95.0,
             "momentum": 79.6,
-            "score": 85.8
+            "score": 85.7
           },
           "catalyst": {
             "level": 79.0,
@@ -7503,9 +7601,9 @@
             "298040": 81074.0,
             "267260": 25643.0
           },
-          "median_fper_or_pbr": 23.58,
-          "median_r20": -33.42503438789546,
-          "median_r60": -33.28681088625262,
+          "median_fper_or_pbr": 23.5,
+          "median_r20": -33.28748280605227,
+          "median_r60": -33.531053733426376,
           "median_rev_qoq": 14.557605695191045,
           "median_fwd_rev_growth": 6.201648700063411,
           "median_opm": 15.666864256075874,
@@ -7626,8 +7724,8 @@
         "cycle_score": 63.9,
         "investment_score": 60.3,
         "valuation_score": 54.0,
-        "relative_strength_score": 43.3,
-        "catalyst_score": 63.2,
+        "relative_strength_score": 43.5,
+        "catalyst_score": 63.3,
         "factors": {
           "demand": {
             "level": 78.7,
@@ -7656,13 +7754,13 @@
           },
           "structural": {
             "level": 68.0,
-            "momentum": 63.2,
-            "score": 65.1
+            "momentum": 63.3,
+            "score": 65.2
           },
           "catalyst": {
             "level": 67.0,
-            "momentum": 60.7,
-            "score": 63.2
+            "momentum": 60.8,
+            "score": 63.3
           }
         },
         "peak_warning": false,
@@ -7705,113 +7803,13 @@
           "member_forward_eps": {
             "010780": 5028.0
           },
-          "median_fper_or_pbr": 26.450000000000003,
-          "median_r20": -7.741935483870965,
-          "median_r60": -2.2187004754358197,
+          "median_fper_or_pbr": 26.455000000000002,
+          "median_r20": -7.5483870967741895,
+          "median_r60": -1.7432646592709933,
           "median_rev_qoq": 26.108374384236456,
           "median_fwd_rev_growth": 75.17963715582896,
           "median_opm": 8.203125,
           "median_opm_delta": 8.203125,
-          "median_revision_pct": 0.0
-        }
-      },
-      {
-        "key": "retail",
-        "name": "유통 / 리테일 / 커머스",
-        "actual_cycle": "성장",
-        "cycle_attractiveness": "둔화",
-        "cycle_score": 54.8,
-        "investment_score": 60.0,
-        "valuation_score": 92.0,
-        "relative_strength_score": 42.8,
-        "catalyst_score": 63.3,
-        "factors": {
-          "demand": {
-            "level": 59.3,
-            "momentum": 43.8,
-            "score": 50.0
-          },
-          "supply": {
-            "level": 57.0,
-            "momentum": 49.1,
-            "score": 52.3
-          },
-          "price": {
-            "level": 48.8,
-            "momentum": 56.2,
-            "score": 53.2
-          },
-          "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
-            "score": 62.2
-          },
-          "revision": {
-            "level": 49.5,
-            "momentum": 50.0,
-            "score": 49.8
-          },
-          "structural": {
-            "level": 61.0,
-            "momentum": 57.5,
-            "score": 58.9
-          },
-          "catalyst": {
-            "level": 67.0,
-            "momentum": 60.8,
-            "score": 63.3
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [
-          "산업 성장/수요 Momentum 둔화"
-        ],
-        "early_recovery": false,
-        "recovery_signals": [
-          "수주/CAPEX 회복"
-        ],
-        "reason": "Catalyst 63 · CAPEX/수주 62 | 대표: 포스코인터내셔널, 코웨이, 신세계",
-        "growth": "내수회복 · 관광객 · 소비회복 · 온라인 Commerce",
-        "subsectors": [
-          "백화점",
-          "편의점",
-          "홈쇼핑",
-          "면세",
-          "E-Commerce"
-        ],
-        "themes": [
-          "내수회복",
-          "관광객",
-          "소비회복",
-          "온라인 Commerce"
-        ],
-        "representatives": [
-          {
-            "code": "047050",
-            "name": "포스코인터내셔널"
-          },
-          {
-            "code": "021240",
-            "name": "코웨이"
-          },
-          {
-            "code": "004170",
-            "name": "신세계"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "047050": 5355.0,
-            "021240": 9885.0,
-            "004170": 43626.0
-          },
-          "median_fper_or_pbr": 9.92,
-          "median_r20": -7.0052539404553364,
-          "median_r60": -6.183745583038869,
-          "median_rev_qoq": 8.460555012408811,
-          "median_fwd_rev_growth": -5.386430015726806,
-          "median_opm": 9.385531341271625,
-          "median_opm_delta": -1.3124069148615831,
           "median_revision_pct": 0.0
         }
       },
@@ -7823,7 +7821,7 @@
         "cycle_score": 68.0,
         "investment_score": 59.8,
         "valuation_score": 28.0,
-        "relative_strength_score": 32.0,
+        "relative_strength_score": 32.1,
         "catalyst_score": 82.1,
         "factors": {
           "demand": {
@@ -7854,11 +7852,11 @@
           "structural": {
             "level": 95.0,
             "momentum": 81.6,
-            "score": 86.9
+            "score": 87.0
           },
           "catalyst": {
             "level": 91.0,
-            "momentum": 76.1,
+            "momentum": 76.2,
             "score": 82.1
           }
         },
@@ -7906,8 +7904,8 @@
             "108490": -87.0
           },
           "median_fper_or_pbr": 4130.68,
-          "median_r20": -17.097701149425294,
-          "median_r60": -17.335243553008596,
+          "median_r20": -16.954022988505745,
+          "median_r60": -17.191977077363894,
           "median_rev_qoq": 30.508474576271194,
           "median_fwd_rev_growth": 42.92049414000633,
           "median_opm": -16.260162601626014,
@@ -7923,7 +7921,7 @@
         "cycle_score": 56.5,
         "investment_score": 59.4,
         "valuation_score": 74.0,
-        "relative_strength_score": 38.4,
+        "relative_strength_score": 38.2,
         "catalyst_score": 77.7,
         "factors": {
           "demand": {
@@ -7953,12 +7951,12 @@
           },
           "structural": {
             "level": 87.0,
-            "momentum": 76.3,
-            "score": 80.6
+            "momentum": 76.2,
+            "score": 80.5
           },
           "catalyst": {
             "level": 85.0,
-            "momentum": 72.9,
+            "momentum": 72.8,
             "score": 77.7
           }
         },
@@ -7972,7 +7970,7 @@
           "재고/공급 Balance 개선",
           "수주/CAPEX 회복"
         ],
-        "reason": "구조적 성장 81 · Catalyst 78 | 대표: LG화학, DB하이텍, OCI홀딩스",
+        "reason": "구조적 성장 80 · Catalyst 78 | 대표: LG화학, DB하이텍, OCI홀딩스",
         "growth": "EUV · HBM 소재 · Advanced Packaging · 국산화",
         "subsectors": [
           "포토레지스트",
@@ -8011,9 +8009,9 @@
             "051910": -1760.0,
             "010060": 8633.0
           },
-          "median_fper_or_pbr": 17.884999999999998,
-          "median_r20": -10.820895522388064,
-          "median_r60": -11.970534069981586,
+          "median_fper_or_pbr": 17.86,
+          "median_r20": -11.007462686567159,
+          "median_r60": -12.154696132596687,
           "median_rev_qoq": 14.65710443747199,
           "median_fwd_rev_growth": 3.195856137607511,
           "median_opm": 10.564894448788117,
@@ -8113,7 +8111,7 @@
             "030000": 1801.0,
             "041510": 5246.0
           },
-          "median_fper_or_pbr": 16.07,
+          "median_fper_or_pbr": 16.09,
           "median_r20": 5.698860227954405,
           "median_r60": 3.7253858435337905,
           "median_rev_qoq": 25.25976352561805,
@@ -8128,16 +8126,16 @@
         "name": "보안 / 양자",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 62.8,
-        "investment_score": 59.1,
+        "cycle_score": 62.7,
+        "investment_score": 58.9,
         "valuation_score": 28.0,
-        "relative_strength_score": 66.8,
-        "catalyst_score": 74.0,
+        "relative_strength_score": 66.0,
+        "catalyst_score": 73.9,
         "factors": {
           "demand": {
             "level": 72.7,
-            "momentum": 52.4,
-            "score": 60.5
+            "momentum": 51.7,
+            "score": 60.1
           },
           "supply": {
             "level": 50.0,
@@ -8161,13 +8159,13 @@
           },
           "structural": {
             "level": 84.0,
-            "momentum": 83.0,
+            "momentum": 82.9,
             "score": 83.4
           },
           "catalyst": {
             "level": 79.0,
-            "momentum": 70.6,
-            "score": 74.0
+            "momentum": 70.5,
+            "score": 73.9
           }
         },
         "peak_warning": false,
@@ -8209,114 +8207,14 @@
         ],
         "raw": {
           "member_forward_eps": {},
-          "median_fper_or_pbr": 70.24,
-          "median_r20": 2.0884520884520974,
-          "median_r60": 60.366972477064216,
+          "median_fper_or_pbr": 69.9,
+          "median_r20": 1.4742014742014753,
+          "median_r60": 59.44954128440367,
           "median_rev_qoq": 20.642978003384105,
           "median_fwd_rev_growth": null,
           "median_opm": 7.5736325385694245,
           "median_opm_delta": 4.358742521648951,
           "median_revision_pct": null
-        }
-      },
-      {
-        "key": "nuclear_smr",
-        "name": "원전 / SMR",
-        "actual_cycle": "성장",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 66.2,
-        "investment_score": 58.5,
-        "valuation_score": 42.0,
-        "relative_strength_score": 20.0,
-        "catalyst_score": 71.2,
-        "factors": {
-          "demand": {
-            "level": 66.0,
-            "momentum": 57.1,
-            "score": 60.7
-          },
-          "supply": {
-            "level": 57.0,
-            "momentum": 61.5,
-            "score": 59.7
-          },
-          "price": {
-            "level": 52.6,
-            "momentum": 52.3,
-            "score": 52.5
-          },
-          "capex": {
-            "level": 70.0,
-            "momentum": 98.0,
-            "score": 86.8
-          },
-          "revision": {
-            "level": 65.3,
-            "momentum": 50.0,
-            "score": 56.1
-          },
-          "structural": {
-            "level": 96.0,
-            "momentum": 80.9,
-            "score": 87.0
-          },
-          "catalyst": {
-            "level": 79.0,
-            "momentum": 66.0,
-            "score": 71.2
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [],
-        "early_recovery": false,
-        "recovery_signals": [
-          "재고/공급 Balance 개선",
-          "수주/CAPEX 회복"
-        ],
-        "reason": "구조적 성장 87 · CAPEX/수주 87 | 대표: 두산에너빌리티, LS ELECTRIC, 효성중공업",
-        "growth": "원전 수출 · SMR · 원전 재가동 · AI Data Center 전력",
-        "subsectors": [
-          "원전 주기기",
-          "원전 기자재",
-          "EPC",
-          "유지보수",
-          "SMR"
-        ],
-        "themes": [
-          "원전 수출",
-          "SMR",
-          "원전 재가동",
-          "전력수요 증가",
-          "AI Data Center 전력"
-        ],
-        "representatives": [
-          {
-            "code": "034020",
-            "name": "두산에너빌리티"
-          },
-          {
-            "code": "010120",
-            "name": "LS ELECTRIC"
-          },
-          {
-            "code": "298040",
-            "name": "효성중공업"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "034020": 542.0,
-            "010120": 3595.0,
-            "298040": 81074.0
-          },
-          "median_fper_or_pbr": 44.51,
-          "median_r20": -28.588098016336062,
-          "median_r60": -28.411633109619682,
-          "median_rev_qoq": 14.557605695191045,
-          "median_fwd_rev_growth": 6.201648700063411,
-          "median_opm": 11.318960050729231,
-          "median_opm_delta": 2.122388788198359,
-          "median_revision_pct": 0.0
         }
       },
       {
@@ -8412,11 +8310,111 @@
           },
           "median_fper_or_pbr": 7.53,
           "median_r20": -11.826544021024965,
-          "median_r60": -30.555555555555557,
+          "median_r60": -30.67129629629629,
           "median_rev_qoq": 7.13208196103956,
           "median_fwd_rev_growth": -3.3970899382815056,
           "median_opm": 5.973769808939827,
           "median_opm_delta": 0.4820756499026233,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
+        "key": "nuclear_smr",
+        "name": "원전 / SMR",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 66.2,
+        "investment_score": 58.4,
+        "valuation_score": 42.0,
+        "relative_strength_score": 19.9,
+        "catalyst_score": 71.2,
+        "factors": {
+          "demand": {
+            "level": 66.0,
+            "momentum": 57.1,
+            "score": 60.7
+          },
+          "supply": {
+            "level": 57.0,
+            "momentum": 61.5,
+            "score": 59.7
+          },
+          "price": {
+            "level": 52.6,
+            "momentum": 52.3,
+            "score": 52.5
+          },
+          "capex": {
+            "level": 70.0,
+            "momentum": 98.0,
+            "score": 86.8
+          },
+          "revision": {
+            "level": 65.3,
+            "momentum": 50.0,
+            "score": 56.1
+          },
+          "structural": {
+            "level": 96.0,
+            "momentum": 80.9,
+            "score": 87.0
+          },
+          "catalyst": {
+            "level": 79.0,
+            "momentum": 66.0,
+            "score": 71.2
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 87 · CAPEX/수주 87 | 대표: 두산에너빌리티, LS ELECTRIC, 효성중공업",
+        "growth": "원전 수출 · SMR · 원전 재가동 · AI Data Center 전력",
+        "subsectors": [
+          "원전 주기기",
+          "원전 기자재",
+          "EPC",
+          "유지보수",
+          "SMR"
+        ],
+        "themes": [
+          "원전 수출",
+          "SMR",
+          "원전 재가동",
+          "전력수요 증가",
+          "AI Data Center 전력"
+        ],
+        "representatives": [
+          {
+            "code": "034020",
+            "name": "두산에너빌리티"
+          },
+          {
+            "code": "010120",
+            "name": "LS ELECTRIC"
+          },
+          {
+            "code": "298040",
+            "name": "효성중공업"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "034020": 542.0,
+            "010120": 3595.0,
+            "298040": 81074.0
+          },
+          "median_fper_or_pbr": 44.42,
+          "median_r20": -28.704784130688445,
+          "median_r60": -28.545861297539155,
+          "median_rev_qoq": 14.557605695191045,
+          "median_fwd_rev_growth": 6.201648700063411,
+          "median_opm": 11.318960050729231,
+          "median_opm_delta": 2.122388788198359,
           "median_revision_pct": 0.0
         }
       },
@@ -8507,7 +8505,7 @@
             "030200": 5647.0,
             "011070": 34068.0
           },
-          "median_fper_or_pbr": 11.57,
+          "median_fper_or_pbr": 11.58,
           "median_r20": -14.814814814814813,
           "median_r60": -23.718592964824126,
           "median_rev_qoq": -0.7558682239373504,
@@ -8525,7 +8523,7 @@
         "cycle_score": 55.8,
         "investment_score": 58.2,
         "valuation_score": 92.0,
-        "relative_strength_score": 15.6,
+        "relative_strength_score": 15.5,
         "catalyst_score": 66.0,
         "factors": {
           "demand": {
@@ -8560,7 +8558,7 @@
           },
           "catalyst": {
             "level": 73.0,
-            "momentum": 61.4,
+            "momentum": 61.3,
             "score": 66.0
           }
         },
@@ -8609,9 +8607,9 @@
             "009540": 55775.0,
             "042660": 6367.0
           },
-          "median_fper_or_pbr": 8.97,
-          "median_r20": -31.616766467065872,
-          "median_r60": -36.48498331479422,
+          "median_fper_or_pbr": 8.95,
+          "median_r20": -31.73652694610778,
+          "median_r60": -36.59621802002224,
           "median_rev_qoq": 9.656180520581259,
           "median_fwd_rev_growth": -4.954044407946689,
           "median_opm": 16.422412431698305,
@@ -8625,7 +8623,7 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "둔화",
         "cycle_score": 54.0,
-        "investment_score": 57.9,
+        "investment_score": 57.8,
         "valuation_score": 92.0,
         "relative_strength_score": 27.8,
         "catalyst_score": 61.7,
@@ -8657,8 +8655,8 @@
           },
           "structural": {
             "level": 79.0,
-            "momentum": 70.5,
-            "score": 73.9
+            "momentum": 70.4,
+            "score": 73.8
           },
           "catalyst": {
             "level": 67.0,
@@ -8710,9 +8708,9 @@
             "010130": 58485.0,
             "103140": 10558.0
           },
-          "median_fper_or_pbr": 5.73,
-          "median_r20": -24.46675031367629,
-          "median_r60": -10.378681626928476,
+          "median_fper_or_pbr": 5.71,
+          "median_r20": -24.34127979924717,
+          "median_r60": -11.079943899018229,
           "median_rev_qoq": 4.950592885375493,
           "median_fwd_rev_growth": -0.4538911658508784,
           "median_opm": 8.515268992722573,
@@ -8728,7 +8726,7 @@
         "cycle_score": 55.7,
         "investment_score": 57.4,
         "valuation_score": 74.0,
-        "relative_strength_score": 43.1,
+        "relative_strength_score": 42.9,
         "catalyst_score": 58.2,
         "factors": {
           "demand": {
@@ -8758,7 +8756,7 @@
           },
           "structural": {
             "level": 67.0,
-            "momentum": 63.1,
+            "momentum": 63.0,
             "score": 64.6
           },
           "catalyst": {
@@ -8810,9 +8808,9 @@
             "003490": 1063.0,
             "035250": 1295.0
           },
-          "median_fper_or_pbr": 17.905,
-          "median_r20": -9.433962264150942,
-          "median_r60": 2.5242718446601975,
+          "median_fper_or_pbr": 17.88,
+          "median_r20": -9.60548885077187,
+          "median_r60": 2.3300970873786353,
           "median_rev_qoq": 2.7298850574712707,
           "median_fwd_rev_growth": 5.278244256137021,
           "median_opm": 12.67361111111111,
@@ -8828,7 +8826,7 @@
         "cycle_score": 59.8,
         "investment_score": 57.3,
         "valuation_score": 64.0,
-        "relative_strength_score": 22.1,
+        "relative_strength_score": 21.9,
         "catalyst_score": 66.3,
         "factors": {
           "demand": {
@@ -8858,7 +8856,7 @@
           },
           "structural": {
             "level": 76.0,
-            "momentum": 67.0,
+            "momentum": 66.9,
             "score": 70.6
           },
           "catalyst": {
@@ -8910,9 +8908,9 @@
             "034020": 542.0,
             "298040": 81074.0
           },
-          "median_fper_or_pbr": 23.58,
-          "median_r20": -28.588098016336062,
-          "median_r60": -20.27777777777777,
+          "median_fper_or_pbr": 23.5,
+          "median_r20": -28.704784130688445,
+          "median_r60": -20.41666666666667,
           "median_rev_qoq": 14.612356437157214,
           "median_fwd_rev_growth": -4.585205625630461,
           "median_opm": 8.601012079932639,
@@ -9026,10 +9024,10 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "둔화",
         "cycle_score": 51.9,
-        "investment_score": 56.4,
+        "investment_score": 56.3,
         "valuation_score": 84.0,
-        "relative_strength_score": 37.4,
-        "catalyst_score": 62.9,
+        "relative_strength_score": 37.3,
+        "catalyst_score": 62.8,
         "factors": {
           "demand": {
             "level": 58.5,
@@ -9064,7 +9062,7 @@
           "catalyst": {
             "level": 67.0,
             "momentum": 60.1,
-            "score": 62.9
+            "score": 62.8
           }
         },
         "peak_warning": false,
@@ -9110,9 +9108,9 @@
             "010130": 58485.0,
             "051910": -1760.0
           },
-          "median_fper_or_pbr": 13.575,
-          "median_r20": -11.981566820276502,
-          "median_r60": -11.970534069981586,
+          "median_fper_or_pbr": 13.555,
+          "median_r20": -12.13517665130568,
+          "median_r60": -12.154696132596687,
           "median_rev_qoq": 7.734349214873482,
           "median_fwd_rev_growth": -3.2156895325229584,
           "median_opm": 4.252623489643641,
@@ -9224,15 +9222,15 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "둔화",
         "cycle_score": 52.0,
-        "investment_score": 56.3,
+        "investment_score": 56.2,
         "valuation_score": 82.0,
-        "relative_strength_score": 43.6,
+        "relative_strength_score": 43.1,
         "catalyst_score": 58.4,
         "factors": {
           "demand": {
             "level": 46.5,
-            "momentum": 42.3,
-            "score": 43.9
+            "momentum": 41.7,
+            "score": 43.6
           },
           "supply": {
             "level": 50.0,
@@ -9261,7 +9259,7 @@
           },
           "catalyst": {
             "level": 61.0,
-            "momentum": 56.7,
+            "momentum": 56.6,
             "score": 58.4
           }
         },
@@ -9303,9 +9301,9 @@
             "000810": 50783.0,
             "005830": 26621.0
           },
-          "median_fper_or_pbr": 0.72,
-          "median_r20": -6.717557251908401,
-          "median_r60": -4.2319749216300995,
+          "median_fper_or_pbr": 0.71,
+          "median_r20": -7.175572519083973,
+          "median_r60": -4.702194357366773,
           "median_rev_qoq": -3.218848763536686,
           "median_fwd_rev_growth": null,
           "median_opm": 13.701365029250626,
@@ -9402,118 +9400,13 @@
             "035720": 1237.0,
             "323410": 1243.0
           },
-          "median_fper_or_pbr": 16.04,
+          "median_fper_or_pbr": 16.05,
           "median_r20": -9.82142857142857,
           "median_r60": -18.438761776581426,
           "median_rev_qoq": 4.557094813489249,
           "median_fwd_rev_growth": 0.5099145923062542,
           "median_opm": 15.35351746931067,
           "median_opm_delta": 2.3147803438984393,
-          "median_revision_pct": 0.0
-        }
-      },
-      {
-        "key": "battery_ess",
-        "name": "2차전지 / ESS",
-        "actual_cycle": "초기회복",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 56.8,
-        "investment_score": 55.9,
-        "valuation_score": 42.0,
-        "relative_strength_score": 48.2,
-        "catalyst_score": 78.2,
-        "factors": {
-          "demand": {
-            "level": 66.0,
-            "momentum": 58.2,
-            "score": 61.3
-          },
-          "supply": {
-            "level": 43.0,
-            "momentum": 63.9,
-            "score": 55.5
-          },
-          "price": {
-            "level": 38.5,
-            "momentum": 44.0,
-            "score": 41.8
-          },
-          "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
-            "score": 66.4
-          },
-          "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
-          },
-          "structural": {
-            "level": 80.0,
-            "momentum": 73.7,
-            "score": 76.2
-          },
-          "catalyst": {
-            "level": 85.0,
-            "momentum": 73.7,
-            "score": 78.2
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [],
-        "early_recovery": true,
-        "recovery_signals": [
-          "재고/공급 Balance 개선",
-          "수주/CAPEX 회복",
-          "수요 Momentum 회복"
-        ],
-        "reason": "Catalyst 78 · 구조적 성장 76 | 대표: LG에너지솔루션, 삼성SDI, LG화학",
-        "growth": "ESS · LFP · 전고체 · 4680 · AI Data Center ESS",
-        "subsectors": [
-          "Battery Cell",
-          "양극재",
-          "음극재",
-          "전해질",
-          "Separator",
-          "동박",
-          "Battery Equipment",
-          "ESS"
-        ],
-        "themes": [
-          "ESS",
-          "LFP",
-          "전고체",
-          "4680",
-          "AI Data Center ESS",
-          "북미 배터리"
-        ],
-        "representatives": [
-          {
-            "code": "373220",
-            "name": "LG에너지솔루션"
-          },
-          {
-            "code": "006400",
-            "name": "삼성SDI"
-          },
-          {
-            "code": "051910",
-            "name": "LG화학"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "373220": -1035.0,
-            "006400": 11978.0,
-            "051910": -1760.0
-          },
-          "median_fper_or_pbr": 42.83,
-          "median_r20": -5.350553505535061,
-          "median_r60": 9.850107066381163,
-          "median_rev_qoq": 14.535219399538102,
-          "median_fwd_rev_growth": 7.164084058586284,
-          "median_opm": 4.229713810057915,
-          "median_opm_delta": 4.919193249488766,
           "median_revision_pct": 0.0
         }
       },
@@ -9525,7 +9418,7 @@
         "cycle_score": 55.1,
         "investment_score": 55.8,
         "valuation_score": 74.0,
-        "relative_strength_score": 31.2,
+        "relative_strength_score": 31.1,
         "catalyst_score": 57.3,
         "factors": {
           "demand": {
@@ -9609,13 +9502,118 @@
             "028050": 3806.0,
             "000720": 4480.0
           },
-          "median_fper_or_pbr": 17.2,
-          "median_r20": -18.811881188118807,
-          "median_r60": -14.967860422405877,
+          "median_fper_or_pbr": 17.17,
+          "median_r20": -18.95332390381895,
+          "median_r60": -15.059687786960518,
           "median_rev_qoq": 14.612356437157214,
           "median_fwd_rev_growth": -2.0417111205296434,
           "median_opm": 8.601012079932639,
           "median_opm_delta": 1.7176395713809756,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
+        "key": "battery_ess",
+        "name": "2차전지 / ESS",
+        "actual_cycle": "초기회복",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 56.8,
+        "investment_score": 55.8,
+        "valuation_score": 42.0,
+        "relative_strength_score": 47.6,
+        "catalyst_score": 78.2,
+        "factors": {
+          "demand": {
+            "level": 66.0,
+            "momentum": 58.2,
+            "score": 61.3
+          },
+          "supply": {
+            "level": 43.0,
+            "momentum": 63.9,
+            "score": 55.5
+          },
+          "price": {
+            "level": 38.5,
+            "momentum": 44.0,
+            "score": 41.8
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 0.0,
+            "momentum": 50.0,
+            "score": 30.0
+          },
+          "structural": {
+            "level": 80.0,
+            "momentum": 73.7,
+            "score": 76.2
+          },
+          "catalyst": {
+            "level": 85.0,
+            "momentum": 73.6,
+            "score": 78.2
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [],
+        "early_recovery": true,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복"
+        ],
+        "reason": "Catalyst 78 · 구조적 성장 76 | 대표: LG에너지솔루션, 삼성SDI, LG화학",
+        "growth": "ESS · LFP · 전고체 · 4680 · AI Data Center ESS",
+        "subsectors": [
+          "Battery Cell",
+          "양극재",
+          "음극재",
+          "전해질",
+          "Separator",
+          "동박",
+          "Battery Equipment",
+          "ESS"
+        ],
+        "themes": [
+          "ESS",
+          "LFP",
+          "전고체",
+          "4680",
+          "AI Data Center ESS",
+          "북미 배터리"
+        ],
+        "representatives": [
+          {
+            "code": "373220",
+            "name": "LG에너지솔루션"
+          },
+          {
+            "code": "006400",
+            "name": "삼성SDI"
+          },
+          {
+            "code": "051910",
+            "name": "LG화학"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "373220": -1035.0,
+            "006400": 11978.0,
+            "051910": -1760.0
+          },
+          "median_fper_or_pbr": 42.58,
+          "median_r20": -5.904059040590404,
+          "median_r60": 9.207708779443259,
+          "median_rev_qoq": 14.535219399538102,
+          "median_fwd_rev_growth": 7.164084058586284,
+          "median_opm": 4.229713810057915,
+          "median_opm_delta": 4.919193249488766,
           "median_revision_pct": 0.0
         }
       },
@@ -9627,7 +9625,7 @@
         "cycle_score": 50.4,
         "investment_score": 55.5,
         "valuation_score": 92.0,
-        "relative_strength_score": 27.5,
+        "relative_strength_score": 27.4,
         "catalyst_score": 62.2,
         "factors": {
           "demand": {
@@ -9708,7 +9706,7 @@
             "034730": 160174.0
           },
           "median_fper_or_pbr": 2.88,
-          "median_r20": -18.811881188118807,
+          "median_r20": -18.95332390381895,
           "median_r60": -29.61832061068702,
           "median_rev_qoq": 14.620979393926191,
           "median_fwd_rev_growth": -6.594947992721556,
@@ -9723,9 +9721,9 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
         "cycle_score": 60.5,
-        "investment_score": 54.4,
+        "investment_score": 54.3,
         "valuation_score": 28.0,
-        "relative_strength_score": 45.3,
+        "relative_strength_score": 45.2,
         "catalyst_score": 63.0,
         "factors": {
           "demand": {
@@ -9755,7 +9753,7 @@
           },
           "structural": {
             "level": 92.0,
-            "momentum": 83.1,
+            "momentum": 83.2,
             "score": 86.7
           },
           "catalyst": {
@@ -9810,8 +9808,8 @@
         "raw": {
           "member_forward_eps": {},
           "median_fper_or_pbr": 81.93,
-          "median_r20": -10.055248618784528,
-          "median_r60": 13.178767541183657,
+          "median_r20": -10.165745856353592,
+          "median_r60": 13.300793166564983,
           "median_rev_qoq": 11.033883579496084,
           "median_fwd_rev_growth": -1.7214397496087663,
           "median_opm": 30.59467918622848,
@@ -9827,13 +9825,13 @@
         "cycle_score": 50.1,
         "investment_score": 54.1,
         "valuation_score": 82.0,
-        "relative_strength_score": 39.1,
+        "relative_strength_score": 39.0,
         "catalyst_score": 53.2,
         "factors": {
           "demand": {
             "level": 51.6,
             "momentum": 38.0,
-            "score": 43.5
+            "score": 43.4
           },
           "supply": {
             "level": 50.0,
@@ -9907,8 +9905,8 @@
             "055550": 12502.0,
             "086790": 16026.0
           },
-          "median_fper_or_pbr": 0.7,
-          "median_r20": -10.396409872849667,
+          "median_fper_or_pbr": 0.71,
+          "median_r20": -10.471204188481675,
           "median_r60": -10.380034032898466,
           "median_rev_qoq": 1.4458807249654093,
           "median_fwd_rev_growth": null,
@@ -9923,9 +9921,9 @@
         "actual_cycle": "둔화",
         "cycle_attractiveness": "둔화",
         "cycle_score": 46.6,
-        "investment_score": 53.8,
+        "investment_score": 53.7,
         "valuation_score": 92.0,
-        "relative_strength_score": 47.6,
+        "relative_strength_score": 47.4,
         "catalyst_score": 49.1,
         "factors": {
           "demand": {
@@ -10008,9 +10006,9 @@
             "036570": 22265.0,
             "251270": 5967.0
           },
-          "median_fper_or_pbr": 9.45,
-          "median_r20": -1.0071942446043147,
-          "median_r60": -6.521739130434778,
+          "median_fper_or_pbr": 9.43,
+          "median_r20": -1.151079136690647,
+          "median_r60": -6.666666666666665,
           "median_rev_qoq": 14.960871566671784,
           "median_fwd_rev_growth": -9.020116807268009,
           "median_opm": 22.56975989617132,
@@ -10026,7 +10024,7 @@
         "cycle_score": 59.1,
         "investment_score": 53.5,
         "valuation_score": 28.0,
-        "relative_strength_score": 45.9,
+        "relative_strength_score": 46.0,
         "catalyst_score": 63.1,
         "factors": {
           "demand": {
@@ -10056,7 +10054,7 @@
           },
           "structural": {
             "level": 74.0,
-            "momentum": 69.6,
+            "momentum": 69.7,
             "score": 71.4
           },
           "catalyst": {
@@ -10109,9 +10107,9 @@
             "034220": -737.0,
             "171090": 7221.0
           },
-          "median_fper_or_pbr": 607.87,
-          "median_r20": -9.290953545232272,
-          "median_r60": 13.178767541183657,
+          "median_fper_or_pbr": 608.515,
+          "median_r20": -9.193154034229833,
+          "median_r60": 13.300793166564983,
           "median_rev_qoq": 9.107468123861562,
           "median_fwd_rev_growth": 201.44720451090387,
           "median_opm": -1.9190677286577216,
