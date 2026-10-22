@@ -33,7 +33,7 @@ function setUsMode(mode,scroll=false){
  activeUsMode=mode==='fundamental'?'fundamental':'trading';
  // When sector controls become hidden they may not silently restrict Trading.
  if(activeUsMode==='trading'&&sectorKey!=='ALL'){
-   sectorKey='ALL';renderSectors();renderAll();
+   sectorKey='ALL';renderSectors();
  }
  document.body.classList.toggle('us-trading-selected',activeUsMode==='trading');
  for(const btn of document.querySelectorAll('[data-us-mode]')){
@@ -53,6 +53,7 @@ function setUsMode(mode,scroll=false){
      '개 / 미확인 시 임의점수 미발행';
  $('usModeStatus').textContent=focus+' · 선택한 분석만 표시합니다.';
  $('sectorFilterTitle').textContent=activeUsMode==='trading'?'MY Trading 종목검색·지수 선택':'Fundamental Sector별 종목검색';
+ renderAll();
  if(scroll)$('us-analysis').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -152,87 +153,108 @@ function renderTrading(){
   '<tr><td colspan="8">검증된 Long Only 가격구조 후보가 없습니다.</td></tr>';
 }
 function renderCycles(){
- const cycles=data.sector_cycles||[];
- const matched=cycles.filter(c=>(c.count||0)>0).sort((a,b)=>{
-  const bScore=valid(b.cycle_score)?Number(b.cycle_score):-1,aScore=valid(a.cycle_score)?Number(a.cycle_score):-1;
-  return bScore-aScore||Number(b.median_20d||-999)-Number(a.median_20d||-999);
- });
- const verified=matched.filter(t=>valid(t.cycle_score));
- $('cycleNotice').textContent=verified.length?
-   verified.length+'개 US Sector Cycle은 검증된 요인에 따라 산출되었습니다. 나머지는 미판정입니다.':
-   '미국 Sector Cycle 100점은 아직 미발행입니다. 7개 요인 중 확인되지 않은 공급·재고·수주·Guidance 등을 가격 모멘텀으로 임의 대체하지 않습니다. 아래 20D 값은 단순 모니터링 순서입니다.';
- $('cycleRows').innerHTML=matched.slice(0,10).map((t,i)=>{
-  const sec=data.sectors.find(x=>x.key===t.key)||{};
-  return '<tr><td>'+(valid(t.cycle_score)?i+1:'—')+'</td><td><b>'+esc(t.label)+'</b><small>'+esc(t.key)+'</small></td>'+
-  '<td>'+esc(t.actual_cycle||'미판정')+'</td><td>'+esc(t.cycle_attractiveness||'미판정')+'</td>'+
-  '<td>'+(valid(t.cycle_score)?number(t.cycle_score,1):'<span class="score-missing">점수 미발행</span>')+'</td>'+
-  '<td>'+esc(t.fundamental_environment||'미평가')+'</td><td>'+number(t.investment_score,1)+'</td>'+
-  '<td class="'+css(t.median_20d)+'">'+pct(t.median_20d)+'</td><td><small>'+esc(t.note||'검증 필요')+'</small></td></tr>';
- }).join('')||'<tr><td colspan="9">미국 Sector 데이터 검증 대기</td></tr>';
+ const cycles=(data.sector_cycles||[]).filter(c=>Number(c.count||0)>0);
+ const scored=cycles.filter(c=>valid(c.cycle_score));
+ const tracked=cycles.sort((a,b)=>{
+   const sc=Number(b.cycle_score??-1)-Number(a.cycle_score??-1);
+   return sc||Number(b.median_20d??-999)-Number(a.median_20d??-999);
+ }).slice(0,10);
+ $('cycleTitle').textContent=scored.length?'미국 Sector Cycle TOP10':'미국 Sector 가격 모니터링 10';
+ $('cycleNotice').textContent=scored.length?
+   '검증된 업종별 Cycle 7개 요인 평가점수를 우선 정렬합니다. 점수가 없는 섹터는 근거 확보 대기입니다.':
+   '정식 Cycle Score는 현재 검증되지 않았습니다. 표시된 순서는 최근 20거래일 업종별 중앙값 가격 변동 기준이며 투자 매력도 순위가 아닙니다. 매출·수주·재고/Guidance 근거가 확보되면 별도 점수를 발표합니다.';
+ $('cycleRows').innerHTML=tracked.map((t,i)=>{
+   const br=valid(t.positive_breadth)?number(Number(t.positive_breadth)*100,1)+'%':'—';
+   return '<tr><td>'+(scored.length&&valid(t.cycle_score)?i+1:chip('관찰'))+'</td>'+
+     '<td><b>'+esc(t.key)+' · '+esc(t.label)+'</b></td>'+
+     '<td>'+number(t.count,0)+'</td><td>'+number(t.verified_quotes,0)+'</td>'+
+     '<td class="'+css(t.median_20d)+'">'+pct(t.median_20d)+'</td><td>'+br+'</td>'+
+     '<td>'+esc(t.actual_cycle||'미판정')+'</td>'+
+     '<td>'+(valid(t.cycle_score)?number(t.cycle_score,1):chip('근거 부족'))+'</td>'+
+     '<td><small>'+esc(t.note||'근거 검증 중')+'</small></td></tr>';
+ }).join('')||'<tr><td colspan="9">Sector 분류와 가격 자료 확인 중입니다.</td></tr>';
 }
 function renderThemes(){
- const themes=data.theme_popularity||[];
- const ranked=themes.filter(t=>valid(t.popularity_score)).sort((a,b)=>b.popularity_score-a.popularity_score);
- const provisional=themes.filter(t=>!valid(t.popularity_score) && t.members>0);
- provisional.sort((a,b)=>Number(b.price_momentum_20d||-999)-Number(a.price_momentum_20d||-999));
- $('themeNotice').textContent=ranked.length?
-  '확인된 Popularity 점수만 인기테마로 분류합니다. Narrative Only는 수익화 수혜주로 확정하지 않습니다.':
-  '뉴스·실적 Catalyst·매출 관련성을 검증하지 못해 인기테마 점수와 인기 판정을 발행하지 않았습니다. 아래는 20D 가격 변화에 따른 관심 테마 후보이며, 인기순위가 아닙니다.';
- const arr=[...ranked,...provisional].slice(0,10);
- $('themeRows').innerHTML=arr.map((t,i)=>'<tr><td>'+(valid(t.popularity_score)?i+1:'—')+'</td>'+
-  '<td><b>'+esc(t.theme)+'</b></td><td>'+(valid(t.popularity_score)?number(t.popularity_score,1):'미발행')+'</td>'+
-  '<td>'+number(t.sector_count,0)+'개</td>'+
-  '<td>'+esc((t.representative_tickers||[]).slice(0,3).join(' · ')||'—')+'</td>'+
-  '<td class="'+css(t.price_momentum_20d)+'">'+pct(t.price_momentum_20d)+'</td>'+
-  '<td>'+esc(t.catalyst||'미검증')+'</td>'+
-  '<td>'+chip(t.monetization_stage||'NARRATIVE ONLY')+'</td></tr>').join('')||
-  '<tr><td colspan="8">검증된 테마 관련성이 없습니다.</td></tr>';
+ const themes=(data.theme_popularity||[]).filter(t=>Number(t.members||0)>0);
+ const verified=themes.filter(t=>valid(t.popularity_score));
+ const monitor=themes.sort((a,b)=>{
+  return Number(b.popularity_score??-1)-Number(a.popularity_score??-1)||
+     Number(b.price_momentum_20d??-999)-Number(a.price_momentum_20d??-999);
+ }).slice(0,10);
+ $('themeTitle').textContent=verified.length?'미국 인기 Theme TOP10':'미국 Theme 가격 모니터링 10';
+ $('themeNotice').textContent=verified.length?
+  '검증된 Popularity Score 기준. 종목별 수혜 단계는 VERIFIED REVENUE / CONTRACT / NARRATIVE ONLY로 구분합니다.':
+  'Theme 인기점수는 뉴스·실적 수혜와 거래대금 증가 근거가 부족하여 미발행입니다. 아래 테마는 해당 종목들의 20D 가격 변화로만 정렬한 관심 목록이며 실제 인기 순위나 매출 수혜 확정이 아닙니다.';
+ $('themeRows').innerHTML=monitor.map((t,i)=>{
+  const breadth=valid(t.price_breadth)?number(Number(t.price_breadth)*100,1)+'%':'—';
+  return '<tr><td>'+(verified.length&&valid(t.popularity_score)?i+1:chip('관찰'))+'</td>'+
+    '<td><b>'+esc(t.theme)+'</b></td><td>'+number(t.members,0)+'</td>'+
+    '<td>'+number(t.sector_count,0)+'개</td>'+
+    '<td>'+esc((t.representative_tickers||[]).slice(0,3).join(' · ')||'—')+'</td>'+
+    '<td class="'+css(t.price_momentum_20d)+'">'+pct(t.price_momentum_20d)+'</td>'+
+    '<td>'+breadth+'</td>'+
+    '<td>'+(valid(t.popularity_score)?number(t.popularity_score,1):chip('미발행'))+'</td>'+
+    '<td>'+chip(t.monetization_stage||'NARRATIVE ONLY')+'</td></tr>';
+ }).join('')||'<tr><td colspan="9">Theme 가격 확인 대상이 없습니다.</td></tr>';
 }
 function renderSectorTop3(){
- const inScope=data.items.filter(x=>(selectedIndex==='ALL'||(x.indices||[]).includes(selectedIndex)) &&
- (!query||(x.ticker+' '+x.name).toLowerCase().includes(query)));
- const rows=(data.sectors||[]).map(sec=>{
+ const inScope=data.items.filter(x=>(selectedIndex==='ALL'||(x.indices||[]).includes(selectedIndex))&&
+   (!query||(x.ticker+' '+x.name).toLowerCase().includes(query)));
+ const rows=[];let present=0;
+ for(const sec of data.sectors||[]){
   const candidates=inScope.filter(x=>x.sector_key===sec.key);
   candidates.sort((a,b)=>Number(confident(b))-Number(confident(a))||
-    Number(valid(b.fundamental_score))-Number(valid(a.fundamental_score))||
-    Number(b.fundamental_score||0)-Number(a.fundamental_score||0)||
-    Number(b.close!=null)-Number(a.close!=null)||a.ticker.localeCompare(b.ticker));
+   Number(valid(b.fundamental_score))-Number(valid(a.fundamental_score))||
+   Number(b.fundamental_score||0)-Number(a.fundamental_score||0)||
+   Number(b.close!=null)-Number(a.close!=null)||
+   Number((b.indices||[]).length)-Number((a.indices||[]).length)||
+   a.ticker.localeCompare(b.ticker));
   const top=candidates.slice(0,3);
-  const verified=top.filter(confident).length;
+  if(top.length===0)continue;
+  present++;
+  const rated=top.filter(confident).length;
   const cells=top.map(t=>'<button class="btn" data-choose="'+esc(t.ticker)+'" title="'+esc(t.name)+'">'+esc(t.ticker)+'</button>');
-  while(cells.length<3)cells.push('<span class="score-missing">추가 후보 미확인</span>');
-  return '<tr><td><b>'+esc(sec.key)+' · '+esc(sec.label)+'</b><small>후보 '+candidates.length+'</small></td>'+
-   cells.map(c=>'<td>'+c+'</td>').join('')+'<td>'+(verified?'검증 '+verified+'개 · ':'')+
-   (verified===top.length&&top.length===3?'HIGH/MEDIUM':'추가적인 분석 필요')+'</td></tr>';
- });
- $('sectorTop3Rows').innerHTML=rows.join('');
+  while(cells.length<3)cells.push('<span class="score-missing">후보 미확인</span>');
+  rows.push('<tr><td><b>'+esc(sec.key)+' · '+esc(sec.label)+'</b><small>분류 후보 '+candidates.length+'개</small></td>'+
+   cells.map(c=>'<td>'+c+'</td>').join('')+'<td>'+
+   (rated===3?chip('HIGH/MEDIUM','good'):chip('추가적인 분석 필요','low'))+'</td></tr>');
+ }
+ $('sectorTop3Rows').innerHTML=rows.join('')||'<tr><td colspan="5">현재 필터에는 검증된 Sector별 후보가 없습니다.</td></tr>';
+ $('sectorTop3Status').textContent='미국 전용 44개 Sector 중 분류 후보가 있는 '+present+'개 Sector 표시. 후보 순서는 업종·지수 포함 여부 기준이며 점수 미발행 종목은 투자 순위로 해석하지 않습니다.';
 }
 function renderThemeTop3(){
- const vals=data.theme_popularity||[],byName=new Map();
- data.items.filter(t=>selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex)).forEach(t=>{
+ const byName=new Map();
+ data.items.filter(t=>(selectedIndex==='ALL'||(t.indices||[]).includes(selectedIndex)) &&
+ (!query||(t.ticker+' '+t.name).toLowerCase().includes(query))).forEach(t=>{
   (t.primary_themes||[]).forEach(theme=>{
    if(!byName.has(theme.theme))byName.set(theme.theme,[]);
    byName.get(theme.theme).push({stock:t,theme});
   });
  });
- const rows=(data.themes||[]).map(th=>{
-  const list=(byName.get(th.name)||[]).filter(x=>!query||(x.stock.ticker+' '+x.stock.name).toLowerCase().includes(query));
+ let shown=0;
+ const rows=[];
+ for(const th of data.themes||[]){
+  const list=byName.get(th.name)||[];
+  if(!list.length)continue;
+  shown++;
   list.sort((a,b)=>Number(confident(b.stock))-Number(confident(a.stock))||
-    Number(b.stock.fundamental_score||0)-Number(a.stock.fundamental_score||0)||
-    a.stock.ticker.localeCompare(b.stock.ticker));
+   Number(b.stock.fundamental_score||0)-Number(a.stock.fundamental_score||0)||
+   Number(b.stock.close!=null)-Number(a.stock.close!=null)||
+   a.stock.ticker.localeCompare(b.stock.ticker));
   const top=list.slice(0,3),labels=top.map(x=>'<button class="btn" data-choose="'+esc(x.stock.ticker)+'">'+esc(x.stock.ticker)+'</button>').join(' ');
   const stages=new Set(top.map(x=>x.theme.status));
-  return '<tr><td><b>'+esc(th.name)+'</b><small>후보 '+list.length+'</small></td><td>'+
-  new Set(top.map(x=>x.stock.sector_key).filter(Boolean)).size+'개 Sector</td><td>'+
-  (labels||'<span class="score-missing">확인 필요</span>')+'</td><td>'+
-  chip(stages.size===1?[...stages][0]:'NARRATIVE ONLY')+'</td></tr>';
- });
- $('themeTop3Rows').innerHTML=rows.join('');
+  rows.push('<tr><td><b>'+esc(th.name)+'</b><small>관련 후보 '+list.length+'개</small></td><td>'+
+    new Set(top.map(x=>x.stock.sector_key).filter(Boolean)).size+'개</td>'+
+    '<td>'+labels+'</td><td>'+chip(stages.size===1?[...stages][0]:'NARRATIVE ONLY')+'</td></tr>');
+ }
+ $('themeTop3Rows').innerHTML=rows.join('')||'<tr><td colspan="4">검증 가능한 Theme 연결 후보가 없습니다.</td></tr>';
+ $('themeTop3Status').textContent='32개 Theme 중 근거 또는 명시된 초기 후보 사전에 의해 연결된 '+shown+'개 Theme만 표시합니다. NARRATIVE ONLY는 실적 수혜 확인이 아닙니다.';
 }
 function renderInvestment(){
  const summary=data.investment_best5||{};
  $('investmentStatus').textContent=summary.note||'Risk/Reward·Catalyst 등 검증된 정보가 부족하여 Investment BEST5는 미발행입니다.';
  const results=(summary.ranking||[]).filter(x=>valid(x.investment_score)).slice(0,5);
+ $('best5TableWrap').style.display=results.length?'block':'none';
  $('best5Rows').innerHTML=results.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(r.ticker)+'</td>'+
    '<td>'+number(r.fundamental_score,1)+'</td><td>'+number(r.investment_score,1)+'</td>'+
    '<td>'+esc(r.risk_reward||'미확인')+'</td><td>'+esc(r.evidence||'검증 미완료')+'</td></tr>').join('')||
@@ -245,8 +267,13 @@ function renderAll(){
   '개 / 기술점수 '+scopeRows.filter(t=>valid(t.trading_score)).length+
   '개 / SEC Fundamental 점수 '+fund.length+
   '개 · 미확인 값은 계산하지 않습니다.';
- renderFundamental();renderTrading();renderCycles();renderThemes();
- renderSectorTop3();renderThemeTop3();renderInvestment();listenRows();
+ if(activeUsMode==='fundamental'){
+  renderFundamental();renderCycles();renderThemes();
+  renderSectorTop3();renderThemeTop3();renderInvestment();
+ }else{
+  renderTrading();
+ }
+ listenRows();
  document.querySelectorAll('[data-choose]').forEach(btn=>btn.addEventListener('click',()=>choose(btn.dataset.choose)));
 }
 function chart(rows){
@@ -346,7 +373,7 @@ async function boot(){
   if((data.sectors||[]).length!==44){
    $('marketNotice').textContent+=' · 이전 데이터 구조가 표시 중입니다. 신규 44개 Sector 배포 데이터를 확인하세요.';
   }
-  indexCards();renderSectors();renderAll();
+  indexCards();renderSectors();
   const mode=new URLSearchParams(location.search).get('mode');
   setUsMode(mode==='fundamental'?'fundamental':'trading',false);
   if(!data.items.length)$('stockDetail').textContent='미국장 검증 대상이 없습니다.';
