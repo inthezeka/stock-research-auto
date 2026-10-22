@@ -85,6 +85,14 @@ def extract_sec_annual(payload):
     revenue_old=next((x["value"] for x in revenue[1:] if x["end"]!=fy_end),None)
     if revenue_new is None or revenue_old is None or revenue_new<=0 or revenue_old<=0:
         return {"status":"INSUFFICIENT","reason":"Invalid fiscal revenue values"}
+    # YoY requires adjacent FY closing periods, not the latest arbitrary two filings.
+    prev_end=next((x["end"] for x in revenue[1:] if x["end"]!=fy_end),None)
+    try:
+        annual_gap=(date.fromisoformat(fy_end)-date.fromisoformat(prev_end)).days
+    except (ValueError,TypeError):
+        annual_gap=0
+    if not 320<=annual_gap<=410:
+        return {"status":"INSUFFICIENT","reason":"Nonadjacent fiscal-year periods; YoY cannot be verified"}
     metrics={
         "revenue":revenue_new,"prior_revenue":revenue_old,
         "revenue_growth":(revenue_new/revenue_old-1)*100,
@@ -104,9 +112,9 @@ def extract_sec_annual(payload):
     metrics["net_margin"]=metrics["net_income"]/revenue_new*100 if metrics["net_income"] is not None else None
     metrics["gross_margin"]=metrics["gross_profit"]/revenue_new*100 if metrics["gross_profit"] is not None else None
     cfo=metrics["operating_cash_flow"];capex=metrics["capex"]
-    # SEC capex tagged expenditure is commonly positive but negative-sign filing
-    # conventions vary; do not silently convert negative cash-flow tags.
-    metrics["fcf"]=(cfo-abs(capex)) if cfo is not None and capex is not None else None
+    # FCF = operating cash flow - positive cash CAPEX.
+    # Negative tagged CAPEX is a filing sign-convention anomaly requiring verification.
+    metrics["fcf"]=(cfo-capex) if cfo is not None and capex is not None and capex>=0 else None
     metrics["fcf_margin"]=metrics["fcf"]/revenue_new*100 if metrics["fcf"] is not None else None
     metrics["roe"]=metrics["net_income"]/metrics["equity"]*100 if metrics["net_income"] is not None and metrics["equity"] not in (None,0) else None
     metrics["fiscal_year_end"]=fy_end
