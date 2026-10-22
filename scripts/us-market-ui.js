@@ -98,6 +98,8 @@ function renderFundamental(){
     a.ticker.localeCompare(b.ticker));
  $('fundTitle').textContent=(sectorKey==='ALL'?'미국':(data.sectors.find(s=>s.key===sectorKey)?.label||'미국'))+' Fundamental TOP20';
  const met=(data.meta||{});
+ const secSetup=$('usSecSetupBanner');
+ if(secSetup)secSetup.style.display=(met.sec?.status==='not_configured'?'block':'none');
  const issued=rated.length;
  const denom=rows.length;
  $('fundNotice').textContent=(issued?('HIGH/MEDIUM 근거가 확보된 '+issued+'개 기업 중 상위 20개를 선정했습니다.'):
