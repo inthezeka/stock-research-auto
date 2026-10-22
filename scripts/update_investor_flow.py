@@ -19,6 +19,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from kis_investor_flow import KisInvestorClient, SOURCE as KIS_SOURCE
+from investor_flow_csv import read_backfill_csv
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "investor-flow.json"
@@ -264,6 +265,9 @@ def merge_verified_source(existing, previous, incoming, source, cutoff):
 
 def optional_kis_backfill(codes, results, old, cutoff):
     """Credentials-only official backfill; never block market-data deployment."""
+    if str(os.getenv("KIS_FLOW_ENABLED", "1")).lower() in ("0", "false", "no"):
+        return {"status": "disabled_on_push", "requested": 0, "covered_20d": 0,
+                "covered_60d": 0, "errors": 0, "source": KIS_SOURCE}
     client = KisInvestorClient()
     report = {"status": "credentials_missing", "requested": 0, "covered_20d": 0,
               "covered_60d": 0, "source": KIS_SOURCE, "errors": 0}
@@ -317,6 +321,52 @@ def optional_kis_backfill(codes, results, old, cutoff):
         report["status"] = "collected" if report["covered_20d"] or report["covered_60d"] else "empty_history"
     return report
 
+
+def optional_csv_backfill(codes, results, cutoff):
+    """Offline KRX route requiring actual signed share quantities from a user file."""
+    import_path = ROOT / "data" / "investor-flow-backfill.csv"
+    report = {"status": "not_provided", "imported": 0, "covered_20d": 0, "covered_60d": 0}
+    if not import_path.is_file():
+        return report
+    try:
+        lookup = read_backfill_csv(import_path, cutoff, HISTORY_DAYS)
+    except (ValueError, UnicodeError, OSError) as exc:
+        report["status"] = "invalid_csv"
+        report["reason"] = type(exc).__name__
+        return report
+    for code in codes:
+        rows = lookup.get(code) or []
+        if len(rows) < 20:
+            continue
+        current = results.get(code) or {}
+        if current.get("source", "").startswith("KIS investor") and len(current.get("rows") or []) >= len(rows):
+            continue
+        current_last = str(current.get("last_date") or "")
+        if current_last:
+            try:
+                gap = (datetime.strptime(current_last, "%Y-%m-%d") -
+                       datetime.strptime(rows[-1]["date"], "%Y-%m-%d")).days
+                if gap > 7:
+                    continue
+            except ValueError:
+                continue
+        results[code] = {
+            "source": "KRX user-authorized CSV import",
+            "unit": "shares",
+            "market_scope": "KRX",
+            "rows": rows,
+            "last_date": rows[-1]["date"],
+            "row_count": len(rows),
+            "error": None,
+            "stale": False,
+        }
+        report["imported"] += 1
+        report["covered_20d"] += int(len(rows) >= 20)
+        report["covered_60d"] += int(len(rows) >= 60)
+    report["status"] = "imported" if report["imported"] else "no_valid_20d_rows"
+    return report
+
+
 def main():
     universe = json.loads(UNIVERSE.read_text(encoding="utf-8"))
     as_of = str(universe["as_of"])
@@ -359,6 +409,7 @@ def main():
             results[code] = result
 
     kis_report = optional_kis_backfill(codes, results, old, cutoff)
+    csv_report = optional_csv_backfill(codes, results, cutoff)
 
     ready = sum(1 for item in results.values()
                 if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
@@ -379,6 +430,7 @@ def main():
             "valid_60d": ready60, "history_retention_sessions": HISTORY_DAYS,
             "elapsed_seconds": round(time.monotonic() - started, 1),
             "kis_backfill": kis_report,
+            "krx_csv_backfill": csv_report,
         },
         "items": results,
     }
@@ -391,7 +443,8 @@ def main():
     print(json.dumps({"date": as_of, "candidates": len(codes),
                       "valid_5d": ready, "valid_20d": ready20, "valid_60d": ready60,
                       "seconds": payload["meta"]["elapsed_seconds"],
-                      "kis_status": kis_report["status"], "kis60": kis_report["covered_60d"]}, ensure_ascii=False))
+                      "kis_status": kis_report["status"], "kis60": kis_report["covered_60d"],
+                      "krx_csv_status": csv_report["status"], "csv60": csv_report["covered_60d"]}, ensure_ascii=False))
     return 0
 
 
