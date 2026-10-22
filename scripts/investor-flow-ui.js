@@ -17,8 +17,9 @@ function srFlowStock(code){
      !v||v.stale||v.unit!=='shares'||!Array.isArray(v.rows))return null;
   const rows=v.rows.filter(x=>/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(String(x.date))&&x.date<=meta.market_date)
     .sort((a,b)=>a.date.localeCompare(b.date));
-  if(!rows.length||rows.at(-1).date!==meta.market_date)return null;
-  return{rows,asOf:meta.market_date,code:c,source:v.source||meta.source||'미확인'};
+  if(!rows.length)return null;
+  // Investor data often settles after stock prices. Explicitly identify the last published trading date.
+  return{rows,asOf:rows.at(-1).date,marketAsOf:meta.market_date,lagged:rows.at(-1).date<meta.market_date,code:c,source:v.source||meta.source||'미확인'};
 }
 function srFlowSum(o,k,n){
   if(!o||o.rows.length<n)return null;
@@ -39,7 +40,7 @@ function srFlowMini(code){
     '<div class="flow-mini-row flow-zero"><b>기간</b><b>외국인</b><b>기관</b><b>개인</b></div>'+
     [1,5,20].map(n=>'<div class="flow-mini-row"><b>'+n+'D</b>'+
       ['foreign','institution','individual'].map(k=>{const x=srFlowSum(o,k,n);return '<span class="'+srFlowClass(x)+'">'+srFlowNumber(x)+'</span>'}).join('')+
-      '</div>').join('')+'</div>';
+      '</div>').join('')+'<div class="flow-meta">수급 기준 '+srEsc(o.asOf)+(o.lagged?' (주가 '+srEsc(o.marketAsOf)+' 대비 지연)':'')+'</div></div>';
 }
 function srFlowChart(o){
   if(!o||o.rows.length<2)return '';
@@ -70,8 +71,8 @@ function srFlowDetails(code){
   const o=srFlowStock(code),c=String(code||'').split('.')[0].padStart(6,'0');
   const link=/^[0-9]{6}$/.test(c)?'<a target="_blank" rel="noopener noreferrer" href="https://finance.naver.com/item/frgn.naver?code='+c+'">네이버 원자료 보기 ↗</a>':'';
   if(!o)return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">자료 미확인</span></div>'+
-    '<div class="flow-no-data">기준일과 일치하는 수급 데이터가 없습니다. 추정 수치는 표시하지 않습니다.</div><div class="flow-source">'+link+'</div></div>';
-  return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">기준 '+srEsc(o.asOf)+' · 단위: 주</span></div>'+
+    '<div class="flow-no-data">공개된 투자자별 수급이 없거나 데이터가 오래되었습니다. 추정 수치는 표시하지 않습니다.</div><div class="flow-source">'+link+'</div></div>';
+  return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">수급 '+srEsc(o.asOf)+(o.lagged?' · 주가 기준 '+srEsc(o.marketAsOf)+' 대비 지연':'')+' · 단위: 주</span></div>'+
     '<div style="overflow-x:auto"><table><thead><tr><th>투자주체</th><th>당일</th><th>5거래일</th><th>20거래일</th></tr></thead><tbody>'+
     [['foreign','외국인'],['institution','기관'],['individual','개인']].map(([k,label])=>
        '<tr><th>'+label+'</th>'+[1,5,20].map(n=>{const v=srFlowSum(o,k,n);return '<td class="'+srFlowClass(v)+'">'+srFlowNumber(v)+'</td>'}).join('')+'</tr>'
