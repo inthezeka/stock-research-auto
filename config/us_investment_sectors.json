@@ -1,0 +1,1565 @@
+{
+  "version": 1,
+  "scope": "US-only",
+  "effective_on": "2026-10-22",
+  "source": "User-provided US Investment Sector / Fundamental Score MASTER PROMPT",
+  "classification_label": "Internal Sector Classification unless official GICS is independently verified",
+  "sector_count": 44,
+  "performance_models": {
+    "AI Semiconductor": {
+      "G": 25,
+      "Q": 15,
+      "B": 10,
+      "V": 15,
+      "K": 25,
+      "R": 10
+    },
+    "Semiconductor CAPEX": {
+      "G": 15,
+      "Q": 15,
+      "B": 15,
+      "V": 15,
+      "K": 30,
+      "R": 10
+    },
+    "AI Infrastructure": {
+      "G": 20,
+      "Q": 15,
+      "B": 15,
+      "V": 15,
+      "K": 25,
+      "R": 10
+    },
+    "SaaS / Software": {
+      "G": 25,
+      "Q": 15,
+      "B": 15,
+      "V": 15,
+      "K": 20,
+      "R": 10
+    },
+    "Industrial / Defense": {
+      "G": 15,
+      "Q": 15,
+      "B": 15,
+      "V": 15,
+      "K": 30,
+      "R": 10
+    },
+    "Utilities / Infrastructure Yield": {
+      "G": 10,
+      "Q": 15,
+      "B": 25,
+      "V": 20,
+      "K": 25,
+      "R": 5
+    },
+    "Cyclical / Commodities": {
+      "G": 10,
+      "Q": 15,
+      "B": 20,
+      "V": 20,
+      "K": 30,
+      "R": 5
+    },
+    "Consumer / Retail": {
+      "G": 15,
+      "Q": 20,
+      "B": 15,
+      "V": 20,
+      "K": 20,
+      "R": 10
+    },
+    "Early-stage Biotech": {
+      "G": 10,
+      "Q": 5,
+      "B": 25,
+      "V": 20,
+      "K": 35,
+      "R": 5
+    },
+    "Banks / Insurance": {
+      "G": 10,
+      "Q": 20,
+      "B": 20,
+      "V": 20,
+      "K": 25,
+      "R": 5
+    },
+    "REITs": {
+      "G": 10,
+      "Q": 15,
+      "B": 25,
+      "V": 20,
+      "K": 25,
+      "R": 5
+    },
+    "Payments / Fintech": {
+      "G": 20,
+      "Q": 20,
+      "B": 15,
+      "V": 15,
+      "K": 20,
+      "R": 10
+    }
+  },
+  "evidence_rules": {
+    "high_min": 0.85,
+    "medium_min": 0.7,
+    "low_min": 0.5,
+    "low_score_cap": 75,
+    "no_consensus": "NO_CONSENSUS_PROFILE: transfer R/2 to G and R/2 to K",
+    "unscored_if": "Evidence coverage <50%"
+  },
+  "sectors": [
+    {
+      "id": "US01",
+      "key": "US01",
+      "label": "AI Chip / Accelerator",
+      "model": "AI Semiconductor",
+      "seed_tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO"
+      ],
+      "primary_theme_candidates": [
+        "AI Inference",
+        "Custom ASIC",
+        "AI Infrastructure"
+      ],
+      "sector_kpis": [
+        "AI 매출 성장",
+        "GPU/ASIC 경쟁력",
+        "Gross Margin",
+        "소프트웨어 생태계"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 10,
+        "V": 15,
+        "K": 25,
+        "R": 10
+      }
+    },
+    {
+      "id": "US02",
+      "key": "US02",
+      "label": "Memory / Storage",
+      "model": "AI Semiconductor",
+      "seed_tickers": [
+        "MU",
+        "WDC",
+        "STX"
+      ],
+      "primary_theme_candidates": [
+        "HBM",
+        "AI Infrastructure"
+      ],
+      "sector_kpis": [
+        "메모리 ASP",
+        "Bit Growth",
+        "재고",
+        "HBM Mix"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 10,
+        "V": 15,
+        "K": 25,
+        "R": 10
+      }
+    },
+    {
+      "id": "US03",
+      "key": "US03",
+      "label": "Foundry / Chip Manufacturing",
+      "model": "AI Semiconductor",
+      "seed_tickers": [
+        "TSM",
+        "INTC"
+      ],
+      "primary_theme_candidates": [
+        "Advanced Packaging",
+        "Custom ASIC"
+      ],
+      "sector_kpis": [
+        "첨단공정 수율",
+        "가동률",
+        "웨이퍼 ASP",
+        "공정 전환"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 10,
+        "V": 15,
+        "K": 25,
+        "R": 10
+      }
+    },
+    {
+      "id": "US04",
+      "key": "US04",
+      "label": "Semiconductor Equipment",
+      "model": "Semiconductor CAPEX",
+      "seed_tickers": [
+        "AMAT",
+        "LRCX",
+        "ASML"
+      ],
+      "primary_theme_candidates": [
+        "Advanced Packaging",
+        "Hyperscaler CAPEX"
+      ],
+      "sector_kpis": [
+        "Book-to-Bill",
+        "Backlog",
+        "고객 CAPEX",
+        "서비스 매출"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US05",
+      "key": "US05",
+      "label": "Semi Materials / Test",
+      "model": "Semiconductor CAPEX",
+      "seed_tickers": [
+        "ENTG",
+        "KLAC",
+        "TER"
+      ],
+      "primary_theme_candidates": [
+        "Advanced Packaging",
+        "HBM"
+      ],
+      "sector_kpis": [
+        "검사 수율",
+        "테스트 점유율",
+        "소재 믹스"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US06",
+      "key": "US06",
+      "label": "AI Server Hardware",
+      "model": "AI Infrastructure",
+      "seed_tickers": [
+        "DELL",
+        "HPE",
+        "SMCI"
+      ],
+      "primary_theme_candidates": [
+        "AI Infrastructure",
+        "AI Data Center"
+      ],
+      "sector_kpis": [
+        "AI 서버 매출",
+        "Backlog",
+        "Rack-level Margin",
+        "Cash Conversion"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 20,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 25,
+        "R": 10
+      }
+    },
+    {
+      "id": "US07",
+      "key": "US07",
+      "label": "Networking / Optical",
+      "model": "AI Infrastructure",
+      "seed_tickers": [
+        "ANET",
+        "CIEN",
+        "COHR"
+      ],
+      "primary_theme_candidates": [
+        "Optical Interconnect",
+        "AI Data Center"
+      ],
+      "sector_kpis": [
+        "800G/1.6T 채택",
+        "광모듈 매출",
+        "Gross Margin"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 20,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 25,
+        "R": 10
+      }
+    },
+    {
+      "id": "US08",
+      "key": "US08",
+      "label": "Data Center Cooling / Infrastructure",
+      "model": "AI Infrastructure",
+      "seed_tickers": [
+        "VRT",
+        "MOD",
+        "ETN"
+      ],
+      "primary_theme_candidates": [
+        "Liquid Cooling",
+        "AI Data Center"
+      ],
+      "sector_kpis": [
+        "냉각/전력 수주",
+        "Book-to-Bill",
+        "Lead Time"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 20,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 25,
+        "R": 10
+      }
+    },
+    {
+      "id": "US09",
+      "key": "US09",
+      "label": "Hyperscaler / Cloud",
+      "model": "SaaS / Software",
+      "seed_tickers": [
+        "MSFT",
+        "AMZN",
+        "GOOGL"
+      ],
+      "primary_theme_candidates": [
+        "Hyperscaler CAPEX",
+        "AI Inference"
+      ],
+      "sector_kpis": [
+        "Cloud 성장",
+        "AI 서비스 매출",
+        "CAPEX 효율",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US10",
+      "key": "US10",
+      "label": "Enterprise SaaS",
+      "model": "SaaS / Software",
+      "seed_tickers": [
+        "CRM",
+        "NOW",
+        "ORCL"
+      ],
+      "primary_theme_candidates": [
+        "Enterprise AI",
+        "Agentic AI"
+      ],
+      "sector_kpis": [
+        "ARR",
+        "NRR",
+        "RPO",
+        "Rule of 40",
+        "FCF Margin"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US11",
+      "key": "US11",
+      "label": "Cybersecurity",
+      "model": "SaaS / Software",
+      "seed_tickers": [
+        "CRWD",
+        "PANW",
+        "FTNT"
+      ],
+      "primary_theme_candidates": [
+        "Cybersecurity",
+        "Enterprise AI"
+      ],
+      "sector_kpis": [
+        "ARR",
+        "Retention",
+        "Platform Adoption",
+        "Gross Margin"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US12",
+      "key": "US12",
+      "label": "AI Software / Data Platform",
+      "model": "SaaS / Software",
+      "seed_tickers": [
+        "PLTR",
+        "SNOW",
+        "DDOG"
+      ],
+      "primary_theme_candidates": [
+        "Agentic AI",
+        "Enterprise AI"
+      ],
+      "sector_kpis": [
+        "AI 플랫폼 매출",
+        "NRR",
+        "RPO",
+        "고객 확대"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US13",
+      "key": "US13",
+      "label": "Internet / Digital Advertising",
+      "model": "SaaS / Software",
+      "seed_tickers": [
+        "META",
+        "GOOGL",
+        "PINS"
+      ],
+      "primary_theme_candidates": [
+        "AI Inference",
+        "Enterprise AI"
+      ],
+      "sector_kpis": [
+        "광고 매출",
+        "ARPU",
+        "MAU/DAU",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 25,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US14",
+      "key": "US14",
+      "label": "Consumer Electronics",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "AAPL",
+        "HPQ"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery",
+        "AI Inference"
+      ],
+      "sector_kpis": [
+        "디바이스 ASP",
+        "제품 믹스",
+        "교체주기",
+        "매출"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US15",
+      "key": "US15",
+      "label": "Robotics / Industrial Automation",
+      "model": "Industrial / Defense",
+      "seed_tickers": [
+        "ROK",
+        "EMR",
+        "HON"
+      ],
+      "primary_theme_candidates": [
+        "Industrial Automation",
+        "Humanoid"
+      ],
+      "sector_kpis": [
+        "자동화 매출",
+        "Backlog",
+        "가동률",
+        "영업마진"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US16",
+      "key": "US16",
+      "label": "Power Grid / Electrical Equipment",
+      "model": "Industrial / Defense",
+      "seed_tickers": [
+        "ETN",
+        "HUBB",
+        "GEV"
+      ],
+      "primary_theme_candidates": [
+        "Grid Modernization",
+        "AI Data Center"
+      ],
+      "sector_kpis": [
+        "수주잔고",
+        "Book-to-Bill",
+        "HVDC 수요",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US17",
+      "key": "US17",
+      "label": "Utilities / Independent Power",
+      "model": "Utilities / Infrastructure Yield",
+      "seed_tickers": [
+        "NEE",
+        "VST",
+        "DUK"
+      ],
+      "primary_theme_candidates": [
+        "Grid Modernization",
+        "AI Data Center"
+      ],
+      "sector_kpis": [
+        "전력판매",
+        "규제수익률",
+        "CAPEX",
+        "전력 수요"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 25,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US18",
+      "key": "US18",
+      "label": "Nuclear / Uranium",
+      "model": "Utilities / Infrastructure Yield",
+      "seed_tickers": [
+        "CEG",
+        "BWXT",
+        "CCJ"
+      ],
+      "primary_theme_candidates": [
+        "Nuclear Renaissance",
+        "SMR"
+      ],
+      "sector_kpis": [
+        "원전 가동률",
+        "장기 PPA",
+        "확정수주",
+        "규제"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 25,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US19",
+      "key": "US19",
+      "label": "Oil / Gas E&P",
+      "model": "Cyclical / Commodities",
+      "seed_tickers": [
+        "XOM",
+        "CVX",
+        "COP"
+      ],
+      "primary_theme_candidates": [
+        "LNG Export"
+      ],
+      "sector_kpis": [
+        "생산량",
+        "매장량",
+        "Commodity Spread",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 20,
+        "V": 20,
+        "K": 30,
+        "R": 5
+      }
+    },
+    {
+      "id": "US20",
+      "key": "US20",
+      "label": "LNG / Midstream",
+      "model": "Cyclical / Commodities",
+      "seed_tickers": [
+        "LNG",
+        "WMB",
+        "KMI"
+      ],
+      "primary_theme_candidates": [
+        "LNG Export"
+      ],
+      "sector_kpis": [
+        "LNG 계약",
+        "처리량",
+        "수송능력",
+        "자본효율"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 20,
+        "V": 20,
+        "K": 30,
+        "R": 5
+      }
+    },
+    {
+      "id": "US21",
+      "key": "US21",
+      "label": "Renewable Energy / ESS",
+      "model": "Utilities / Infrastructure Yield",
+      "seed_tickers": [
+        "FSLR",
+        "ENPH",
+        "FLNC"
+      ],
+      "primary_theme_candidates": [
+        "Grid Modernization",
+        "AI Data Center"
+      ],
+      "sector_kpis": [
+        "설비 가동률",
+        "Storage Backlog",
+        "CAPEX",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 25,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US22",
+      "key": "US22",
+      "label": "Defense",
+      "model": "Industrial / Defense",
+      "seed_tickers": [
+        "LMT",
+        "RTX",
+        "NOC"
+      ],
+      "primary_theme_candidates": [
+        "Defense Modernization"
+      ],
+      "sector_kpis": [
+        "Backlog",
+        "Book-to-Bill",
+        "계약마진",
+        "납기"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US23",
+      "key": "US23",
+      "label": "Aerospace / Space",
+      "model": "Industrial / Defense",
+      "seed_tickers": [
+        "GE",
+        "BA",
+        "RKLB"
+      ],
+      "primary_theme_candidates": [
+        "Space Economy",
+        "Satellite Communications"
+      ],
+      "sector_kpis": [
+        "인도량",
+        "주문잔고",
+        "공급망",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US24",
+      "key": "US24",
+      "label": "Industrial Machinery / Infrastructure",
+      "model": "Industrial / Defense",
+      "seed_tickers": [
+        "CAT",
+        "PWR",
+        "URI"
+      ],
+      "primary_theme_candidates": [
+        "Reshoring",
+        "Industrial Automation"
+      ],
+      "sector_kpis": [
+        "장비수주",
+        "임대 가동률",
+        "인프라 CAPEX"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 15,
+        "B": 15,
+        "V": 15,
+        "K": 30,
+        "R": 10
+      }
+    },
+    {
+      "id": "US25",
+      "key": "US25",
+      "label": "Automobile / Autonomous Driving",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "TSLA",
+        "GM",
+        "F"
+      ],
+      "primary_theme_candidates": [
+        "Autonomous Driving",
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "판매량",
+        "ASP",
+        "Incentive",
+        "차량당 Margin"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US26",
+      "key": "US26",
+      "label": "Battery / Advanced Materials",
+      "model": "Cyclical / Commodities",
+      "seed_tickers": [
+        "ALB",
+        "ENVX",
+        "QS"
+      ],
+      "primary_theme_candidates": [
+        "Grid Modernization",
+        "Autonomous Driving"
+      ],
+      "sector_kpis": [
+        "제품가격",
+        "원재료 Spread",
+        "가동률"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 20,
+        "V": 20,
+        "K": 30,
+        "R": 5
+      }
+    },
+    {
+      "id": "US27",
+      "key": "US27",
+      "label": "Metals / Critical Minerals",
+      "model": "Cyclical / Commodities",
+      "seed_tickers": [
+        "FCX",
+        "MP",
+        "NUE"
+      ],
+      "primary_theme_candidates": [
+        "Reshoring",
+        "Grid Modernization"
+      ],
+      "sector_kpis": [
+        "Copper Spread",
+        "희토류 수급",
+        "가동률"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 20,
+        "V": 20,
+        "K": 30,
+        "R": 5
+      }
+    },
+    {
+      "id": "US28",
+      "key": "US28",
+      "label": "Pharmaceuticals",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "LLY",
+        "MRK",
+        "JNJ"
+      ],
+      "primary_theme_candidates": [
+        "Obesity Treatment"
+      ],
+      "sector_kpis": [
+        "제품 매출",
+        "특허 만기",
+        "R&D 생산성"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US29",
+      "key": "US29",
+      "label": "Biotechnology",
+      "model": "Early-stage Biotech",
+      "seed_tickers": [
+        "VRTX",
+        "REGN",
+        "MRNA"
+      ],
+      "primary_theme_candidates": [
+        "Gene Editing",
+        "Obesity Treatment"
+      ],
+      "sector_kpis": [
+        "rNPV",
+        "Pipeline",
+        "Cash Runway",
+        "희석위험"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 5,
+        "B": 25,
+        "V": 20,
+        "K": 35,
+        "R": 5
+      }
+    },
+    {
+      "id": "US30",
+      "key": "US30",
+      "label": "Medical Devices",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "ISRG",
+        "BSX",
+        "MDT"
+      ],
+      "primary_theme_candidates": [
+        "Surgical Robotics"
+      ],
+      "sector_kpis": [
+        "Procedure Growth",
+        "Installed Base",
+        "반복매출"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US31",
+      "key": "US31",
+      "label": "Healthcare Services",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "UNH",
+        "HCA",
+        "CI"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "의료손해율",
+        "가입자",
+        "진료량",
+        "현금흐름"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US32",
+      "key": "US32",
+      "label": "Banking",
+      "model": "Banks / Insurance",
+      "seed_tickers": [
+        "JPM",
+        "BAC",
+        "WFC"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "NIM",
+        "CET1",
+        "NPL",
+        "ROE",
+        "PBR"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 20,
+        "B": 20,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US33",
+      "key": "US33",
+      "label": "Capital Markets / Asset Management",
+      "model": "Banks / Insurance",
+      "seed_tickers": [
+        "GS",
+        "MS",
+        "BLK"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "AUM",
+        "Net Flows",
+        "IB 수익",
+        "ROE"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 20,
+        "B": 20,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US34",
+      "key": "US34",
+      "label": "Insurance",
+      "model": "Banks / Insurance",
+      "seed_tickers": [
+        "PGR",
+        "CB",
+        "BRK-B"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "Combined Ratio",
+        "Reserve Adequacy",
+        "Premium Growth"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 20,
+        "B": 20,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US35",
+      "key": "US35",
+      "label": "Payments / Fintech",
+      "model": "Payments / Fintech",
+      "seed_tickers": [
+        "V",
+        "MA",
+        "PYPL"
+      ],
+      "primary_theme_candidates": [
+        "Digital Payments",
+        "Stablecoin"
+      ],
+      "sector_kpis": [
+        "Transaction Volume",
+        "Take Rate",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 20,
+        "Q": 20,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US36",
+      "key": "US36",
+      "label": "Digital Assets Infrastructure",
+      "model": "Payments / Fintech",
+      "seed_tickers": [
+        "COIN",
+        "HOOD",
+        "MSTR"
+      ],
+      "primary_theme_candidates": [
+        "Crypto Infrastructure",
+        "Stablecoin"
+      ],
+      "sector_kpis": [
+        "수수료 매출",
+        "규제",
+        "현금흐름",
+        "희석"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 20,
+        "Q": 20,
+        "B": 15,
+        "V": 15,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US37",
+      "key": "US37",
+      "label": "REIT / Real Estate",
+      "model": "REITs",
+      "seed_tickers": [
+        "EQIX",
+        "DLR",
+        "AMT"
+      ],
+      "primary_theme_candidates": [
+        "AI Data Center",
+        "Grid Modernization"
+      ],
+      "sector_kpis": [
+        "FFO/AFFO",
+        "Occupancy",
+        "Lease Expiration"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 25,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US38",
+      "key": "US38",
+      "label": "Retail / Commerce",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "COST",
+        "WMT",
+        "HD"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "SSS",
+        "GMV",
+        "재고회전",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US39",
+      "key": "US39",
+      "label": "Travel / Leisure",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "BKNG",
+        "MAR",
+        "RCL"
+      ],
+      "primary_theme_candidates": [
+        "Travel Recovery"
+      ],
+      "sector_kpis": [
+        "Bookings",
+        "ADR",
+        "RevPAR",
+        "Occupancy"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US40",
+      "key": "US40",
+      "label": "Media / Entertainment / Gaming",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "NFLX",
+        "DIS",
+        "EA"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "Subscribers",
+        "ARPU",
+        "Churn",
+        "콘텐츠 ROI"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    },
+    {
+      "id": "US41",
+      "key": "US41",
+      "label": "Telecom",
+      "model": "Utilities / Infrastructure Yield",
+      "seed_tickers": [
+        "T",
+        "VZ",
+        "TMUS"
+      ],
+      "primary_theme_candidates": [
+        "Satellite Communications"
+      ],
+      "sector_kpis": [
+        "ARPU",
+        "Churn",
+        "CAPEX Intensity",
+        "FCF"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 25,
+        "V": 20,
+        "K": 25,
+        "R": 5
+      }
+    },
+    {
+      "id": "US42",
+      "key": "US42",
+      "label": "Transportation / Logistics",
+      "model": "Cyclical / Commodities",
+      "seed_tickers": [
+        "UNP",
+        "UPS",
+        "FDX"
+      ],
+      "primary_theme_candidates": [
+        "Reshoring"
+      ],
+      "sector_kpis": [
+        "Volume",
+        "Yield",
+        "Operating Ratio",
+        "Fuel Cost"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 20,
+        "V": 20,
+        "K": 30,
+        "R": 5
+      }
+    },
+    {
+      "id": "US43",
+      "key": "US43",
+      "label": "Agriculture / Fertilizer",
+      "model": "Cyclical / Commodities",
+      "seed_tickers": [
+        "CF",
+        "MOS",
+        "CTVA"
+      ],
+      "primary_theme_candidates": [
+        "Reshoring"
+      ],
+      "sector_kpis": [
+        "Crop Inputs",
+        "Fertilizer Spread",
+        "농업 수요"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 10,
+        "Q": 15,
+        "B": 20,
+        "V": 20,
+        "K": 30,
+        "R": 5
+      }
+    },
+    {
+      "id": "US44",
+      "key": "US44",
+      "label": "Consumer Staples / Brands",
+      "model": "Consumer / Retail",
+      "seed_tickers": [
+        "KO",
+        "PEP",
+        "PG"
+      ],
+      "primary_theme_candidates": [
+        "Consumer Recovery"
+      ],
+      "sector_kpis": [
+        "Pricing Power",
+        "매출 믹스",
+        "Gross Margin"
+      ],
+      "classification": "Internal Sector Classification",
+      "score_weights": {
+        "G": 15,
+        "Q": 20,
+        "B": 15,
+        "V": 20,
+        "K": 20,
+        "R": 10
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "TH01",
+      "name": "AI Infrastructure"
+    },
+    {
+      "id": "TH02",
+      "name": "Hyperscaler CAPEX"
+    },
+    {
+      "id": "TH03",
+      "name": "AI Inference"
+    },
+    {
+      "id": "TH04",
+      "name": "Custom ASIC"
+    },
+    {
+      "id": "TH05",
+      "name": "HBM"
+    },
+    {
+      "id": "TH06",
+      "name": "Advanced Packaging"
+    },
+    {
+      "id": "TH07",
+      "name": "AI Data Center"
+    },
+    {
+      "id": "TH08",
+      "name": "Liquid Cooling"
+    },
+    {
+      "id": "TH09",
+      "name": "Optical Interconnect"
+    },
+    {
+      "id": "TH10",
+      "name": "Agentic AI"
+    },
+    {
+      "id": "TH11",
+      "name": "Enterprise AI"
+    },
+    {
+      "id": "TH12",
+      "name": "Cybersecurity"
+    },
+    {
+      "id": "TH13",
+      "name": "Grid Modernization"
+    },
+    {
+      "id": "TH14",
+      "name": "Nuclear Renaissance"
+    },
+    {
+      "id": "TH15",
+      "name": "SMR"
+    },
+    {
+      "id": "TH16",
+      "name": "Gas Turbine"
+    },
+    {
+      "id": "TH17",
+      "name": "LNG Export"
+    },
+    {
+      "id": "TH18",
+      "name": "Space Economy"
+    },
+    {
+      "id": "TH19",
+      "name": "Satellite Communications"
+    },
+    {
+      "id": "TH20",
+      "name": "Defense Modernization"
+    },
+    {
+      "id": "TH21",
+      "name": "Reshoring"
+    },
+    {
+      "id": "TH22",
+      "name": "Industrial Automation"
+    },
+    {
+      "id": "TH23",
+      "name": "Humanoid"
+    },
+    {
+      "id": "TH24",
+      "name": "Autonomous Driving"
+    },
+    {
+      "id": "TH25",
+      "name": "Obesity Treatment"
+    },
+    {
+      "id": "TH26",
+      "name": "Gene Editing"
+    },
+    {
+      "id": "TH27",
+      "name": "Surgical Robotics"
+    },
+    {
+      "id": "TH28",
+      "name": "Crypto Infrastructure"
+    },
+    {
+      "id": "TH29",
+      "name": "Stablecoin"
+    },
+    {
+      "id": "TH30",
+      "name": "Digital Payments"
+    },
+    {
+      "id": "TH31",
+      "name": "Consumer Recovery"
+    },
+    {
+      "id": "TH32",
+      "name": "Travel Recovery"
+    }
+  ],
+  "frameworks": {
+    "cycle": {
+      "demand_momentum": 20,
+      "supply_capacity": 15,
+      "prices_margins": 15,
+      "capex_backlog": 15,
+      "revisions_guidance": 15,
+      "structural_growth": 10,
+      "macro_regulation": 10
+    },
+    "theme_popularity": {
+      "turnover_increase": 25,
+      "relative_return": 15,
+      "breadth": 15,
+      "news_catalyst": 15,
+      "earnings_catalyst": 10,
+      "rs_persistence": 10,
+      "sector_diffusion": 10
+    },
+    "investment": {
+      "fundamental": 60,
+      "valuation_risk_reward": 20,
+      "catalyst_timing": 10,
+      "technical_entry": 5,
+      "flow_liquidity": 5
+    }
+  }
+}
