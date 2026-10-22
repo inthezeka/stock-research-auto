@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+(function(){
+  const params=new URLSearchParams(window.location.search);
+  const isRoot=/(?:\/|\/index\.html)$/.test(window.location.pathname);
+  if(isRoot&&!params.has('market')&&!window.location.hash){
+    window.location.replace('./markets.html');
+  }
+})();
+</script>
 <title>MY Stock Room | 주식 리서치 대시보드</title>
 <style>
 :root{
@@ -629,6 +638,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   <div class="brand">MY Stock Room</div>
   <div class="brand-sub">Discovery · Valuation · Market Structure · Risk / Reward</div>
   <nav class="nav" id="nav">
+    <div class="nav-group">MARKET SELECT</div>
+    <a href="./markets.html"><span class="nav-num">↗</span>시장선택</a>
+    <a href="./us.html"><span class="nav-num">$</span>미국주식 · US</a>
     <div class="nav-group">OVERVIEW</div>
     <a href="#home" class="active"><span class="nav-num">01</span>HOME</a>
     <a href="#market"><span class="nav-num">02</span>MARKET</a>
@@ -644,7 +656,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
 <main class="content">
 <header class="header">
-  <div class="header-left"><button class="hamb" onclick="toggleMenu()">☰</button><div class="chapter" id="chapter">HOME</div></div>
+  <div class="header-left"><button class="hamb" onclick="toggleMenu()">☰</button><div class="chapter" id="chapter">HOME</div></div><div class="header-actions"><a class="btn secondary" href="./markets.html" style="text-decoration:none">시장 선택</a><a class="btn primary" href="./us.html" style="text-decoration:none">미국장 ↗</a></div>
 </header>
 <div class="update-strip"><span class="update-dot"></span><span>정보 업데이트</span><b id="topUpdatedText">-</b><span>· KST</span></div>
 
