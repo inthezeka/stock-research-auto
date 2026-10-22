@@ -12,7 +12,7 @@ const marketCapUSD=v=>!valid(v)||Number(v)<=0?'—':Number(v)>=1e12?'$'+number(N
 const confidence=v=>['HIGH','MEDIUM','LOW','INSUFFICIENT'].includes(v)?v:'INSUFFICIENT';
 const chip=(txt,extra='')=>'<span class="status-chip '+extra+'">'+esc(txt)+'</span>';
 let data={meta:{},indices:{},sectors:[],items:[],sector_cycles:[],theme_popularity:[]};
-let byTicker=new Map(), selectedIndex='INDEX3', sectorKey='ALL', query='', selected=null, activeUsMode='trading';
+let byTicker=new Map(), selectedIndex='INDEX3', sectorKey='ALL', query='', selected=null, activeUsMode='trading', tradingShown=30;
 
 function inIndexScope(t){return selectedIndex==='ALL'||(selectedIndex==='INDEX3'?(t.indices||[]).length>0:(t.indices||[]).includes(selectedIndex))}
 function scope(t){return inIndexScope(t)&&
@@ -49,6 +49,7 @@ function setUsMode(mode,scroll=false){
    pane.setAttribute('aria-hidden',on?'false':'true');
  }
  const meta=data.meta||{};
+ const u=new URL(window.location.href);u.searchParams.set('mode',activeUsMode);history.replaceState(null,'',u.pathname+u.search+u.hash);
  const focus=activeUsMode==='trading'
    ?'MY Trading · 현재 종가 기반 '+data.items.filter(t=>valid(t.trading_score)).length+'개 기술지표 분석 / Long Only 후보만 TOP10 표기'
    :'Fundamental · 발행된 SEC 점수 '+data.items.filter(t=>valid(t.fundamental_score)).length+
@@ -147,11 +148,28 @@ function renderFundamental(){
    usd(t.close),esc(d.reason||f.reason||'SEC·매출·산업 핵심 KPI 검증 미완료')]);
  }).join('')||'<tr><td colspan="6">현재 해당 범위에서 검증 대기 종목이 없습니다.</td></tr>';
 }
+function renderTechnicalUniverse(){
+ const rows=relevant().filter(t=>valid(t.close)&&valid(t.trading_score))
+  .sort((a,b)=>Number(b.trading_score)-Number(a.trading_score)||
+   Number(b.screener_marketcap_usd||0)-Number(a.screener_marketcap_usd||0)||a.ticker.localeCompare(b.ticker));
+ const display=rows.slice(0,tradingShown);
+ $('tradeCoverageInfo').textContent='필터 내 '+relevant().length+'개 종목 중 가격 및 Trading Score 확인 '+rows.length+
+ '개 · LONG ONLY TOP10 선정과 데이터 조회는 별도입니다. 가격 미확인 종목에는 점수를 생성하지 않습니다.';
+ $('tradeUniverseRows').innerHTML=display.map(t=>domRow(t,[
+  '<b>'+esc(t.ticker)+'</b><small>'+esc(t.name)+'</small>',usd(t.close),
+  '<span class="'+css(t.return5d)+'">'+pct(t.return5d)+'</span>',
+  number(t.trading_score,0),number(t.rsi,1),esc(t.trend||'미확인'),
+  chip(t.entry_quality||'C'),esc(t.price_date||'미확인')
+ ])).join('')||'<tr><td colspan="8">이 필터에는 검증된 종가·기술지표 종목이 없습니다. 3대 지수 통합 또는 미국 전체를 선택해 확인하세요.</td></tr>';
+ $('tradeMore').disabled=rows.length<=tradingShown;
+ $('tradeMoreStatus').textContent='표시 '+Math.min(rows.length,tradingShown)+' / '+rows.length+'개';
+}
 function renderTrading(){
  const eligible=relevant().filter(t=>valid(t.trading_score)&&valid(t.close)&&
  ['상승','상승초기'].includes(t.trend) && Number(t.rsi||0)<78)
  .sort((a,b)=>Number(b.trading_score)-Number(a.trading_score)||
   Number(b.return5d||0)-Number(a.return5d||0)).slice(0,10);
+ renderTechnicalUniverse();
  $('tradeRows').innerHTML=eligible.map((t,i)=>domRow(t,[i+1,'<b>'+esc(t.ticker)+'</b><small>'+esc(t.name)+'</small>',
   usd(t.close),'<b class="mono">'+number(t.trading_score,0)+'</b>',
   chip((t.entry_quality||'C')+' · 가격구조 후보',t.entry_quality==='S'?'good':''),
@@ -393,6 +411,7 @@ async function boot(){
  }
 }
 document.querySelectorAll('[data-us-mode]').forEach(btn=>btn.addEventListener('click',()=>setUsMode(btn.dataset.usMode,true)));
+$('tradeMore').addEventListener('click',()=>{tradingShown+=20;renderTechnicalUniverse();listenRows()});
 document.querySelectorAll('[data-nav-mode]').forEach(btn=>btn.addEventListener('click',()=>setUsMode(btn.dataset.navMode,false)));
 document.querySelectorAll('[data-index]').forEach(btn=>btn.addEventListener('click',()=>{
  selectedIndex=btn.dataset.index;sectorKey='ALL';
