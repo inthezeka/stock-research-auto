@@ -38,7 +38,7 @@ def safe_int(value):
     if value is None or isinstance(value, bool):
         return None
     v = str(value).strip().replace(",", "").replace(" ", "")
-    if not re.fullmatch(r"[+-]?\\d+(?:\\.0+)?", v):
+    if not re.fullmatch(r"[+-]?\d+(?:\.0+)?", v):
         return None
     try:
         return int(float(v))
@@ -48,7 +48,7 @@ def safe_int(value):
 
 def safe_date(value):
     s = str(value or "").strip()
-    if not re.fullmatch(r"20\\d{6}", s):
+    if not re.fullmatch(r"20\d{6}", s):
         return None
     try:
         return datetime.strptime(s, "%Y%m%d").date().isoformat()
