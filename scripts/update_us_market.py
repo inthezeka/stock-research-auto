@@ -68,10 +68,31 @@ def symbol(value):
     return code if re.fullmatch(r"[A-Z]{1,5}(?:-[A-Z])?", code) else None
 
 
+
+def fetch_sp500_backup():
+    """Maintained open CSV of 500 index members, used only if Wikipedia is inaccessible."""
+    url="https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv"
+    r=HTTP.get(url,timeout=17);r.raise_for_status()
+    found={}
+    for row in csv.DictReader(io.StringIO(r.text)):
+        ticker=symbol(row.get("Symbol"))
+        if ticker:
+            found[ticker]={"ticker":ticker,"name":clean(row.get("Security")),
+                           "gics":clean(row.get("GICS Sector")),
+                           "subindustry":clean(row.get("GICS Sub-Industry")),
+                           "indices":["SP500"]}
+    if len(found)<480:raise RuntimeError("Open CSV S&P500 incomplete "+str(len(found)))
+    return found
+
+
 def fetch_constituents(index):
     url = PAGES[index]
-    response = HTTP.get(url, timeout=17)
-    response.raise_for_status()
+    try:
+        response = HTTP.get(url, timeout=17)
+        response.raise_for_status()
+    except Exception:
+        if index=="SP500":return fetch_sp500_backup()
+        raise
     doc = BeautifulSoup(response.text, "html.parser")
     first, second = COLS[index]
     for table in doc.find_all("table"):
@@ -100,6 +121,7 @@ def fetch_constituents(index):
         minimum = {"SP500":480,"NASDAQ100":95,"DOW30":29}[index]
         if len(result) >= minimum:
             return result
+    if index=="SP500":return fetch_sp500_backup()
     raise RuntimeError(f"{index}: constituent table missing/incomplete")
 
 
