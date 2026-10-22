@@ -448,6 +448,39 @@ try:
 except FileNotFoundError:
     warnings.append("node unavailable for investor flow UI")
 
+
+# Investor-flow UI must be between company deep-dive and analyst research.
+sections=(
+    html.find('<section id="deepdive"'),
+    html.find('<section id="stock-flow-section"'),
+    html.find('<section id="analyst-research"'),
+)
+if -1 in sections or sections!=tuple(sorted(sections)):
+    fail("Investor flow chart must appear between Deep Dive and the 3M analyst research section")
+if html.count('id="stockInvestorFlow"') != 1:
+    fail("Exactly one per-stock investor flow chart container is required")
+if '수급(5D·20D·60D / 주)' not in html:
+    fail("MY Trading TOP10 investor flow horizon must be 5D/20D/60D")
+if "'</div>'+srFlowDetails(x.item.code)" in html:
+    fail("Duplicate investor graph remains in MY Trading accordion")
+try:
+    flow_ui=(ROOT/"scripts/investor-flow-ui.js").read_text(encoding="utf-8")
+    for token in (
+        "[5,20,60].map(n=>", "function srFlowChart(o,days=60)",
+        'flow-chart-controls', 'flow-chart-target', '60거래일',
+        "o.rows.length>=60?60", "root.querySelector('.flow-chart-target')"
+    ):
+        if token not in flow_ui:
+            fail("5D/20D/60D investor-flow chart component missing: "+token)
+    collector=(ROOT/"scripts/update_investor_flow.py").read_text(encoding="utf-8")
+    if "HISTORY_DAYS = 90" not in collector or '"valid_60d": ready60' not in collector:
+        fail("Investor-flow 60D history and coverage monitoring missing")
+    fc=json.loads((ROOT/"data/investor-flow.json").read_text(encoding="utf-8"))
+    if int((fc.get("meta") or {}).get("valid_60d") or 0)==0:
+        warnings.append("60D actual investor net-buy history not yet confirmed; UI shows missing, not estimates")
+except Exception as e:
+    fail("Investor-flow 60D layout and data configuration failed: "+str(e))
+
 # Validate inline JavaScript syntax when Node is available.
 scripts=re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>",html,re.S|re.I)
 js="\n".join(scripts)
