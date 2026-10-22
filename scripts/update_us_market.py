@@ -228,6 +228,29 @@ def sec_data(universe, prices, old, classifications):
         if cik is None:continue
         attempted+=1
         try:
+            # SEC submissions SIC + 20-F filing status are distinct from official GICS.
+            submissions=None
+            try:
+                sub=sec.get(f"https://data.sec.gov/submissions/CIK{cik:010d}.json",timeout=18)
+                sub.raise_for_status()
+                submissions=sub.json()
+                desc=str(submissions.get("sicDescription") or "")
+                sic=submissions.get("sic")
+                if desc or sic:
+                    universe[ticker]["sic_description"]=desc
+                    universe[ticker]["sic"]=sic
+                    updated=classify_company(universe[ticker])
+                    if classifications[ticker].get("sector_key") is None or (
+                        classifications[ticker].get("classification_method")=="PUBLIC_SECTOR_TEXT_FALLBACK"):
+                        classifications[ticker]=updated
+                recent_forms=((submissions.get("filings") or {}).get("recent") or {}).get("form") or []
+                if any(form in ("20-F","6-K","20-F/A") for form in recent_forms[:150]):
+                    universe[ticker]["foreign_issuer"]=True
+                    universe[ticker]["security_type"]="FOREIGN_ISSUER"
+            except Exception:
+                # SIC metadata is optional. Do not invent it when submissions unavailable.
+                pass
+            time.sleep(.25)
             rr=sec.get(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json",timeout=20)
             rr.raise_for_status()
             sector=classifications[ticker].get("sector_key")
@@ -242,7 +265,7 @@ def sec_data(universe, prices, old, classifications):
             failed+=1
         finally:
             # Conservative < 5 requests/second, including the CIK lookup.
-            time.sleep(.22)
+            time.sleep(.26)
     return out, {"status":"complete" if attempted and failed==0 else "partial",
                  "attempted":attempted,"matched":len(out),"errors":failed,
                  "ifrs_or_unsupported":unsupported,
