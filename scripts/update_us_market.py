@@ -27,7 +27,8 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from update_data import technicals
-from us_investment import (CONFIG as US_CONFIG, fetch_us_listed, classify_company, classify_themes,
+from us_investment import (CONFIG as US_CONFIG, fetch_us_listed, fetch_nasdaq_screener_industry,
+                           classify_company, classify_themes,
                            aggregate_sector_cycle, aggregate_theme_popularity,
                            aggregate_investment_best5, initial_membership_check)
 from us_fundamental import summarize_fundamentals,assess_fundamental
@@ -296,6 +297,18 @@ def main():
                 universe[ticker]={k:old.get(k) for k in (
                     "ticker","name","gics","subindustry","indices","exchange","security_type",
                     "foreign_issuer","financial_status","listing_source")}
+    # Complement live listing membership with independent Nasdaq industry texts.
+    # Do not borrow screener prices as verified trading-session OHLC.
+    industry_by_ticker,industry_coverage,industry_errors=fetch_nasdaq_screener_industry(HTTP)
+    for ticker,company in universe.items():
+        data=industry_by_ticker.get(ticker)
+        if data:
+            company.update(data)
+        else:
+            historic=previous_items.get(ticker) or {}
+            for key in ("industry","nasdaq_sector","industry_source","sic","sic_description"):
+                if not company.get(key) and historic.get(key):
+                    company[key]=historic[key]
     sector_labels={s["key"]:s["label"] for s in US_CONFIG["sectors"]}
     classifications={ticker:classify_company(item) for ticker,item in universe.items()}
     results={};errors=[]
@@ -412,6 +425,9 @@ def main():
           "exchange_candidate_count":common_candidate_count,
           "directory_status":"ok" if len(listing_coverage)==2 and common_candidate_count>3000 else "partial",
           "exchange_counts":listing_coverage,"directory_errors":listing_errors,
+          "nasdaq_industry_count":len(industry_by_ticker),
+          "nasdaq_industry_exchange_counts":industry_coverage,
+          "nasdaq_industry_errors":industry_errors,
           "coverage_scope":"US index 3 plus exchange-listed common-stock candidates; nightly quote/SEC sampling",
           "priced_universe_fraction":round(universe_price_coverage,4),
           "screened_market_status":"partial" if universe_price_coverage<.8 else "broad_quote_coverage",
