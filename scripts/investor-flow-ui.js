@@ -70,7 +70,12 @@ function srFlowChart(o,days=60){
 function srFlowDetails(code){
   const o=srFlowStock(code),c=String(code||'').split('.')[0].padStart(6,'0');
   const initialDays=o?(o.rows.length>=60?60:o.rows.length>=20?20:5):5;
-  const link=/^[0-9]{6}$/.test(c)?'<a target="_blank" rel="noopener noreferrer" href="https://finance.naver.com/item/frgn.naver?code='+c+'">네이버 원자료 보기 ↗</a>':'';
+  const link=o?.source?.startsWith('KIS investor')
+    ?'<a target="_blank" rel="noopener noreferrer" href="https://apiportal.koreainvestment.com/">한국투자증권 KIS API 안내 ↗</a>'
+    :o?.source?.startsWith('KRX user-authorized')
+      ?'<a target="_blank" rel="noopener noreferrer" href="https://data.krx.co.kr/">한국거래소 KRX 데이터 출처 ↗</a>'
+      :/^[0-9]{6}$/.test(c)
+        ?'<a target="_blank" rel="noopener noreferrer" href="https://finance.naver.com/item/frgn.naver?code='+c+'">네이버 수급 확인 ↗</a>':'';
   if(!o)return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">자료 미확인</span></div>'+
     '<div class="flow-no-data">공개된 투자자별 수급이 없거나 데이터가 오래되었습니다. 추정 수치는 표시하지 않습니다.</div><div class="flow-source">'+link+'</div></div>';
   return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">수급 '+srEsc(o.asOf)+(o.lagged?' · 주가 기준 '+srEsc(o.marketAsOf)+' 대비 지연':'')+' · 단위: 주</span></div>'+
