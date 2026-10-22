@@ -18,7 +18,7 @@ from pathlib import Path
 
 def number(x):
     value = str(x if x is not None else "").strip().replace(",", "")
-    if not re.fullmatch(r"[+-]?\\d+", value):
+    if not re.fullmatch(r"[+-]?\d+", value):
         return None
     try:
         return int(value)
