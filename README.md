@@ -138,6 +138,15 @@ python -m http.server 8080
 - 사이트: https://inthezeka.github.io/stock-research-auto/
 
 
+## 미국장 MASTER v3 · Fundamental / MY Trading 선택형
+
+- 시작 기본 조회는 NASDAQ-100 + S&P 500 + Dow 30 통합종목이며, 미국 전체 상장 후보는 별도 부분수집 선택 메뉴로 제공합니다.
+- 분석 모드는 "Fundamental Sector" / "MY Trading TOP10" 버튼으로 전환하며, 선택한 분석 패널만 표시합니다. 초기 화면에는 MY Trading을 제공합니다.
+- 전체 후보 수, 거래일 확인 종가 수, US Sector 분류 수, 발행된 Fundamental 점수 수를 분리 표시합니다.
+- SEC 미연동 시 Fundamental 점수는 발행하지 않습니다. 대신 가격 확인 종목과 5D/업종/Nasdaq Screener의 별도 시가총액 자료를 구분해 보여줍니다.
+- Sector 및 Theme는 검증되지 않은 Cycle/Popularity 점수를 만들지 않으면서 확인 가능한 20D 가격 모멘텀·상승 비중을 모니터링 표에 표시합니다.
+- Sector별 TOP3, Theme별 TOP3는 검증된 연결 후보가 있는 그룹을 우선 표시하며 미검증 기업은 투자 순위로 표현하지 않습니다.
+
 ## 미국장 MASTER v2 · 44개 독립 투자섹터
 
 - 시장선택: [markets.html](markets.html)
