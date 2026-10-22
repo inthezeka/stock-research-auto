@@ -18,6 +18,8 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
+from kis_investor_flow import KisInvestorClient, SOURCE as KIS_SOURCE
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "investor-flow.json"
 UNIVERSE = ROOT / "stock-universe.json"
@@ -222,6 +224,99 @@ def candidates(universe):
     return list(dict.fromkeys(c for c in codes if re.fullmatch(r"\d{6}", c)))
 
 
+
+def merge_verified_source(existing, previous, incoming, source, cutoff):
+    """Never mix investor-category market definitions within one dated series.
+
+    KIS is a consistent KRX source. If the previous series was also KIS,
+    merge the two KRX histories. Do not merge anonymous Naver rows with KRX.
+    """
+    combined = {}
+    if str((previous or {}).get("source") or "").startswith("KIS investor"):
+        combined.update({r["date"]: r for r in previous.get("rows", [])
+                         if r.get("date") and r["date"] <= cutoff})
+    combined.update({r["date"]: r for r in incoming})
+    series = sorted(combined.values(), key=lambda x: x["date"])[-HISTORY_DAYS:]
+    if not series:
+        return existing
+    old_last = str((existing or {}).get("last_date") or "")
+    if old_last and series[-1]["date"] < old_last:
+        # Show last confirmed official source, but only if at most a week
+        # behind the live Naver display.
+        try:
+            lag = (datetime.strptime(old_last, "%Y-%m-%d") -
+                   datetime.strptime(series[-1]["date"], "%Y-%m-%d")).days
+        except ValueError:
+            lag = 999
+        if lag > 7:
+            return existing
+    return {
+        "source": source,
+        "unit": "shares",
+        "market_scope": "KRX",
+        "rows": series,
+        "last_date": series[-1]["date"],
+        "row_count": len(series),
+        "error": None,
+        "stale": False,
+    }
+
+
+def optional_kis_backfill(codes, results, old, cutoff):
+    """Credentials-only official backfill; never block market-data deployment."""
+    client = KisInvestorClient()
+    report = {"status": "credentials_missing", "requested": 0, "covered_20d": 0,
+              "covered_60d": 0, "source": KIS_SOURCE, "errors": 0}
+    if not client.configured:
+        # Keep recent previously fetched KIS history when credentials have
+        # temporarily disappeared, instead of silently losing 60D history.
+        for code in codes:
+            cached = old.get(code)
+            if not cached or not str(cached.get("source", "")).startswith("KIS investor"):
+                continue
+            rows = cached.get("rows") or []
+            if rows:
+                results[code] = merge_verified_source(results.get(code), cached, [], KIS_SOURCE, cutoff)
+        return report
+    if not client.authenticate():
+        report["status"] = client.error or "authentication_failed"
+        return report
+    report["status"] = "authenticated"
+    # Three regression-pilot tickers first; remaining symbols by trading value.
+    front = ["005930", "000660", "356860"]
+    priority = list(dict.fromkeys([c for c in front if c in results] + list(codes)))
+    limit = min(500, max(3, int(os.getenv("KIS_FLOW_MAX_CODES", "320"))))
+    for code in priority[:limit]:
+        previous = old.get(code) or {}
+        old_rows = previous.get("rows") or []
+        if (str(previous.get("source", "")).startswith("KIS investor") and
+                len(old_rows) >= 65 and previous.get("last_date") == cutoff):
+            results[code] = previous
+            continue
+        try:
+            need = 20 if len(old_rows) >= 60 and str(previous.get("source", "")).startswith("KIS investor") else 65
+            history = client.fetch_history(code, cutoff, target_rows=need)
+            report["requested"] += 1
+            if history and len(history) >= 5:
+                results[code] = merge_verified_source(results.get(code), previous, history, KIS_SOURCE, cutoff)
+                n = len(results[code]["rows"])
+                report["covered_20d"] += int(n >= 20)
+                report["covered_60d"] += int(n >= 60)
+            else:
+                report["errors"] += 1
+            if report["requested"] >= 10 and report["errors"] / report["requested"] >= 0.8:
+                report["status"] = "source_unavailable"
+                break
+        except (requests.RequestException, ValueError, TypeError, KeyError):
+            report["requested"] += 1
+            report["errors"] += 1
+            if report["requested"] >= 10 and report["errors"] / report["requested"] >= 0.8:
+                report["status"] = "source_unavailable"
+                break
+    if report["status"] == "authenticated":
+        report["status"] = "collected" if report["covered_20d"] or report["covered_60d"] else "empty_history"
+    return report
+
 def main():
     universe = json.loads(UNIVERSE.read_text(encoding="utf-8"))
     as_of = str(universe["as_of"])
@@ -263,6 +358,8 @@ def main():
                 result = previous
             results[code] = result
 
+    kis_report = optional_kis_backfill(codes, results, old, cutoff)
+
     ready = sum(1 for item in results.values()
                 if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
                 and len(item.get("rows") or []) >= 5)
@@ -281,6 +378,7 @@ def main():
             "candidate_count": len(codes), "valid_5d": ready, "valid_20d": ready20,
             "valid_60d": ready60, "history_retention_sessions": HISTORY_DAYS,
             "elapsed_seconds": round(time.monotonic() - started, 1),
+            "kis_backfill": kis_report,
         },
         "items": results,
     }
@@ -292,7 +390,8 @@ def main():
     tmp.replace(OUT)
     print(json.dumps({"date": as_of, "candidates": len(codes),
                       "valid_5d": ready, "valid_20d": ready20, "valid_60d": ready60,
-                      "seconds": payload["meta"]["elapsed_seconds"]}, ensure_ascii=False))
+                      "seconds": payload["meta"]["elapsed_seconds"],
+                      "kis_status": kis_report["status"], "kis60": kis_report["covered_60d"]}, ensure_ascii=False))
     return 0
 
 
