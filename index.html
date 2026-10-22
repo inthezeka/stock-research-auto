@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI STOCK RESEARCH WORKFLOW</title>
+<title>MY Stock Room | 주식 리서치 대시보드</title>
 <style>
 :root{
   --navy:#0B1F3A;--navy2:#102A4D;--blue:#1769E0;--light:#EAF2FF;--bg:#F6F8FB;--card:#FFFFFF;
@@ -517,13 +517,116 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   .flow-foot{font-size:12px}
 }
 
+
+/* MY Stock Room - 2026-10-22 UI finish: 5D-only flow / readability / responsive */
+body{line-height:1.55;-webkit-font-smoothing:antialiased}
+.brand{font-size:20px;letter-spacing:-.02em}
+.brand-sub{font-size:12px;line-height:1.6}
+.nav-group{font-size:11px}
+.nav a{font-size:14px;min-height:41px}
+.chapter{font-size:14px}
+.update-strip{font-size:12px;flex-wrap:wrap}
+.section-title{font-size:clamp(25px,2.2vw,30px);line-height:1.3}
+.section-desc{font-size:15px;line-height:1.72}
+.section-head{margin-bottom:20px}
+.subhead{line-height:1.4}
+.card{min-width:0}
+.note{font-size:13px;line-height:1.7;color:#5D6C80}
+.kpi .label{font-size:12.5px}
+.kpi .delta{font-size:12.5px}
+.market-flow{font-size:12px;line-height:1.6}
+.table th{font-size:12px;line-height:1.5}
+.table td{font-size:13.5px;line-height:1.55}
+.table tbody tr:hover td{transition:background-color .14s ease}
+.table-wrap{max-width:100%;scrollbar-width:thin;scrollbar-color:#C3CFDF transparent}
+.metric{min-width:0;padding:15px}
+.metric .m-label{font-size:12px}
+.metric .m-val{font-size:clamp(19px,1.6vw,23px);line-height:1.35;overflow-wrap:anywhere}
+.metric .m-basis{font-size:11px;line-height:1.35}
+.metric .m-help{font-size:11.5px;line-height:1.55;color:#66758A}
+.top5-tab{padding:13px 14px;min-height:78px}
+.top5-tab-rank{font-size:11px}
+.top5-tab-name{font-size:15px}
+.top5-tab-meta{font-size:12px}
+.selected-stock-note{font-size:11.5px}
+.screening-mode-btn{font-size:14px;min-height:43px}
+.stock-search-desc,.stock-search-meta,.stock-search-status,.scan-status{font-size:12.5px;line-height:1.65}
+.fund-theme-btn{font-size:13px;line-height:1.45}
+.fund-score-table th{font-size:12px}
+.fund-score-table td{font-size:12.5px}
+.fund-factor-box h4{font-size:12.5px}
+.fund-factor-box ol{font-size:12px;line-height:1.65}
+.fund-valuation-answer{font-size:12.5px;line-height:1.65}
+.fund-score-summary-meta,.fund-score-summary-grade,.fund-score-summary-toggle{font-size:12px}
+.fund-model-name,.fund-model-chip,.fund-score-meta{font-size:12px}
+.fund-top10-table th{font-size:12px}
+.fund-top10-table td{font-size:13.5px}
+.sector-factor-strip span,.sector-universe-head,.sector-universe-head b{font-size:12px}
+.sector-universe-item{font-size:12px;padding:9px 10px;line-height:1.35}
+.sector-universe-item.active-top10{padding:8px 9px}
+.sector-subsector,.sector-reason,.sector-growth{font-size:12px;line-height:1.6}
+.sector-score-sub,.sector-flag,.sector-actual-cycle{font-size:11px}
+.sector-cycle-legend,#sector .cycle-legend-scale{font-size:12px}
+.taxonomy-chip,.fund-taxonomy-detail>div>b{font-size:12px}
+.earnings-chart-sub,.earnings-chart-legend,.earnings-summary-chip{font-size:12px}
+.earnings-chart-axis{font-size:10.5px;fill:#69778A}
+.earnings-chart-quarter,.earnings-chart-revenue,.earnings-chart-opm{font-size:11px}
+.analyst-research-meta{font-size:12.5px}
+.analyst-consensus-box span{font-size:12px}
+.analyst-consensus-box small{font-size:11px}
+.source-rule-desc,.source-action-card .source-action-desc{font-size:12px!important;line-height:1.65}
+.sent-source,.sent-component-label,.sent-component-score,.sent-method{font-size:12px}
+.sent-flow-item span{font-size:11px}
+.sent-mini span{font-size:11px}
+.compact-chip{font-size:11.5px;padding:7px 9px}
+.my-trading-score-details>summary,.my-trading-score-toggle{font-size:12.5px}
+.ict-score-card>div,.ict-detail-grid>div{font-size:12px;line-height:1.65}
+.ict-best-note{font-size:12.5px}
+.flow-top10-table th{font-size:12.5px}
+.flow-top10-table td{font-size:13.5px;padding:12px 13px}
+.flow-top10-table th:nth-child(10),.flow-top10-table td:nth-child(10){min-width:348px;max-width:380px}
+.flow-top10-table .flow-th-caption{font-size:12px}
+.flow-mini-name{font-size:12px}
+.flow-mini-value{font-size:14px}
+.flow-mini-date{font-size:12px}
+.flow-mini-empty strong{font-size:13px}
+.flow-mini-empty small{font-size:12px}
+.flow-section-heading{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px}
+.flow-section-heading .section-title{margin-bottom:6px}
+.flow-only-tag{display:inline-flex;align-items:center;min-height:27px;border-radius:999px;padding:4px 11px;background:#EAF2FF;color:#1554AD;border:1px solid #BCD4F7;font-size:12px;font-weight:850;letter-spacing:-.01em;white-space:nowrap;margin-bottom:6px}
+#stock-flow-section .section-desc{font-size:15px;line-height:1.72}
+.flow-stat-name{font-size:14px}
+.flow-stat-state,.flow-viz-heading p,.flow-unit,.flow-foot{font-size:13px}
+.flow-date{font-size:13px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #76A9FA;outline-offset:2px}
+@media(max-width:820px){
+  .content{padding:0 16px 48px}
+  .section-head{margin-bottom:16px}
+  section{padding:32px 0}
+  .card{padding:17px}
+  .section-title{font-size:25px}
+  .section-desc{font-size:14px}
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .metric{padding:13px}
+  .flow-top10-table th,.flow-top10-table td{white-space:nowrap}
+  #stock-flow-section .section-desc{font-size:14px}
+}
+@media(max-width:430px){
+  .metrics{grid-template-columns:1fr}
+  .metric .m-val{font-size:22px}
+  .top5-tab{padding:11px}
+  .top5-tab-name{font-size:14px}
+  .top5-tab-meta{font-size:11.5px}
+  .flow-only-tag{font-size:11px}
+}
+
 </style>
 </head>
 <body>
 <!-- BUILD: stock-room-deepdive-earnings-chart-v45-20261017 -->
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar">
-  <div class="brand">AI STOCK RESEARCH</div>
+  <div class="brand">MY Stock Room</div>
   <div class="brand-sub">Discovery · Valuation · Market Structure · Risk / Reward</div>
   <nav class="nav" id="nav">
     <div class="nav-group">OVERVIEW</div>
@@ -836,8 +939,8 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 <section id="stock-flow-section" class="section-track" data-name="INVESTOR FLOW">
   <div class="section-head">
     <div>
-      <h2 class="section-title">5D 투자자별 수급 분석</h2>
-      <p class="section-desc">최근 5거래일 외국인 · 기관 · 개인의 누적 순매수 수량과 일별 흐름을 비교합니다. 수급 기준일은 주가 기준일과 다를 수 있습니다.</p>
+      <div class="flow-section-heading"><h2 class="section-title">5D 투자자별 수급 분석</h2><span class="flow-only-tag">최근 5거래일만 조회</span></div>
+      <p class="section-desc">외국인 · 기관 · 개인의 최근 5거래일(5D) 순매수 수량과 누적 추이를 비교합니다. 20D·60D 수급은 조회하지 않으며, 수급 기준일은 주가 기준일과 다를 수 있습니다.</p>
     </div>
   </div>
   <div id="stockInvestorFlow" class="card flow-card" aria-live="polite">종목을 선택하면 수급 자료를 표시합니다.</div>
