@@ -1,4 +1,5 @@
-# AI STOCK RESEARCH WORKFLOW — v12 TOP5 Financial Data Edition
+# MY Stock Room · Korea + United States
+
 
 주식 리서치 대시보드의 **데이터 연결 안정성**과 **배포 전 자체 검수**를 강화한 버전입니다.
 
@@ -135,3 +136,28 @@ python -m http.server 8080
 - 기존 5D 수집은 매일 자동 갱신하고 자료가 부족한 종목은 수치를 만들지 않습니다.
 - 과거 장기 수급 연동 기록은 [보관된 KIS·KRX 설정 가이드](docs/INVESTOR_FLOW_60D_SETUP.md)를 참고하세요. 현재는 연결할 필요가 없습니다.
 - 사이트: https://inthezeka.github.io/stock-research-auto/
+
+
+## 글로벌 시장 선택 (2026-10-22 신규)
+
+- 시장선택: [markets.html](markets.html) (사이트 첫 방문 시 진입)
+- 국내장: [index.html?market=kr](index.html?market=kr) (기존 데이터 파이프라인과 분석 화면 보존)
+- 미국장: [us.html](us.html) (NASDAQ-100 / S&P 500 / Dow 30)
+- 국내와 미국 데이터는 각각 data/market-data.json, data/us-market.json에 저장하며 덮어쓰지 않습니다.
+- 미국 36개 Sector는 config/fundamental_themes.json의 **기존 36개 명칭**을 사용하며 GICS / ICB 산업명으로 별도 매핑합니다.
+- 미국 구성종목은 S&P 500 / Nasdaq-100 / Dow Jones 공개 구성종목 표를 매일 조회합니다. 출처 조회 실패 시 이전 정상 구성종목 또는 명시적인 seed 데이터로 폴백하고 커버리지 부족을 표기합니다.
+- 미국 종가는 Yahoo Finance 일별 OHLC에서 미 증시 시간대(ET)로 거래일을 정렬하고, 같은 기준일의 종가만 화면에 반영합니다.
+- Trading Score 계산은 한국 대시보드의 RSI / MACD / MA / Stochastic 엔진을 공유합니다. 미국 화면의 S/A/B 후보는 **가격 기반 사전 스크리닝**으로, ICT FVG / MSS / OB 확정을 의미하지 않습니다.
+- 미국 5D 수급 화면은 5일 가격 변화 / OBV / 평균 거래량 대비 상대거래량을 보여줍니다. KRX의 주체별 순매수와 혼동하지 않도록 표시합니다.
+- 미국 SEC Company Facts 재무자료는 사용자가 SEC Fair Access에 적합한 GitHub Actions Secret \`US_SEC_USER_AGENT\` (기관명 및 연락 가능한 이메일 포함)을 제공했을 때 제한된 종목 수부터 수집합니다. 인증하지 않은 매출·EPS·P/E·목표주가를 생성하지 않습니다.
+- 재무자료가 부족하면 미국 Fundamental Score는 null로 두어 TOP20 표에 "자료 미확인"을 노출합니다. **국내장의 36 Sector별 전용 Fundamental 가중치 전체를 미국 데이터에 이전한 단계는 아닙니다.**
+- 미국 증권사 리포트/Consensus 데이터의 안정적인 자동수집은 별도 데이터 제공권 및 품질 검증이 필요합니다. 현재 미국 종목 상세에 SEC / Nasdaq / 외부 애널리스트 전망 원문 링크를 제공합니다.
+
+### US dataset command / QA
+
+\`\`\`sh
+python scripts/update_us_market.py
+python scripts/validate_us_market.py
+\`\`\`
+
+Actions \`Daily stock research update + GitHub Pages\`는 미국 데이터를 별도 단계에서 수집하고 검증합니다. 구성종목·종가·SEC 호출 제한을 검사한 뒤 \`data/us-market.json\`만 갱신합니다. 수집 실패 시 국내장과 기존 페이지가 함께 실패하지 않도록 미국 수집 단계에 \`continue-on-error: true\`를 적용했습니다. 별도의 \`Publish MY Stock Room market pages\` 워크플로는 시장선택/미국장 페이지를 국내 데이터 수집과 독립적으로 배포합니다.
