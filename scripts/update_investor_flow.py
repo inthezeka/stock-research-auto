@@ -225,7 +225,7 @@ def main():
     as_of = str(universe["as_of"])
     # Investor-classified flows often finalize after the price quote. Exclude current partial session.
     cutoff = ((NOW.date() - timedelta(days=1)).isoformat()
-              if as_of == NOW.date().isoformat() and NOW.hour < 16 else as_of)
+              if as_of == NOW.date().isoformat() and (NOW.hour < 15 or (NOW.hour == 15 and NOW.minute < 45)) else as_of)
     old = {}
     if OUT.exists():
         try:
