@@ -6,6 +6,10 @@ on:
   push:
     paths:
       - "scripts/update_us_market.py"
+      - "scripts/us_fundamental.py"
+      - "scripts/us_investment.py"
+      - "scripts/test_us_fundamental.py"
+      - "config/us_investment_sectors.json"
       - "scripts/us-market-ui.js"
       - "scripts/validate_us_market.py"
       - "us.html"
@@ -34,13 +38,16 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r scripts/requirements.txt
+      - name: Check US fundamental model offline
+        run: python scripts/test_us_fundamental.py
       - name: Refresh US index members and dated market closes
         env:
           US_SEC_USER_AGENT: ${{ secrets.US_SEC_USER_AGENT }}
-          US_SEC_LIMIT: "80"
+          US_SEC_LIMIT: "120"
           US_WORKERS: "12"
+          US_MAX_CHARTS: "950"
         run: python scripts/update_us_market.py
-      - name: Validate US 36-sector dataset
+      - name: Validate US 44-sector dataset
         run: python scripts/validate_us_market.py
       - name: Commit verified US snapshot
         run: |
