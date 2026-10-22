@@ -127,11 +127,11 @@ python -m http.server 8080
 - 실적/Consensus처럼 신뢰할 수 있는 무료 자동 소스가 제한적인 값은 검증일을 함께 관리합니다.
 - `[AI]`는 자체 계산·해석이며 외부 확정값과 구분합니다.
 
-## MY Trading 5D·20D·60D 수급 확장
+## MY Trading 최근 5거래일(5D) 수급
 
-- 종목별 외국인·기관·개인 순매수 **수량(주)**를 5D·20D·60D로 확인합니다. 최초 5거래일은 기존 네이버 데이터를 사용합니다.
-- 과거 자료 수집 경로: KIS `investor-trade-by-stock-daily`(APP Key/Secret 필요) 또는 사용자가 제공한 정상화된 KRX CSV.
-- 인증 및 사용 방법: [KIS 인증과 KRX CSV 입력 가이드](docs/INVESTOR_FLOW_60D_SETUP.md).
-- 데이터가 실제로 20·60거래일치 없으면 임의 계산하지 않고 `—`로 표시합니다.
-- **시장 데이터 제3자 재배포 조건**을 확인한 후 공개 사이트에서 이용하세요.
-- 현재 공개 사이트: https://inthezeka.github.io/stock-research-auto/
+- MY Trading TOP10에는 5거래일 외국인·기관계·개인 **순매수 수량(주)**만 간결하게 표시합니다.
+- 종목 상세의 별도 수급 섹션은 주체별 합계 카드와 최근 5거래일 누적 추이 그래프를 보여줍니다.
+- 20D·60D는 일시 중단했습니다. 공식 KIS / 사용자 제공 KRX CSV 백필 모듈은 향후 확장을 위해 보관하지만 **실행하지 않습니다.**
+- 기존 5D 수집은 매일 자동 갱신하고 자료가 부족한 종목은 수치를 만들지 않습니다.
+- 과거 장기 수급 연동 기록은 [보관된 KIS·KRX 설정 가이드](docs/INVESTOR_FLOW_60D_SETUP.md)를 참고하세요. 현재는 연결할 필요가 없습니다.
+- 사이트: https://inthezeka.github.io/stock-research-auto/
