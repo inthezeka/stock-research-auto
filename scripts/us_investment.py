@@ -84,6 +84,16 @@ GICS_FALLBACK={
     "Industrials":"US24","Materials":"US27","Real Estate":"US37"
 }
 
+def parse_screener_marketcap(value):
+    """Keep market-cap context separated from session-verified close candles."""
+    raw=str(value or "").strip().upper().replace(",","").replace("$","")
+    if raw in ("","N/A","NA","--","NONE"):return None
+    match=re.fullmatch(r"(\d+(?:\.\d+)?)([KMBT]?)",raw)
+    if not match:return None
+    amount=float(match.group(1))
+    return amount*{"":1,"K":1e3,"M":1e6,"B":1e9,"T":1e12}[match.group(2)] if amount>0 else None
+
+
 def fetch_nasdaq_screener_industry(session=None):
     """Optional Nasdaq screener sector/industry text. Unofficial web endpoint; may change.
 
@@ -114,7 +124,9 @@ def fetch_nasdaq_screener_industry(session=None):
                 sector=str(item.get("sector") or "").strip()
                 if not industry and not sector:continue
                 found[code]={"industry":industry,"nasdaq_sector":sector,
-                             "industry_source":"Nasdaq public screener industry; not official GICS"}
+                             "industry_source":"Nasdaq public screener industry; not official GICS",
+                             "screener_marketcap_usd":parse_screener_marketcap(item.get("marketCap")),
+                             "screener_marketcap_source":"Nasdaq screener snapshot; not verified daily OHLC"}
                 c+=1
             sources[exchange]=c
         except Exception as e:errors[exchange]=str(e)[:160]
