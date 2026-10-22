@@ -138,10 +138,8 @@ def pc_rows(code, session, as_of):
                 break
             resp.encoding = "euc-kr"
             soup = BeautifulSoup(resp.text, "html.parser")
-            tables = soup.select("table.type2")
-            if not tables:
-                break
-            for tr in tables[0].select("tr"):
+            # Identify dated rows across all tables, not just the first table.type2.
+            for tr in soup.select("table tr"):
                 cells = [td.get_text(" ", strip=True) for td in tr.select("td")]
                 if len(cells) < 9:
                     continue
@@ -221,6 +219,9 @@ def candidates(universe):
 def main():
     universe = json.loads(UNIVERSE.read_text(encoding="utf-8"))
     as_of = str(universe["as_of"])
+    # Investor-classified flows often finalize after the price quote. Exclude current partial session.
+    cutoff = ((NOW.date() - timedelta(days=1)).isoformat()
+              if as_of == NOW.date().isoformat() and NOW.hour < 16 else as_of)
     old = {}
     if OUT.exists():
         try:
@@ -231,7 +232,7 @@ def main():
     started = time.monotonic()
     results = {}
     with ThreadPoolExecutor(max_workers=WORKERS) as executor:
-        jobs = {executor.submit(fetch_code, code, as_of): code for code in codes}
+        jobs = {executor.submit(fetch_code, code, cutoff): code for code in codes}
         for job in as_completed(jobs):
             code = jobs[job]
             try:
@@ -247,14 +248,15 @@ def main():
             results[code] = result
 
     ready = sum(1 for item in results.values()
-                if item.get("last_date") == as_of and not item.get("stale")
+                if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
                 and len(item.get("rows") or []) >= 5)
     ready20 = sum(1 for item in results.values()
-                  if item.get("last_date") == as_of and not item.get("stale")
+                  if item.get("last_date") and item.get("last_date") <= cutoff and not item.get("stale")
                   and len(item.get("rows") or []) >= 20)
     payload = {
         "meta": {
             "generated_at": NOW.isoformat(), "market_date": as_of,
+            "published_cutoff": cutoff,
             "unit": "shares", "source": "Naver public investor trends (KRX)",
             "note": "Daily investor net-buy quantities (shares), never estimated KRW. Missing periods are unavailable.",
             "candidate_count": len(codes), "valid_5d": ready, "valid_20d": ready20,
