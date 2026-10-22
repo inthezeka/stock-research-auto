@@ -38,13 +38,13 @@ function srFlowMini(code){
   if(!o)return '<span class="flow-no-data">수급 조회 불가<br>기준일 검증 대기</span>';
   return '<div class="flow-mini" title="순매수 수량(주) / 기준 '+srEsc(o.asOf)+'">'+
     '<div class="flow-mini-row flow-zero"><b>기간</b><b>외국인</b><b>기관</b><b>개인</b></div>'+
-    [1,5,20].map(n=>'<div class="flow-mini-row"><b>'+n+'D</b>'+
+    [5,20,60].map(n=>'<div class="flow-mini-row"><b>'+n+'D</b>'+
       ['foreign','institution','individual'].map(k=>{const x=srFlowSum(o,k,n);return '<span class="'+srFlowClass(x)+'">'+srFlowNumber(x)+'</span>'}).join('')+
       '</div>').join('')+'<div class="flow-meta">수급 기준 '+srEsc(o.asOf)+(o.lagged?' (주가 '+srEsc(o.marketAsOf)+' 대비 지연)':'')+'</div></div>';
 }
-function srFlowChart(o){
+function srFlowChart(o,days=60){
   if(!o||o.rows.length<2)return '';
-  const rows=o.rows.slice(-20),lineDefs=[['foreign','외국인','#1769E0'],['institution','기관','#059669'],['individual','개인','#E3A02A']];
+  const rows=o.rows.slice(-Math.min(60,Math.max(2,Number(days)||60))),lineDefs=[['foreign','외국인','#1769E0'],['institution','기관','#059669'],['individual','개인','#E3A02A']];
   const series=lineDefs.map(([key,label,color])=>{
     let total=0,ok=true,values=[0];
     for(const r of rows){if(r[key]==null||!Number.isFinite(Number(r[key]))){ok=false;break}total+=Number(r[key]);values.push(total)}
@@ -69,17 +69,36 @@ function srFlowChart(o){
 }
 function srFlowDetails(code){
   const o=srFlowStock(code),c=String(code||'').split('.')[0].padStart(6,'0');
+  const initialDays=o?(o.rows.length>=60?60:o.rows.length>=20?20:5):5;
   const link=/^[0-9]{6}$/.test(c)?'<a target="_blank" rel="noopener noreferrer" href="https://finance.naver.com/item/frgn.naver?code='+c+'">네이버 원자료 보기 ↗</a>':'';
   if(!o)return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">자료 미확인</span></div>'+
     '<div class="flow-no-data">공개된 투자자별 수급이 없거나 데이터가 오래되었습니다. 추정 수치는 표시하지 않습니다.</div><div class="flow-source">'+link+'</div></div>';
   return '<div class="flow-detail"><div class="flow-detail-header"><b>외국인·기관·개인 수급</b><span class="flow-meta">수급 '+srEsc(o.asOf)+(o.lagged?' · 주가 기준 '+srEsc(o.marketAsOf)+' 대비 지연':'')+' · 단위: 주</span></div>'+
-    '<div style="overflow-x:auto"><table><thead><tr><th>투자주체</th><th>당일</th><th>5거래일</th><th>20거래일</th></tr></thead><tbody>'+
+    '<div style="overflow-x:auto"><table><thead><tr><th>투자주체</th><th>5거래일</th><th>20거래일</th><th>60거래일</th></tr></thead><tbody>'+
     [['foreign','외국인'],['institution','기관'],['individual','개인']].map(([k,label])=>
-       '<tr><th>'+label+'</th>'+[1,5,20].map(n=>{const v=srFlowSum(o,k,n);return '<td class="'+srFlowClass(v)+'">'+srFlowNumber(v)+'</td>'}).join('')+'</tr>'
-    ).join('')+'</tbody></table></div>'+srFlowChart(o)+
+       '<tr><th>'+label+'</th>'+[5,20,60].map(n=>{const v=srFlowSum(o,k,n);return '<td class="'+srFlowClass(v)+'">'+srFlowNumber(v)+'</td>'}).join('')+'</tr>'
+    ).join('')+'</tbody></table></div>'+ 
+    '<div class="flow-chart-controls" aria-label="누적 수급 그래프 표시 기간">'+[5,20,60].map(n=>
+      '<button type="button" class="flow-period-btn '+(initialDays===n?'active':'')+'" data-days="'+n+'" data-code="'+srEsc(c)+'" '+(o.rows.length<n?'disabled title="'+n+'거래일 자료 부족"':'')+'>'+n+'D</button>'
+    ).join('')+'<span class="flow-meta">차트: '+initialDays+'거래일 기준</span></div>'+
+    '<div class="flow-chart-target">'+srFlowChart(o,initialDays)+'</div>'+
     '<div class="flow-source">출처: '+srEsc(o.source)+' · 순매수 수량(주), 실제 순매수 금액이 아닙니다. 자료가 부족한 기간은 —. '+link+'</div></div>';
 }
 function srRenderDeepDiveInvestorFlow(profile){
   const el=document.getElementById('stockInvestorFlow');if(!el)return;
   el.innerHTML='<h3 class="subhead">종목별 투자자 수급</h3>'+srFlowDetails(profile?.stock_code||profile?.code||'');
 }
+
+document.addEventListener('click',event=>{
+  const btn=event.target.closest?.('.flow-period-btn');
+  if(!btn||btn.disabled)return;
+  const days=Number(btn.dataset.days),code=btn.dataset.code;
+  if(![5,20,60].includes(days))return;
+  const flow=srFlowStock(code),root=btn.closest('.flow-detail');
+  if(!flow||flow.rows.length<days||!root)return;
+  root.querySelectorAll('.flow-period-btn').forEach(b=>b.classList.toggle('active',b===btn));
+  const target=root.querySelector('.flow-chart-target');
+  if(target)target.innerHTML=srFlowChart(flow,days);
+  const caption=root.querySelector('.flow-chart-controls>.flow-meta');
+  if(caption)caption.textContent='차트: '+days+'거래일 기준';
+});
