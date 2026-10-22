@@ -24,7 +24,8 @@ for sec in CONFIG["sectors"]:
         # Duplicate seed tickers get a single, provisional main investment sector.
         SEED_LOOKUP.setdefault(code,sec["key"])
 # Explicit high-level cross-sector cases should be validated against segment results.
-SEED_LOOKUP.update({"GOOGL":"US13","GOOG":"US13","AMZN":"US09","ETN":"US16","GE":"US23","HON":"US15"})
+SEED_LOOKUP.update({"GOOGL":"US13","GOOG":"US13","AMZN":"US09","ETN":"US16","GE":"US23","HON":"US15",
+                    "ABBV":"US28","BMY":"US28","PFE":"US28"})
 EXCHANGE_MAP={"Q":"NASDAQ","G":"NASDAQ","S":"NASDAQ","N":"NYSE","A":"NYSE American"}
 LIST_URLS=[
     ("NASDAQ","https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"),
@@ -131,9 +132,15 @@ def classify_company(item):
             "sector_classification":"Internal Sector Classification",
             "classification_method":method,"classification_review":review}
 
-def classify_themes(sector_key,verification=None):
-    """Return candidate theme tags, not revenue-beneficiary claims."""
+def classify_themes(sector_key,ticker=None,verification=None):
+    """Theme watch candidates require explicit sector seed or document-backed evidence.
+
+    A generic sector member is NOT automatically an AI, HBM, nuclear or gene-editing beneficiary.
+    """
     cfg=SECTORS.get(sector_key) or {}
+    qualified=(ticker is None or str(ticker).upper() in (cfg.get("seed_tickers") or []))
+    if not qualified and not verification:
+        return {"primary_themes":[],"secondary_themes":[]}
     cands=[t for t in cfg.get("primary_theme_candidates",[]) if t in THEME_NAMES]
     verified=verification or {}
     primary=[];secondary=[]
