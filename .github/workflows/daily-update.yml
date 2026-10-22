@@ -73,16 +73,6 @@ jobs:
       - name: Refresh five-day individual-stock investor net-buy quantities
         run: python scripts/update_investor_flow.py
 
-      - name: Refresh US market quotes, indices and sector universe
-        continue-on-error: true
-        env:
-          US_SEC_USER_AGENT: ${{ secrets.US_SEC_USER_AGENT }}
-          US_SEC_LIMIT: "80"
-        run: python scripts/update_us_market.py
-
-      - name: Validate US market dataset
-        run: python scripts/validate_us_market.py
-
       - name: Refresh 3-month analyst research cache
         if: github.event_name != 'push'
         run: python scripts/update_analyst_research_cache.py
@@ -112,8 +102,6 @@ jobs:
             python scripts/update_sector_closes.py
             python scripts/update_intraday_cache.py
             python scripts/update_investor_flow.py
-            python scripts/update_us_market.py
-            python scripts/validate_us_market.py
             python scripts/update_analyst_research_cache.py
             python scripts/embed_fallback.py
             python scripts/validate_project.py
@@ -122,7 +110,7 @@ jobs:
           if git diff --quiet; then
             echo "No verified changes"
           else
-            git add config/fundamental_themes.json data/market-data.json data/sector-closes.json data/verified-stock-bars.json data/intraday-cache.json data/investor-flow.json data/us-market.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
+            git add config/fundamental_themes.json data/market-data.json data/sector-closes.json data/verified-stock-bars.json data/intraday-cache.json data/investor-flow.json data/analyst-research-cache.json stock-universe.json index.html QA_REPORT.md
             git commit -m "chore: daily verified market data [skip ci]"
             git push origin HEAD:main
           fi
