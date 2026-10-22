@@ -385,7 +385,7 @@ def main():
             score=None
             score_detail={"confidence":"INSUFFICIENT","evidence_coverage":0,
                           "reason":"SEC FY or current verified closing price unavailable"}
-        themes=classify_themes(key)
+        themes=classify_themes(key,ticker=ticker)
         items.append({**company,**classified,**themes,**price_info,
                       "financials":financial if financial else {},
                       "fundamental_score":score,
