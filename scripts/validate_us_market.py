@@ -86,6 +86,24 @@ assert "data/us-market.json" in ui
 assert "US Stock Research" in us
 assert "index.html?market=kr" in home and "us.html" in home
 assert "EMBEDDED_FALLBACK_DATA" in (ROOT/"index.html").read_text(encoding="utf-8")
+
+# The first US landing tab must contain the three heavily covered reference indexes.
+# Full exchange-wide scanning is clearly marked as partial.
+assert 'data-index="INDEX3"' in us and 'data-index="ALL"' in us, "three-index default / optional full market filter absent"
+assert 'data-us-mode="fundamental"' in us and 'data-us-mode="trading"' in us, "two-mode US selector missing"
+assert 'id="usFundamentalPanel"' in us and 'id="usTradingPanel"' in us, "independent US screening panels absent"
+assert "function setUsMode(" in ui and "renderAll();" in ui, "mode switch does not trigger rendering"
+assert "selectedIndex='INDEX3'" in ui and "function inIndexScope(" in ui, "3-index default scope absent"
+for name in ("fundWatchRows","usUniverseCount","usQuoteCount","usSectorCount","usFundCount",
+             "sectorTop3Rows","themeTop3Rows","best5Rows"):
+    assert 'id="'+name+'"' in us and "'"+name+"'" in ui, "missing US UI data field: "+name
+assert "valid(t.fundamental_score)" in ui and "valid(t.trading_score)" in ui, "score null handling absent"
+assert "marketCapUSD(" in ui and 'Nasdaq Screener' in ui, "Nasdaq cap context missing from page"
+idx=[r for r in items if r.get("indices")]
+if data["meta"].get("source_member_counts",{}).get("SP500",0)>=480 and idx:
+    assert len(idx)>=480, "index membership incomplete despite index status"
+    assert len([r for r in idx if r.get("close") is not None])>=max(350,int(.7*len(idx))), "3-index default close coverage too low"
+
 print(json.dumps({"status":"OK","stocks":len(items),"dated_quotes":quoted,
                   "fundamental_scores":scored,"sectors":len(sectors),
                   "themes":len(cfg["themes"]),"universe_status":data["meta"]["status"]},ensure_ascii=False))
