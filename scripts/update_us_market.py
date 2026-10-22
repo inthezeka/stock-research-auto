@@ -27,15 +27,19 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from update_data import technicals
+from us_investment import (CONFIG as US_CONFIG, fetch_us_listed, classify_company, classify_themes,
+                           aggregate_sector_cycle, aggregate_theme_popularity,
+                           aggregate_investment_best5, initial_membership_check)
+from us_fundamental import summarize_fundamentals,assess_fundamental
 
 ET = ZoneInfo("America/New_York")
 NOW = datetime.now(ET)
 OUT = ROOT / "data" / "us-market.json"
-SECTORS = ROOT / "config" / "fundamental_themes.json"
+SECTORS = ROOT / "config" / "us_investment_sectors.json"
 MAX_WORKERS = min(16, max(2, int(os.getenv("US_WORKERS", "8"))))
 SEC_UA = os.getenv("US_SEC_USER_AGENT", "").strip()
 SEC_LIMIT = min(250, max(0, int(os.getenv("US_SEC_LIMIT", "80"))))
-MAX_CHARTS = min(1000, max(1, int(os.getenv("US_MAX_CHARTS", "700"))))
+MAX_CHARTS = min(1200, max(50, int(os.getenv("US_MAX_CHARTS", "950"))))
 HTTP = requests.Session()
 HTTP.headers.update({"User-Agent": "MYStockRoom/1.0 (public market data dashboard; https://github.com/inthezeka/stock-research-auto)",
                      "Accept-Language": "en-US,en;q=0.8"})
@@ -158,46 +162,6 @@ def merge_universe(old):
     return universe, ok, failures
 
 
-def sector_key(s, sub, name):
-    t = (s+" "+sub+" "+name).lower()
-    def has(*words): return any(w in t for w in words)
-    if has("semiconductor equipment", "semiconductor materials", "wafer fabrication equipment"): return "semi_equipment"
-    if has("semiconductor", "microprocessor", "memory"): return "semi_memory_ai"
-    if has("electronic components", "electronic equipment", "hardware storage", "computer hardware", "technology hardware"): return "it_hardware"
-    if has("cybersecurity", "security software"): return "security_quantum"
-    if has("cloud", "application software", "systems software", "it consulting", "software"): return "software_cloud_ai"
-    if has("interactive media", "interactive home", "social media", "internet content", "search engine"): return "platform"
-    if has("telecom", "communication equipment", "wireless", "telecommunication"): return "telecom_network"
-    if has("electric utilities", "electrical equipment", "power generation", "renewable electricity", "multi-utilities"): return "power_grid"
-    if has("independent power producer", "oil", "gas", "lng", "energy", "renewable", "solar"): return "energy_lng_refining"
-    if has("automobile", "automotive", "motor vehicle", "auto parts"): return "auto"
-    if has("aerospace", "defense", "defence"): return "defense_space"
-    if has("construction", "engineering", "infrastructure", "homebuilding", "building products"): return "construction"
-    if has("industrial machinery", "machinery", "industrial equipment", "automation", "robotic"): return "industrial"
-    if has("battery", "energy storage"): return "battery_ess"
-    if has("pharmaceutical", "biotechnology", "life sciences tools"): return "bio"
-    if has("health care equipment", "health care technology", "medical equipment", "medical device"): return "medical_device"
-    if has("managed health care", "health care provider", "health care services"): return "medical_device"
-    if has("insurance"): return "insurance"
-    if has("bank", "capital markets", "financial services", "asset management", "consumer finance", "financial"): return "finance"
-    if has("interactive entertainment", "game", "video games"): return "game"
-    if has("entertainment", "movies", "broadcasting", "media", "publishing"): return "entertainment"
-    if has("airlines", "hotels", "resorts", "leisure", "casinos"): return "travel"
-    if has("ground transportation", "air freight", "marine transportation", "cargo", "logistics"): return "shipping_logistics"
-    if has("food", "beverages", "tobacco", "packaged", "household products"): return "food"
-    if has("cosmetics", "personal care", "beauty"): return "beauty"
-    if has("specialty retail", "broadline retail", "distributors", "retail", "consumer discretionary distribution"): return "retail"
-    if has("metal", "chemical", "materials", "steel", "gold", "mining", "copper", "paper"): return "materials"
-    if has("waste management", "environmental", "water utilities"): return "environment"
-    if has("real estate", "reit", "diversified"): return "holding_conglomerate"
-    if has("industrial", "capital goods"): return "industrial"
-    return {"Information Technology":"software_cloud_ai", "Technology":"software_cloud_ai",
-            "Health Care":"medical_device","Consumer Staples":"food","Consumer Discretionary":"retail",
-            "Materials":"materials","Industrials":"industrial","Financials":"finance",
-            "Communication Services":"platform","Telecommunications":"telecom_network",
-            "Utilities":"power_grid","Energy":"energy_lng_refining"}.get(s,"holding_conglomerate")
-
-
 def yahoo_rows(ticker, period="1y"):
     errors = []
     for host in ("query1.finance.yahoo.com","query2.finance.yahoo.com"):
@@ -235,104 +199,54 @@ def calculate_flow(rows):
             "obv":obv,"obv_trend":"상승" if obv>0 else "하락" if obv<0 else "횡보"}
 
 
-def fy_us_gaap(facts, aliases, unit="USD"):
-    gaap = facts.get("us-gaap") or {}
-    for name in aliases:
-        blocks=gaap.get(name) or {}
-        vals=(blocks.get("units") or {}).get(unit) or []
-        options={}
-        for row in vals:
-            if row.get("form") not in ("10-K","10-K/A") or row.get("fp")!="FY":
-                continue
-            if not row.get("start") or not row.get("end") or row.get("val") is None:
-                continue
-            try:
-                if not 300 <= (datetime.fromisoformat(row["end"])-datetime.fromisoformat(row["start"])).days <= 380:continue
-                fy=int(row.get("fy"))
-                if fy<2020:continue
-                end=row["end"]
-                if end not in options or row.get("filed","")>options[end].get("filed",""):
-                    options[end]=row
-            except (TypeError,ValueError):continue
-        result=sorted(options.values(),key=lambda r:r["end"],reverse=True)
-        if result and result[0].get("val") is not None:return result
-    return []
-
-
-def balance_us_gaap(facts, aliases):
-    gaap=facts.get("us-gaap") or {}
-    for name in aliases:
-        vals=(gaap.get(name,{}).get("units") or {}).get("USD") or []
-        r=[x for x in vals if x.get("form") in ("10-K","10-K/A") and x.get("val") is not None and x.get("end")]
-        if r:
-            r.sort(key=lambda x:(x.get("end",""),x.get("filed","")),reverse=True)
-            return float(r[0]["val"])
-    return None
-
-
-def fundamental_from_sec(payload, close):
-    fact=(payload.get("facts") or {})
-    gaap=fact.get("us-gaap") or {}
-    rev=fy_us_gaap(fact,["RevenueFromContractWithCustomerExcludingAssessedTax","Revenues",
-                            "SalesRevenueNet","RevenueFromContractWithCustomerIncludingAssessedTax","SalesRevenueGoodsNet"])
-    op=fy_us_gaap(fact,["OperatingIncomeLoss"])
-    eps=fy_us_gaap(fact,["EarningsPerShareDiluted","EarningsPerShareBasic"],"USD/shares")
-    net=fy_us_gaap(fact,["NetIncomeLoss","ProfitLoss"])
-    if len(rev)<2 or not op or len(eps)<2 or not net:return None, None
-    last_date=rev[0]["end"]
-    # Never combine different fiscal-year periods.
-    same=lambda rows:next((float(x["val"]) for x in rows if x["end"]==last_date),None)
-    operating=same(op); ni=same(net); eps_new=same(eps)
-    if operating is None or ni is None or eps_new is None:return None, None
-    cash=balance_us_gaap(fact,["CashAndCashEquivalentsAtCarryingValue","CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"])
-    debt=balance_us_gaap(fact,["LongTermDebtNoncurrent","LongTermDebt","LongTermDebtCurrent"])
-    revenue=float(rev[0]["val"]); prior=float(rev[1]["val"])
-    if revenue<=0 or prior<=0:return None,None
-    growth=(revenue/prior-1)*100;opm=operating/revenue*100; netmargin=ni/revenue*100
-    pe=close/eps_new if close and eps_new>0 else None
-    score=None
-    # 25 growth + 25 profitability + 20 FY earnings valuation + 15 net margin
-    # + 15 financial stability; mark missing input as unscored.
-    if pe and math.isfinite(pe) and cash is not None and debt is not None and revenue>0:
-        growth_pts=max(0,min(25,12.5+(growth-8)*.55))
-        profit_pts=max(0,min(25,opm*.65))
-        value_pts=max(0,min(20,20-(pe-12)*.38))
-        net_pts=max(0,min(15,netmargin*.48))
-        safe_pts=15 if debt<=0 else max(0,min(15,7.5+5*math.log10(max(.001,cash/debt))))
-        score=round(growth_pts+profit_pts+value_pts+net_pts+safe_pts,1)
-    return {"fy_end":last_date,"revenue":revenue,"revenue_growth":round(growth,2),
-            "opm":round(opm,2),"net_margin":round(netmargin,2),"eps_fy":eps_new,
-            "trailing_fy_pe":round(pe,2) if pe and math.isfinite(pe) else None,
-            "cash":cash,"debt":debt,"source":"SEC EDGAR XBRL Company Facts",
-            "scoring_status":"verified" if score is not None else "incomplete"},score
-
-
-def sec_data(tickers, prices, old):
-    if not SEC_UA:
-        return {},{"status":"not_configured","note":"Set US_SEC_USER_AGENT with organization and contact email (SEC fair access)."}
-    sec=requests.Session();sec.headers.update({"User-Agent":SEC_UA,"Accept":"application/json"})
+def sec_data(universe, prices, old, classifications):
+    """Bounded SEC request queue; rotate towards unscored companies and cache verified FY data."""
+    if not SEC_UA or not re.search(r"[^@\s]+@[^@\s]+\.[A-Za-z]{2,}", SEC_UA):
+        return {}, {"status":"not_configured","note":"Set GitHub secret US_SEC_USER_AGENT to organization and reachable contact email; SEC public API has no key."}
+    sec=requests.Session()
+    sec.headers.update({"User-Agent":SEC_UA,"Accept":"application/json","Accept-Encoding":"gzip, deflate"})
     try:
-        response=sec.get("https://www.sec.gov/files/company_tickers.json",timeout=15);response.raise_for_status()
+        r=sec.get("https://www.sec.gov/files/company_tickers.json",timeout=22)
+        r.raise_for_status()
         lookup={str(x.get("ticker","")).upper().replace(".","-"):int(x["cik_str"])
-                for x in response.json().values()}
-    except Exception as e:return {},{"status":"cik_list_error","error":str(e)[:140]}
-    out={};attempted=0;errors=0
-    priorities=sorted((t for t in tickers if prices.get(t,{}).get("close")),
-                      key=lambda t:(0 if "DOW30" in tickers[t]["indices"] else 1,
-                                    0 if "NASDAQ100" in tickers[t]["indices"] else 1,t))
-    for ticker in priorities[:SEC_LIMIT]:
+                for x in r.json().values()}
+    except Exception as e:
+        return {},{"status":"cik_list_error","error":str(e)[:180]}
+    older={x.get("ticker"):x for x in old.get("items") or []}
+    def priority(ticker):
+        prior=(older.get(ticker) or {}).get("financials") or {}
+        missing=0 if prior.get("status")!="EXTRACTED" else 1
+        # refresh old FY disclosures less urgently than previously unscored symbols
+        last=str(prior.get("sec_collected_at") or "")
+        tier=0 if "NASDAQ100" in (universe[ticker].get("indices") or []) or "DOW30" in (universe[ticker].get("indices") or []) else 1
+        return (missing,tier,last,ticker)
+    tickers=sorted((t for t in universe if prices.get(t,{}).get("close") and t in lookup),key=priority)
+    out={};attempted=0;failed=0;unsupported=0
+    for ticker in tickers[:SEC_LIMIT]:
         cik=lookup.get(ticker)
-        if not cik:continue
+        if cik is None:continue
         attempted+=1
         try:
-            rr=sec.get(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json",timeout=14)
+            rr=sec.get(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json",timeout=20)
             rr.raise_for_status()
-            f,score=fundamental_from_sec(rr.json(),prices[ticker].get("close"))
-            if f:out[ticker]={"financials":f,"fundamental_score":score}
-        except Exception:errors+=1
-        time.sleep(.14)
-    return out,{"status":"complete" if attempted and not errors else "partial",
-                "attempted":attempted,"matched":len(out),"errors":errors}
+            sector=classifications[ticker].get("sector_key")
+            if not sector:
+                unsupported+=1
+                continue
+            fin,score=summarize_fundamentals(rr.json(),prices[ticker].get("close"),sector,as_of=prices[ticker]["price_date"])
+            fin["sec_collected_at"]=datetime.now(timezone.utc).date().isoformat()
+            if fin.get("status")=="IFRS_OR_UNSUPPORTED":unsupported+=1
+            out[ticker]={"financials":fin,"fundamental_score":score}
+        except Exception as e:
+            failed+=1
+        finally:
+            # Conservative < 5 requests/second, including the CIK lookup.
+            time.sleep(.22)
+    return out, {"status":"complete" if attempted and failed==0 else "partial",
+                 "attempted":attempted,"matched":len(out),"errors":failed,
+                 "ifrs_or_unsupported":unsupported,
+                 "quota":SEC_LIMIT,
+                 "note":"Historical SEC annual FY values only; no licensed analyst consensus."}
 
 
 def main():
@@ -341,9 +255,40 @@ def main():
     except Exception:pass
     previous_items={x.get("ticker"):x for x in previous.get("items") or []}
     universe,coverage,universe_errors=merge_universe(previous)
-    sector_labels={s["key"]:s["label"] for s in json.loads(SECTORS.read_text(encoding="utf-8"))["sectors"]}
+    # Full exchange directory is the candidate universe; only a bounded rotating sample is priced daily.
+    listings,listing_coverage,listing_errors=fetch_us_listed(HTTP)
+    for ticker,row in listings.items():
+        if ticker in universe:
+            prior=universe[ticker]
+            for k in ("exchange","security_type","foreign_issuer","financial_status","listing_source"):
+                prior[k]=row.get(k)
+        else:
+            universe[ticker]=row
+    # Preserve earlier candidate identities if a directory has a transient failure.
+    if listing_errors and previous.get("items"):
+        for old in previous["items"]:
+            ticker=old.get("ticker")
+            if ticker and ticker not in universe:
+                universe[ticker]={k:old.get(k) for k in (
+                    "ticker","name","gics","subindustry","indices","exchange","security_type",
+                    "foreign_issuer","financial_status","listing_source")}
+    sector_labels={s["key"]:s["label"] for s in US_CONFIG["sectors"]}
+    classifications={ticker:classify_company(item) for ticker,item in universe.items()}
     results={};errors=[]
-    candidates=list(universe)[:MAX_CHARTS]
+    # Index securities always receive first priority; additional listed names are scanned in rotating batches.
+    indexed=sorted((x for x in universe if universe[x].get("indices")),
+                   key=lambda x:(0 if "DOW30" in universe[x]["indices"] else 1,
+                                 0 if "NASDAQ100" in universe[x]["indices"] else 1,x))
+    extra=sorted(x for x in universe if x not in set(indexed))
+    remaining=max(0,MAX_CHARTS-len(indexed))
+    if remaining and extra:
+        # A rolling window keeps index coverage while eventually visiting non-index exchange names.
+        start=(NOW.date().toordinal()*max(1,remaining))%len(extra)
+        rotated=extra[start:]+extra[:start]
+        candidates=indexed+rotated[:remaining]
+    else:
+        candidates=indexed[:MAX_CHARTS]
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures={executor.submit(yahoo_rows,code):code for code in candidates}
         for fut in as_completed(futures):
@@ -397,31 +342,65 @@ def main():
         except Exception as e:
             indices[key]={"date":None,"close":None,"error":str(e)[:90]}
     # SEC can be enabled separately and runs on a bounded, prioritized subset.
-    sec,sec_meta=sec_data(universe,results,previous)
+    sec,sec_meta=sec_data(universe,results,previous,classifications)
     items=[]
-    for ticker,meta in sorted(universe.items()):
-        p=results.get(ticker) or {}
-        old=previous_items.get(ticker) or {}
-        # Reuse previous SEC fiscal facts, but never previous trading-day quote.
-        financial=sec.get(ticker,{}).get("financials") or old.get("financials") or {}
-        fscore=sec.get(ticker,{}).get("fundamental_score")
-        if fscore is None and financial and p.get("close") is not None:
-            # A previous FY P/E cannot be carried forward unchanged after quote changes.
-            fscore=None
-        key=sector_key(meta.get("gics") or "",meta.get("subindustry") or "",meta.get("name") or "")
-        items.append({**meta,"sector_key":key,"sector_label":sector_labels.get(key,"기타"),**p,
-                      "financials":financial,"fundamental_score":fscore})
+    for ticker,company in sorted(universe.items()):
+        price_info=results.get(ticker) or {}
+        historic=previous_items.get(ticker) or {}
+        prior_fin=(historic.get("financials") or {})
+        financial=sec.get(ticker,{}).get("financials") or prior_fin
+        classified=classifications[ticker]
+        key=classified.get("sector_key")
+        # SEC history can be cached, but score must be recalculated against today's price/sector.
+        if key and price_info.get("close") is not None and financial.get("status")=="EXTRACTED":
+            score,score_detail=assess_fundamental(financial,price_info["close"],key,as_of=asof)
+            financial={**financial,"scoring_status":"verified" if score is not None else "unscored",
+                       "score_detail":score_detail,
+                       "trailing_fy_pe":score_detail.get("valuation_context",{}).get("pe_fy")}
+        else:
+            score=None
+            score_detail={"confidence":"INSUFFICIENT","evidence_coverage":0,
+                          "reason":"SEC FY or current verified closing price unavailable"}
+        themes=classify_themes(key)
+        items.append({**company,**classified,**themes,**price_info,
+                      "financials":financial if financial else {},
+                      "fundamental_score":score,
+                      "fundamental_confidence":score_detail["confidence"],
+                      "fundamental_coverage":score_detail.get("evidence_coverage",0),
+                      "fundamental_model":(financial.get("score_detail") or {}).get("model") if financial else None,
+                      "investment_score":None,
+                      "score_profile":(financial.get("score_detail") or {}).get("profile") if financial else None})
+    sector_cycles=aggregate_sector_cycle(items)
+    theme_popularity=aggregate_theme_popularity(items)
+    investment_best5=aggregate_investment_best5(items)
+    membership=initial_membership_check(items)
     complete_universe=(coverage.get("SP500",0)>=480 and coverage.get("NASDAQ100",0)>=95 and coverage.get("DOW30",0)>=29)
+    common_candidate_count=len(listings)
+    scored_count=sum(x.get("fundamental_score") is not None for x in items)
+    mapped_count=sum(x.get("sector_key") in sector_labels for x in items)
     meta={"as_of":asof,"generated_at":datetime.now(timezone.utc).isoformat(),
           "status":"ok" if complete_universe and asof and len(results)>=max(10,int(len(candidates)*.8)) and
                    sum(v.get("close") is not None for v in results.values())>=max(10,int(len(candidates)*.8)) else "partial",
           "market_timezone":"America/New_York","currency":"USD",
           "universe_total":len(items),"verified_close_count":sum(bool(x.get("close")) for x in items),
           "source_member_counts":coverage,"constituent_errors":universe_errors,
+          "exchange_candidate_count":common_candidate_count,
+          "directory_status":"ok" if len(listing_coverage)==2 and common_candidate_count>3000 else "partial",
+          "exchange_counts":listing_coverage,"directory_errors":listing_errors,
+          "coverage_scope":"US index 3 plus exchange-listed common-stock candidates; nightly quote/SEC sampling",
+          "priced_universe_fraction":round(sum(bool(x.get("close")) for x in items)/max(1,len(items)),4),
+          "mapped_sector_count":mapped_count,"fundamental_scored_count":scored_count,
+          "fundamental_eligible_high_medium":sum(x.get("fundamental_confidence") in ("HIGH","MEDIUM") for x in items),
+          "full_us_market_fundamental_rank_verified":False,
           "quote_failure_count":len(errors),"quote_failure_sample":errors[:12],
           "price_source":"Yahoo Finance unadjusted daily OHLC","sec":sec_meta}
     output={"meta":meta,"indices":indices,
-            "sectors":[{"key":k,"label":v} for k,v in sector_labels.items()],
+            "sectors":[{"key":k,"label":v,"model":US_CONFIG["sectors"][i]["model"],
+                        "score_weights":US_CONFIG["sectors"][i]["score_weights"],
+                        "kpis":US_CONFIG["sectors"][i]["sector_kpis"]} for i,(k,v) in enumerate(sector_labels.items())],
+            "themes":US_CONFIG["themes"],"sector_cycles":sector_cycles,
+            "theme_popularity":theme_popularity,"investment_best5":investment_best5,
+            "universe_coverage":membership,
             "items":items}
     OUT.parent.mkdir(parents=True,exist_ok=True)
     tmp=OUT.with_suffix(".tmp")
