@@ -379,6 +379,11 @@ def main():
         if item["price_date"]!=asof:
             item["close"]=None
             item["trading_score"]=None
+            item["return5d"]=None
+            item["return20d"]=None
+            item["return60d"]=None
+            item["volume_ratio"]=None
+            item["flow5d"]={}
             item["data_confidence"]="LOW"
             item["entry_quality"]="C"
             item["stale"]=True
@@ -388,7 +393,7 @@ def main():
             rows,_=yahoo_rows(ticker,"3mo")
             last=rows[-1]
             indices[key]={"date":last["date"],"close":last["close"] if last["date"]==asof else None,
-                          "change_pct":round((rows[-1]["close"]/rows[-2]["close"]-1)*100,2)}
+                          "change_pct":round((rows[-1]["close"]/rows[-2]["close"]-1)*100,2) if last["date"]==asof else None}
         except Exception as e:
             indices[key]={"date":None,"close":None,"error":str(e)[:90]}
     # SEC can be enabled separately and runs on a bounded, prioritized subset.
@@ -406,8 +411,9 @@ def main():
         key=sector_key(meta.get("gics") or "",meta.get("subindustry") or "",meta.get("name") or "")
         items.append({**meta,"sector_key":key,"sector_label":sector_labels.get(key,"기타"),**p,
                       "financials":financial,"fundamental_score":fscore})
+    complete_universe=(coverage.get("SP500",0)>=480 and coverage.get("NASDAQ100",0)>=95 and coverage.get("DOW30",0)>=29)
     meta={"as_of":asof,"generated_at":datetime.now(timezone.utc).isoformat(),
-          "status":"ok" if asof and len(results)>=max(10,int(len(candidates)*.8)) and
+          "status":"ok" if complete_universe and asof and len(results)>=max(10,int(len(candidates)*.8)) and
                    sum(v.get("close") is not None for v in results.values())>=max(10,int(len(candidates)*.8)) else "partial",
           "market_timezone":"America/New_York","currency":"USD",
           "universe_total":len(items),"verified_close_count":sum(bool(x.get("close")) for x in items),
