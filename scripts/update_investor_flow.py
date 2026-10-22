@@ -296,6 +296,8 @@ def optional_kis_backfill(codes, results, old, cutoff):
         if (str(previous.get("source", "")).startswith("KIS investor") and
                 len(old_rows) >= 65 and previous.get("last_date") == cutoff):
             results[code] = previous
+            report["covered_20d"] += 1
+            report["covered_60d"] += 1
             continue
         try:
             need = 20 if len(old_rows) >= 60 and str(previous.get("source", "")).startswith("KIS investor") else 65
@@ -392,15 +394,30 @@ def main():
                 result = {"source": "UNAVAILABLE", "unit": "shares", "rows": [],
                           "last_date": None, "row_count": 0, "error": type(exc).__name__}
             if result["rows"] and old.get(code, {}).get("rows"):
-                # Merge dates captured on previous days, so a 5-day provider
-                # eventually yields a true 20-day record without inventing data.
-                historical = {r["date"]: r for r in old[code]["rows"]
-                              if r.get("date") and r["date"] <= cutoff}
-                historical.update({r["date"]: r for r in result["rows"]})
-                combined = sorted(historical.values(), key=lambda r: r["date"])[-HISTORY_DAYS:]
-                result["rows"] = combined
-                result["row_count"] = len(combined)
-                result["last_date"] = combined[-1]["date"]
+                historical_item = old[code]
+                historical_source = str(historical_item.get("source") or "")
+                if historical_source.startswith(("KIS investor", "KRX user-authorized")):
+                    # Never mix public Naver day rows with verified KRX/KIS rows.
+                    # Prefer the verified history while it is still within one
+                    # calendar week; show its actual as-of date on the site.
+                    verified_last = str(historical_item.get("last_date") or "")
+                    try:
+                        age_days = (datetime.strptime(cutoff, "%Y-%m-%d") -
+                                    datetime.strptime(verified_last, "%Y-%m-%d")).days
+                    except ValueError:
+                        age_days = 999
+                    if 0 <= age_days <= 7:
+                        result = dict(historical_item)
+                        result["stale"] = False
+                else:
+                    # Merge only same Naver source family to build rolling history.
+                    historical = {r["date"]: r for r in historical_item["rows"]
+                                  if r.get("date") and r["date"] <= cutoff}
+                    historical.update({r["date"]: r for r in result["rows"]})
+                    combined = sorted(historical.values(), key=lambda r: r["date"])[-HISTORY_DAYS:]
+                    result["rows"] = combined
+                    result["row_count"] = len(combined)
+                    result["last_date"] = combined[-1]["date"]
             if not result["rows"] and old.get(code, {}).get("rows"):
                 previous = dict(old[code])
                 previous["stale"] = True
@@ -424,7 +441,7 @@ def main():
         "meta": {
             "generated_at": NOW.isoformat(), "market_date": as_of,
             "published_cutoff": cutoff,
-            "unit": "shares", "source": "Naver public investor trends (KRX)",
+            "unit": "shares", "source": "Naver base + optional KIS/KRX verified history",
             "note": "Daily investor net-buy quantities (shares), never estimated KRW. Missing periods are unavailable.",
             "candidate_count": len(codes), "valid_5d": ready, "valid_20d": ready20,
             "valid_60d": ready60, "history_retention_sessions": HISTORY_DAYS,
