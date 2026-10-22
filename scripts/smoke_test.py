@@ -24,4 +24,24 @@ if len(cfg.get("stocks",[]))<54:
 if len(cfg.get("sectors",{}))!=19:
     raise SystemExit("theme count is not 19")
 
+
+# Investor-flow parsing checks: legitimate signed quantities and null handling.
+flow_spec=importlib.util.spec_from_file_location("flow",ROOT/"scripts/update_investor_flow.py")
+flow=importlib.util.module_from_spec(flow_spec)
+flow_spec.loader.exec_module(flow)
+fixture={"dealTrendInfos":[
+    {"bizdate":"20261021","foreignerPureBuyQuant":"-1,240",
+     "organPureBuyQuant":"400","individualPureBuyQuant":"840"},
+    {"bizdate":"20261020","foreignerPureBuyQuant":"50",
+     "organPureBuyQuant":"-100","individualPureBuyQuant":"50"},
+]}
+parsed=flow.extract_rows(fixture)
+if len(parsed)!=2 or parsed[-1]["foreign"]!=-1240 or parsed[-1]["institution"]!=400:
+    raise SystemExit("investor-flow numeric parsing failed")
+if parsed[0]["date"]!="2026-10-20" or flow.num("—") is not None:
+    raise SystemExit("investor-flow date/null parsing failed")
+if flow.extract_rows({"dealTrendInfos":[{"bizdate":"20261021","foreignBuyValue":100}] }):
+    raise SystemExit("investor-flow KRW/value must not be mistaken for share quantity")
+print("investor flow smoke PASS")
+
 print("smoke test PASS")
