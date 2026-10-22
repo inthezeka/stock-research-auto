@@ -456,6 +456,16 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 .flow-card{padding:17px;margin-bottom:14px}
 @media(max-width:720px){.flow-mini{min-width:230px}.flow-detail th,.flow-detail td{padding:5px}.flow-card{padding:11px}}
 
+
+.flow-chart-controls{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 0 4px}
+.flow-chart-controls .flow-meta{margin-left:7px}
+.flow-period-btn{border:1px solid var(--border);border-radius:8px;background:#FFF;color:var(--text);padding:6px 12px;cursor:pointer;font-size:12px;font-weight:700}
+.flow-period-btn.active{background:#102A4D;color:#FFF;border-color:#102A4D}
+.flow-period-btn:disabled{cursor:not-allowed;opacity:.38}
+.flow-card>.subhead{margin:0 0 12px}
+.flow-card>.flow-detail{margin:0;padding:0;border:0;background:transparent}
+.flow-card .flow-chart{max-height:300px}
+
 </style>
 </head>
 <body>
@@ -713,7 +723,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <div class="card">
       <h3 class="subhead">① MY Trading TOP 10</h3>
       <p class="note" style="margin:0 0 10px">국내주식 Long Only 기준입니다. HTF Bias는 STRONG BULLISH → BULLISH → BULLISH TRANSITION 순으로 우선하며, 상방 DOL이 명확하고 S/A/B Long Setup인 종목만 상대순위로 표시합니다. BEARISH / BEARISH TRANSITION은 Bullish Reversal 확인 전까지 제외합니다.</p>
-      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>수급(1D·5D·20D / 주)</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="16">자동 분석 중입니다...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>순위</th><th>종목</th><th>Score</th><th>Adjusted Score</th><th>Setup Type</th><th>Entry Quality</th><th>HTF Bias</th><th>Data Confidence</th><th>Current Price</th><th>수급(5D·20D·60D / 주)</th><th>DOL</th><th>Entry Zone</th><th>Invalidation</th><th>Target 1</th><th>Target 2</th><th>R:R</th></tr></thead><tbody id="ictTop10Body"><tr><td colspan="16">자동 분석 중입니다...</td></tr></tbody></table></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3 class="subhead">② ENTRY READY</h3>
@@ -733,7 +743,6 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
 <section id="deepdive" class="section-track" data-name="TOP PICK DEEP DIVE">
   <div class="note" style="margin-bottom:12px">상단 Fundamental / 결과 또는 종목검색에서 종목을 선택하면 이 영역의 상세분석이 해당 종목 기준으로 변경됩니다.</div>
   <div id="fundamentalScoreDetail" class="card fund-score-detail" style="display:none;margin-bottom:14px"></div>
-  <div id="stockInvestorFlow" class="card flow-card" aria-live="polite">종목별 수급 조회 준비 중</div>
   <div class="card top-pick">
     <div class="top-pick-head"><div><span class="medal" id="selectedPickBadge">분석 종목</span><div class="company-name" data-edit data-key="topPickName">삼성전기</div><div class="ticker" data-edit data-key="topPickTicker">009150 · KOSPI · 기준일 2026.10.02</div></div><div><span class="score-pill fund-score-interest" id="topFundScorePill" data-edit data-key="topPickScore">92 / Strong Buy</span></div></div>
     <div class="metrics">
@@ -771,6 +780,16 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
     <tr><td data-edit data-key="y4">2027E</td><td data-edit data-key="rev4">19.28조</td><td data-edit data-key="op4a">4.50조*</td><td data-edit data-key="opm4">23.3%</td><td data-edit data-key="ni4">≈3.25조</td><td data-edit data-key="eps4">42,990원</td><td class="up" data-edit data-key="yoy4">매출 +33.5%</td></tr>
   </tbody></table></div>
   <p class="note" style="margin-top:10px" data-edit data-key="financialNote">2024~2025는 회사 공시/IR, 2026E는 S&amp;P Global Consensus, 2027E 매출·EPS는 Consensus 요약, 영업이익 4.50조원은 미래에셋 2026-08-24 전망(*)입니다. 자체 계산은 표시.</p>
+</section>
+
+<section id="stock-flow-section" class="section-track" data-name="INVESTOR FLOW">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">종목별 투자자 수급 분석</h2>
+      <p class="section-desc">외국인 · 기관 · 개인의 5D / 20D / 60D 순매수 수량을 비교합니다. 데이터 미확보 기간은 임의 추정하지 않습니다.</p>
+    </div>
+  </div>
+  <div id="stockInvestorFlow" class="card flow-card" aria-live="polite">종목을 선택하면 수급 자료를 표시합니다.</div>
 </section>
 
 <section id="analyst-research" class="section-track" data-name="ANALYST RESEARCH">
@@ -854,7 +873,7 @@ section{padding:42px 0;scroll-margin-top:70px}.hero{display:grid;grid-template-c
   </div>
 </div>
 
-<script src="scripts/investor-flow-ui.js?v=20261022-1329"></script>
+<script src="scripts/investor-flow-ui.js?v=20261022-5d20d60d"></script>
 <script>
 const TEXT_KEY='stock-research-auto-overrides-v4';
 const INPUT_KEY='stock-research-auto-inputs-v4';
@@ -4938,7 +4957,7 @@ function srRenderIctDetails(list){
       '<div><b>⑩ Risk / Reward</b><br>'+srIctRrText(x)+'</div>'+
       '<div><b>⑪ MY Trading Quality</b><br>획득 '+x.rawEarned+' / 평가가능 '+x.evaluatedMax+'<br>Normalized: '+x.rawScore+'<br>Bearish Risk Penalty: -'+x.penalty+'<br>Adjusted: '+x.adjustedScore+'<br>'+srEsc(penalty)+'</div>'+
       '<div><b>⑫ Long Reject Reason</b><br>TOP10: '+srEsc((x.rejectReason?.top10||[]).join(' · '))+'<br>ENTRY READY: '+srEsc((x.rejectReason?.entryReady||[]).join(' · '))+'<br>Hard Filter: '+srEsc(hard)+'</div>'+
-      '</div>'+srFlowDetails(x.item.code)+'<p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 신규 Long 제한·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
+      '</div><p class="note" style="margin-top:10px"><b>LONG ONLY:</b> Bearish Signal은 신규 Long 제한·감점·구조 회복 대기 판단에만 사용합니다. 4H/1H 누락은 Data Confidence로 표시하며 누락 Timeframe을 0점 처리하지 않습니다.</p></div></details>';
   }).join('');
 }
 async function runIctTradingScan(){
