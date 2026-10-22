@@ -41,7 +41,7 @@ KEYWORDS=[
     ("US07",("networking equipment","communication equipment","optical","network infrastructure")),
     ("US08",("data center infrastructure","cooling equipment","electrical infrastructure")),
     ("US09",("cloud infrastructure","cloud computing","hyperscaler")),
-    ("US10",("application software","enterprise software","saas","database software")),
+    ("US10",("application software","enterprise software","saas","database software","computer software","prepackaged software","software services")),
     ("US11",("cybersecurity","security software")),
     ("US12",("data analytics","ai software","data processing software")),
     ("US13",("interactive media","digital advertising","social media","internet advertising")),
@@ -83,6 +83,43 @@ GICS_FALLBACK={
     "Financials":"US32","Energy":"US19","Utilities":"US17",
     "Industrials":"US24","Materials":"US27","Real Estate":"US37"
 }
+
+def fetch_nasdaq_screener_industry(session=None):
+    """Optional Nasdaq screener sector/industry text. Unofficial web endpoint; may change.
+
+    This supplies company industry descriptions, NOT GICS certification or verified closing prices.
+    """
+    session=session or requests.Session()
+    endpoint="https://api.nasdaq.com/api/screener/stocks"
+    found={};errors={};sources={}
+    for exchange in ("NASDAQ","NYSE","AMEX"):
+        try:
+            r=session.get(endpoint,timeout=35,params={
+                "tableonly":"true","limit":10000,"offset":0,
+                "exchange":exchange,"download":"true"},
+                headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+                         "Accept":"application/json,text/plain,*/*",
+                         "Origin":"https://www.nasdaq.com",
+                         "Referer":"https://www.nasdaq.com/market-activity/stocks/screener"},
+            )
+            r.raise_for_status()
+            j=r.json() or {}
+            rows=(j.get("data") or {}).get("rows") or ((j.get("data") or {}).get("table") or {}).get("rows") or []
+            if len(rows)<50:raise ValueError("Nasdaq screener returned too few records: "+str(len(rows)))
+            c=0
+            for item in rows:
+                code=normalize_symbol(item.get("symbol"))
+                if not code:continue
+                industry=str(item.get("industry") or "").strip()
+                sector=str(item.get("sector") or "").strip()
+                if not industry and not sector:continue
+                found[code]={"industry":industry,"nasdaq_sector":sector,
+                             "industry_source":"Nasdaq public screener industry; not official GICS"}
+                c+=1
+            sources[exchange]=c
+        except Exception as e:errors[exchange]=str(e)[:160]
+    return found,sources,errors
+
 
 def classify_company(item):
     ticker=str(item.get("ticker") or "").upper()
@@ -127,7 +164,9 @@ def classify_company(item):
                 "sector_classification":"Internal Sector Classification",
                 "classification_method":"UNCLASSIFIED","classification_review":True}
     group=SECTORS[key]
-    review=method not in ("PUBLIC_INDUSTRY_TEXT","SEC_SIC_DESCRIPTION") or ticker in ("GOOGL","GOOG","AMZN","ETN")
+    if method=="PUBLIC_INDUSTRY_TEXT" and item.get("industry_source"):
+        method="NASDAQ_SCREENER_INDUSTRY"
+    review=method not in ("PUBLIC_INDUSTRY_TEXT","SEC_SIC_DESCRIPTION","NASDAQ_SCREENER_INDUSTRY") or ticker in ("GOOGL","GOOG","AMZN","ETN")
     return {"sector_key":key,"sector_label":group["label"],
             "sector_classification":"Internal Sector Classification",
             "classification_method":method,"classification_review":review}
