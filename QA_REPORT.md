@@ -2,7 +2,7 @@
 
 - passed: **True**
 - errors: **0**
-- warnings: **1**
+- warnings: **0**
 - KOSPI TOP5: **5**
 - KOSDAQ TOP5: **1**
 - themes: **19**
@@ -11,6 +11,3 @@
 - Fundamental Sector visible cap: **TOP 20**
 - Sector configured members: **min 7 / max 42**
 - Sectors with >=20 configured members: **24/36**
-
-## Warnings
-- individual investor 5D flow not collected; show unavailable rather than estimates
