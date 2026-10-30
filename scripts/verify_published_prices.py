@@ -124,15 +124,23 @@ def check_browser():
             + "; chrome_stderr=" + proc.stderr[-350:]
         )
     value = re.sub(r"\s+", "", matches[-1])
-    expected = re.sub(r"\s+", "", MARKET.get("text", {}).get("currentPriceText") or "")
-    if not expected or value != expected:
-        raise AssertionError(f"Live DOM current price mismatch: {value!r} != {expected!r}")
+    # The live UI can select a different profile from the static summary text.
+    # Compare against actual, dated closes, not the fallback top-pick placeholder.
+    verified_labels = {
+        f"{int(round(item['close'])):,}원"
+        for item in UNIVERSE["items"]
+        if item.get("close_status") in ("VERIFIED", "DAILY_CLOSE")
+        and item.get("close_date") == DAY
+        and isinstance(item.get("close"), (int, float)) and item["close"] > 0
+    }
+    if value not in verified_labels:
+        raise AssertionError(f"Live DOM current price is not a dated published close: {value!r}")
     return value
 
 
 def main():
     last = None
-    for attempt in range(1, 10):
+    for attempt in range(1, 5):
         try:
             market = get_json("data/market-data.json")
             universe = get_json("stock-universe.json")
@@ -160,8 +168,8 @@ def main():
             return 0
         except Exception as exc:
             last = exc
-            print(f"Published audit attempt {attempt}/9 failed: {exc}", flush=True)
-            if attempt != 9:
+            print(f"Published audit attempt {attempt}/4 failed: {exc}", flush=True)
+            if attempt != 4:
                 time.sleep(10)
     print("PUBLICATION NOT VERIFIED: " + str(last), file=sys.stderr)
     return 1
