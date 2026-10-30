@@ -105,7 +105,9 @@ def check_browser():
         raise RuntimeError("Chrome headless unavailable: rendered UI verification cannot be claimed")
     proc = subprocess.run(
         [chrome, "--headless=new", "--no-sandbox", "--disable-gpu",
-         "--disable-dev-shm-usage", "--hide-scrollbars", "--virtual-time-budget=15000",
+         "--disable-dev-shm-usage", "--ignore-certificate-errors",
+         "--disable-features=HttpsFirstBalancedModeAutoEnable",
+         "--hide-scrollbars", "--virtual-time-budget=15000",
          "--dump-dom", BASE + "?" + urlencode({"audit": GENERATED})],
         capture_output=True, text=True, timeout=70,
     )
@@ -113,7 +115,14 @@ def check_browser():
         raise RuntimeError("Headless Chrome failed: " + proc.stderr[-500:])
     matches = re.findall(r'data-key=["\x27]currentPriceText["\x27][^>]*>([^<]*)', proc.stdout)
     if not matches:
-        raise AssertionError("Current-price field not found in rendered live DOM")
+        snippet = re.sub(r"\\s+", " ", proc.stdout[:1800])
+        raise AssertionError(
+            "Current-price field missing in live DOM; "
+            + "DOM length=" + str(len(proc.stdout))
+            + "; has_data_key=" + str("data-key" in proc.stdout)
+            + "; head=" + snippet[:1000]
+            + "; chrome_stderr=" + proc.stderr[-350:]
+        )
     value = re.sub(r"\s+", "", matches[-1])
     expected = re.sub(r"\s+", "", MARKET.get("text", {}).get("currentPriceText") or "")
     if not expected or value != expected:

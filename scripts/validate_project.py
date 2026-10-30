@@ -296,6 +296,10 @@ try:
             rows=record.get("rows") or []
             if len(rows)<65 or rows[-1].get("date")!=record.get("date") or round(rows[-1].get("close") or 0)!=round(close or 0):
                 fail("Fundamental sector close/day-bars disagree: "+code)
+            if not rows or float(rows[-1].get("volume") or 0) <= 0:
+                fail("Fundamental daily close contains no trades: "+code)
+            if rows and abs(float(rows[-1].get("close") or 0)-round(float(rows[-1].get("close") or 0)))>0.05:
+                fail("Fundamental daily close uses invalid fractional tick: "+code)
             if universe_dates.get("sector_closes_synced"):
                 item=universe_lookup.get(code) or {}
                 if (item.get("close_status")!="DAILY_CLOSE" or item.get("close_date")!=record.get("date")

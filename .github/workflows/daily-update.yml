@@ -81,6 +81,9 @@ jobs:
         if: github.event_name != 'push'
         run: python scripts/update_analyst_research_cache.py
 
+      - name: Quarantine anomalous dated closing prices
+        run: python scripts/migrate_price_integrity.py
+
       - name: Sync embedded fallback
         run: python scripts/embed_fallback.py
 

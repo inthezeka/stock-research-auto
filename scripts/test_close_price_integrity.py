@@ -63,6 +63,21 @@ with TemporaryDirectory() as work:
             assert quote["reference_agrees"] is False
             assert quote["listing_reference_close"] == listing
             quotes[code] = quote
+        abnormal = candle_rows(196900)
+        abnormal[-1]["volume"] = 0
+        try:
+            sector.normalize_close(lookup["042700"], abnormal, "Yahoo", DAY)
+            raise AssertionError("zero-volume candle unexpectedly accepted")
+        except ValueError:
+            pass
+        abnormal[-1]["volume"] = 100
+        abnormal[-1]["close"] = 196900.32
+        try:
+            sector.normalize_close(lookup["042700"], abnormal, "Yahoo", DAY)
+            raise AssertionError("fractional off-tick candle unexpectedly accepted")
+        except ValueError:
+            pass
+
         promoted = sector.sync_confirmed_sector_closes(universe, quotes, DAY)
         assert promoted == 2
         assert universe["dated_close_count"] == 3

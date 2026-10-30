@@ -31,6 +31,12 @@ def normalize_close(item, rows, provider, asof):
         raise ValueError(f"invalid OHLC for {item['code']}: {low}, {close}, {high}")
     if len(rows) < 65:
         raise ValueError("fewer than 65 daily bars for technical analysis")
+    # A zero-volume or fractional-price Yahoo bar is not a reliable trade close.
+    volume = stock.n(last.get("volume"))
+    if volume is None or volume <= 0:
+        raise ValueError(f"no executed trades for {item['code']} on {asof}")
+    if abs(close - round(close)) > 0.05:
+        raise ValueError(f"non-tick fractional closing price for {item['code']}: {close}")
     price = int(round(close))
     listing_price = stock.n(item.get("reference_close") if "reference_close" in item else item.get("close"))
     listing_agrees = listing_price is not None and int(round(listing_price)) == price
@@ -74,7 +80,9 @@ def sync_confirmed_sector_closes(universe, quotes, asof):
         last = rows[-1] if rows else {}
         close = stock.n(quote.get("close"))
         if (len(rows) < 65 or quote.get("date") != asof or last.get("date") != asof
-                or close is None or close <= 0 or round(stock.n(last.get("close")) or 0) != round(close)):
+                or close is None or close <= 0 or round(stock.n(last.get("close")) or 0) != round(close)
+                or (stock.n(last.get("volume")) or 0) <= 0
+                or abs((stock.n(last.get("close")) or 0) - round(close)) > 0.05):
             raise RuntimeError(f"invalid sector daily candle for {code}")
         if "reference_close" not in item:
             item["reference_close"] = item.get("close")
