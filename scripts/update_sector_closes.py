@@ -32,7 +32,7 @@ def normalize_close(item, rows, provider, asof):
     if len(rows) < 65:
         raise ValueError("fewer than 65 daily bars for technical analysis")
     price = int(round(close))
-    listing_price = stock.n(item.get("close"))
+    listing_price = stock.n(item.get("reference_close") if "reference_close" in item else item.get("close"))
     listing_agrees = listing_price is not None and int(round(listing_price)) == price
     return {
         "date": asof,
@@ -58,6 +58,49 @@ def get_close(item, asof):
     except Exception as exc:
         failures.append("Naver: " + str(exc)[:180])
     return None, "; ".join(failures)
+
+
+def sync_confirmed_sector_closes(universe, quotes, asof):
+    """Store validated dated sector candles without claiming independent-source agreement."""
+    lookup = {item["code"]: item for item in universe.get("items") or []}
+    promoted = 0
+    for code, quote in quotes.items():
+        if quote.get("status") != "DAILY_CLOSE":
+            continue
+        item = lookup.get(code)
+        if item is None or item.get("close_status") == "VERIFIED":
+            continue
+        rows = quote.get("rows") or []
+        last = rows[-1] if rows else {}
+        close = stock.n(quote.get("close"))
+        if (len(rows) < 65 or quote.get("date") != asof or last.get("date") != asof
+                or close is None or close <= 0 or round(stock.n(last.get("close")) or 0) != round(close)):
+            raise RuntimeError(f"invalid sector daily candle for {code}")
+        if "reference_close" not in item:
+            item["reference_close"] = item.get("close")
+        item["reference_quote_at"] = universe.get("generated_at")
+        item["close"] = int(round(close))
+        item["close_date"] = asof
+        item["close_status"] = "DAILY_CLOSE"
+        item["close_source"] = quote.get("source") or "daily OHLC (single source)"
+        item["close_cross_check"] = "SINGLE_SOURCE"
+        item["reference_agrees"] = quote.get("reference_agrees")
+        if stock.n(item.get("shares")):
+            item["marketcap"] = round(float(item["shares"]) * close)
+        promoted += 1
+    universe["daily_close_count"] = promoted
+    universe["dated_close_count"] = promoted + sum(
+        item.get("close_status") == "VERIFIED" and item.get("close_date") == asof
+        for item in universe.get("items") or []
+    )
+    universe["unverified_close_count"] = len(lookup) - universe["dated_close_count"]
+    universe["listing_reference_disagreements"] = sum(
+        item.get("close_status") == "DAILY_CLOSE" and item.get("reference_agrees") is False
+        for item in universe.get("items") or []
+    )
+    universe["close_schema_version"] = 2
+    universe["sector_closes_synced"] = True
+    return promoted
 
 
 def main():
@@ -114,15 +157,34 @@ def main():
         "items": {k: quotes[k] for k in sorted(quotes)},
         "errors": {k: failures[k] for k in sorted(failures)},
     }
-    tmp = OUT.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    json.loads(tmp.read_text(encoding="utf-8"))
-    tmp.replace(OUT)
-    print(json.dumps({k: payload[k] for k in ("as_of", "requested", "confirmed", "unavailable", "reference_disagreements")}, ensure_ascii=False))
-    # Do not publish if too many sector names are unavailable. The remainder
-    # must stay visibly unverified, not falsely labelled as fresh.
+    # Do not mutate publishable data on partial sector collection.
     if len(quotes) / max(len(codes), 1) < 0.95:
         raise SystemExit("sector close coverage under 95%: do not deploy")
+    promoted = sync_confirmed_sector_closes(universe, quotes, asof)
+    meta_path = ROOT / "data" / "market-data.json"
+    market_data = json.loads(meta_path.read_text(encoding="utf-8"))
+    if (market_data.get("meta") or {}).get("market_date") != asof:
+        raise RuntimeError("sector close date differs from market-data date")
+    coverage = market_data.setdefault("meta", {}).setdefault("coverage", {})
+    coverage.update({
+        "sector_daily_close_count": promoted,
+        "universe_dated_close_count": universe["dated_close_count"],
+        "universe_unverified_close_count": universe["unverified_close_count"],
+        "universe_dated_close_ratio": round(universe["dated_close_count"] / max(1, universe["count"]), 4),
+        "listing_reference_disagreements": universe["listing_reference_disagreements"],
+    })
+    for path, obj in ((OUT, payload), (UNIVERSE, universe), (meta_path, market_data)):
+        tmp = path.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        json.loads(tmp.read_text(encoding="utf-8"))
+        tmp.replace(path)
+    print(json.dumps({
+        "as_of": asof, "requested": len(codes), "confirmed": len(quotes),
+        "unavailable": len(failures),
+        "reference_disagreements": payload["reference_disagreements"],
+        "universe_daily_close_synced": promoted,
+        "universe_dated_close_count": universe["dated_close_count"],
+    }, ensure_ascii=False))
     return 0
 
 

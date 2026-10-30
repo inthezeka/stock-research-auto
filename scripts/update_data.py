@@ -313,7 +313,7 @@ def refresh_stock_universe():
     return payload
 
 def fetch_stock(s):
-    """Collect a dated, non-adjusted daily close and cross-check two providers."""
+    """Use dated, unadjusted OHLC; record conflicts across all shared sessions."""
     code = s["stock_code"]
     naver_error = None
     try:
@@ -321,38 +321,38 @@ def fetch_stock(s):
     except Exception as exc:
         naver_error = exc
         rows, source = yahoo_chart(s["ticker"])
-
-    # On a completed trading day, a previous-session bar must not be called fresh.
     expected_date = NOW.date().isoformat() if NOW.weekday() < 5 and (NOW.hour, NOW.minute) >= (15, 40) else None
-
-    # Cross-check independently supplied closing candles. Naver's fchart may
-    # carry an inconsistent last bar even when its trading date is current.
-    try:
-        yahoo_rows, _ = yahoo_chart(s["ticker"])
-        if yahoo_rows[-1]["date"] == rows[-1]["date"]:
-            naver_close = float(rows[-1]["close"])
-            yahoo_close = float(yahoo_rows[-1]["close"])
-            discrepancy = abs(naver_close / yahoo_close - 1) if yahoo_close > 0 else 0
-            if source == "Naver Stock" and discrepancy > 0:
-                # Do not mix inconsistent candles into technical indicators.
-                rows, source = yahoo_rows, "Yahoo Finance (cross-checked exact close)"
-        elif expected_date and yahoo_rows[-1]["date"] == expected_date and rows[-1]["date"] != expected_date:
-            rows, source = yahoo_rows, "Yahoo Finance (fresh close fallback)"
-    except Exception:
-        pass
-
+    mismatches = []
+    cross_check = "SINGLE_SOURCE"
+    if source == "Naver Stock":
+        try:
+            yahoo_rows, _ = yahoo_chart(s["ticker"])
+            by_date = {r["date"]: r for r in yahoo_rows}
+            for bar in rows:
+                match = by_date.get(bar["date"])
+                if not match:
+                    continue
+                a, b = n(bar.get("close")), n(match.get("close"))
+                if a is not None and b is not None and abs(a - b) >= 0.5:
+                    mismatches.append({"date": bar["date"], "naver_close": int(round(a)),
+                                       "yahoo_close": int(round(b))})
+            if yahoo_rows[-1]["date"] == rows[-1]["date"]:
+                cross_check = "CONFLICT" if mismatches else "MATCH"
+                if mismatches:
+                    # A price history must not combine bars from incompatible providers.
+                    rows, source = yahoo_rows, "Yahoo Finance (Naver historical disagreement)"
+                else:
+                    source = "Naver Stock + Yahoo Finance (matching candles)"
+            elif expected_date and yahoo_rows[-1]["date"] == expected_date:
+                rows, source = yahoo_rows, "Yahoo Finance (fresh date fallback)"
+        except Exception:
+            cross_check = "SINGLE_SOURCE"
     if expected_date and rows[-1]["date"] != expected_date:
-        raise RuntimeError(
-            f"stale close for {code}: {rows[-1]['date']} != {expected_date} ({source}); naver={naver_error}"
-        )
+        raise RuntimeError(f"stale close for {code}: {rows[-1]['date']} != {expected_date} ({source}); naver={naver_error}")
     tech = technicals(rows)
-    return {
-        **s,
-        "rows": rows,
-        "source": source,
-        "fresh": True,
-        "tech": tech,
-    }
+    return {**s, "rows": rows, "source": source, "fresh": True, "tech": tech,
+            "close_cross_check": cross_check, "source_disagreement_count": len(mismatches),
+            "source_disagreements": mismatches[-12:]}
 
 
 def sma(vals, p):
@@ -3432,6 +3432,9 @@ def sync_watchlist_universe_prices(universe_meta, live_by_code):
         raise RuntimeError("stock universe unavailable for closing-price synchronization")
     observed = set()
     for item in universe_meta["items"]:
+        if "reference_close" not in item:
+            item["reference_close"] = item.get("close")
+        item["reference_quote_at"] = universe_meta.get("generated_at")
         code = item.get("code")
         live = live_by_code.get(code)
         if live:
@@ -3443,17 +3446,28 @@ def sync_watchlist_universe_prices(universe_meta, live_by_code):
             item["close_date"] = trade_date
             item["close_status"] = "VERIFIED"
             item["close_source"] = live.get("source")
+            item["close_cross_check"] = live.get("close_cross_check", "SINGLE_SOURCE")
+            item["close_source_disagreement_count"] = live.get("source_disagreement_count", 0)
             if item.get("shares"):
                 item["marketcap"] = round(float(item["shares"]) * float(price))
             observed.add(code)
         else:
             # Other listed stocks retain Naver discovery data, but it is NOT
             # verified against the KRX close. Never claim its price is verified.
+            item["close"] = None
+            item.pop("close_date", None)
             item["close_status"] = "UNVERIFIED"
             item["close_source"] = "Naver listing quote (unverified)"
+            item["close_cross_check"] = "NOT_CHECKED"
+            item.pop("close_source_disagreement_count", None)
     if observed != set(live_by_code):
         raise RuntimeError(f"verified stock(s) absent from universe: {sorted(set(live_by_code)-observed)}")
     universe_meta["verified_close_count"] = len(observed)
+    universe_meta["daily_close_count"] = 0
+    universe_meta["dated_close_count"] = len(observed)
+    universe_meta["unverified_close_count"] = len(universe_meta["items"]) - len(observed)
+    universe_meta["close_schema_version"] = 2
+    universe_meta["sector_closes_synced"] = False
     history = {
         "as_of": universe_meta.get("as_of"),
         "generated_at": NOW.isoformat(),
@@ -3471,6 +3485,24 @@ def sync_watchlist_universe_prices(universe_meta, live_by_code):
     tmp.write_text(json.dumps(universe_meta, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     json.loads(tmp.read_text(encoding="utf-8"))
     tmp.replace(UNIVERSE_PATH)
+
+
+def sync_legacy_theme_picks(d, live_by_code):
+    """Selection baseline is historical; current price is always the dated daily close."""
+    for pick in d.get("theme_picks") or []:
+        code = str(pick.get("ticker") or "").split(".")[0]
+        live = live_by_code.get(code)
+        if not live:
+            continue
+        if "selection_price" not in pick:
+            pick["selection_price"] = pick.get("price")
+            pick["selection_price_date"] = (d.get("meta") or {}).get("theme_selection_as_of")
+        price = live["tech"].get("price")
+        if price:
+            pick["price"] = price
+            pick["price_label"] = f"{fmt_price(price)}원"
+            pick["price_date"] = live["tech"].get("date")
+            pick["price_source"] = live.get("source")
 
 
 def main():
@@ -3599,6 +3631,7 @@ def main():
         refresh_selection=refresh_theme_selection,
         selection_as_of=md,
     )
+    sync_legacy_theme_picks(d, live_by_code)
 
     # Refresh TOP5 summary cards/bind without touching verified financial snapshot fields.
     bind = d.setdefault("bind", {})
@@ -3689,6 +3722,13 @@ def main():
             "market_fresh_ratio": round(market_ratio, 4),
         },
         "errors": errors[:20],
+        "quote_source_disagreements": {
+            code: {"count": live["source_disagreement_count"],
+                   "samples": live["source_disagreements"],
+                   "selected_source": live.get("source")}
+            for code, live in live_by_code.items()
+            if live.get("source_disagreement_count", 0) > 0
+        },
         "note": "실시간 가격/기술지표·Trading Score 갱신. TOP5 실적은 최근 분기 + 다음 분기(E) Consensus 기준입니다.",
     })
 

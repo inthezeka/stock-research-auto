@@ -51,6 +51,7 @@ jobs:
         run: |
           python scripts/smoke_test.py
           python scripts/test_investor_flow_backfill.py
+          python scripts/test_close_price_integrity.py
 
       - name: Refresh sector membership
         if: github.event_name != 'push'
@@ -59,11 +60,13 @@ jobs:
         run: python scripts/refresh_sector_membership.py
 
       - name: Update market data
+        if: github.event_name != 'push'
         env:
           THEME_MONTHLY_REFRESH: ${{ github.event.schedule == '15 22 1 * *' && '1' || '0' }}
         run: python scripts/update_data.py
 
       - name: Update sector closing prices
+        if: github.event_name != 'push'
         run: python scripts/update_sector_closes.py
 
       - name: Refresh MY Trading intraday cache
@@ -71,6 +74,7 @@ jobs:
         run: python scripts/update_intraday_cache.py
 
       - name: Refresh five-day individual-stock investor net-buy quantities
+        if: github.event_name != 'push'
         run: python scripts/update_investor_flow.py
 
       - name: Refresh 3-month analyst research cache
@@ -97,14 +101,19 @@ jobs:
           if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
             echo "main advanced during data generation; regenerating on latest main"
             git reset --hard origin/main
-            python scripts/refresh_sector_membership.py
-            python scripts/update_data.py
-            python scripts/update_sector_closes.py
-            python scripts/update_intraday_cache.py
-            python scripts/update_investor_flow.py
-            python scripts/update_analyst_research_cache.py
-            python scripts/embed_fallback.py
-            python scripts/validate_project.py
+            if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+              python scripts/embed_fallback.py
+              python scripts/validate_project.py
+            else
+              python scripts/refresh_sector_membership.py
+              python scripts/update_data.py
+              python scripts/update_sector_closes.py
+              python scripts/update_intraday_cache.py
+              python scripts/update_investor_flow.py
+              python scripts/update_analyst_research_cache.py
+              python scripts/embed_fallback.py
+              python scripts/validate_project.py
+            fi
           fi
 
           if git diff --quiet; then
@@ -128,3 +137,8 @@ jobs:
       - name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Audit published JSON and rendered browser prices
+        env:
+          PUBLISHED_SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python scripts/verify_published_prices.py

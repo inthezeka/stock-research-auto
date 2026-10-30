@@ -24,10 +24,18 @@
       "universe_verified_close_count": 54,
       "stocks_fresh": 54,
       "stocks_total": 54,
-      "stock_fresh_ratio": 1.0,
+      "stock_fresh_ratio": 1,
       "market_fresh": 5,
       "market_total": 5,
-      "market_fresh_ratio": 1.0
+      "market_fresh_ratio": 1,
+      "sector_requested_count": 577,
+      "sector_confirmed_count": 577,
+      "sector_success_rate": 1,
+      "universe_dated_close_count": 582,
+      "universe_unverified_close_count": 2092,
+      "universe_dated_close_ratio": 0.217651,
+      "sector_daily_close_count": 528,
+      "listing_reference_disagreements": 475
     },
     "errors": [],
     "technical_policy": "MACD 30 + MA/괴리율 30 + RSI 20 + Stochastic 20 = Trading Score 100 [AI].",
@@ -88,7 +96,8 @@
       "sector_count": 36,
       "theme_count": 36,
       "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
-    }
+    },
+    "price_integrity": "Undated listing quotes are reference_close only; dated sector OHLC is DAILY_CLOSE (single-provider unless independently reconciled)."
   },
   "text": {
     "heroEyebrow": "AI INVESTMENT WORKFLOW",
@@ -391,36 +400,48 @@
       "ticker": "009150.KS",
       "theme": "반도체 / HBM / AI반도체 / 반도체장비 / 반도체소재",
       "score": 92,
-      "price": 1581000,
-      "price_label": "1,581,000원",
+      "price": 1293000,
+      "price_label": "1,293,000원",
       "r20": null,
       "r60": null,
       "state": "관망",
-      "reason": "AI 서버용 MLCC·FCBGA 성장 Catalyst와 기존 종합점수 우위. 실시간 모멘텀은 다음 데이터 갱신에서 재계산됩니다. [AI]"
+      "reason": "AI 서버용 MLCC·FCBGA 성장 Catalyst와 기존 종합점수 우위. 실시간 모멘텀은 다음 데이터 갱신에서 재계산됩니다. [AI]",
+      "selection_price": 1581000,
+      "selection_price_date": "2026-10-16",
+      "price_date": "2026-10-29",
+      "price_source": "Yahoo Finance (cross-checked exact close)"
     },
     {
       "name": "LS ELECTRIC",
       "ticker": "010120.KS",
       "theme": "전력기기 / 전력망 / 변압기 / ESS",
       "score": 88,
-      "price": 209500,
-      "price_label": "209,500원",
+      "price": 158400,
+      "price_label": "158,400원",
       "r20": null,
       "r60": null,
       "state": "관망",
-      "reason": "AI 데이터센터 전력 CAPEX·북미 전력망 수요 노출과 기존 종합점수 우위. 실시간 모멘텀은 다음 데이터 갱신에서 재계산됩니다. [AI]"
+      "reason": "AI 데이터센터 전력 CAPEX·북미 전력망 수요 노출과 기존 종합점수 우위. 실시간 모멘텀은 다음 데이터 갱신에서 재계산됩니다. [AI]",
+      "selection_price": 209500,
+      "selection_price_date": "2026-10-16",
+      "price_date": "2026-10-29",
+      "price_source": "Yahoo Finance (cross-checked exact close)"
     },
     {
       "name": "한화에어로스페이스",
       "ticker": "012450.KS",
       "theme": "방산 / 항공우주 / 드론 / 조선 / 조선기자재",
       "score": 85,
-      "price": 1072000,
-      "price_label": "1,072,000원",
+      "price": 760000,
+      "price_label": "760,000원",
       "r20": null,
       "r60": null,
       "state": "관망",
-      "reason": "방산 수출·수주잔고·우주사업 Catalyst와 기존 종합점수 우위. 실시간 모멘텀은 다음 데이터 갱신에서 재계산됩니다. [AI]"
+      "reason": "방산 수출·수주잔고·우주사업 Catalyst와 기존 종합점수 우위. 실시간 모멘텀은 다음 데이터 갱신에서 재계산됩니다. [AI]",
+      "selection_price": 1072000,
+      "selection_price_date": "2026-10-16",
+      "price_date": "2026-10-29",
+      "price_source": "Yahoo Finance (cross-checked exact close)"
     }
   ],
   "theme_cards": [
@@ -435,14 +456,14 @@
           "name": "삼성전기",
           "ticker": "009150.KS",
           "score": 66.9,
-          "price": 1293000.0,
+          "price": 1293000,
           "price_label": "1,293,000원",
           "r20": -15.38,
           "r60": 47.1,
           "state": "하락 추세",
           "reason": "AI 서버용 MLCC · FCBGA 고부가 Mix 확대 [AI]",
-          "base_score": 92.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 92,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 34.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -452,14 +473,14 @@
           "name": "삼성전자",
           "ticker": "005930.KS",
           "score": 58.3,
-          "price": 232000.0,
+          "price": 232000,
           "price_label": "232,000원",
           "r20": -14.86,
           "r60": 12.08,
           "state": "하락 추세",
           "reason": "메모리 업사이클 · HBM4 · 파운드리 개선 [AI]",
-          "base_score": 82.0,
-          "monthly_trading_score": 37.0,
+          "base_score": 82,
+          "monthly_trading_score": 37,
           "monthly_momentum_score": 28.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -469,14 +490,14 @@
           "name": "SK하이닉스",
           "ticker": "000660.KS",
           "score": 57.1,
-          "price": 1526000.0,
+          "price": 1526000,
           "price_label": "1,526,000원",
           "r20": -13.54,
           "r60": 15.43,
           "state": "하락 추세",
           "reason": "HBM4 · AI 메모리 이익 레버리지 [AI]",
-          "base_score": 86.0,
-          "monthly_trading_score": 37.0,
+          "base_score": 86,
+          "monthly_trading_score": 37,
           "monthly_momentum_score": 7.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -497,14 +518,14 @@
           "name": "삼성SDS",
           "ticker": "018260.KS",
           "score": 60.3,
-          "price": 206500.0,
+          "price": 206500,
           "price_label": "206,500원",
           "r20": -4.62,
           "r60": 3.93,
           "state": "조정",
           "reason": "클라우드·기업용 AI·IT서비스와 물류 디지털 전환 [AI]",
-          "base_score": 71.0,
-          "monthly_trading_score": 52.0,
+          "base_score": 71,
+          "monthly_trading_score": 52,
           "monthly_momentum_score": 43.8,
           "selection_as_of": "2026-10-19",
           "price_date": "2026-10-29",
@@ -514,14 +535,14 @@
           "name": "NAVER",
           "ticker": "035420.KS",
           "score": 58.3,
-          "price": 174900.0,
+          "price": 174900,
           "price_label": "174,900원",
           "r20": -10.22,
           "r60": -10.17,
           "state": "하락 추세",
           "reason": "AI·클라우드·광고/커머스 수익화 [AI]",
-          "base_score": 73.0,
-          "monthly_trading_score": 47.0,
+          "base_score": 73,
+          "monthly_trading_score": 47,
           "monthly_momentum_score": 35.9,
           "selection_as_of": "2026-10-19",
           "price_date": "2026-10-29",
@@ -531,14 +552,14 @@
           "name": "카카오",
           "ticker": "035720.KS",
           "score": 56.7,
-          "price": 29300.0,
+          "price": 29300,
           "price_label": "29,300원",
           "r20": -13.06,
           "r60": -18.95,
           "state": "하락 추세",
           "reason": "AI 서비스·광고·커머스 수익화 전환 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 47.0,
+          "base_score": 69,
+          "monthly_trading_score": 47,
           "monthly_momentum_score": 38.3,
           "selection_as_of": "2026-10-19",
           "price_date": "2026-10-29",
@@ -553,20 +574,20 @@
       "theme": "전력기기 / 전력망 / 변압기 / ESS",
       "cycle": "성장",
       "point": "데이터센터 전력수요·송배전 CAPEX·변압기 수주 확인",
-      "theme_score": 55.0,
+      "theme_score": 55,
       "picks": [
         {
           "name": "LS ELECTRIC",
           "ticker": "010120.KS",
           "score": 58.2,
-          "price": 158400.0,
+          "price": 158400,
           "price_label": "158,400원",
           "r20": -22.73,
           "r60": 5.39,
           "state": "하락 추세",
           "reason": "북미 Grid · AI 데이터센터 전력 CAPEX [AI]",
-          "base_score": 88.0,
-          "monthly_trading_score": 32.0,
+          "base_score": 88,
+          "monthly_trading_score": 32,
           "monthly_momentum_score": 20.1,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -576,14 +597,14 @@
           "name": "HD현대일렉트릭",
           "ticker": "267260.KS",
           "score": 53.5,
-          "price": 440500.0,
+          "price": 440500,
           "price_label": "440,500원",
           "r20": -35.32,
           "r60": -24.44,
           "state": "하락 추세",
           "reason": "북미 변압기·전력망 수주와 데이터센터 전력 CAPEX [AI]",
-          "base_score": 79.0,
-          "monthly_trading_score": 40.0,
+          "base_score": 79,
+          "monthly_trading_score": 40,
           "monthly_momentum_score": 0.1,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -593,14 +614,14 @@
           "name": "효성중공업",
           "ticker": "298040.KS",
           "score": 53.2,
-          "price": 1911000.0,
+          "price": 1911000,
           "price_label": "1,911,000원",
           "r20": -31.85,
           "r60": 0.9,
           "state": "하락 추세",
           "reason": "초고압 변압기·전력기기 수주와 글로벌 Grid 투자 [AI]",
-          "base_score": 78.0,
-          "monthly_trading_score": 40.0,
+          "base_score": 78,
+          "monthly_trading_score": 40,
           "monthly_momentum_score": 1.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -621,14 +642,14 @@
           "name": "LG에너지솔루션",
           "ticker": "373220.KS",
           "score": 65.2,
-          "price": 356000.0,
+          "price": 356000,
           "price_label": "356,000원",
           "r20": 0.99,
           "r60": 11.25,
           "state": "조정",
           "reason": "북미 배터리·ESS 수요와 가동률 개선 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 55.0,
+          "base_score": 69,
+          "monthly_trading_score": 55,
           "monthly_momentum_score": 76.3,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -638,14 +659,14 @@
           "name": "삼성SDI",
           "ticker": "006400.KS",
           "score": 62.7,
-          "price": 538000.0,
+          "price": 538000,
           "price_label": "538,000원",
           "r20": 5.28,
           "r60": 50.07,
           "state": "조정",
           "reason": "ESS·고부가 배터리 믹스와 차세대 셀 투자 [AI]",
-          "base_score": 70.0,
-          "monthly_trading_score": 54.0,
+          "base_score": 70,
+          "monthly_trading_score": 54,
           "monthly_momentum_score": 58.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -655,14 +676,14 @@
           "name": "포스코퓨처엠",
           "ticker": "003670.KS",
           "score": 57.4,
-          "price": 160900.0,
+          "price": 160900,
           "price_label": "160,900원",
           "r20": -8.27,
           "r60": 23.58,
           "state": "조정",
           "reason": "양극재·음극재 가동률과 북미 배터리 공급망 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 44.0,
+          "base_score": 68,
+          "monthly_trading_score": 44,
           "monthly_momentum_score": 53.1,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -683,14 +704,14 @@
           "name": "현대모비스",
           "ticker": "012330.KS",
           "score": 62.5,
-          "price": 353000.0,
+          "price": 353000,
           "price_label": "353,000원",
           "r20": -3.81,
           "r60": -20.67,
           "state": "하락 추세",
           "reason": "전장·ADAS·모듈 믹스 개선과 그룹 SDV 투자 [AI]",
-          "base_score": 71.0,
-          "monthly_trading_score": 66.0,
+          "base_score": 71,
+          "monthly_trading_score": 66,
           "monthly_momentum_score": 26.2,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -700,14 +721,14 @@
           "name": "기아",
           "ticker": "000270.KS",
           "score": 59.9,
-          "price": 108300.0,
+          "price": 108300,
           "price_label": "108,300원",
           "r20": -6.64,
           "r60": -10.35,
           "state": "하락 추세",
           "reason": "하이브리드·RV 믹스와 글로벌 판매·주주환원 [AI]",
-          "base_score": 73.0,
-          "monthly_trading_score": 55.0,
+          "base_score": 73,
+          "monthly_trading_score": 55,
           "monthly_momentum_score": 27.4,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -717,14 +738,14 @@
           "name": "현대차",
           "ticker": "005380.KS",
           "score": 56.8,
-          "price": 292500.0,
+          "price": 292500,
           "price_label": "292,500원",
           "r20": -16.43,
           "r60": -16.67,
           "state": "하락 추세",
           "reason": "하이브리드/전장 믹스·주주환원·SDV [AI]",
-          "base_score": 74.0,
-          "monthly_trading_score": 47.0,
+          "base_score": 74,
+          "monthly_trading_score": 47,
           "monthly_momentum_score": 22.1,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -745,14 +766,14 @@
           "name": "한화에어로스페이스",
           "ticker": "012450.KS",
           "score": 65.3,
-          "price": 760000.0,
+          "price": 760000,
           "price_label": "760,000원",
           "r20": -24.9,
           "r60": -12.14,
           "state": "하락 추세",
           "reason": "방산 수출 · 생산능력 확대 · 우주사업 [AI]",
-          "base_score": 85.0,
-          "monthly_trading_score": 55.0,
+          "base_score": 85,
+          "monthly_trading_score": 55,
           "monthly_momentum_score": 23.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -762,14 +783,14 @@
           "name": "LIG넥스원",
           "ticker": "079550.KS",
           "score": 58.4,
-          "price": 427500.0,
+          "price": 427500,
           "price_label": "427,500원",
           "r20": -36.95,
           "r60": -33.31,
           "state": "하락 추세",
           "reason": "정밀유도무기·방공체계 수출과 수주잔고 [AI]",
-          "base_score": 77.0,
-          "monthly_trading_score": 48.0,
+          "base_score": 77,
+          "monthly_trading_score": 48,
           "monthly_momentum_score": 20.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -779,14 +800,14 @@
           "name": "HD현대중공업",
           "ticker": "329180.KS",
           "score": 49.5,
-          "price": 272000.0,
+          "price": 272000,
           "price_label": "272,000원",
           "r20": -36.6,
           "r60": -39.29,
           "state": "하락 추세",
           "reason": "고부가 선박·특수선·방산 수주 [AI]",
-          "base_score": 74.0,
-          "monthly_trading_score": 32.0,
+          "base_score": 74,
+          "monthly_trading_score": 32,
           "monthly_momentum_score": 8.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -807,14 +828,14 @@
           "name": "비에이치아이",
           "ticker": "083650.KQ",
           "score": 55.4,
-          "price": 42900.0,
+          "price": 42900,
           "price_label": "42,900원",
           "r20": -26.16,
           "r60": 23.99,
           "state": "하락 추세",
           "reason": "원전 보조기기·HRSG 수주와 발전설비 투자 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 49.0,
+          "base_score": 69,
+          "monthly_trading_score": 49,
           "monthly_momentum_score": 24.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -824,14 +845,14 @@
           "name": "두산에너빌리티",
           "ticker": "034020.KS",
           "score": 55.3,
-          "price": 56700.0,
+          "price": 56700,
           "price_label": "56,700원",
           "r20": -29.57,
           "r60": -5.81,
           "state": "하락 추세",
           "reason": "원전·SMR·가스터빈 수주와 CAPEX [AI]",
-          "base_score": 74.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 74,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 17.2,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -841,14 +862,14 @@
           "name": "한전기술",
           "ticker": "052690.KS",
           "score": 54.8,
-          "price": 88700.0,
+          "price": 88700,
           "price_label": "88,700원",
           "r20": -26.75,
           "r60": 11.01,
           "state": "하락 추세",
           "reason": "원전 설계·SMR 프로젝트와 국내외 원전 CAPEX [AI]",
-          "base_score": 71.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 71,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 23.4,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -869,14 +890,14 @@
           "name": "셀트리온",
           "ticker": "068270.KS",
           "score": 68.2,
-          "price": 189300.0,
+          "price": 189300,
           "price_label": "189,300원",
           "r20": 5.81,
           "r60": -0.37,
           "state": "상승초기",
           "reason": "바이오시밀러 신제품·미국 매출 확대 [AI]",
-          "base_score": 72.0,
-          "monthly_trading_score": 64.0,
+          "base_score": 72,
+          "monthly_trading_score": 64,
           "monthly_momentum_score": 65.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -886,14 +907,14 @@
           "name": "알테오젠",
           "ticker": "196170.KQ",
           "score": 64.1,
-          "price": 220000.0,
+          "price": 220000,
           "price_label": "220,000원",
           "r20": -13.21,
           "r60": 2.33,
           "state": "하락 추세",
           "reason": "피하주사 플랫폼·기술수출·마일스톤 모멘텀 [AI]",
-          "base_score": 74.0,
-          "monthly_trading_score": 59.0,
+          "base_score": 74,
+          "monthly_trading_score": 59,
           "monthly_momentum_score": 42.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -903,14 +924,14 @@
           "name": "삼성바이오로직스",
           "ticker": "207940.KS",
           "score": 60.1,
-          "price": 1366000.0,
+          "price": 1366000,
           "price_label": "1,366,000원",
           "r20": -0.7,
           "r60": -10.54,
           "state": "상승초기",
           "reason": "CDMO 수주·생산능력 확대 [AI]",
-          "base_score": 75.0,
-          "monthly_trading_score": 48.0,
+          "base_score": 75,
+          "monthly_trading_score": 48,
           "monthly_momentum_score": 38.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -931,14 +952,14 @@
           "name": "GS건설",
           "ticker": "006360.KS",
           "score": 52.2,
-          "price": 29400.0,
+          "price": 29400,
           "price_label": "29,400원",
           "r20": -13.53,
           "r60": 32.13,
           "state": "하락 추세",
           "reason": "주택 원가율 회복과 해외 플랜트·신사업 [AI]",
-          "base_score": 65.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 65,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 26.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -948,14 +969,14 @@
           "name": "현대건설",
           "ticker": "000720.KS",
           "score": 51.8,
-          "price": 91400.0,
+          "price": 91400,
           "price_label": "91,400원",
           "r20": -21.88,
           "r60": 11.87,
           "state": "하락 추세",
           "reason": "해외 플랜트·원전·재건 수주 [AI]",
-          "base_score": 67.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 67,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 16.9,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -965,14 +986,14 @@
           "name": "DL이앤씨",
           "ticker": "375500.KS",
           "score": 51.1,
-          "price": 57800.0,
+          "price": 57800,
           "price_label": "57,800원",
           "r20": -26.46,
           "r60": 6.84,
           "state": "하락 추세",
           "reason": "플랜트 수주·원가 안정·주주환원 [AI]",
-          "base_score": 66.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 66,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 15.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -993,14 +1014,14 @@
           "name": "HYBE",
           "ticker": "352820.KS",
           "score": 62.3,
-          "price": 158000.0,
+          "price": 158000,
           "price_label": "158,000원",
           "r20": -0.69,
           "r60": -3.07,
           "state": "조정",
           "reason": "아티스트 활동·글로벌 IP·플랫폼 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 61.0,
+          "base_score": 68,
+          "monthly_trading_score": 61,
           "monthly_momentum_score": 46.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1010,14 +1031,14 @@
           "name": "JYP Ent.",
           "ticker": "035900.KQ",
           "score": 61.5,
-          "price": 38900.0,
+          "price": 38900,
           "price_label": "38,900원",
           "r20": 2.37,
           "r60": -7.38,
           "state": "상승초기",
           "reason": "글로벌 투어·신인 IP·앨범/공연 실적 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 59.0,
+          "base_score": 69,
+          "monthly_trading_score": 59,
           "monthly_momentum_score": 42.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1027,15 +1048,15 @@
           "name": "엔씨소프트",
           "ticker": "036570.KS",
           "score": 58.1,
-          "price": 199500.0,
+          "price": 199500,
           "price_label": "199,500원",
           "r20": -5.45,
           "r60": -12.88,
           "state": "하락 추세",
           "reason": "신작 출시·비용 효율화·글로벌 게임 매출 [AI]",
-          "base_score": 64.0,
-          "monthly_trading_score": 53.0,
-          "monthly_momentum_score": 50.0,
+          "base_score": 64,
+          "monthly_trading_score": 53,
+          "monthly_momentum_score": 50,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
           "price_source": "Yahoo Finance (cross-checked exact close)"
@@ -1055,14 +1076,14 @@
           "name": "로보티즈",
           "ticker": "108490.KQ",
           "score": 58.2,
-          "price": 265500.0,
+          "price": 265500,
           "price_label": "265,500원",
           "r20": -6.84,
           "r60": 67.61,
           "state": "하락 추세",
           "reason": "액추에이터·자율주행 로봇·휴머노이드 부품 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 57.0,
+          "base_score": 69,
+          "monthly_trading_score": 57,
           "monthly_momentum_score": 25.3,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1072,15 +1093,15 @@
           "name": "레인보우로보틱스",
           "ticker": "277810.KQ",
           "score": 54.2,
-          "price": 378000.0,
+          "price": 378000,
           "price_label": "378,000원",
           "r20": -10.11,
           "r60": 1.34,
           "state": "하락 추세",
           "reason": "휴머노이드·대기업 로봇 투자 [AI]",
-          "base_score": 72.0,
-          "monthly_trading_score": 40.0,
-          "monthly_momentum_score": 28.0,
+          "base_score": 72,
+          "monthly_trading_score": 40,
+          "monthly_momentum_score": 28,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
           "price_source": "Naver Stock"
@@ -1089,14 +1110,14 @@
           "name": "두산로보틱스",
           "ticker": "454910.KS",
           "score": 53.3,
-          "price": 57500.0,
+          "price": 57500,
           "price_label": "57,500원",
           "r20": -16.06,
           "r60": 3.79,
           "state": "하락 추세",
           "reason": "협동로봇·북미 판매·서비스 로봇 확장 [AI]",
-          "base_score": 70.0,
-          "monthly_trading_score": 40.0,
+          "base_score": 70,
+          "monthly_trading_score": 40,
           "monthly_momentum_score": 28.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1117,14 +1138,14 @@
           "name": "KB금융",
           "ticker": "105560.KS",
           "score": 53.3,
-          "price": 156800.0,
+          "price": 156800,
           "price_label": "156,800원",
           "r20": -9.63,
           "r60": -6.33,
           "state": "하락 추세",
           "reason": "밸류업·자사주·배당·자본효율 [AI]",
-          "base_score": 72.0,
-          "monthly_trading_score": 36.0,
+          "base_score": 72,
+          "monthly_trading_score": 36,
           "monthly_momentum_score": 31.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1134,14 +1155,14 @@
           "name": "하나금융지주",
           "ticker": "086790.KS",
           "score": 52.7,
-          "price": 119700.0,
+          "price": 119700,
           "price_label": "119,700원",
           "r20": -11.53,
           "r60": -3.93,
           "state": "하락 추세",
           "reason": "주주환원 확대·NIM·자본효율 개선 [AI]",
-          "base_score": 71.0,
-          "monthly_trading_score": 36.0,
+          "base_score": 71,
+          "monthly_trading_score": 36,
           "monthly_momentum_score": 30.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1151,14 +1172,14 @@
           "name": "신한지주",
           "ticker": "055550.KS",
           "score": 46.2,
-          "price": 88500.0,
+          "price": 88500,
           "price_label": "88,500원",
           "r20": -19.91,
           "r60": -12.2,
           "state": "하락 추세",
           "reason": "자사주·배당·자본비율 개선과 밸류업 [AI]",
-          "base_score": 71.0,
-          "monthly_trading_score": 21.0,
+          "base_score": 71,
+          "monthly_trading_score": 21,
           "monthly_momentum_score": 22.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1179,14 +1200,14 @@
           "name": "코스맥스",
           "ticker": "192820.KS",
           "score": 75.8,
-          "price": 248000.0,
+          "price": 248000,
           "price_label": "248,000원",
           "r20": -10.63,
           "r60": 33.41,
           "state": "조정",
           "reason": "K-뷰티 글로벌 ODM 수주와 미국·동남아 성장 [AI]",
-          "base_score": 71.0,
-          "monthly_trading_score": 79.0,
+          "base_score": 71,
+          "monthly_trading_score": 79,
           "monthly_momentum_score": 84.4,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1196,14 +1217,14 @@
           "name": "아모레퍼시픽",
           "ticker": "090430.KS",
           "score": 65.2,
-          "price": 124400.0,
+          "price": 124400,
           "price_label": "124,400원",
           "r20": -12.82,
           "r60": -7.16,
           "state": "하락 추세",
           "reason": "미국·일본 K-뷰티 성장과 채널 믹스 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 68.0,
+          "base_score": 68,
+          "monthly_trading_score": 68,
           "monthly_momentum_score": 49.3,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1213,14 +1234,14 @@
           "name": "호텔신라",
           "ticker": "008770.KS",
           "score": 53.2,
-          "price": 34850.0,
+          "price": 34850,
           "price_label": "34,850원",
           "r20": -13.31,
           "r60": -18.67,
           "state": "하락 추세",
           "reason": "면세·관광객 회복과 호텔 수익성 개선 [AI]",
-          "base_score": 64.0,
-          "monthly_trading_score": 47.0,
+          "base_score": 64,
+          "monthly_trading_score": 47,
           "monthly_momentum_score": 31.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1241,14 +1262,14 @@
           "name": "인텔리안테크",
           "ticker": "189300.KQ",
           "score": 55.1,
-          "price": 56700.0,
+          "price": 56700,
           "price_label": "56,700원",
           "r20": -15.37,
           "r60": 15.13,
           "state": "하락 추세",
           "reason": "저궤도 위성통신 안테나 수요 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 68,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 35.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1257,15 +1278,15 @@
         {
           "name": "KT",
           "ticker": "030200.KS",
-          "score": 54.0,
-          "price": 45750.0,
+          "score": 54,
+          "price": 45750,
           "price_label": "45,750원",
           "r20": -13.52,
           "r60": -13.35,
           "state": "하락 추세",
           "reason": "AI·클라우드·IDC 성장과 통신 수익성 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 39.0,
+          "base_score": 68,
+          "monthly_trading_score": 39,
           "monthly_momentum_score": 42.4,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1275,15 +1296,15 @@
           "name": "SK텔레콤",
           "ticker": "017670.KS",
           "score": 50.3,
-          "price": 76600.0,
+          "price": 76600,
           "price_label": "76,600원",
           "r20": -11.14,
           "r60": -2.05,
           "state": "하락 추세",
           "reason": "AI 데이터센터·통신 현금흐름·주주환원 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 32.0,
-          "monthly_momentum_score": 31.0,
+          "base_score": 69,
+          "monthly_trading_score": 32,
+          "monthly_momentum_score": 31,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
           "price_source": "Naver Stock"
@@ -1302,16 +1323,16 @@
         {
           "name": "POSCO홀딩스",
           "ticker": "005490.KS",
-          "score": 58.0,
-          "price": 275500.0,
+          "score": 58,
+          "price": 275500,
           "price_label": "275,500원",
           "r20": -10.11,
           "r60": -8.32,
           "state": "하락 추세",
           "reason": "철강 스프레드·리튬/소재 가치 회복 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 52.0,
-          "monthly_momentum_score": 39.0,
+          "base_score": 68,
+          "monthly_trading_score": 52,
+          "monthly_momentum_score": 39,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
           "price_source": "Naver Stock"
@@ -1320,14 +1341,14 @@
           "name": "고려아연",
           "ticker": "010130.KS",
           "score": 51.8,
-          "price": 878000.0,
+          "price": 878000,
           "price_label": "878,000원",
           "r20": -17.48,
           "r60": -5.08,
           "state": "하락 추세",
           "reason": "비철금속 가격·제련 수익성과 신사업 투자 [AI]",
-          "base_score": 68.0,
-          "monthly_trading_score": 40.0,
+          "base_score": 68,
+          "monthly_trading_score": 40,
           "monthly_momentum_score": 25.5,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1337,14 +1358,14 @@
           "name": "풍산",
           "ticker": "103140.KS",
           "score": 51.5,
-          "price": 58400.0,
+          "price": 58400,
           "price_label": "58,400원",
           "r20": -25.03,
           "r60": -2.5,
           "state": "하락 추세",
           "reason": "구리 가격·방산 매출·신동 스프레드 [AI]",
-          "base_score": 69.0,
-          "monthly_trading_score": 37.0,
+          "base_score": 69,
+          "monthly_trading_score": 37,
           "monthly_momentum_score": 27.1,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1365,14 +1386,14 @@
           "name": "HMM",
           "ticker": "011200.KS",
           "score": 65.2,
-          "price": 22300.0,
+          "price": 22300,
           "price_label": "22,300원",
           "r20": 6.19,
           "r60": 7.99,
           "state": "상승 추세",
           "reason": "컨테이너 운임·주주환원 이벤트 [AI]",
-          "base_score": 65.0,
-          "monthly_trading_score": 63.0,
+          "base_score": 65,
+          "monthly_trading_score": 63,
           "monthly_momentum_score": 71.3,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1382,14 +1403,14 @@
           "name": "CJ대한통운",
           "ticker": "000120.KS",
           "score": 55.6,
-          "price": 64800.0,
+          "price": 64800,
           "price_label": "64,800원",
           "r20": -8.22,
           "r60": -11.72,
           "state": "하락 추세",
           "reason": "물류 자동화·택배 단가·글로벌 사업 개선 [AI]",
-          "base_score": 66.0,
-          "monthly_trading_score": 46.0,
+          "base_score": 66,
+          "monthly_trading_score": 46,
           "monthly_momentum_score": 43.2,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1399,14 +1420,14 @@
           "name": "대한항공",
           "ticker": "003490.KS",
           "score": 48.5,
-          "price": 26450.0,
+          "price": 26450,
           "price_label": "26,450원",
           "r20": -15.76,
           "r60": 7.3,
           "state": "조정",
           "reason": "국제선 수요·화물 운임·통합 시너지 [AI]",
-          "base_score": 67.0,
-          "monthly_trading_score": 27.0,
+          "base_score": 67,
+          "monthly_trading_score": 27,
           "monthly_momentum_score": 37.3,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1427,14 +1448,14 @@
           "name": "경농",
           "ticker": "002100.KS",
           "score": 59.9,
-          "price": 8910.0,
+          "price": 8910,
           "price_label": "8,910원",
           "r20": -1.11,
           "r60": -1.55,
           "state": "하락 추세",
           "reason": "농약·스마트팜·농업 정책과 계절 수요 [AI]",
-          "base_score": 62.0,
-          "monthly_trading_score": 62.0,
+          "base_score": 62,
+          "monthly_trading_score": 62,
           "monthly_momentum_score": 48.2,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1444,14 +1465,14 @@
           "name": "대동",
           "ticker": "000490.KS",
           "score": 57.8,
-          "price": 7000.0,
+          "price": 7000,
           "price_label": "7,000원",
           "r20": -7.41,
           "r60": 18.85,
           "state": "하락 추세",
           "reason": "스마트농기계·농업 자동화 [AI]",
-          "base_score": 65.0,
-          "monthly_trading_score": 57.0,
+          "base_score": 65,
+          "monthly_trading_score": 57,
           "monthly_momentum_score": 35.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1461,14 +1482,14 @@
           "name": "남해화학",
           "ticker": "025860.KS",
           "score": 56.9,
-          "price": 5460.0,
+          "price": 5460,
           "price_label": "5,460원",
           "r20": -10.78,
           "r60": 2.25,
           "state": "하락 추세",
           "reason": "비료 가격·원재료 스프레드·농업 수요 [AI]",
-          "base_score": 63.0,
-          "monthly_trading_score": 53.0,
+          "base_score": 63,
+          "monthly_trading_score": 53,
           "monthly_momentum_score": 45.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1488,15 +1509,15 @@
         {
           "name": "도화엔지니어링",
           "ticker": "002150.KS",
-          "score": 71.0,
-          "price": 5140.0,
+          "score": 71,
+          "price": 5140,
           "price_label": "5,140원",
           "r20": 1.78,
           "r60": 8.32,
           "state": "상승 추세",
           "reason": "인프라·재건·지역개발 엔지니어링 수주 [AI]",
-          "base_score": 63.0,
-          "monthly_trading_score": 89.0,
+          "base_score": 63,
+          "monthly_trading_score": 89,
           "monthly_momentum_score": 55.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1506,14 +1527,14 @@
           "name": "유신",
           "ticker": "054930.KQ",
           "score": 64.8,
-          "price": 17240.0,
+          "price": 17240,
           "price_label": "17,240원",
           "r20": -1.54,
           "r60": 12.17,
           "state": "조정",
           "reason": "철도·도로·도시개발·재건 프로젝트 [AI]",
-          "base_score": 62.0,
-          "monthly_trading_score": 59.0,
+          "base_score": 62,
+          "monthly_trading_score": 59,
           "monthly_momentum_score": 87.4,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1523,14 +1544,14 @@
           "name": "현대로템",
           "ticker": "064350.KS",
           "score": 54.4,
-          "price": 79000.0,
+          "price": 79000,
           "price_label": "79,000원",
           "r20": -29.65,
           "r60": -34.44,
           "state": "하락 추세",
           "reason": "철도·방산·정책 인프라 수주 [AI]",
-          "base_score": 73.0,
-          "monthly_trading_score": 47.0,
+          "base_score": 73,
+          "monthly_trading_score": 47,
           "monthly_momentum_score": 9.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1551,14 +1572,14 @@
           "name": "삼성전기",
           "ticker": "009150.KS",
           "score": 66.9,
-          "price": 1293000.0,
+          "price": 1293000,
           "price_label": "1,293,000원",
           "r20": -15.38,
           "r60": 47.1,
           "state": "하락 추세",
           "reason": "AI 서버용 MLCC · FCBGA 고부가 Mix 확대 [AI]",
-          "base_score": 92.0,
-          "monthly_trading_score": 45.0,
+          "base_score": 92,
+          "monthly_trading_score": 45,
           "monthly_momentum_score": 34.6,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1568,14 +1589,14 @@
           "name": "삼성전자",
           "ticker": "005930.KS",
           "score": 58.3,
-          "price": 232000.0,
+          "price": 232000,
           "price_label": "232,000원",
           "r20": -14.86,
           "r60": 12.08,
           "state": "하락 추세",
           "reason": "메모리 업사이클 · HBM4 · 파운드리 개선 [AI]",
-          "base_score": 82.0,
-          "monthly_trading_score": 37.0,
+          "base_score": 82,
+          "monthly_trading_score": 37,
           "monthly_momentum_score": 28.8,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1585,14 +1606,14 @@
           "name": "SK하이닉스",
           "ticker": "000660.KS",
           "score": 57.1,
-          "price": 1526000.0,
+          "price": 1526000,
           "price_label": "1,526,000원",
           "r20": -13.54,
           "r60": 15.43,
           "state": "하락 추세",
           "reason": "HBM4 · AI 메모리 이익 레버리지 [AI]",
-          "base_score": 86.0,
-          "monthly_trading_score": 37.0,
+          "base_score": 86,
+          "monthly_trading_score": 37,
           "monthly_momentum_score": 7.7,
           "selection_as_of": "2026-10-16",
           "price_date": "2026-10-29",
@@ -1615,7 +1636,7 @@
       "score": 68.32,
       "selection_score": 68.32,
       "fundamental_score": 65.2,
-      "selection_trading_score": 73.0,
+      "selection_trading_score": 73,
       "rating": "Neutral",
       "text": {
         "stock1": "HMM",
@@ -1876,60 +1897,60 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 27076.0,
+            "revenue": 27076,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 3173.0,
+            "op": 3173,
             "opm": 11.71886541586645,
-            "net": 3639.0,
-            "eps": 386.0,
+            "net": 3639,
+            "eps": 386,
             "qoq": 0.04433934377772175
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 27187.0,
+            "revenue": 27187,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 2691.0,
+            "op": 2691,
             "opm": 9.898113068746092,
-            "net": 3536.0,
-            "eps": 375.0,
+            "net": 3536,
+            "eps": 375,
             "qoq": 0.40995715763036955
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 34020.0,
+            "revenue": 34020,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 3541.0,
+            "op": 3541,
             "opm": 10.408583186360964,
-            "net": 4114.0,
-            "eps": 436.0,
+            "net": 4114,
+            "eps": 436,
             "qoq": 25.133335785485713
           },
           {
             "raw_date": "2026.09",
             "label": "2026Q3E",
             "estimate": true,
-            "revenue": 39157.0,
+            "revenue": 39157,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 8526.0,
+            "op": 8526,
             "opm": 21.773884618331333,
-            "net": 10428.0,
-            "eps": 961.0,
+            "net": 10428,
+            "eps": 961,
             "qoq": 15.099941211052315
           }
         ],
@@ -1941,9 +1962,9 @@
         "per": 15.12,
         "forward_per": 9.11,
         "pbr": 0.74,
-        "eps": 1488.0,
-        "forward_eps": 2470.0,
-        "bps": 30457.0,
+        "eps": 1488,
+        "forward_eps": 2470,
+        "bps": 30457,
         "target_price": null,
         "market_value": "21조 2,229억",
         "source": "Naver Stock integration",
@@ -1961,7 +1982,7 @@
       "score": 64.52,
       "selection_score": 64.52,
       "fundamental_score": 68.2,
-      "selection_trading_score": 59.0,
+      "selection_trading_score": 59,
       "rating": "Neutral",
       "text": {
         "stock1": "HMM",
@@ -2222,60 +2243,60 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 13302.0,
+            "revenue": 13302,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 4752.0,
+            "op": 4752,
             "opm": 35.72395128552097,
-            "net": 5279.0,
-            "eps": 2181.0,
+            "net": 5279,
+            "eps": 2181,
             "qoq": 29.271137026239067
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 11450.0,
+            "revenue": 11450,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 3219.0,
+            "op": 3219,
             "opm": 28.11353711790393,
-            "net": 3498.0,
-            "eps": 1428.0,
+            "net": 3498,
+            "eps": 1428,
             "qoq": -13.922718388212296
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 13937.0,
+            "revenue": 13937,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 4518.0,
+            "op": 4518,
             "opm": 32.41730645045563,
-            "net": 3713.0,
-            "eps": 1590.0,
+            "net": 3713,
+            "eps": 1590,
             "qoq": 21.72052401746725
           },
           {
             "raw_date": "2026.09",
             "label": "2026Q3E",
             "estimate": true,
-            "revenue": 14506.0,
+            "revenue": 14506,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 5096.0,
+            "op": 5096,
             "opm": 35.130290914104506,
-            "net": 4299.0,
-            "eps": 1751.0,
+            "net": 4299,
+            "eps": 1751,
             "qoq": 4.082657673817902
           }
         ],
@@ -2287,9 +2308,9 @@
         "per": 29.02,
         "forward_per": 30.82,
         "pbr": 2.43,
-        "eps": 6568.0,
-        "forward_eps": 6184.0,
-        "bps": 78325.0,
+        "eps": 6568,
+        "forward_eps": 6184,
+        "bps": 78325,
         "target_price": null,
         "market_value": "44조 2,331억",
         "source": "Naver Stock integration",
@@ -2306,8 +2327,8 @@
       "sector_name": "정부정책 / 지역개발 / 남북경협 / 재건",
       "score": 63.4,
       "selection_score": 63.4,
-      "fundamental_score": 71.0,
-      "selection_trading_score": 52.0,
+      "fundamental_score": 71,
+      "selection_trading_score": 52,
       "rating": "Neutral",
       "text": {
         "stock1": "HMM",
@@ -2568,45 +2589,45 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 1934.0,
+            "revenue": 1934,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 141.0,
+            "op": 141,
             "opm": 7.290589451913133,
-            "net": 8.0,
-            "eps": 36.0,
+            "net": 8,
+            "eps": 36,
             "qoq": 7.028223574986159
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 1555.0,
+            "revenue": 1555,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": -24.0,
+            "op": -24,
             "opm": -1.5434083601286173,
-            "net": -29.0,
-            "eps": -54.0,
+            "net": -29,
+            "eps": -54,
             "qoq": -19.59669079627715
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 1696.0,
+            "revenue": 1696,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 45.0,
+            "op": 45,
             "opm": 2.6533018867924527,
-            "net": 34.0,
-            "eps": 122.0,
+            "net": 34,
+            "eps": 122,
             "qoq": 9.06752411575562
           },
           {
@@ -2633,9 +2654,9 @@
         "per": 19.69,
         "forward_per": null,
         "pbr": 0.68,
-        "eps": 260.0,
+        "eps": 260,
         "forward_eps": null,
-        "bps": 7481.0,
+        "bps": 7481,
         "target_price": null,
         "market_value": "1,726억",
         "source": "Naver Stock integration",
@@ -2653,7 +2674,7 @@
       "score": 60.94,
       "selection_score": 60.94,
       "fundamental_score": 66.9,
-      "selection_trading_score": 52.0,
+      "selection_trading_score": 52,
       "rating": "Neutral",
       "text": {
         "stock1": "HMM",
@@ -2914,60 +2935,60 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 29021.0,
+            "revenue": 29021,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 2395.0,
+            "op": 2395,
             "opm": 8.252644636642431,
-            "net": 2273.0,
-            "eps": 2871.0,
+            "net": 2273,
+            "eps": 2871,
             "qoq": 0.4534440983039012
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 32091.0,
+            "revenue": 32091,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 2806.0,
+            "op": 2806,
             "opm": 8.743884578230658,
-            "net": 2527.0,
-            "eps": 3211.0,
+            "net": 2527,
+            "eps": 3211,
             "qoq": 10.578546569725367
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 34572.0,
+            "revenue": 34572,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 4404.0,
+            "op": 4404,
             "opm": 12.738632419298854,
-            "net": 3283.0,
-            "eps": 4068.0,
+            "net": 3283,
+            "eps": 4068,
             "qoq": 7.731139571842571
           },
           {
             "raw_date": "2026.09",
             "label": "2026Q3E",
             "estimate": true,
-            "revenue": 38264.0,
+            "revenue": 38264,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 6453.0,
+            "op": 6453,
             "opm": 16.864415638720466,
-            "net": 5269.0,
-            "eps": 6535.0,
+            "net": 5269,
+            "eps": 6535,
             "qoq": 10.679162327895408
           }
         ],
@@ -2979,9 +3000,9 @@
         "per": 98.74,
         "forward_per": 61.29,
         "pbr": 9.47,
-        "eps": 12984.0,
-        "forward_eps": 20918.0,
-        "bps": 135420.0,
+        "eps": 12984,
+        "forward_eps": 20918,
+        "bps": 135420,
         "target_price": null,
         "market_value": "95조 7,573억",
         "source": "Naver Stock integration",
@@ -2999,7 +3020,7 @@
       "score": 60.32,
       "selection_score": 60.32,
       "fundamental_score": 65.2,
-      "selection_trading_score": 53.0,
+      "selection_trading_score": 53,
       "rating": "Neutral",
       "text": {
         "stock1": "HMM",
@@ -3260,60 +3281,60 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 11634.0,
+            "revenue": 11634,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 525.0,
+            "op": 525,
             "opm": 4.512635379061372,
-            "net": 225.0,
-            "eps": 335.0,
+            "net": 225,
+            "eps": 335,
             "qoq": 14.40652964893303
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 11358.0,
+            "revenue": 11358,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 1267.0,
+            "op": 1267,
             "opm": 11.155132945941187,
-            "net": 1130.0,
-            "eps": 1572.0,
+            "net": 1130,
+            "eps": 1572,
             "qoq": -2.372356884992266
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 11759.0,
+            "revenue": 11759,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 1173.0,
+            "op": 1173,
             "opm": 9.975338038948891,
-            "net": 934.0,
-            "eps": 1279.0,
+            "net": 934,
+            "eps": 1279,
             "qoq": 3.5305511533720635
           },
           {
             "raw_date": "2026.09",
             "label": "2026Q3E",
             "estimate": true,
-            "revenue": 11357.0,
+            "revenue": 11357,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 1164.0,
+            "op": 1164,
             "opm": 10.249185524346219,
-            "net": 867.0,
-            "eps": 1277.0,
+            "net": 867,
+            "eps": 1277,
             "qoq": -3.4186580491538443
           }
         ],
@@ -3325,9 +3346,9 @@
         "per": 29.72,
         "forward_per": 22.7,
         "pbr": 1.52,
-        "eps": 4142.0,
-        "forward_eps": 5423.0,
-        "bps": 80855.0,
+        "eps": 4142,
+        "forward_eps": 5423,
+        "bps": 80855,
         "target_price": null,
         "market_value": "7조 2,005억",
         "source": "Naver Stock integration",
@@ -3369,8 +3390,8 @@
         "method": "KOSPI 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSPI 20D ≤ -10% → 상단 54",
         "flow": {
-          "foreign": 1221.0,
-          "institution": -4132.0,
+          "foreign": 1221,
+          "institution": -4132,
           "text": "외인 +1,221억 · 기관 -4,132억",
           "score": 46.3
         },
@@ -3385,7 +3406,7 @@
           {
             "key": "trend20",
             "label": "KOSPI 20D 추세",
-            "score": 23.0,
+            "score": 23,
             "weight": 20,
             "value": "-13.58%"
           },
@@ -3399,7 +3420,7 @@
           {
             "key": "volatility",
             "label": "변동성 · 20D RV",
-            "score": 5.0,
+            "score": 5,
             "weight": 15,
             "value": "51.3%"
           },
@@ -3428,32 +3449,32 @@
         "trend5_detail": {
           "price_vs_ma5": 3.775,
           "ma5_slope_5d": 1.239,
-          "position_score": 100.0,
+          "position_score": 100,
           "slope_score": 70.6
         },
         "trend20_detail": {
-          "absolute_score": 16.0,
+          "absolute_score": 16,
           "percentile_score": 33.3
         },
         "trend60_detail": {
           "absolute_score": 60.3,
-          "percentile_score": 98.0
+          "percentile_score": 98
         }
       },
       "kosdaq": {
         "available": true,
         "fresh": true,
         "market": "KOSDAQ",
-        "score": 39.0,
-        "raw_score": 39.0,
+        "score": 39,
+        "raw_score": 39,
         "rating": "공포",
         "timestamp": "2026-10-30T07:37:02.807931+09:00",
         "source": "KOSDAQ·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSDAQ 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSDAQ 20D ≤ -10% → 상단 54",
         "flow": {
-          "foreign": -1210.0,
-          "institution": -740.0,
+          "foreign": -1210,
+          "institution": -740,
           "text": "외인 -1,210억 · 기관 -740억",
           "score": 45.9
         },
@@ -3461,7 +3482,7 @@
           {
             "key": "trend5",
             "label": "KOSDAQ 5D 추세",
-            "score": 35.0,
+            "score": 35,
             "weight": 25,
             "value": "P/MA5 +0.50% · MA5 -4.95%"
           },
@@ -3482,7 +3503,7 @@
           {
             "key": "volatility",
             "label": "변동성 · 20D RV",
-            "score": 5.0,
+            "score": 5,
             "weight": 15,
             "value": "50.5%"
           },
@@ -3512,21 +3533,21 @@
           "price_vs_ma5": 0.505,
           "ma5_slope_5d": -4.953,
           "position_score": 58.4,
-          "slope_score": 0.0
+          "slope_score": 0
         },
         "trend20_detail": {
           "absolute_score": 21.6,
           "percentile_score": 33.3
         },
         "trend60_detail": {
-          "absolute_score": 78.0,
-          "percentile_score": 100.0
+          "absolute_score": 78,
+          "percentile_score": 100
         }
       },
       "components": [],
       "errors": []
     },
-    "blended_score": 41.0,
+    "blended_score": 41,
     "blended_rating": "공포",
     "kr_us_gap": 11.6,
     "regime": "SELECTIVE RISK-OFF",
@@ -3550,7 +3571,7 @@
         "score": 68.32,
         "selection_score": 68.32,
         "fundamental_score": 65.2,
-        "selection_trading_score": 73.0,
+        "selection_trading_score": 73,
         "rating": "Neutral",
         "text": {
           "stock1": "HMM",
@@ -3811,60 +3832,60 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 27076.0,
+              "revenue": 27076,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 3173.0,
+              "op": 3173,
               "opm": 11.71886541586645,
-              "net": 3639.0,
-              "eps": 386.0,
+              "net": 3639,
+              "eps": 386,
               "qoq": 0.04433934377772175
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 27187.0,
+              "revenue": 27187,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 2691.0,
+              "op": 2691,
               "opm": 9.898113068746092,
-              "net": 3536.0,
-              "eps": 375.0,
+              "net": 3536,
+              "eps": 375,
               "qoq": 0.40995715763036955
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 34020.0,
+              "revenue": 34020,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 3541.0,
+              "op": 3541,
               "opm": 10.408583186360964,
-              "net": 4114.0,
-              "eps": 436.0,
+              "net": 4114,
+              "eps": 436,
               "qoq": 25.133335785485713
             },
             {
               "raw_date": "2026.09",
               "label": "2026Q3E",
               "estimate": true,
-              "revenue": 39157.0,
+              "revenue": 39157,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 8526.0,
+              "op": 8526,
               "opm": 21.773884618331333,
-              "net": 10428.0,
-              "eps": 961.0,
+              "net": 10428,
+              "eps": 961,
               "qoq": 15.099941211052315
             }
           ],
@@ -3876,9 +3897,9 @@
           "per": 15.12,
           "forward_per": 9.11,
           "pbr": 0.74,
-          "eps": 1488.0,
-          "forward_eps": 2470.0,
-          "bps": 30457.0,
+          "eps": 1488,
+          "forward_eps": 2470,
+          "bps": 30457,
           "target_price": null,
           "market_value": "21조 2,229억",
           "source": "Naver Stock integration",
@@ -3896,7 +3917,7 @@
         "score": 64.52,
         "selection_score": 64.52,
         "fundamental_score": 68.2,
-        "selection_trading_score": 59.0,
+        "selection_trading_score": 59,
         "rating": "Neutral",
         "text": {
           "stock1": "HMM",
@@ -4157,60 +4178,60 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 13302.0,
+              "revenue": 13302,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 4752.0,
+              "op": 4752,
               "opm": 35.72395128552097,
-              "net": 5279.0,
-              "eps": 2181.0,
+              "net": 5279,
+              "eps": 2181,
               "qoq": 29.271137026239067
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 11450.0,
+              "revenue": 11450,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 3219.0,
+              "op": 3219,
               "opm": 28.11353711790393,
-              "net": 3498.0,
-              "eps": 1428.0,
+              "net": 3498,
+              "eps": 1428,
               "qoq": -13.922718388212296
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 13937.0,
+              "revenue": 13937,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 4518.0,
+              "op": 4518,
               "opm": 32.41730645045563,
-              "net": 3713.0,
-              "eps": 1590.0,
+              "net": 3713,
+              "eps": 1590,
               "qoq": 21.72052401746725
             },
             {
               "raw_date": "2026.09",
               "label": "2026Q3E",
               "estimate": true,
-              "revenue": 14506.0,
+              "revenue": 14506,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 5096.0,
+              "op": 5096,
               "opm": 35.130290914104506,
-              "net": 4299.0,
-              "eps": 1751.0,
+              "net": 4299,
+              "eps": 1751,
               "qoq": 4.082657673817902
             }
           ],
@@ -4222,9 +4243,9 @@
           "per": 29.02,
           "forward_per": 30.82,
           "pbr": 2.43,
-          "eps": 6568.0,
-          "forward_eps": 6184.0,
-          "bps": 78325.0,
+          "eps": 6568,
+          "forward_eps": 6184,
+          "bps": 78325,
           "target_price": null,
           "market_value": "44조 2,331억",
           "source": "Naver Stock integration",
@@ -4241,8 +4262,8 @@
         "sector_name": "정부정책 / 지역개발 / 남북경협 / 재건",
         "score": 63.4,
         "selection_score": 63.4,
-        "fundamental_score": 71.0,
-        "selection_trading_score": 52.0,
+        "fundamental_score": 71,
+        "selection_trading_score": 52,
         "rating": "Neutral",
         "text": {
           "stock1": "HMM",
@@ -4503,45 +4524,45 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 1934.0,
+              "revenue": 1934,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 141.0,
+              "op": 141,
               "opm": 7.290589451913133,
-              "net": 8.0,
-              "eps": 36.0,
+              "net": 8,
+              "eps": 36,
               "qoq": 7.028223574986159
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 1555.0,
+              "revenue": 1555,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": -24.0,
+              "op": -24,
               "opm": -1.5434083601286173,
-              "net": -29.0,
-              "eps": -54.0,
+              "net": -29,
+              "eps": -54,
               "qoq": -19.59669079627715
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 1696.0,
+              "revenue": 1696,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 45.0,
+              "op": 45,
               "opm": 2.6533018867924527,
-              "net": 34.0,
-              "eps": 122.0,
+              "net": 34,
+              "eps": 122,
               "qoq": 9.06752411575562
             },
             {
@@ -4568,9 +4589,9 @@
           "per": 19.69,
           "forward_per": null,
           "pbr": 0.68,
-          "eps": 260.0,
+          "eps": 260,
           "forward_eps": null,
-          "bps": 7481.0,
+          "bps": 7481,
           "target_price": null,
           "market_value": "1,726억",
           "source": "Naver Stock integration",
@@ -4588,7 +4609,7 @@
         "score": 60.94,
         "selection_score": 60.94,
         "fundamental_score": 66.9,
-        "selection_trading_score": 52.0,
+        "selection_trading_score": 52,
         "rating": "Neutral",
         "text": {
           "stock1": "HMM",
@@ -4849,60 +4870,60 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 29021.0,
+              "revenue": 29021,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 2395.0,
+              "op": 2395,
               "opm": 8.252644636642431,
-              "net": 2273.0,
-              "eps": 2871.0,
+              "net": 2273,
+              "eps": 2871,
               "qoq": 0.4534440983039012
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 32091.0,
+              "revenue": 32091,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 2806.0,
+              "op": 2806,
               "opm": 8.743884578230658,
-              "net": 2527.0,
-              "eps": 3211.0,
+              "net": 2527,
+              "eps": 3211,
               "qoq": 10.578546569725367
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 34572.0,
+              "revenue": 34572,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 4404.0,
+              "op": 4404,
               "opm": 12.738632419298854,
-              "net": 3283.0,
-              "eps": 4068.0,
+              "net": 3283,
+              "eps": 4068,
               "qoq": 7.731139571842571
             },
             {
               "raw_date": "2026.09",
               "label": "2026Q3E",
               "estimate": true,
-              "revenue": 38264.0,
+              "revenue": 38264,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 6453.0,
+              "op": 6453,
               "opm": 16.864415638720466,
-              "net": 5269.0,
-              "eps": 6535.0,
+              "net": 5269,
+              "eps": 6535,
               "qoq": 10.679162327895408
             }
           ],
@@ -4914,9 +4935,9 @@
           "per": 98.74,
           "forward_per": 61.29,
           "pbr": 9.47,
-          "eps": 12984.0,
-          "forward_eps": 20918.0,
-          "bps": 135420.0,
+          "eps": 12984,
+          "forward_eps": 20918,
+          "bps": 135420,
           "target_price": null,
           "market_value": "95조 7,573억",
           "source": "Naver Stock integration",
@@ -4934,7 +4955,7 @@
         "score": 60.32,
         "selection_score": 60.32,
         "fundamental_score": 65.2,
-        "selection_trading_score": 53.0,
+        "selection_trading_score": 53,
         "rating": "Neutral",
         "text": {
           "stock1": "HMM",
@@ -5195,60 +5216,60 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 11634.0,
+              "revenue": 11634,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 525.0,
+              "op": 525,
               "opm": 4.512635379061372,
-              "net": 225.0,
-              "eps": 335.0,
+              "net": 225,
+              "eps": 335,
               "qoq": 14.40652964893303
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 11358.0,
+              "revenue": 11358,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 1267.0,
+              "op": 1267,
               "opm": 11.155132945941187,
-              "net": 1130.0,
-              "eps": 1572.0,
+              "net": 1130,
+              "eps": 1572,
               "qoq": -2.372356884992266
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 11759.0,
+              "revenue": 11759,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 1173.0,
+              "op": 1173,
               "opm": 9.975338038948891,
-              "net": 934.0,
-              "eps": 1279.0,
+              "net": 934,
+              "eps": 1279,
               "qoq": 3.5305511533720635
             },
             {
               "raw_date": "2026.09",
               "label": "2026Q3E",
               "estimate": true,
-              "revenue": 11357.0,
+              "revenue": 11357,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 1164.0,
+              "op": 1164,
               "opm": 10.249185524346219,
-              "net": 867.0,
-              "eps": 1277.0,
+              "net": 867,
+              "eps": 1277,
               "qoq": -3.4186580491538443
             }
           ],
@@ -5260,9 +5281,9 @@
           "per": 29.72,
           "forward_per": 22.7,
           "pbr": 1.52,
-          "eps": 4142.0,
-          "forward_eps": 5423.0,
-          "bps": 80855.0,
+          "eps": 4142,
+          "forward_eps": 5423,
+          "bps": 80855,
           "target_price": null,
           "market_value": "7조 2,005억",
           "source": "Naver Stock integration",
@@ -5282,7 +5303,7 @@
         "score": 63.3,
         "selection_score": 63.3,
         "fundamental_score": 61.5,
-        "selection_trading_score": 66.0,
+        "selection_trading_score": 66,
         "selection_priority": "60~69",
         "rating": "Neutral",
         "text": {
@@ -5547,60 +5568,60 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 2326.0,
+              "revenue": 2326,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 419.0,
+              "op": 419,
               "opm": 18.013757523645744,
-              "net": 279.0,
-              "eps": 779.0,
-              "qoq": 0.0
+              "net": 279,
+              "eps": 779,
+              "qoq": 0
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 1860.0,
+              "revenue": 1860,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 334.0,
+              "op": 334,
               "opm": 17.956989247311828,
-              "net": 319.0,
-              "eps": 902.0,
+              "net": 319,
+              "eps": 902,
               "qoq": -20.03439380911436
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 1831.0,
+              "revenue": 1831,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 310.0,
+              "op": 310,
               "opm": 16.930638995084653,
-              "net": 217.0,
-              "eps": 614.0,
+              "net": 217,
+              "eps": 614,
               "qoq": -1.5591397849462396
             },
             {
               "raw_date": "2026.09",
               "label": "2026Q3E",
               "estimate": true,
-              "revenue": 2360.0,
+              "revenue": 2360,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 433.0,
+              "op": 433,
               "opm": 18.347457627118644,
-              "net": 309.0,
-              "eps": 893.0,
+              "net": 309,
+              "eps": 893,
               "qoq": 28.89131622064445
             }
           ],
@@ -5612,9 +5633,9 @@
           "per": 12.63,
           "forward_per": 12.28,
           "pbr": 1.97,
-          "eps": 3057.0,
-          "forward_eps": 3144.0,
-          "bps": 19575.0,
+          "eps": 3057,
+          "forward_eps": 3144,
+          "bps": 19575,
           "target_price": null,
           "market_value": "1조 3,716억",
           "source": "Naver Stock integration",
@@ -5632,7 +5653,7 @@
         "score": 61.72,
         "selection_score": 61.72,
         "fundamental_score": 58.2,
-        "selection_trading_score": 67.0,
+        "selection_trading_score": 67,
         "selection_priority": "60~69",
         "rating": "Neutral",
         "text": {
@@ -5897,60 +5918,60 @@
               "raw_date": "2025.12",
               "label": "2025Q4A",
               "estimate": false,
-              "revenue": 116.0,
+              "revenue": 116,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 21.0,
+              "op": 21,
               "opm": 18.103448275862068,
-              "net": 30.0,
-              "eps": 214.0,
+              "net": 30,
+              "eps": 214,
               "qoq": 26.086956521739136
             },
             {
               "raw_date": "2026.03",
               "label": "2026Q1A",
               "estimate": false,
-              "revenue": 118.0,
+              "revenue": 118,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": -118.0,
-              "opm": -100.0,
-              "net": -99.0,
-              "eps": -687.0,
+              "op": -118,
+              "opm": -100,
+              "net": -99,
+              "eps": -687,
               "qoq": 1.724137931034475
             },
             {
               "raw_date": "2026.06",
               "label": "2026Q2A",
               "estimate": false,
-              "revenue": 154.0,
+              "revenue": 154,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 20.0,
+              "op": 20,
               "opm": 12.987012987012985,
-              "net": 26.0,
-              "eps": 171.0,
+              "net": 26,
+              "eps": 171,
               "qoq": 30.508474576271194
             },
             {
               "raw_date": "2026.09",
               "label": "2026Q3E",
               "estimate": true,
-              "revenue": 163.0,
+              "revenue": 163,
               "gross": null,
               "cogs": null,
               "sga": null,
               "gpm": null,
-              "op": 22.0,
+              "op": 22,
               "opm": 13.496932515337424,
               "net": null,
-              "eps": 217.0,
+              "eps": 217,
               "qoq": 5.844155844155852
             }
           ],
@@ -5962,9 +5983,9 @@
           "per": null,
           "forward_per": -3011.36,
           "pbr": 10.78,
-          "eps": -266.0,
-          "forward_eps": -88.0,
-          "bps": 24572.0,
+          "eps": -266,
+          "forward_eps": -88,
+          "bps": 24572,
           "target_price": null,
           "market_value": "3조 8,878억",
           "source": "Naver Stock integration",
@@ -5985,7 +6006,7 @@
       "score": 63.3,
       "selection_score": 63.3,
       "fundamental_score": 61.5,
-      "selection_trading_score": 66.0,
+      "selection_trading_score": 66,
       "selection_priority": "60~69",
       "rating": "Neutral",
       "text": {
@@ -6250,60 +6271,60 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 2326.0,
+            "revenue": 2326,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 419.0,
+            "op": 419,
             "opm": 18.013757523645744,
-            "net": 279.0,
-            "eps": 779.0,
-            "qoq": 0.0
+            "net": 279,
+            "eps": 779,
+            "qoq": 0
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 1860.0,
+            "revenue": 1860,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 334.0,
+            "op": 334,
             "opm": 17.956989247311828,
-            "net": 319.0,
-            "eps": 902.0,
+            "net": 319,
+            "eps": 902,
             "qoq": -20.03439380911436
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 1831.0,
+            "revenue": 1831,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 310.0,
+            "op": 310,
             "opm": 16.930638995084653,
-            "net": 217.0,
-            "eps": 614.0,
+            "net": 217,
+            "eps": 614,
             "qoq": -1.5591397849462396
           },
           {
             "raw_date": "2026.09",
             "label": "2026Q3E",
             "estimate": true,
-            "revenue": 2360.0,
+            "revenue": 2360,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 433.0,
+            "op": 433,
             "opm": 18.347457627118644,
-            "net": 309.0,
-            "eps": 893.0,
+            "net": 309,
+            "eps": 893,
             "qoq": 28.89131622064445
           }
         ],
@@ -6315,9 +6336,9 @@
         "per": 12.63,
         "forward_per": 12.28,
         "pbr": 1.97,
-        "eps": 3057.0,
-        "forward_eps": 3144.0,
-        "bps": 19575.0,
+        "eps": 3057,
+        "forward_eps": 3144,
+        "bps": 19575,
         "target_price": null,
         "market_value": "1조 3,716억",
         "source": "Naver Stock integration",
@@ -6335,7 +6356,7 @@
       "score": 61.72,
       "selection_score": 61.72,
       "fundamental_score": 58.2,
-      "selection_trading_score": 67.0,
+      "selection_trading_score": 67,
       "selection_priority": "60~69",
       "rating": "Neutral",
       "text": {
@@ -6600,60 +6621,60 @@
             "raw_date": "2025.12",
             "label": "2025Q4A",
             "estimate": false,
-            "revenue": 116.0,
+            "revenue": 116,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 21.0,
+            "op": 21,
             "opm": 18.103448275862068,
-            "net": 30.0,
-            "eps": 214.0,
+            "net": 30,
+            "eps": 214,
             "qoq": 26.086956521739136
           },
           {
             "raw_date": "2026.03",
             "label": "2026Q1A",
             "estimate": false,
-            "revenue": 118.0,
+            "revenue": 118,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": -118.0,
-            "opm": -100.0,
-            "net": -99.0,
-            "eps": -687.0,
+            "op": -118,
+            "opm": -100,
+            "net": -99,
+            "eps": -687,
             "qoq": 1.724137931034475
           },
           {
             "raw_date": "2026.06",
             "label": "2026Q2A",
             "estimate": false,
-            "revenue": 154.0,
+            "revenue": 154,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 20.0,
+            "op": 20,
             "opm": 12.987012987012985,
-            "net": 26.0,
-            "eps": 171.0,
+            "net": 26,
+            "eps": 171,
             "qoq": 30.508474576271194
           },
           {
             "raw_date": "2026.09",
             "label": "2026Q3E",
             "estimate": true,
-            "revenue": 163.0,
+            "revenue": 163,
             "gross": null,
             "cogs": null,
             "sga": null,
             "gpm": null,
-            "op": 22.0,
+            "op": 22,
             "opm": 13.496932515337424,
             "net": null,
-            "eps": 217.0,
+            "eps": 217,
             "qoq": 5.844155844155852
           }
         ],
@@ -6665,9 +6686,9 @@
         "per": null,
         "forward_per": -3011.36,
         "pbr": 10.78,
-        "eps": -266.0,
-        "forward_eps": -88.0,
-        "bps": 24572.0,
+        "eps": -266,
+        "forward_eps": -88,
+        "bps": 24572,
         "target_price": null,
         "market_value": "3조 8,878억",
         "source": "Naver Stock integration",
@@ -6680,7 +6701,7 @@
       "code": "083650",
       "name": "비에이치아이",
       "fundamental_score": 55.4,
-      "trading_score": 41.0,
+      "trading_score": 41,
       "final_score": 49.64,
       "eligible": false,
       "priority": "<60 제외"
@@ -6689,7 +6710,7 @@
       "code": "054930",
       "name": "유신",
       "fundamental_score": 64.8,
-      "trading_score": 35.0,
+      "trading_score": 35,
       "final_score": 52.88,
       "eligible": false,
       "priority": "<60 제외"
@@ -6698,7 +6719,7 @@
       "code": "196170",
       "name": "알테오젠",
       "fundamental_score": 64.1,
-      "trading_score": 54.0,
+      "trading_score": 54,
       "final_score": 60.06,
       "eligible": false,
       "priority": "<60 제외"
@@ -6707,7 +6728,7 @@
       "code": "108490",
       "name": "로보티즈",
       "fundamental_score": 58.2,
-      "trading_score": 67.0,
+      "trading_score": 67,
       "final_score": 61.72,
       "eligible": true,
       "priority": "60~69"
@@ -6716,7 +6737,7 @@
       "code": "189300",
       "name": "인텔리안테크",
       "fundamental_score": 55.1,
-      "trading_score": 47.0,
+      "trading_score": 47,
       "final_score": 51.86,
       "eligible": false,
       "priority": "<60 제외"
@@ -6725,7 +6746,7 @@
       "code": "277810",
       "name": "레인보우로보틱스",
       "fundamental_score": 54.2,
-      "trading_score": 55.0,
+      "trading_score": 55,
       "final_score": 54.52,
       "eligible": false,
       "priority": "<60 제외"
@@ -6734,7 +6755,7 @@
       "code": "035900",
       "name": "JYP Ent.",
       "fundamental_score": 61.5,
-      "trading_score": 66.0,
+      "trading_score": 66,
       "final_score": 63.3,
       "eligible": true,
       "priority": "60~69"
@@ -6745,7 +6766,7 @@
       "code": "000660",
       "name": "SK하이닉스",
       "fundamental_score": 57.1,
-      "trading_score": 56.0,
+      "trading_score": 56,
       "final_score": 56.66,
       "eligible": false,
       "priority": "50~59"
@@ -6754,7 +6775,7 @@
       "code": "009150",
       "name": "삼성전기",
       "fundamental_score": 66.9,
-      "trading_score": 52.0,
+      "trading_score": 52,
       "final_score": 60.94,
       "eligible": true,
       "priority": "50~59"
@@ -6763,7 +6784,7 @@
       "code": "005930",
       "name": "삼성전자",
       "fundamental_score": 58.3,
-      "trading_score": 50.0,
+      "trading_score": 50,
       "final_score": 54.98,
       "eligible": false,
       "priority": "50~59"
@@ -6772,7 +6793,7 @@
       "code": "035420",
       "name": "NAVER",
       "fundamental_score": 58.3,
-      "trading_score": 47.0,
+      "trading_score": 47,
       "final_score": 53.78,
       "eligible": false,
       "priority": "<50"
@@ -6781,7 +6802,7 @@
       "code": "018260",
       "name": "삼성SDS",
       "fundamental_score": 60.3,
-      "trading_score": 44.0,
+      "trading_score": 44,
       "final_score": 53.78,
       "eligible": false,
       "priority": "<50"
@@ -6790,7 +6811,7 @@
       "code": "035720",
       "name": "카카오",
       "fundamental_score": 56.7,
-      "trading_score": 29.0,
+      "trading_score": 29,
       "final_score": 45.62,
       "eligible": false,
       "priority": "<50"
@@ -6799,7 +6820,7 @@
       "code": "010120",
       "name": "LS ELECTRIC",
       "fundamental_score": 58.2,
-      "trading_score": 47.0,
+      "trading_score": 47,
       "final_score": 53.72,
       "eligible": false,
       "priority": "<50"
@@ -6808,7 +6829,7 @@
       "code": "267260",
       "name": "HD현대일렉트릭",
       "fundamental_score": 53.5,
-      "trading_score": 29.0,
+      "trading_score": 29,
       "final_score": 43.7,
       "eligible": false,
       "priority": "<50"
@@ -6817,7 +6838,7 @@
       "code": "298040",
       "name": "효성중공업",
       "fundamental_score": 53.2,
-      "trading_score": 46.0,
+      "trading_score": 46,
       "final_score": 50.32,
       "eligible": false,
       "priority": "<50"
@@ -6826,7 +6847,7 @@
       "code": "006400",
       "name": "삼성SDI",
       "fundamental_score": 62.7,
-      "trading_score": 60.0,
+      "trading_score": 60,
       "final_score": 61.62,
       "eligible": false,
       "priority": "60~69"
@@ -6835,7 +6856,7 @@
       "code": "373220",
       "name": "LG에너지솔루션",
       "fundamental_score": 65.2,
-      "trading_score": 28.0,
+      "trading_score": 28,
       "final_score": 50.32,
       "eligible": false,
       "priority": "<50"
@@ -6844,7 +6865,7 @@
       "code": "003670",
       "name": "포스코퓨처엠",
       "fundamental_score": 57.4,
-      "trading_score": 38.0,
+      "trading_score": 38,
       "final_score": 49.64,
       "eligible": false,
       "priority": "<50"
@@ -6853,7 +6874,7 @@
       "code": "005380",
       "name": "현대차",
       "fundamental_score": 56.8,
-      "trading_score": 54.0,
+      "trading_score": 54,
       "final_score": 55.68,
       "eligible": false,
       "priority": "50~59"
@@ -6862,7 +6883,7 @@
       "code": "000270",
       "name": "기아",
       "fundamental_score": 59.9,
-      "trading_score": 61.0,
+      "trading_score": 61,
       "final_score": 60.34,
       "eligible": false,
       "priority": "60~69"
@@ -6871,7 +6892,7 @@
       "code": "012330",
       "name": "현대모비스",
       "fundamental_score": 62.5,
-      "trading_score": 59.0,
+      "trading_score": 59,
       "final_score": 61.1,
       "eligible": false,
       "priority": "50~59"
@@ -6880,7 +6901,7 @@
       "code": "012450",
       "name": "한화에어로스페이스",
       "fundamental_score": 65.3,
-      "trading_score": 44.0,
+      "trading_score": 44,
       "final_score": 56.78,
       "eligible": false,
       "priority": "<50"
@@ -6889,7 +6910,7 @@
       "code": "079550",
       "name": "LIG넥스원",
       "fundamental_score": 58.4,
-      "trading_score": 29.0,
+      "trading_score": 29,
       "final_score": 46.64,
       "eligible": false,
       "priority": "<50"
@@ -6898,7 +6919,7 @@
       "code": "329180",
       "name": "HD현대중공업",
       "fundamental_score": 49.5,
-      "trading_score": 32.0,
+      "trading_score": 32,
       "final_score": 42.5,
       "eligible": false,
       "priority": "<50"
@@ -6907,7 +6928,7 @@
       "code": "034020",
       "name": "두산에너빌리티",
       "fundamental_score": 55.3,
-      "trading_score": 29.0,
+      "trading_score": 29,
       "final_score": 44.78,
       "eligible": false,
       "priority": "<50"
@@ -6916,7 +6937,7 @@
       "code": "052690",
       "name": "한전기술",
       "fundamental_score": 54.8,
-      "trading_score": 34.0,
+      "trading_score": 34,
       "final_score": 46.48,
       "eligible": false,
       "priority": "<50"
@@ -6925,7 +6946,7 @@
       "code": "207940",
       "name": "삼성바이오로직스",
       "fundamental_score": 60.1,
-      "trading_score": 64.0,
+      "trading_score": 64,
       "final_score": 61.66,
       "eligible": false,
       "priority": "60~69"
@@ -6934,7 +6955,7 @@
       "code": "068270",
       "name": "셀트리온",
       "fundamental_score": 68.2,
-      "trading_score": 59.0,
+      "trading_score": 59,
       "final_score": 64.52,
       "eligible": true,
       "priority": "50~59"
@@ -6943,7 +6964,7 @@
       "code": "000720",
       "name": "현대건설",
       "fundamental_score": 51.8,
-      "trading_score": 39.0,
+      "trading_score": 39,
       "final_score": 46.68,
       "eligible": false,
       "priority": "<50"
@@ -6952,7 +6973,7 @@
       "code": "375500",
       "name": "DL이앤씨",
       "fundamental_score": 51.1,
-      "trading_score": 39.0,
+      "trading_score": 39,
       "final_score": 46.26,
       "eligible": false,
       "priority": "<50"
@@ -6961,7 +6982,7 @@
       "code": "006360",
       "name": "GS건설",
       "fundamental_score": 52.2,
-      "trading_score": 59.0,
+      "trading_score": 59,
       "final_score": 54.92,
       "eligible": false,
       "priority": "50~59"
@@ -6970,7 +6991,7 @@
       "code": "352820",
       "name": "HYBE",
       "fundamental_score": 62.3,
-      "trading_score": 32.0,
+      "trading_score": 32,
       "final_score": 50.18,
       "eligible": false,
       "priority": "<50"
@@ -6979,7 +7000,7 @@
       "code": "036570",
       "name": "엔씨소프트",
       "fundamental_score": 58.1,
-      "trading_score": 36.0,
+      "trading_score": 36,
       "final_score": 49.26,
       "eligible": false,
       "priority": "<50"
@@ -6988,7 +7009,7 @@
       "code": "454910",
       "name": "두산로보틱스",
       "fundamental_score": 53.3,
-      "trading_score": 32.0,
+      "trading_score": 32,
       "final_score": 44.78,
       "eligible": false,
       "priority": "<50"
@@ -6997,7 +7018,7 @@
       "code": "105560",
       "name": "KB금융",
       "fundamental_score": 53.3,
-      "trading_score": 52.0,
+      "trading_score": 52,
       "final_score": 52.78,
       "eligible": false,
       "priority": "50~59"
@@ -7006,7 +7027,7 @@
       "code": "055550",
       "name": "신한지주",
       "fundamental_score": 46.2,
-      "trading_score": 39.0,
+      "trading_score": 39,
       "final_score": 43.32,
       "eligible": false,
       "priority": "<50"
@@ -7015,7 +7036,7 @@
       "code": "086790",
       "name": "하나금융지주",
       "fundamental_score": 52.7,
-      "trading_score": 52.0,
+      "trading_score": 52,
       "final_score": 52.42,
       "eligible": false,
       "priority": "50~59"
@@ -7024,7 +7045,7 @@
       "code": "192820",
       "name": "코스맥스",
       "fundamental_score": 75.8,
-      "trading_score": 26.0,
+      "trading_score": 26,
       "final_score": 55.88,
       "eligible": false,
       "priority": "<50"
@@ -7033,7 +7054,7 @@
       "code": "090430",
       "name": "아모레퍼시픽",
       "fundamental_score": 65.2,
-      "trading_score": 53.0,
+      "trading_score": 53,
       "final_score": 60.32,
       "eligible": true,
       "priority": "50~59"
@@ -7042,7 +7063,7 @@
       "code": "008770",
       "name": "호텔신라",
       "fundamental_score": 53.2,
-      "trading_score": 25.0,
+      "trading_score": 25,
       "final_score": 41.92,
       "eligible": false,
       "priority": "<50"
@@ -7051,7 +7072,7 @@
       "code": "017670",
       "name": "SK텔레콤",
       "fundamental_score": 50.3,
-      "trading_score": 54.0,
+      "trading_score": 54,
       "final_score": 51.78,
       "eligible": false,
       "priority": "50~59"
@@ -7059,8 +7080,8 @@
     {
       "code": "030200",
       "name": "KT",
-      "fundamental_score": 54.0,
-      "trading_score": 36.0,
+      "fundamental_score": 54,
+      "trading_score": 36,
       "final_score": 46.8,
       "eligible": false,
       "priority": "<50"
@@ -7069,7 +7090,7 @@
       "code": "103140",
       "name": "풍산",
       "fundamental_score": 51.5,
-      "trading_score": 32.0,
+      "trading_score": 32,
       "final_score": 43.7,
       "eligible": false,
       "priority": "<50"
@@ -7077,9 +7098,9 @@
     {
       "code": "005490",
       "name": "POSCO홀딩스",
-      "fundamental_score": 58.0,
-      "trading_score": 33.0,
-      "final_score": 48.0,
+      "fundamental_score": 58,
+      "trading_score": 33,
+      "final_score": 48,
       "eligible": false,
       "priority": "<50"
     },
@@ -7087,7 +7108,7 @@
       "code": "010130",
       "name": "고려아연",
       "fundamental_score": 51.8,
-      "trading_score": 39.0,
+      "trading_score": 39,
       "final_score": 46.68,
       "eligible": false,
       "priority": "<50"
@@ -7096,7 +7117,7 @@
       "code": "003490",
       "name": "대한항공",
       "fundamental_score": 48.5,
-      "trading_score": 52.0,
+      "trading_score": 52,
       "final_score": 49.9,
       "eligible": false,
       "priority": "50~59"
@@ -7105,7 +7126,7 @@
       "code": "000120",
       "name": "CJ대한통운",
       "fundamental_score": 55.6,
-      "trading_score": 44.0,
+      "trading_score": 44,
       "final_score": 50.96,
       "eligible": false,
       "priority": "<50"
@@ -7114,7 +7135,7 @@
       "code": "011200",
       "name": "HMM",
       "fundamental_score": 65.2,
-      "trading_score": 73.0,
+      "trading_score": 73,
       "final_score": 68.32,
       "eligible": true,
       "priority": "70+"
@@ -7123,7 +7144,7 @@
       "code": "000490",
       "name": "대동",
       "fundamental_score": 57.8,
-      "trading_score": 48.0,
+      "trading_score": 48,
       "final_score": 53.88,
       "eligible": false,
       "priority": "<50"
@@ -7132,7 +7153,7 @@
       "code": "025860",
       "name": "남해화학",
       "fundamental_score": 56.9,
-      "trading_score": 29.0,
+      "trading_score": 29,
       "final_score": 45.74,
       "eligible": false,
       "priority": "<50"
@@ -7141,7 +7162,7 @@
       "code": "002100",
       "name": "경농",
       "fundamental_score": 59.9,
-      "trading_score": 59.0,
+      "trading_score": 59,
       "final_score": 59.54,
       "eligible": false,
       "priority": "50~59"
@@ -7150,7 +7171,7 @@
       "code": "064350",
       "name": "현대로템",
       "fundamental_score": 54.4,
-      "trading_score": 29.0,
+      "trading_score": 29,
       "final_score": 44.24,
       "eligible": false,
       "priority": "<50"
@@ -7158,8 +7179,8 @@
     {
       "code": "002150",
       "name": "도화엔지니어링",
-      "fundamental_score": 71.0,
-      "trading_score": 52.0,
+      "fundamental_score": 71,
+      "trading_score": 52,
       "final_score": 63.4,
       "eligible": true,
       "priority": "50~59"
@@ -7181,42 +7202,42 @@
         "cycle_attractiveness": "우호적 확장",
         "cycle_score": 71.7,
         "investment_score": 71.2,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 40.7,
         "catalyst_score": 67.4,
         "factors": {
           "demand": {
-            "level": 100.0,
+            "level": 100,
             "momentum": 73.5,
             "score": 84.1
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 76.3,
             "score": 68.6
           },
           "price": {
-            "level": 100.0,
-            "momentum": 64.0,
+            "level": 100,
+            "momentum": 64,
             "score": 78.4
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
+            "level": 58,
+            "momentum": 72,
             "score": 66.4
           },
           "revision": {
             "level": 45.2,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 48.1
           },
           "structural": {
-            "level": 95.0,
+            "level": 95,
             "momentum": 85.6,
             "score": 89.4
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 63.7,
             "score": 67.4
           }
@@ -7272,8 +7293,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "005930": 45531.0,
-            "000660": 356342.0
+            "005930": 45531,
+            "000660": 356342
           },
           "median_fper_or_pbr": 5.06,
           "median_r20": -16.181818181818187,
@@ -7282,7 +7303,7 @@
           "median_fwd_rev_growth": 20.450819560905586,
           "median_opm": 52.18230956941565,
           "median_opm_delta": 9.430874258143952,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7291,8 +7312,8 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "우호적 확장",
         "cycle_score": 70.6,
-        "investment_score": 70.0,
-        "valuation_score": 64.0,
+        "investment_score": 70,
+        "valuation_score": 64,
         "relative_strength_score": 55.9,
         "catalyst_score": 89.3,
         "factors": {
@@ -7302,9 +7323,9 @@
             "score": 62.7
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 63.6,
-            "score": 61.0
+            "score": 61
           },
           "price": {
             "level": 65.1,
@@ -7312,22 +7333,22 @@
             "score": 66.3
           },
           "capex": {
-            "level": 76.0,
-            "momentum": 90.0,
+            "level": 76,
+            "momentum": 90,
             "score": 84.4
           },
           "revision": {
             "level": 62.1,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 54.8
           },
           "structural": {
-            "level": 91.0,
+            "level": 91,
             "momentum": 91.4,
             "score": 91.2
           },
           "catalyst": {
-            "level": 100.0,
+            "level": 100,
             "momentum": 82.1,
             "score": 89.3
           }
@@ -7377,9 +7398,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "353200": 4538.0,
-            "007660": 3740.0,
-            "222800": 5191.0
+            "222800": 5191,
+            "353200": 4538,
+            "007660": 3740
           },
           "median_fper_or_pbr": 24.63,
           "median_r20": -19.253438113948917,
@@ -7388,7 +7409,7 @@
           "median_fwd_rev_growth": 8.336572094830942,
           "median_opm": 17.531172069825438,
           "median_opm_delta": 2.7174267622886195,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7398,7 +7419,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 56.7,
         "investment_score": 62.8,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 52.9,
         "catalyst_score": 68.9,
         "factors": {
@@ -7408,9 +7429,9 @@
             "score": 58.8
           },
           "supply": {
-            "level": 43.0,
-            "momentum": 48.0,
-            "score": 46.0
+            "level": 43,
+            "momentum": 48,
+            "score": 46
           },
           "price": {
             "level": 50.2,
@@ -7418,22 +7439,22 @@
             "score": 54.3
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 58.0,
-            "score": 58.0
+            "level": 58,
+            "momentum": 58,
+            "score": 58
           },
           "revision": {
             "level": 65.5,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 56.2
           },
           "structural": {
-            "level": 60.0,
+            "level": 60,
             "momentum": 58.6,
             "score": 59.2
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 66.2,
             "score": 68.9
           }
@@ -7478,9 +7499,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "011200": 2470.0,
-            "086280": 21829.0,
-            "028670": 916.0
+            "011200": 2470,
+            "086280": 21829,
+            "028670": 916
           },
           "median_fper_or_pbr": 8.64,
           "median_r20": 0.8771929824561431,
@@ -7489,7 +7510,7 @@
           "median_fwd_rev_growth": -3.218895333646865,
           "median_opm": 10.121753670899306,
           "median_opm_delta": 0.5104701176148723,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7497,19 +7518,19 @@
         "name": "전력기기 / 전력망 / 전선",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 67.0,
+        "cycle_score": 67,
         "investment_score": 62.7,
-        "valuation_score": 64.0,
+        "valuation_score": 64,
         "relative_strength_score": 24.2,
         "catalyst_score": 70.9,
         "factors": {
           "demand": {
-            "level": 66.0,
+            "level": 66,
             "momentum": 57.1,
             "score": 60.7
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 61.5,
             "score": 59.7
           },
@@ -7519,22 +7540,22 @@
             "score": 57.2
           },
           "capex": {
-            "level": 70.0,
-            "momentum": 98.0,
+            "level": 70,
+            "momentum": 98,
             "score": 86.8
           },
           "revision": {
             "level": 65.3,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 56.1
           },
           "structural": {
-            "level": 95.0,
+            "level": 95,
             "momentum": 83.8,
             "score": 88.3
           },
           "catalyst": {
-            "level": 79.0,
+            "level": 79,
             "momentum": 65.4,
             "score": 70.9
           }
@@ -7580,9 +7601,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "010120": 3722.0,
-            "298040": 81002.0,
-            "267260": 24260.0
+            "267260": 24260,
+            "298040": 81002,
+            "010120": 3722
           },
           "median_fper_or_pbr": 23.53,
           "median_r20": -32.387371408300815,
@@ -7591,7 +7612,7 @@
           "median_fwd_rev_growth": 6.201648700063411,
           "median_opm": 15.666864256075874,
           "median_opm_delta": 2.122388788198359,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7601,17 +7622,17 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 64.4,
         "investment_score": 62.6,
-        "valuation_score": 64.0,
-        "relative_strength_score": 44.0,
+        "valuation_score": 64,
+        "relative_strength_score": 44,
         "catalyst_score": 67.1,
         "factors": {
           "demand": {
-            "level": 74.0,
-            "momentum": 51.0,
+            "level": 74,
+            "momentum": 51,
             "score": 60.2
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 72.5,
             "score": 63.5
           },
@@ -7621,22 +7642,22 @@
             "score": 76.4
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
             "level": 44.9,
-            "momentum": 50.0,
-            "score": 48.0
+            "momentum": 50,
+            "score": 48
           },
           "structural": {
-            "level": 84.0,
+            "level": 84,
             "momentum": 80.2,
             "score": 81.7
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 63.2,
             "score": 67.1
           }
@@ -7685,8 +7706,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "222800": 5191.0,
-            "058470": 2476.0
+            "222800": 5191,
+            "058470": 2476
           },
           "median_fper_or_pbr": 23.75,
           "median_r20": -19.253438113948917,
@@ -7695,7 +7716,7 @@
           "median_fwd_rev_growth": 0.8443908323281013,
           "median_opm": 25.37997587454765,
           "median_opm_delta": 8.375170749080485,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7705,42 +7726,42 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 63.4,
         "investment_score": 62.4,
-        "valuation_score": 74.0,
+        "valuation_score": 74,
         "relative_strength_score": 24.3,
         "catalyst_score": 76.2,
         "factors": {
           "demand": {
-            "level": 100.0,
+            "level": 100,
             "momentum": 27.7,
             "score": 56.6
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 62.9,
             "score": 57.7
           },
           "price": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 57.4,
             "score": 57.2
           },
           "capex": {
-            "level": 70.0,
-            "momentum": 84.0,
+            "level": 70,
+            "momentum": 84,
             "score": 78.4
           },
           "revision": {
             "level": 39.9,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 45.9
           },
           "structural": {
-            "level": 93.0,
+            "level": 93,
             "momentum": 80.4,
             "score": 85.5
           },
           "catalyst": {
-            "level": 85.0,
+            "level": 85,
             "momentum": 70.4,
             "score": 76.2
           }
@@ -7790,9 +7811,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "012450": 43973.0,
-            "042660": 5406.0,
-            "272210": 708.0
+            "272210": 708,
+            "012450": 43973,
+            "042660": 5406
           },
           "median_fper_or_pbr": 16.81,
           "median_r20": -27.54901960784314,
@@ -7801,7 +7822,7 @@
           "median_fwd_rev_growth": -19.4320395140376,
           "median_opm": 13.523295120517343,
           "median_opm_delta": 3.5846414263098367,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7811,7 +7832,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 61.2,
         "investment_score": 62.4,
-        "valuation_score": 84.0,
+        "valuation_score": 84,
         "relative_strength_score": 32.3,
         "catalyst_score": 67.7,
         "factors": {
@@ -7821,32 +7842,32 @@
             "score": 59.3
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 46.2,
             "score": 47.7
           },
           "price": {
-            "level": 100.0,
+            "level": 100,
             "momentum": 60.3,
             "score": 76.2
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
             "level": 45.3,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 48.1
           },
           "structural": {
-            "level": 81.0,
+            "level": 81,
             "momentum": 69.7,
             "score": 74.2
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 64.1,
             "score": 67.7
           }
@@ -7893,9 +7914,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "214450": 18567.0,
-            "145020": 11869.0,
-            "214150": 2192.0
+            "145020": 11869,
+            "214150": 2192,
+            "214450": 18567
           },
           "median_fper_or_pbr": 12.23,
           "median_r20": -13.128038897893035,
@@ -7904,7 +7925,7 @@
           "median_fwd_rev_growth": 0.11191941801902416,
           "median_opm": 40.609137055837564,
           "median_opm_delta": -1.0491760511326547,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -7914,9 +7935,9 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 58.1,
         "investment_score": 61.9,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 40.8,
-        "catalyst_score": 63.0,
+        "catalyst_score": 63,
         "factors": {
           "demand": {
             "level": 59.3,
@@ -7924,8 +7945,8 @@
             "score": 53.9
           },
           "supply": {
-            "level": 64.0,
-            "momentum": 53.0,
+            "level": 64,
+            "momentum": 53,
             "score": 57.4
           },
           "price": {
@@ -7934,24 +7955,24 @@
             "score": 59.8
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
             "level": 62.2,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 54.9
           },
           "structural": {
-            "level": 61.0,
+            "level": 61,
             "momentum": 57.8,
             "score": 59.1
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 60.4,
-            "score": 63.0
+            "score": 63
           }
         },
         "peak_warning": false,
@@ -7991,9 +8012,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "047050": 5355.0,
-            "021240": 9885.0,
-            "383220": 12470.0
+            "383220": 12470,
+            "047050": 5355,
+            "021240": 9885
           },
           "median_fper_or_pbr": 9.17,
           "median_r20": -10.23765996343693,
@@ -8002,7 +8023,7 @@
           "median_fwd_rev_growth": 0.187213978643741,
           "median_opm": 17.556510886146164,
           "median_opm_delta": -1.3124069148615831,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8012,7 +8033,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 60.1,
         "investment_score": 61.8,
-        "valuation_score": 84.0,
+        "valuation_score": 84,
         "relative_strength_score": 30.2,
         "catalyst_score": 71.5,
         "factors": {
@@ -8022,7 +8043,7 @@
             "score": 57.1
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 50.5,
             "score": 50.3
           },
@@ -8032,22 +8053,22 @@
             "score": 43.5
           },
           "capex": {
-            "level": 64.0,
-            "momentum": 85.0,
+            "level": 64,
+            "momentum": 85,
             "score": 76.6
           },
           "revision": {
             "level": 61.8,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 54.7
           },
           "structural": {
-            "level": 82.0,
+            "level": 82,
             "momentum": 74.3,
             "score": 77.4
           },
           "catalyst": {
-            "level": 79.0,
+            "level": 79,
             "momentum": 66.5,
             "score": 71.5
           }
@@ -8093,8 +8114,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "009150": 20918.0,
-            "011070": 28037.0
+            "009150": 20918,
+            "011070": 28037
           },
           "median_fper_or_pbr": 12.34,
           "median_r20": -25.55347091932457,
@@ -8103,7 +8124,7 @@
           "median_fwd_rev_growth": 10.309017223910843,
           "median_opm": 9.566326530612244,
           "median_opm_delta": 0.1301930438458445,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8113,9 +8134,9 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 58.6,
         "investment_score": 61.6,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 39.3,
-        "catalyst_score": 58.0,
+        "catalyst_score": 58,
         "factors": {
           "demand": {
             "level": 72.5,
@@ -8123,34 +8144,34 @@
             "score": 60.2
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 34.9,
             "score": 43.7
           },
           "price": {
-            "level": 47.0,
+            "level": 47,
             "momentum": 69.8,
             "score": 60.7
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
-            "level": 100.0,
-            "momentum": 50.0,
-            "score": 70.0
+            "level": 100,
+            "momentum": 50,
+            "score": 70
           },
           "structural": {
-            "level": 72.0,
+            "level": 72,
             "momentum": 65.7,
             "score": 68.2
           },
           "catalyst": {
-            "level": 61.0,
-            "momentum": 56.0,
-            "score": 58.0
+            "level": 61,
+            "momentum": 56,
+            "score": 58
           }
         },
         "peak_warning": false,
@@ -8198,9 +8219,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "096770": 21211.0,
-            "015760": 5949.0,
-            "010950": 27139.0
+            "096770": 21211,
+            "015760": 5949,
+            "010950": 27139
           },
           "median_fper_or_pbr": 4.76,
           "median_r20": -11.345108695652172,
@@ -8209,7 +8230,7 @@
           "median_fwd_rev_growth": 1.8230704808921416,
           "median_opm": 8.50707453607793,
           "median_opm_delta": -5.259461297618827,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8219,8 +8240,8 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 58.7,
         "investment_score": 61.5,
-        "valuation_score": 84.0,
-        "relative_strength_score": 44.0,
+        "valuation_score": 84,
+        "relative_strength_score": 44,
         "catalyst_score": 63.4,
         "factors": {
           "demand": {
@@ -8229,7 +8250,7 @@
             "score": 53.9
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 49.1,
             "score": 52.3
           },
@@ -8239,23 +8260,23 @@
             "score": 56.1
           },
           "capex": {
-            "level": 64.0,
-            "momentum": 78.0,
+            "level": 64,
+            "momentum": 78,
             "score": 72.4
           },
           "revision": {
             "level": 51.2,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 50.5
           },
           "structural": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 66.8,
             "score": 69.3
           },
           "catalyst": {
-            "level": 67.0,
-            "momentum": 61.0,
+            "level": 67,
+            "momentum": 61,
             "score": 63.4
           }
         },
@@ -8297,9 +8318,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "047050": 5355.0,
-            "003230": 74267.0,
-            "021240": 9885.0
+            "047050": 5355,
+            "003230": 74267,
+            "021240": 9885
           },
           "median_fper_or_pbr": 10.41,
           "median_r20": -6.295993458708093,
@@ -8308,7 +8329,7 @@
           "median_fwd_rev_growth": 0.187213978643741,
           "median_opm": 17.556510886146164,
           "median_opm_delta": -1.3124069148615831,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8318,17 +8339,17 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 63.9,
         "investment_score": 61.1,
-        "valuation_score": 28.0,
+        "valuation_score": 28,
         "relative_strength_score": 78.6,
         "catalyst_score": 74.6,
         "factors": {
           "demand": {
             "level": 72.7,
             "momentum": 59.9,
-            "score": 65.0
+            "score": 65
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 65.7,
             "score": 59.4
           },
@@ -8338,22 +8359,22 @@
             "score": 71.6
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
-            "level": 50.0,
-            "momentum": 50.0,
-            "score": 50.0
+            "level": 50,
+            "momentum": 50,
+            "score": 50
           },
           "structural": {
-            "level": 84.0,
+            "level": 84,
             "momentum": 86.4,
             "score": 85.4
           },
           "catalyst": {
-            "level": 79.0,
+            "level": 79,
             "momentum": 71.6,
             "score": 74.6
           }
@@ -8414,8 +8435,8 @@
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
         "cycle_score": 63.1,
-        "investment_score": 61.0,
-        "valuation_score": 54.0,
+        "investment_score": 61,
+        "valuation_score": 54,
         "relative_strength_score": 49.8,
         "catalyst_score": 68.8,
         "factors": {
@@ -8425,33 +8446,33 @@
             "score": 55.1
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 43.5,
             "score": 46.1
           },
           "price": {
-            "level": 100.0,
+            "level": 100,
             "momentum": 74.4,
             "score": 84.7
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
+            "level": 58,
+            "momentum": 72,
             "score": 66.4
           },
           "revision": {
             "level": 57.1,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 52.8
           },
           "structural": {
-            "level": 82.0,
-            "momentum": 74.0,
+            "level": 82,
+            "momentum": 74,
             "score": 77.2
           },
           "catalyst": {
-            "level": 73.0,
-            "momentum": 66.0,
+            "level": 73,
+            "momentum": 66,
             "score": 68.8
           }
         },
@@ -8499,9 +8520,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "207940": 39538.0,
-            "068270": 6184.0,
-            "196170": 4346.0
+            "196170": 4346,
+            "207940": 39538,
+            "068270": 6184
           },
           "median_fper_or_pbr": 34.6,
           "median_r20": -0.389195722851865,
@@ -8510,7 +8531,7 @@
           "median_fwd_rev_growth": 4.082657673817902,
           "median_opm": 44.39397380573851,
           "median_opm_delta": -1.807601247956498,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8518,19 +8539,19 @@
         "name": "환경 / 폐기물 / 수처리",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 64.0,
+        "cycle_score": 64,
         "investment_score": 60.7,
-        "valuation_score": 54.0,
+        "valuation_score": 54,
         "relative_strength_score": 46.9,
         "catalyst_score": 63.3,
         "factors": {
           "demand": {
             "level": 78.7,
-            "momentum": 100.0,
+            "momentum": 100,
             "score": 91.5
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 76.3,
             "score": 68.6
           },
@@ -8540,22 +8561,22 @@
             "score": 49.9
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
             "level": 19.3,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 37.7
           },
           "structural": {
-            "level": 68.0,
+            "level": 68,
             "momentum": 64.8,
             "score": 66.1
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 60.8,
             "score": 63.3
           }
@@ -8598,7 +8619,7 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "010780": 5028.0
+            "010780": 5028
           },
           "median_fper_or_pbr": 25.775000000000002,
           "median_r20": -7.1276595744680815,
@@ -8607,7 +8628,7 @@
           "median_fwd_rev_growth": 75.17963715582896,
           "median_opm": 8.203125,
           "median_opm_delta": 8.203125,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8617,7 +8638,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 66.4,
         "investment_score": 59.9,
-        "valuation_score": 28.0,
+        "valuation_score": 28,
         "relative_strength_score": 42.7,
         "catalyst_score": 82.7,
         "factors": {
@@ -8627,32 +8648,32 @@
             "score": 92.4
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 54.8,
             "score": 52.9
           },
           "price": {
-            "level": 0.0,
+            "level": 0,
             "momentum": 54.6,
             "score": 32.8
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
             "level": 68.8,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 57.5
           },
           "structural": {
-            "level": 95.0,
+            "level": 95,
             "momentum": 84.2,
             "score": 88.5
           },
           "catalyst": {
-            "level": 91.0,
+            "level": 91,
             "momentum": 77.2,
             "score": 82.7
           }
@@ -8697,7 +8718,7 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "108490": -88.0
+            "108490": -88
           },
           "median_fper_or_pbr": 4295.45,
           "median_r20": -10.107015457788348,
@@ -8706,7 +8727,7 @@
           "median_fwd_rev_growth": 41.94646816598036,
           "median_opm": -16.260162601626014,
           "median_opm_delta": 1.3222549807915698,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8716,7 +8737,7 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 53.1,
         "investment_score": 59.2,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 40.7,
         "catalyst_score": 68.3,
         "factors": {
@@ -8726,9 +8747,9 @@
             "score": 50.6
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 51.7,
-            "score": 51.0
+            "score": 51
           },
           "price": {
             "level": 41.9,
@@ -8736,22 +8757,22 @@
             "score": 44.9
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
-            "level": 40.0,
-            "momentum": 50.0,
-            "score": 46.0
+            "level": 40,
+            "momentum": 50,
+            "score": 46
           },
           "structural": {
-            "level": 76.0,
+            "level": 76,
             "momentum": 67.4,
             "score": 70.8
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 65.1,
             "score": 68.3
           }
@@ -8798,9 +8819,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "005380": 35137.0,
-            "000270": 20477.0,
-            "012330": 44263.0
+            "005380": 35137,
+            "000270": 20477,
+            "012330": 44263
           },
           "median_fper_or_pbr": 8.02,
           "median_r20": -6.379310344827582,
@@ -8809,7 +8830,7 @@
           "median_fwd_rev_growth": -3.6888886166361434,
           "median_opm": 5.973769808939827,
           "median_opm_delta": 0.4820756499026233,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8819,17 +8840,17 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 66.4,
         "investment_score": 59.2,
-        "valuation_score": 42.0,
+        "valuation_score": 42,
         "relative_strength_score": 26.5,
         "catalyst_score": 71.1,
         "factors": {
           "demand": {
-            "level": 66.0,
+            "level": 66,
             "momentum": 57.1,
             "score": 60.7
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 61.5,
             "score": 59.7
           },
@@ -8839,22 +8860,22 @@
             "score": 52.5
           },
           "capex": {
-            "level": 70.0,
-            "momentum": 98.0,
+            "level": 70,
+            "momentum": 98,
             "score": 86.8
           },
           "revision": {
             "level": 65.3,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 56.1
           },
           "structural": {
-            "level": 96.0,
+            "level": 96,
             "momentum": 84.6,
             "score": 89.1
           },
           "catalyst": {
-            "level": 79.0,
+            "level": 79,
             "momentum": 65.9,
             "score": 71.1
           }
@@ -8898,9 +8919,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "034020": 580.0,
-            "010120": 3722.0,
-            "298040": 81002.0
+            "298040": 81002,
+            "034020": 580,
+            "010120": 3722
           },
           "median_fper_or_pbr": 42.32,
           "median_r20": -29.565217391304344,
@@ -8909,7 +8930,7 @@
           "median_fwd_rev_growth": 6.201648700063411,
           "median_opm": 11.318960050729231,
           "median_opm_delta": 2.122388788198359,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -8919,7 +8940,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 55.8,
         "investment_score": 58.8,
-        "valuation_score": 84.0,
+        "valuation_score": 84,
         "relative_strength_score": 36.4,
         "catalyst_score": 62.8,
         "factors": {
@@ -8929,7 +8950,7 @@
             "score": 52.5
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 56.5,
             "score": 56.7
           },
@@ -8939,23 +8960,23 @@
             "score": 43.2
           },
           "capex": {
-            "level": 64.0,
-            "momentum": 78.0,
+            "level": 64,
+            "momentum": 78,
             "score": 72.4
           },
           "revision": {
             "level": 33.8,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 43.5
           },
           "structural": {
-            "level": 70.0,
+            "level": 70,
             "momentum": 63.4,
-            "score": 66.0
+            "score": 66
           },
           "catalyst": {
-            "level": 67.0,
-            "momentum": 60.0,
+            "level": 67,
+            "momentum": 60,
             "score": 62.8
           }
         },
@@ -8995,9 +9016,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "017670": 6314.0,
-            "030200": 5647.0,
-            "011070": 28037.0
+            "017670": 6314,
+            "030200": 5647,
+            "011070": 28037
           },
           "median_fper_or_pbr": 12.13,
           "median_r20": -12.832699619771859,
@@ -9006,7 +9027,7 @@
           "median_fwd_rev_growth": 4.05844398868247,
           "median_opm": 9.705235108310005,
           "median_opm_delta": 0.7447305079462989,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9016,17 +9037,17 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 55.7,
         "investment_score": 58.5,
-        "valuation_score": 74.0,
+        "valuation_score": 74,
         "relative_strength_score": 35.1,
-        "catalyst_score": 77.0,
+        "catalyst_score": 77,
         "factors": {
           "demand": {
             "level": 66.1,
-            "momentum": 51.0,
-            "score": 57.0
+            "momentum": 51,
+            "score": 57
           },
           "supply": {
-            "level": 36.0,
+            "level": 36,
             "momentum": 64.8,
             "score": 53.3
           },
@@ -9036,24 +9057,24 @@
             "score": 38.4
           },
           "capex": {
-            "level": 64.0,
-            "momentum": 71.0,
+            "level": 64,
+            "momentum": 71,
             "score": 68.2
           },
           "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "level": 0,
+            "momentum": 50,
+            "score": 30
           },
           "structural": {
-            "level": 87.0,
+            "level": 87,
             "momentum": 77.9,
             "score": 81.5
           },
           "catalyst": {
-            "level": 85.0,
+            "level": 85,
             "momentum": 71.7,
-            "score": 77.0
+            "score": 77
           }
         },
         "peak_warning": false,
@@ -9102,8 +9123,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "051910": -1983.0,
-            "010060": 7168.0
+            "051910": -1983,
+            "010060": 7168
           },
           "median_fper_or_pbr": 18.585,
           "median_r20": -18.94977168949772,
@@ -9112,7 +9133,7 @@
           "median_fwd_rev_growth": 0.8443908323281013,
           "median_opm": 10.564894448788117,
           "median_opm_delta": 8.375170749080485,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9122,9 +9143,9 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 55.9,
         "investment_score": 58.2,
-        "valuation_score": 74.0,
+        "valuation_score": 74,
         "relative_strength_score": 48.9,
-        "catalyst_score": 59.0,
+        "catalyst_score": 59,
         "factors": {
           "demand": {
             "level": 77.8,
@@ -9132,7 +9153,7 @@
             "score": 61.5
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 68.1,
             "score": 60.9
           },
@@ -9142,24 +9163,24 @@
             "score": 43.3
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
-            "level": 44.0,
-            "momentum": 50.0,
+            "level": 44,
+            "momentum": 50,
             "score": 47.6
           },
           "structural": {
-            "level": 75.0,
+            "level": 75,
             "momentum": 68.5,
             "score": 71.1
           },
           "catalyst": {
-            "level": 61.0,
+            "level": 61,
             "momentum": 57.6,
-            "score": 59.0
+            "score": 59
           }
         },
         "peak_warning": false,
@@ -9203,9 +9224,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "352820": 3950.0,
-            "030000": 1741.0,
-            "041510": 5131.0
+            "352820": 3950,
+            "030000": 1741,
+            "041510": 5131
           },
           "median_fper_or_pbr": 15.24,
           "median_r20": -0.6913890634820841,
@@ -9214,7 +9235,7 @@
           "median_fwd_rev_growth": 0.5724137931034434,
           "median_opm": 11.786206896551723,
           "median_opm_delta": 5.040397427792948,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9222,9 +9243,9 @@
         "name": "비철금속 / 구리 / 희토류",
         "actual_cycle": "성장",
         "cycle_attractiveness": "둔화",
-        "cycle_score": 54.0,
+        "cycle_score": 54,
         "investment_score": 58.1,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 29.9,
         "catalyst_score": 61.8,
         "factors": {
@@ -9234,32 +9255,32 @@
             "score": 51.9
           },
           "supply": {
-            "level": 64.0,
+            "level": 64,
             "momentum": 46.6,
             "score": 53.6
           },
           "price": {
-            "level": 47.0,
+            "level": 47,
             "momentum": 27.9,
             "score": 35.5
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
+            "level": 58,
+            "momentum": 72,
             "score": 66.4
           },
           "revision": {
-            "level": 37.0,
-            "momentum": 50.0,
+            "level": 37,
+            "momentum": 50,
             "score": 44.8
           },
           "structural": {
-            "level": 79.0,
+            "level": 79,
             "momentum": 71.4,
             "score": 74.4
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 58.3,
             "score": 61.8
           }
@@ -9305,8 +9326,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "010130": 58485.0,
-            "103140": 10558.0
+            "103140": 10558,
+            "010130": 58485
           },
           "median_fper_or_pbr": 5.7,
           "median_r20": -24.28571428571429,
@@ -9315,7 +9336,7 @@
           "median_fwd_rev_growth": -0.4538911658508784,
           "median_opm": 8.515268992722573,
           "median_opm_delta": -3.0746692640019226,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9325,7 +9346,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 60.1,
         "investment_score": 57.9,
-        "valuation_score": 64.0,
+        "valuation_score": 64,
         "relative_strength_score": 26.5,
         "catalyst_score": 66.2,
         "factors": {
@@ -9335,32 +9356,32 @@
             "score": 53.7
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 56.2,
             "score": 53.7
           },
           "price": {
             "level": 47.2,
-            "momentum": 51.0,
+            "momentum": 51,
             "score": 49.5
           },
           "capex": {
-            "level": 70.0,
-            "momentum": 91.0,
+            "level": 70,
+            "momentum": 91,
             "score": 82.6
           },
           "revision": {
             "level": 52.8,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 51.1
           },
           "structural": {
-            "level": 76.0,
+            "level": 76,
             "momentum": 69.6,
             "score": 72.1
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 61.7,
             "score": 66.2
           }
@@ -9404,9 +9425,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "028260": 16765.0,
-            "034020": 580.0,
-            "298040": 81002.0
+            "298040": 81002,
+            "028260": 16765,
+            "034020": 580
           },
           "median_fper_or_pbr": 23.53,
           "median_r20": -29.565217391304344,
@@ -9415,7 +9436,7 @@
           "median_fwd_rev_growth": -4.026644213053665,
           "median_opm": 8.601012079932639,
           "median_opm_delta": 1.7176395713809756,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9425,7 +9446,7 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 50.9,
         "investment_score": 57.8,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 45.9,
         "catalyst_score": 63.1,
         "factors": {
@@ -9435,32 +9456,32 @@
             "score": 52.1
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 56.2,
             "score": 53.7
           },
           "price": {
-            "level": 53.0,
-            "momentum": 35.0,
+            "level": 53,
+            "momentum": 35,
             "score": 42.2
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
             "level": 28.5,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 41.4
           },
           "structural": {
-            "level": 58.0,
+            "level": 58,
             "momentum": 57.7,
             "score": 57.8
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 60.5,
             "score": 63.1
           }
@@ -9502,9 +9523,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "402340": 373846.0,
-            "028260": 16765.0,
-            "034730": 160174.0
+            "402340": 373846,
+            "028260": 16765,
+            "034730": 160174
           },
           "median_fper_or_pbr": 3.32,
           "median_r20": -9.369676320272568,
@@ -9513,7 +9534,7 @@
           "median_fwd_rev_growth": -6.315667286433158,
           "median_opm": 11.492544754027922,
           "median_opm_delta": 1.7176395713809756,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9523,42 +9544,42 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 55.4,
         "investment_score": 57.7,
-        "valuation_score": 74.0,
+        "valuation_score": 74,
         "relative_strength_score": 47.5,
         "catalyst_score": 58.4,
         "factors": {
           "demand": {
             "level": 66.1,
             "momentum": 47.7,
-            "score": 55.0
+            "score": 55
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 56.2,
             "score": 53.7
           },
           "price": {
             "level": 47.2,
-            "momentum": 44.0,
+            "momentum": 44,
             "score": 45.3
           },
           "capex": {
-            "level": 64.0,
-            "momentum": 71.0,
+            "level": 64,
+            "momentum": 71,
             "score": 68.2
           },
           "revision": {
             "level": 52.8,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 51.1
           },
           "structural": {
-            "level": 59.0,
+            "level": 59,
             "momentum": 58.2,
             "score": 58.5
           },
           "catalyst": {
-            "level": 61.0,
+            "level": 61,
             "momentum": 56.7,
             "score": 58.4
           }
@@ -9604,9 +9625,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "028260": 16765.0,
-            "028050": 4456.0,
-            "000720": 4480.0
+            "028260": 16765,
+            "028050": 4456,
+            "000720": 4480
           },
           "median_fper_or_pbr": 19.33,
           "median_r20": -6.762589928057549,
@@ -9615,7 +9636,7 @@
           "median_fwd_rev_growth": -2.0417111205296434,
           "median_opm": 8.601012079932639,
           "median_opm_delta": 1.7176395713809756,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9625,42 +9646,42 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 55.8,
         "investment_score": 57.7,
-        "valuation_score": 74.0,
+        "valuation_score": 74,
         "relative_strength_score": 45.4,
         "catalyst_score": 58.3,
         "factors": {
           "demand": {
-            "level": 53.0,
+            "level": 53,
             "momentum": 56.1,
             "score": 54.9
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 30.2,
             "score": 38.1
           },
           "price": {
             "level": 55.3,
-            "momentum": 100.0,
+            "momentum": 100,
             "score": 82.1
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
+            "level": 58,
+            "momentum": 72,
             "score": 66.4
           },
           "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "level": 0,
+            "momentum": 50,
+            "score": 30
           },
           "structural": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 63.7,
-            "score": 65.0
+            "score": 65
           },
           "catalyst": {
-            "level": 61.0,
+            "level": 61,
             "momentum": 56.5,
             "score": 58.3
           }
@@ -9705,8 +9726,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "003490": 1292.0,
-            "035250": 1281.0
+            "003490": 1292,
+            "035250": 1281
           },
           "median_fper_or_pbr": 15.600000000000001,
           "median_r20": -8.173784977908694,
@@ -9715,7 +9736,7 @@
           "median_fwd_rev_growth": 5.336114626507393,
           "median_opm": 12.67361111111111,
           "median_opm_delta": -5.510606360517286,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9725,7 +9746,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 55.5,
         "investment_score": 57.6,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 11.9,
         "catalyst_score": 65.6,
         "factors": {
@@ -9735,32 +9756,32 @@
             "score": 50.8
           },
           "supply": {
-            "level": 43.0,
+            "level": 43,
             "momentum": 50.2,
             "score": 47.3
           },
           "price": {
             "level": 62.8,
             "momentum": 51.5,
-            "score": 56.0
+            "score": 56
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
             "level": 31.7,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 42.7
           },
           "structural": {
-            "level": 83.0,
+            "level": 83,
             "momentum": 70.2,
             "score": 75.3
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 60.7,
             "score": 65.6
           }
@@ -9806,9 +9827,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "329180": 30039.0,
-            "009540": 55430.0,
-            "042660": 5406.0
+            "329180": 30039,
+            "009540": 55430,
+            "042660": 5406
           },
           "median_fper_or_pbr": 9.04,
           "median_r20": -36.156763590391904,
@@ -9817,7 +9838,7 @@
           "median_fwd_rev_growth": -4.954044407946689,
           "median_opm": 16.422412431698305,
           "median_opm_delta": 1.1189288355317828,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9827,7 +9848,7 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 52.4,
         "investment_score": 57.1,
-        "valuation_score": 82.0,
+        "valuation_score": 82,
         "relative_strength_score": 48.4,
         "catalyst_score": 58.7,
         "factors": {
@@ -9837,7 +9858,7 @@
             "score": 45.9
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 52.9,
             "score": 51.7
           },
@@ -9847,22 +9868,22 @@
             "score": 57.3
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 59.0,
+            "level": 52,
+            "momentum": 59,
             "score": 56.2
           },
           "revision": {
             "level": 29.7,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 41.9
           },
           "structural": {
-            "level": 65.0,
-            "momentum": 62.0,
+            "level": 65,
+            "momentum": 62,
             "score": 63.2
           },
           "catalyst": {
-            "level": 61.0,
+            "level": 61,
             "momentum": 57.1,
             "score": 58.7
           }
@@ -9901,9 +9922,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "032830": 17213.0,
-            "000810": 50924.0,
-            "005830": 26621.0
+            "032830": 17213,
+            "000810": 50924,
+            "005830": 26621
           },
           "median_fper_or_pbr": 0.77,
           "median_r20": -3.866248693834906,
@@ -9912,7 +9933,7 @@
           "median_fwd_rev_growth": null,
           "median_opm": 13.701365029250626,
           "median_opm_delta": 0.803502440691096,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -9922,7 +9943,7 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 56.5,
         "investment_score": 57.1,
-        "valuation_score": 64.0,
+        "valuation_score": 64,
         "relative_strength_score": 39.4,
         "catalyst_score": 67.9,
         "factors": {
@@ -9932,9 +9953,9 @@
             "score": 52.5
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 58.3,
-            "score": 55.0
+            "score": 55
           },
           "price": {
             "level": 56.4,
@@ -9942,22 +9963,22 @@
             "score": 46.9
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
             "level": 58.6,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 53.4
           },
           "structural": {
-            "level": 88.0,
+            "level": 88,
             "momentum": 77.2,
             "score": 81.5
           },
           "catalyst": {
-            "level": 73.0,
+            "level": 73,
             "momentum": 64.6,
             "score": 67.9
           }
@@ -10001,9 +10022,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "035420": 12270.0,
-            "018260": 8942.0,
-            "035720": 1237.0
+            "035420": 12270,
+            "018260": 8942,
+            "035720": 1237
           },
           "median_fper_or_pbr": 22.87,
           "median_r20": -10.159055926115956,
@@ -10012,7 +10033,7 @@
           "median_fwd_rev_growth": -1.581580504599489,
           "median_opm": 13.199904693828927,
           "median_opm_delta": 2.3147803438984393,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10022,9 +10043,9 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 51.9,
         "investment_score": 56.7,
-        "valuation_score": 84.0,
+        "valuation_score": 84,
         "relative_strength_score": 40.7,
-        "catalyst_score": 63.0,
+        "catalyst_score": 63,
         "factors": {
           "demand": {
             "level": 58.5,
@@ -10032,7 +10053,7 @@
             "score": 51.2
           },
           "supply": {
-            "level": 64.0,
+            "level": 64,
             "momentum": 58.8,
             "score": 60.9
           },
@@ -10042,24 +10063,24 @@
             "score": 33.3
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
-            "level": 24.0,
-            "momentum": 50.0,
+            "level": 24,
+            "momentum": 50,
             "score": 39.6
           },
           "structural": {
-            "level": 62.0,
+            "level": 62,
             "momentum": 58.4,
             "score": 59.8
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 60.4,
-            "score": 63.0
+            "score": 63
           }
         },
         "peak_warning": false,
@@ -10101,9 +10122,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "005490": 24080.0,
-            "010130": 58485.0,
-            "051910": -1983.0
+            "005490": 24080,
+            "010130": 58485,
+            "051910": -1983
           },
           "median_fper_or_pbr": 13.395,
           "median_r20": -10.114192495921692,
@@ -10112,7 +10133,7 @@
           "median_fwd_rev_growth": -3.204785369729002,
           "median_opm": 4.252623489643641,
           "median_opm_delta": 0.2987409313675071,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10122,42 +10143,42 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 56.8,
         "investment_score": 56.4,
-        "valuation_score": 42.0,
+        "valuation_score": 42,
         "relative_strength_score": 53.1,
         "catalyst_score": 78.7,
         "factors": {
           "demand": {
-            "level": 66.0,
+            "level": 66,
             "momentum": 58.2,
             "score": 61.3
           },
           "supply": {
-            "level": 43.0,
+            "level": 43,
             "momentum": 63.9,
             "score": 55.5
           },
           "price": {
             "level": 38.5,
-            "momentum": 44.0,
+            "momentum": 44,
             "score": 41.8
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
+            "level": 58,
+            "momentum": 72,
             "score": 66.4
           },
           "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "level": 0,
+            "momentum": 50,
+            "score": 30
           },
           "structural": {
-            "level": 80.0,
+            "level": 80,
             "momentum": 73.9,
             "score": 76.3
           },
           "catalyst": {
-            "level": 85.0,
+            "level": 85,
             "momentum": 74.6,
             "score": 78.7
           }
@@ -10206,18 +10227,18 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "373220": -1035.0,
-            "006400": 11978.0,
-            "051910": -1983.0
+            "373220": -1035,
+            "006400": 11978,
+            "051910": -1983
           },
-          "median_fper_or_pbr": 45.0,
+          "median_fper_or_pbr": 45,
           "median_r20": 0.4243281471004279,
           "median_r60": 10.9375,
           "median_rev_qoq": 14.535219399538102,
           "median_fwd_rev_growth": 7.164084058586284,
           "median_opm": 4.229713810057915,
           "median_opm_delta": 4.919193249488766,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10227,19 +10248,19 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 54.5,
         "investment_score": 56.3,
-        "valuation_score": 74.0,
+        "valuation_score": 74,
         "relative_strength_score": 39.3,
         "catalyst_score": 58.1,
         "factors": {
           "demand": {
-            "level": 55.0,
+            "level": 55,
             "momentum": 50.6,
             "score": 52.4
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 58.3,
-            "score": 55.0
+            "score": 55
           },
           "price": {
             "level": 60.7,
@@ -10247,22 +10268,22 @@
             "score": 48.2
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
             "level": 44.3,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 47.7
           },
           "structural": {
-            "level": 83.0,
+            "level": 83,
             "momentum": 73.5,
             "score": 77.3
           },
           "catalyst": {
-            "level": 61.0,
+            "level": 61,
             "momentum": 56.2,
             "score": 58.1
           }
@@ -10305,9 +10326,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "035420": 12270.0,
-            "035720": 1237.0,
-            "323410": 1243.0
+            "323410": 1243,
+            "035420": 12270,
+            "035720": 1237
           },
           "median_fper_or_pbr": 15.74,
           "median_r20": -10.159055926115956,
@@ -10316,7 +10337,7 @@
           "median_fwd_rev_growth": 0.5054882466971888,
           "median_opm": 15.35351746931067,
           "median_opm_delta": 2.3147803438984393,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10326,44 +10347,44 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 61.2,
         "investment_score": 55.3,
-        "valuation_score": 28.0,
+        "valuation_score": 28,
         "relative_strength_score": 50.8,
-        "catalyst_score": 62.0,
+        "catalyst_score": 62,
         "factors": {
           "demand": {
             "level": 62.1,
-            "momentum": 49.0,
+            "momentum": 49,
             "score": 54.3
           },
           "supply": {
-            "level": 57.0,
+            "level": 57,
             "momentum": 76.3,
             "score": 68.6
           },
           "price": {
             "level": 91.2,
             "momentum": 27.5,
-            "score": 53.0
+            "score": 53
           },
           "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
+            "level": 58,
+            "momentum": 65,
             "score": 62.2
           },
           "revision": {
-            "level": 50.0,
-            "momentum": 50.0,
-            "score": 50.0
+            "level": 50,
+            "momentum": 50,
+            "score": 50
           },
           "structural": {
-            "level": 92.0,
+            "level": 92,
             "momentum": 90.5,
             "score": 91.1
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 58.7,
-            "score": 62.0
+            "score": 62
           }
         },
         "peak_warning": false,
@@ -10426,9 +10447,9 @@
         "name": "화장품 / 뷰티",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 55.0,
+        "cycle_score": 55,
         "investment_score": 55.3,
-        "valuation_score": 64.0,
+        "valuation_score": 64,
         "relative_strength_score": 36.7,
         "catalyst_score": 62.7,
         "factors": {
@@ -10438,32 +10459,32 @@
             "score": 51.4
           },
           "supply": {
-            "level": 50.0,
-            "momentum": 47.0,
+            "level": 50,
+            "momentum": 47,
             "score": 48.2
           },
           "price": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 50.9,
             "score": 50.5
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 59.0,
+            "level": 52,
+            "momentum": 59,
             "score": 56.2
           },
           "revision": {
             "level": 46.6,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 48.6
           },
           "structural": {
-            "level": 85.0,
-            "momentum": 75.0,
-            "score": 79.0
+            "level": 85,
+            "momentum": 75,
+            "score": 79
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 59.9,
             "score": 62.7
           }
@@ -10505,9 +10526,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "278470": 15212.0,
-            "090430": 5423.0,
-            "051900": 12293.0
+            "278470": 15212,
+            "090430": 5423,
+            "051900": 12293
           },
           "median_fper_or_pbr": 20.82,
           "median_r20": -13.370865587614356,
@@ -10516,7 +10537,7 @@
           "median_fwd_rev_growth": -1.2127428502473725,
           "median_opm": 9.975338038948891,
           "median_opm_delta": -0.8317793228224915,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10526,44 +10547,44 @@
         "cycle_attractiveness": "중립",
         "cycle_score": 59.5,
         "investment_score": 54.8,
-        "valuation_score": 28.0,
+        "valuation_score": 28,
         "relative_strength_score": 56.7,
-        "catalyst_score": 63.0,
+        "catalyst_score": 63,
         "factors": {
           "demand": {
-            "level": 60.0,
-            "momentum": 100.0,
-            "score": 84.0
+            "level": 60,
+            "momentum": 100,
+            "score": 84
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 33.5,
             "score": 40.1
           },
           "price": {
             "level": 26.2,
-            "momentum": 100.0,
+            "momentum": 100,
             "score": 70.5
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "level": 0,
+            "momentum": 50,
+            "score": 30
           },
           "structural": {
-            "level": 74.0,
+            "level": 74,
             "momentum": 75.6,
             "score": 74.9
           },
           "catalyst": {
-            "level": 67.0,
+            "level": 67,
             "momentum": 60.3,
-            "score": 63.0
+            "score": 63
           }
         },
         "peak_warning": false,
@@ -10607,8 +10628,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "034220": -283.0,
-            "171090": 6999.0
+            "171090": 6999,
+            "034220": -283
           },
           "median_fper_or_pbr": 576.135,
           "median_r20": -10.589651022864022,
@@ -10617,7 +10638,7 @@
           "median_fwd_rev_growth": 193.6627250419488,
           "median_opm": -1.9190677286577216,
           "median_opm_delta": -4.569953164147422,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10627,8 +10648,8 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 50.1,
         "investment_score": 54.2,
-        "valuation_score": 82.0,
-        "relative_strength_score": 40.0,
+        "valuation_score": 82,
+        "relative_strength_score": 40,
         "catalyst_score": 53.1,
         "factors": {
           "demand": {
@@ -10637,7 +10658,7 @@
             "score": 43.4
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 50.5,
             "score": 50.3
           },
@@ -10647,22 +10668,22 @@
             "score": 49.6
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
             "level": 46.1,
-            "momentum": 50.0,
+            "momentum": 50,
             "score": 48.4
           },
           "structural": {
-            "level": 63.0,
-            "momentum": 59.0,
+            "level": 63,
+            "momentum": 59,
             "score": 60.6
           },
           "catalyst": {
-            "level": 55.0,
+            "level": 55,
             "momentum": 51.9,
             "score": 53.1
           }
@@ -10704,9 +10725,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "105560": 18502.0,
-            "055550": 12293.0,
-            "086790": 15972.0
+            "105560": 18502,
+            "055550": 12293,
+            "086790": 15972
           },
           "median_fper_or_pbr": 0.7,
           "median_r20": -10.55762081784387,
@@ -10715,7 +10736,7 @@
           "median_fwd_rev_growth": null,
           "median_opm": 8.5455141170318,
           "median_opm_delta": 0.14795203796266776,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       },
       {
@@ -10725,42 +10746,42 @@
         "cycle_attractiveness": "둔화",
         "cycle_score": 46.5,
         "investment_score": 53.2,
-        "valuation_score": 92.0,
+        "valuation_score": 92,
         "relative_strength_score": 42.8,
         "catalyst_score": 48.7,
         "factors": {
           "demand": {
             "level": 66.5,
-            "momentum": 40.0,
+            "momentum": 40,
             "score": 50.6
           },
           "supply": {
-            "level": 50.0,
+            "level": 50,
             "momentum": 58.1,
             "score": 54.8
           },
           "price": {
             "level": 75.1,
-            "momentum": 0.0,
+            "momentum": 0,
             "score": 30.1
           },
           "capex": {
-            "level": 52.0,
-            "momentum": 52.0,
-            "score": 52.0
+            "level": 52,
+            "momentum": 52,
+            "score": 52
           },
           "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "level": 0,
+            "momentum": 50,
+            "score": 30
           },
           "structural": {
-            "level": 69.0,
+            "level": 69,
             "momentum": 62.7,
             "score": 65.2
           },
           "catalyst": {
-            "level": 49.0,
+            "level": 49,
             "momentum": 48.6,
             "score": 48.7
           }
@@ -10805,9 +10826,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "259960": 17010.0,
-            "036570": 22417.0,
-            "251270": 5919.0
+            "251270": 5919,
+            "259960": 17010,
+            "036570": 22417
           },
           "median_fper_or_pbr": 8.92,
           "median_r20": -4.988123515439435,
@@ -10816,7 +10837,7 @@
           "median_fwd_rev_growth": -8.669695003244648,
           "median_opm": 22.56975989617132,
           "median_opm_delta": 2.2432439291817268,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0
         }
       }
     ]

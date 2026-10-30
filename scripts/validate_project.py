@@ -159,6 +159,24 @@ if meta.get("status")=="ok":
             fail("universe trading date differs from market data date")
         if int(universe.get("verified_close_count") or 0) != len(active_codes):
             fail("universe verified-close coverage mismatch")
+        if int(universe.get("close_schema_version") or 0) >= 2:
+            for entry in universe.get("items") or []:
+                status = entry.get("close_status")
+                if status == "UNVERIFIED":
+                    if entry.get("close") is not None or entry.get("close_date"):
+                        fail("undated listing quote masquerades as close: " + str(entry.get("code")))
+                    if "reference_close" not in entry:
+                        fail("unverified reference price missing: " + str(entry.get("code")))
+                elif status in ("VERIFIED", "DAILY_CLOSE"):
+                    if (entry.get("close_date") != market_day
+                            or not isinstance(entry.get("close"), (int, float))
+                            or entry.get("close") <= 0):
+                        fail("dated close stale/invalid: " + str(entry.get("code")))
+            if universe.get("dated_close_count") is not None:
+                dated = sum(x.get("close_status") in ("VERIFIED", "DAILY_CLOSE")
+                            for x in universe.get("items") or [])
+                if dated != universe["dated_close_count"]:
+                    fail("universe dated-close coverage count mismatch")
         # Deep-dive charts must match the verified prices used in Theme Radar.
         history = json.loads((ROOT / "data" / "verified-stock-bars.json").read_text(encoding="utf-8"))
         hist_items = history.get("items") or {}
@@ -171,6 +189,10 @@ if meta.get("status")=="ok":
             uni = by_code.get(code) or {}
             if len(rows) < 65 or last.get("date") != market_day or last.get("close") != uni.get("close"):
                 fail(f"verified chart/close mismatch for {code}")
+            if code == "000660":
+                anchor = next((bar for bar in rows if bar.get("date") == "2026-10-19"), None)
+                if anchor is None or round(anchor.get("close") or 0) != 1277000:
+                    fail("SK hynix 2026-10-19 historical close must equal 1,277,000")
         for code in active_codes:
             row = by_code.get(code) or {}
             if row.get("close_status") != "VERIFIED" or row.get("close_date") != market_day:
@@ -274,6 +296,13 @@ try:
             rows=record.get("rows") or []
             if len(rows)<65 or rows[-1].get("date")!=record.get("date") or round(rows[-1].get("close") or 0)!=round(close or 0):
                 fail("Fundamental sector close/day-bars disagree: "+code)
+            if universe_dates.get("sector_closes_synced"):
+                item=universe_lookup.get(code) or {}
+                if (item.get("close_status")!="DAILY_CLOSE" or item.get("close_date")!=record.get("date")
+                        or round(item.get("close") or 0)!=round(close or 0)):
+                    fail("Fundamental sector/universe daily price mismatch: "+code)
+                if item.get("reference_agrees") is not record.get("reference_agrees"):
+                    fail("Fundamental reference-disagreement flag mismatch: "+code)
         elif record.get("status") == "VERIFIED":
             row=universe_lookup.get(code) or {}
             if row.get("close_status")!="VERIFIED" or round(row.get("close") or 0)!=round(close or 0):
@@ -283,11 +312,25 @@ try:
 except Exception as exc:
     fail("Fundamental sector dated closing prices unavailable: "+str(exc))
 
+# Monthly selection price is historical; its current price must still be up to date.
+try:
+    uni=json.loads((ROOT/"stock-universe.json").read_text(encoding="utf-8"))
+    lookup={x.get("code"):x for x in uni.get("items") or []}
+    for pick in data.get("theme_picks") or []:
+        code=str(pick.get("ticker") or "").split(".")[0]
+        item=lookup.get(code) or {}
+        if item.get("close_status")=="VERIFIED":
+            if pick.get("price_date")!=meta.get("market_date") or pick.get("price")!=item.get("close"):
+                fail("theme_picks current price/date mismatch: "+code)
+except Exception as exc:
+    fail("theme_picks price audit: "+str(exc))
+
 html=(ROOT/"index.html").read_text(encoding="utf-8")
 # Fundamental TOP20 must display an explicit reference price, not a blank
 # placeholder, for stocks outside the 54 verified daily closing-price universe.
 for marker in (
-    "referenceClose:srNum(x.close)",
+    "referenceClose:srNum(x.reference_close??x.close)",
+    "const STOCK_UNIVERSE_URL='stock-universe.json'",
     "function srFundSnapshotPrice(item)",
     "참고시세 ",
     "종가 미검증",
