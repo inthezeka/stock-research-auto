@@ -108,7 +108,7 @@ def check_browser():
          "--disable-dev-shm-usage", "--ignore-certificate-errors",
          "--disable-features=HttpsFirstBalancedModeAutoEnable",
          "--hide-scrollbars", "--virtual-time-budget=15000",
-         "--dump-dom", BASE + "?" + urlencode({"audit": GENERATED})],
+         "--dump-dom", BASE + "index.html?" + urlencode({"market": "KOSPI", "audit": GENERATED})],
         capture_output=True, text=True, timeout=70,
     )
     if proc.returncode != 0:
