@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-31T07:35:59.814159+09:00",
+    "generated_at": "2026-11-01T07:30:34.021504+09:00",
     "market_date": "2026-10-30",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -17,7 +17,7 @@
     "profile_switch": "enabled",
     "profile_count": 6,
     "validation_policy": "live run: stock fresh >=80%, market fresh >=60%; JSON/links/theme/TOP5/JS/smoke test pass required",
-    "financial_snapshot_date": "2026-10-31",
+    "financial_snapshot_date": "2026-11-01",
     "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
     "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
     "coverage": {
@@ -82,7 +82,7 @@
     "korea_sentiment_policy": "Sentiment v3 · 최근성 우선 5D > 20D > 60D · 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
     "stock_universe": {
       "as_of": "2026-10-30",
-      "generated_at": "2026-10-31T07:35:59.814159+09:00",
+      "generated_at": "2026-11-01T07:30:34.021504+09:00",
       "count": 2675,
       "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop"
     },
@@ -93,7 +93,7 @@
     "theme_selection_refreshed_this_run": false,
     "sector_cycle": {
       "as_of": "2026-10-30",
-      "generated_at": "2026-10-31T07:35:59.814159+09:00",
+      "generated_at": "2026-11-01T07:30:34.021504+09:00",
       "sector_count": 36,
       "theme_count": 36,
       "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
@@ -166,6 +166,72 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
+      "000660": {
+        "count": 33,
+        "samples": [
+          {
+            "date": "2026-10-15",
+            "naver_close": 1238000,
+            "yahoo_close": 1262000
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 1265000,
+            "yahoo_close": 1272000
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 1304000,
+            "yahoo_close": 1277000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 1190000,
+            "yahoo_close": 1223000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 1288000,
+            "yahoo_close": 1294000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 1234000,
+            "yahoo_close": 1223000
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 1263000,
+            "yahoo_close": 1277000
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 1290000,
+            "yahoo_close": 1275000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 1374000,
+            "yahoo_close": 1341000
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 1508000,
+            "yahoo_close": 1487000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 1516000,
+            "yahoo_close": 1526000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 1391000,
+            "yahoo_close": 1418000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
       "267260": {
         "count": 30,
         "samples": [
@@ -232,68 +298,134 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "035720": {
-        "count": 30,
+      "005930": {
+        "count": 28,
         "samples": [
           {
-            "date": "2026-10-12",
-            "naver_close": 31900,
-            "yahoo_close": 32000
+            "date": "2026-10-13",
+            "naver_close": 234000,
+            "yahoo_close": 232000
           },
           {
             "date": "2026-10-14",
-            "naver_close": 31650,
-            "yahoo_close": 31700
+            "naver_close": 234500,
+            "yahoo_close": 232000
           },
           {
             "date": "2026-10-15",
-            "naver_close": 30850,
-            "yahoo_close": 31000
+            "naver_close": 207500,
+            "yahoo_close": 210000
           },
           {
             "date": "2026-10-16",
-            "naver_close": 31700,
-            "yahoo_close": 31850
+            "naver_close": 217000,
+            "yahoo_close": 215500
           },
           {
             "date": "2026-10-19",
-            "naver_close": 32050,
-            "yahoo_close": 32100
+            "naver_close": 223500,
+            "yahoo_close": 218000
           },
           {
             "date": "2026-10-20",
-            "naver_close": 31350,
-            "yahoo_close": 31550
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 30200,
-            "yahoo_close": 30350
+            "naver_close": 209000,
+            "yahoo_close": 211500
           },
           {
             "date": "2026-10-23",
-            "naver_close": 29800,
-            "yahoo_close": 29950
+            "naver_close": 213500,
+            "yahoo_close": 215500
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 213500,
+            "yahoo_close": 213000
           },
           {
             "date": "2026-10-27",
-            "naver_close": 29700,
-            "yahoo_close": 29500
+            "naver_close": 225000,
+            "yahoo_close": 222000
           },
           {
             "date": "2026-10-28",
-            "naver_close": 29900,
-            "yahoo_close": 29800
+            "naver_close": 245000,
+            "yahoo_close": 242000
           },
           {
             "date": "2026-10-29",
-            "naver_close": 29450,
-            "yahoo_close": 29300
+            "naver_close": 230500,
+            "yahoo_close": 232000
           },
           {
             "date": "2026-10-30",
-            "naver_close": 29200,
-            "yahoo_close": 29450
+            "naver_close": 220500,
+            "yahoo_close": 225000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "009150": {
+        "count": 31,
+        "samples": [
+          {
+            "date": "2026-10-14",
+            "naver_close": 1377000,
+            "yahoo_close": 1374000
+          },
+          {
+            "date": "2026-10-15",
+            "naver_close": 1122000,
+            "yahoo_close": 1163000
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 1184000,
+            "yahoo_close": 1188000
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 1220000,
+            "yahoo_close": 1170000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 1125000,
+            "yahoo_close": 1155000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 1184000,
+            "yahoo_close": 1168000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 1146000,
+            "yahoo_close": 1145000
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 1111000,
+            "yahoo_close": 1122000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 1226000,
+            "yahoo_close": 1201000
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 1315000,
+            "yahoo_close": 1306000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 1282000,
+            "yahoo_close": 1293000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 1166000,
+            "yahoo_close": 1196000
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -430,200 +562,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "005930": {
-        "count": 28,
+      "035720": {
+        "count": 30,
         "samples": [
           {
-            "date": "2026-10-13",
-            "naver_close": 234000,
-            "yahoo_close": 232000
+            "date": "2026-10-12",
+            "naver_close": 31900,
+            "yahoo_close": 32000
           },
           {
             "date": "2026-10-14",
-            "naver_close": 234500,
-            "yahoo_close": 232000
+            "naver_close": 31650,
+            "yahoo_close": 31700
           },
           {
             "date": "2026-10-15",
-            "naver_close": 207500,
-            "yahoo_close": 210000
+            "naver_close": 30850,
+            "yahoo_close": 31000
           },
           {
             "date": "2026-10-16",
-            "naver_close": 217000,
-            "yahoo_close": 215500
+            "naver_close": 31700,
+            "yahoo_close": 31850
           },
           {
             "date": "2026-10-19",
-            "naver_close": 223500,
-            "yahoo_close": 218000
+            "naver_close": 32050,
+            "yahoo_close": 32100
           },
           {
             "date": "2026-10-20",
-            "naver_close": 209000,
-            "yahoo_close": 211500
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 213500,
-            "yahoo_close": 215500
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 213500,
-            "yahoo_close": 213000
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 225000,
-            "yahoo_close": 222000
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 245000,
-            "yahoo_close": 242000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 230500,
-            "yahoo_close": 232000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 220500,
-            "yahoo_close": 225000
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "000660": {
-        "count": 33,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 1238000,
-            "yahoo_close": 1262000
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 1265000,
-            "yahoo_close": 1272000
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 1304000,
-            "yahoo_close": 1277000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 1190000,
-            "yahoo_close": 1223000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 1288000,
-            "yahoo_close": 1294000
+            "naver_close": 31350,
+            "yahoo_close": 31550
           },
           {
             "date": "2026-10-22",
-            "naver_close": 1234000,
-            "yahoo_close": 1223000
+            "naver_close": 30200,
+            "yahoo_close": 30350
           },
           {
             "date": "2026-10-23",
-            "naver_close": 1263000,
-            "yahoo_close": 1277000
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 1290000,
-            "yahoo_close": 1275000
+            "naver_close": 29800,
+            "yahoo_close": 29950
           },
           {
             "date": "2026-10-27",
-            "naver_close": 1374000,
-            "yahoo_close": 1341000
+            "naver_close": 29700,
+            "yahoo_close": 29500
           },
           {
             "date": "2026-10-28",
-            "naver_close": 1508000,
-            "yahoo_close": 1487000
+            "naver_close": 29900,
+            "yahoo_close": 29800
           },
           {
             "date": "2026-10-29",
-            "naver_close": 1516000,
-            "yahoo_close": 1526000
+            "naver_close": 29450,
+            "yahoo_close": 29300
           },
           {
             "date": "2026-10-30",
-            "naver_close": 1391000,
-            "yahoo_close": 1418000
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "009150": {
-        "count": 31,
-        "samples": [
-          {
-            "date": "2026-10-14",
-            "naver_close": 1377000,
-            "yahoo_close": 1374000
-          },
-          {
-            "date": "2026-10-15",
-            "naver_close": 1122000,
-            "yahoo_close": 1163000
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 1184000,
-            "yahoo_close": 1188000
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 1220000,
-            "yahoo_close": 1170000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 1125000,
-            "yahoo_close": 1155000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 1184000,
-            "yahoo_close": 1168000
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 1146000,
-            "yahoo_close": 1145000
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 1111000,
-            "yahoo_close": 1122000
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 1226000,
-            "yahoo_close": 1201000
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 1315000,
-            "yahoo_close": 1306000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 1282000,
-            "yahoo_close": 1293000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 1166000,
-            "yahoo_close": 1196000
+            "naver_close": 29200,
+            "yahoo_close": 29450
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -694,72 +694,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "373220": {
-        "count": 31,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 393000,
-            "yahoo_close": 402500
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 403500,
-            "yahoo_close": 403000
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 428500,
-            "yahoo_close": 432000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 411500,
-            "yahoo_close": 414000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 412500,
-            "yahoo_close": 411500
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 391500,
-            "yahoo_close": 390000
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 381500,
-            "yahoo_close": 383000
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 376500,
-            "yahoo_close": 375000
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 385500,
-            "yahoo_close": 382500
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 373500,
-            "yahoo_close": 389500
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 355000,
-            "yahoo_close": 356000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 352500,
-            "yahoo_close": 359500
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "006400": {
         "count": 27,
         "samples": [
@@ -822,6 +756,72 @@
             "date": "2026-10-30",
             "naver_close": 535000,
             "yahoo_close": 543000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "373220": {
+        "count": 31,
+        "samples": [
+          {
+            "date": "2026-10-15",
+            "naver_close": 393000,
+            "yahoo_close": 402500
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 403500,
+            "yahoo_close": 403000
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 428500,
+            "yahoo_close": 432000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 411500,
+            "yahoo_close": 414000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 412500,
+            "yahoo_close": 411500
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 391500,
+            "yahoo_close": 390000
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 381500,
+            "yahoo_close": 383000
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 376500,
+            "yahoo_close": 375000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 385500,
+            "yahoo_close": 382500
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 373500,
+            "yahoo_close": 389500
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 355000,
+            "yahoo_close": 356000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 352500,
+            "yahoo_close": 359500
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -892,72 +892,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "000270": {
-        "count": 29,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 105200,
-            "yahoo_close": 105900
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 110900,
-            "yahoo_close": 110200
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 114600,
-            "yahoo_close": 116000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 111100,
-            "yahoo_close": 112400
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 110400,
-            "yahoo_close": 110500
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 108400,
-            "yahoo_close": 108800
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 106700,
-            "yahoo_close": 106900
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 105700,
-            "yahoo_close": 105100
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 106700,
-            "yahoo_close": 106500
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 107500,
-            "yahoo_close": 107900
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 108600,
-            "yahoo_close": 108300
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 94800,
-            "yahoo_close": 95600
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "012330": {
         "count": 32,
         "samples": [
@@ -1024,68 +958,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "012450": {
-        "count": 31,
+      "000270": {
+        "count": 29,
         "samples": [
           {
             "date": "2026-10-15",
-            "naver_close": 815000,
-            "yahoo_close": 824000
+            "naver_close": 105200,
+            "yahoo_close": 105900
           },
           {
             "date": "2026-10-16",
-            "naver_close": 900000,
-            "yahoo_close": 888000
+            "naver_close": 110900,
+            "yahoo_close": 110200
           },
           {
             "date": "2026-10-19",
-            "naver_close": 892000,
-            "yahoo_close": 905000
+            "naver_close": 114600,
+            "yahoo_close": 116000
           },
           {
             "date": "2026-10-20",
-            "naver_close": 792000,
-            "yahoo_close": 799000
+            "naver_close": 111100,
+            "yahoo_close": 112400
           },
           {
             "date": "2026-10-21",
-            "naver_close": 808000,
-            "yahoo_close": 814000
+            "naver_close": 110400,
+            "yahoo_close": 110500
           },
           {
             "date": "2026-10-22",
-            "naver_close": 813000,
-            "yahoo_close": 811000
+            "naver_close": 108400,
+            "yahoo_close": 108800
           },
           {
             "date": "2026-10-23",
-            "naver_close": 786000,
-            "yahoo_close": 792000
+            "naver_close": 106700,
+            "yahoo_close": 106900
           },
           {
             "date": "2026-10-26",
-            "naver_close": 753000,
-            "yahoo_close": 760000
+            "naver_close": 105700,
+            "yahoo_close": 105100
           },
           {
             "date": "2026-10-27",
-            "naver_close": 773000,
-            "yahoo_close": 768000
+            "naver_close": 106700,
+            "yahoo_close": 106500
           },
           {
             "date": "2026-10-28",
-            "naver_close": 786000,
-            "yahoo_close": 787000
+            "naver_close": 107500,
+            "yahoo_close": 107900
           },
           {
             "date": "2026-10-29",
-            "naver_close": 739000,
-            "yahoo_close": 760000
+            "naver_close": 108600,
+            "yahoo_close": 108300
           },
           {
             "date": "2026-10-30",
-            "naver_close": 682000,
-            "yahoo_close": 696000
+            "naver_close": 94800,
+            "yahoo_close": 95600
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1152,6 +1086,72 @@
             "date": "2026-10-30",
             "naver_close": 278500,
             "yahoo_close": 282000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "012450": {
+        "count": 31,
+        "samples": [
+          {
+            "date": "2026-10-15",
+            "naver_close": 815000,
+            "yahoo_close": 824000
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 900000,
+            "yahoo_close": 888000
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 892000,
+            "yahoo_close": 905000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 792000,
+            "yahoo_close": 799000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 808000,
+            "yahoo_close": 814000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 813000,
+            "yahoo_close": 811000
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 786000,
+            "yahoo_close": 792000
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 753000,
+            "yahoo_close": 760000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 773000,
+            "yahoo_close": 768000
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 786000,
+            "yahoo_close": 787000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 739000,
+            "yahoo_close": 760000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 682000,
+            "yahoo_close": 696000
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1486,72 +1486,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "196170": {
-        "count": 215,
-        "samples": [
-          {
-            "date": "2026-10-14",
-            "naver_close": 222500,
-            "yahoo_close": 224500
-          },
-          {
-            "date": "2026-10-15",
-            "naver_close": 208000,
-            "yahoo_close": 213500
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 239500,
-            "yahoo_close": 239000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 228000,
-            "yahoo_close": 231000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 239000,
-            "yahoo_close": 240000
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 230000,
-            "yahoo_close": 231000
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 222000,
-            "yahoo_close": 224500
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 218000,
-            "yahoo_close": 218500
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 219000,
-            "yahoo_close": 218500
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 223500,
-            "yahoo_close": 223000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 224000,
-            "yahoo_close": 220000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 209000,
-            "yahoo_close": 211500
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "207940": {
         "count": 244,
         "samples": [
@@ -1614,6 +1548,72 @@
             "date": "2026-10-30",
             "naver_close": 1432000,
             "yahoo_close": 1487000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "196170": {
+        "count": 215,
+        "samples": [
+          {
+            "date": "2026-10-14",
+            "naver_close": 222500,
+            "yahoo_close": 224500
+          },
+          {
+            "date": "2026-10-15",
+            "naver_close": 208000,
+            "yahoo_close": 213500
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 239500,
+            "yahoo_close": 239000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 228000,
+            "yahoo_close": 231000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 239000,
+            "yahoo_close": 240000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 230000,
+            "yahoo_close": 231000
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 222000,
+            "yahoo_close": 224500
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 218000,
+            "yahoo_close": 218500
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 219000,
+            "yahoo_close": 218500
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 223500,
+            "yahoo_close": 223000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 224000,
+            "yahoo_close": 220000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 209000,
+            "yahoo_close": 211500
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -2476,72 +2476,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "090430": {
-        "count": 31,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 131100,
-            "yahoo_close": 132300
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 138200,
-            "yahoo_close": 139200
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 137400,
-            "yahoo_close": 138500
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 137300,
-            "yahoo_close": 137900
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 135000,
-            "yahoo_close": 135600
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 132400,
-            "yahoo_close": 133500
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 129100,
-            "yahoo_close": 128800
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 125900,
-            "yahoo_close": 125700
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 124900,
-            "yahoo_close": 124300
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 124800,
-            "yahoo_close": 124500
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 123100,
-            "yahoo_close": 124400
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 128200,
-            "yahoo_close": 129100
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "105560": {
         "count": 29,
         "samples": [
@@ -2604,6 +2538,72 @@
             "date": "2026-10-30",
             "naver_close": 154600,
             "yahoo_close": 155500
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "090430": {
+        "count": 31,
+        "samples": [
+          {
+            "date": "2026-10-15",
+            "naver_close": 131100,
+            "yahoo_close": 132300
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 138200,
+            "yahoo_close": 139200
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 137400,
+            "yahoo_close": 138500
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 137300,
+            "yahoo_close": 137900
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 135000,
+            "yahoo_close": 135600
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 132400,
+            "yahoo_close": 133500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 129100,
+            "yahoo_close": 128800
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 125900,
+            "yahoo_close": 125700
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 124900,
+            "yahoo_close": 124300
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 124800,
+            "yahoo_close": 124500
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 123100,
+            "yahoo_close": 124400
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 128200,
+            "yahoo_close": 129100
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -2872,138 +2872,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "005490": {
-        "count": 26,
-        "samples": [
-          {
-            "date": "2026-10-08",
-            "naver_close": 305500,
-            "yahoo_close": 306500
-          },
-          {
-            "date": "2026-10-12",
-            "naver_close": 298000,
-            "yahoo_close": 299000
-          },
-          {
-            "date": "2026-10-13",
-            "naver_close": 298500,
-            "yahoo_close": 299000
-          },
-          {
-            "date": "2026-10-14",
-            "naver_close": 308000,
-            "yahoo_close": 309000
-          },
-          {
-            "date": "2026-10-15",
-            "naver_close": 288500,
-            "yahoo_close": 292000
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 297000,
-            "yahoo_close": 296500
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 311000,
-            "yahoo_close": 314500
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 299500,
-            "yahoo_close": 302000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 301500,
-            "yahoo_close": 301000
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 270000,
-            "yahoo_close": 269500
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 276500,
-            "yahoo_close": 276000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 271500,
-            "yahoo_close": 273500
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "000120": {
-        "count": 26,
-        "samples": [
-          {
-            "date": "2026-10-08",
-            "naver_close": 69800,
-            "yahoo_close": 69300
-          },
-          {
-            "date": "2026-10-12",
-            "naver_close": 69400,
-            "yahoo_close": 69500
-          },
-          {
-            "date": "2026-10-13",
-            "naver_close": 69800,
-            "yahoo_close": 70200
-          },
-          {
-            "date": "2026-10-14",
-            "naver_close": 70100,
-            "yahoo_close": 70200
-          },
-          {
-            "date": "2026-10-15",
-            "naver_close": 69400,
-            "yahoo_close": 69100
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 71100,
-            "yahoo_close": 71800
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 67800,
-            "yahoo_close": 67700
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 66100,
-            "yahoo_close": 66300
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 64900,
-            "yahoo_close": 64800
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 63600,
-            "yahoo_close": 64100
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 64200,
-            "yahoo_close": 64000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 66600,
-            "yahoo_close": 64800
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "103140": {
         "count": 30,
         "samples": [
@@ -3070,134 +2938,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "011200": {
-        "count": 28,
+      "005490": {
+        "count": 26,
         "samples": [
+          {
+            "date": "2026-10-08",
+            "naver_close": 305500,
+            "yahoo_close": 306500
+          },
+          {
+            "date": "2026-10-12",
+            "naver_close": 298000,
+            "yahoo_close": 299000
+          },
+          {
+            "date": "2026-10-13",
+            "naver_close": 298500,
+            "yahoo_close": 299000
+          },
           {
             "date": "2026-10-14",
-            "naver_close": 23300,
-            "yahoo_close": 23350
+            "naver_close": 308000,
+            "yahoo_close": 309000
           },
           {
             "date": "2026-10-15",
-            "naver_close": 23250,
-            "yahoo_close": 23200
+            "naver_close": 288500,
+            "yahoo_close": 292000
           },
           {
             "date": "2026-10-16",
-            "naver_close": 23600,
-            "yahoo_close": 23500
+            "naver_close": 297000,
+            "yahoo_close": 296500
           },
           {
             "date": "2026-10-19",
-            "naver_close": 23900,
-            "yahoo_close": 24000
+            "naver_close": 311000,
+            "yahoo_close": 314500
           },
           {
             "date": "2026-10-20",
-            "naver_close": 23250,
-            "yahoo_close": 23450
+            "naver_close": 299500,
+            "yahoo_close": 302000
           },
           {
             "date": "2026-10-21",
-            "naver_close": 23250,
-            "yahoo_close": 23400
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 22500,
-            "yahoo_close": 22650
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 22500,
-            "yahoo_close": 22650
+            "naver_close": 301500,
+            "yahoo_close": 301000
           },
           {
             "date": "2026-10-26",
-            "naver_close": 22450,
-            "yahoo_close": 22550
+            "naver_close": 270000,
+            "yahoo_close": 269500
           },
           {
             "date": "2026-10-27",
-            "naver_close": 22350,
-            "yahoo_close": 22400
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 22500,
-            "yahoo_close": 22300
+            "naver_close": 276500,
+            "yahoo_close": 276000
           },
           {
             "date": "2026-10-30",
-            "naver_close": 23250,
-            "yahoo_close": 23350
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "010130": {
-        "count": 30,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 935000,
-            "yahoo_close": 938000
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 947000,
-            "yahoo_close": 946000
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 994000,
-            "yahoo_close": 999000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 918000,
-            "yahoo_close": 916000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 920000,
-            "yahoo_close": 913000
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 890000,
-            "yahoo_close": 891000
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 852000,
-            "yahoo_close": 854000
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 848000,
-            "yahoo_close": 845000
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 862000,
-            "yahoo_close": 856000
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 890000,
-            "yahoo_close": 891000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 898000,
-            "yahoo_close": 878000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 862000,
-            "yahoo_close": 876000
+            "naver_close": 271500,
+            "yahoo_close": 273500
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -3268,6 +3070,204 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
+      "010130": {
+        "count": 30,
+        "samples": [
+          {
+            "date": "2026-10-15",
+            "naver_close": 935000,
+            "yahoo_close": 938000
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 947000,
+            "yahoo_close": 946000
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 994000,
+            "yahoo_close": 999000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 918000,
+            "yahoo_close": 916000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 920000,
+            "yahoo_close": 913000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 890000,
+            "yahoo_close": 891000
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 852000,
+            "yahoo_close": 854000
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 848000,
+            "yahoo_close": 845000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 862000,
+            "yahoo_close": 856000
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 890000,
+            "yahoo_close": 891000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 898000,
+            "yahoo_close": 878000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 862000,
+            "yahoo_close": 876000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "000120": {
+        "count": 26,
+        "samples": [
+          {
+            "date": "2026-10-08",
+            "naver_close": 69800,
+            "yahoo_close": 69300
+          },
+          {
+            "date": "2026-10-12",
+            "naver_close": 69400,
+            "yahoo_close": 69500
+          },
+          {
+            "date": "2026-10-13",
+            "naver_close": 69800,
+            "yahoo_close": 70200
+          },
+          {
+            "date": "2026-10-14",
+            "naver_close": 70100,
+            "yahoo_close": 70200
+          },
+          {
+            "date": "2026-10-15",
+            "naver_close": 69400,
+            "yahoo_close": 69100
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 71100,
+            "yahoo_close": 71800
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 67800,
+            "yahoo_close": 67700
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 66100,
+            "yahoo_close": 66300
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 64900,
+            "yahoo_close": 64800
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 63600,
+            "yahoo_close": 64100
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 64200,
+            "yahoo_close": 64000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 66600,
+            "yahoo_close": 64800
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "011200": {
+        "count": 28,
+        "samples": [
+          {
+            "date": "2026-10-14",
+            "naver_close": 23300,
+            "yahoo_close": 23350
+          },
+          {
+            "date": "2026-10-15",
+            "naver_close": 23250,
+            "yahoo_close": 23200
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 23600,
+            "yahoo_close": 23500
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 23900,
+            "yahoo_close": 24000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 23250,
+            "yahoo_close": 23450
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 23250,
+            "yahoo_close": 23400
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 22500,
+            "yahoo_close": 22650
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 22500,
+            "yahoo_close": 22650
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 22450,
+            "yahoo_close": 22550
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 22350,
+            "yahoo_close": 22400
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 22500,
+            "yahoo_close": 22300
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 23250,
+            "yahoo_close": 23350
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
       "000490": {
         "count": 26,
         "samples": [
@@ -3334,72 +3334,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "002100": {
-        "count": 29,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 8880,
-            "yahoo_close": 8900
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 9010,
-            "yahoo_close": 8960
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 9020,
-            "yahoo_close": 9030
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 9000,
-            "yahoo_close": 8960
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 9000,
-            "yahoo_close": 8940
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 8950,
-            "yahoo_close": 8930
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 8810,
-            "yahoo_close": 8880
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 8680,
-            "yahoo_close": 8830
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 8940,
-            "yahoo_close": 8970
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 8970,
-            "yahoo_close": 8890
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 8890,
-            "yahoo_close": 8910
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 8880,
-            "yahoo_close": 8820
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "025860": {
         "count": 27,
         "samples": [
@@ -3462,6 +3396,72 @@
             "date": "2026-10-28",
             "naver_close": 5560,
             "yahoo_close": 5520
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "002100": {
+        "count": 29,
+        "samples": [
+          {
+            "date": "2026-10-15",
+            "naver_close": 8880,
+            "yahoo_close": 8900
+          },
+          {
+            "date": "2026-10-16",
+            "naver_close": 9010,
+            "yahoo_close": 8960
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 9020,
+            "yahoo_close": 9030
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 9000,
+            "yahoo_close": 8960
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 9000,
+            "yahoo_close": 8940
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 8950,
+            "yahoo_close": 8930
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 8810,
+            "yahoo_close": 8880
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 8680,
+            "yahoo_close": 8830
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 8940,
+            "yahoo_close": 8970
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 8970,
+            "yahoo_close": 8890
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 8890,
+            "yahoo_close": 8910
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 8880,
+            "yahoo_close": 8820
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -5523,7 +5523,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-        "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+        "fetched_at": "2026-11-01T07:30:34.021504+09:00"
       },
       "valuation_snapshot": {
         "per": 15.63,
@@ -5869,7 +5869,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-        "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+        "fetched_at": "2026-11-01T07:30:34.021504+09:00"
       },
       "valuation_snapshot": {
         "per": 28.96,
@@ -5940,8 +5940,8 @@
         "currentPriceText": "129,100원",
         "fairPriceText": "목표가 확인 중",
         "upsideText": "+10.6% [AI]",
-        "fper": "23.81x",
-        "roe": "6.7% [AI]",
+        "fper": "25.32x",
+        "roe": "6.3% [AI]",
         "topRR": "—",
         "business": "유통 / 화장품 / 음식료 / 면세 / 여행 / 카지노 관련 사업 · 세부 사업구조는 공식 IR 확인",
         "customers": "공식 IR/공시에서 주요 고객 및 매출처 확인",
@@ -5978,7 +5978,7 @@
         "eps4": "1,277원",
         "yoy4": "매출 QoQ -3.4% [AI]",
         "per": "30.95x",
-        "fper2": "23.81x",
+        "fper2": "25.32x",
         "pbr": "1.59x",
         "evebitda": "—",
         "valEps": "1,277원 · 2026Q3E",
@@ -6215,14 +6215,14 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-        "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+        "fetched_at": "2026-11-01T07:30:34.021504+09:00"
       },
       "valuation_snapshot": {
         "per": 30.95,
-        "forward_per": 23.64,
+        "forward_per": 25.15,
         "pbr": 1.59,
         "eps": 4142.0,
-        "forward_eps": 5423.0,
+        "forward_eps": 5098.0,
         "bps": 80855.0,
         "target_price": null,
         "market_value": "7조 4,988억",
@@ -6286,8 +6286,8 @@
         "currentPriceText": "543,000원",
         "fairPriceText": "목표가 확인 중",
         "upsideText": "+9.0% [AI]",
-        "fper": "45.33x",
-        "roe": "3.9% [AI]",
+        "fper": "53.49x",
+        "roe": "3.3% [AI]",
         "topRR": "0.64 : 1 [AI]",
         "business": "2차전지 / 배터리 / 양극재 / 음극재 / 전해질 / 동박 관련 사업 · 세부 사업구조는 공식 IR 확인",
         "customers": "공식 IR/공시에서 주요 고객 및 매출처 확인",
@@ -6324,7 +6324,7 @@
         "eps4": "7,802원",
         "yoy4": "매출 QoQ +7.2% [AI]",
         "per": "1168.12x",
-        "fper2": "45.33x",
+        "fper2": "53.49x",
         "pbr": "1.73x",
         "evebitda": "—",
         "valEps": "7,802원 · 2026Q3E",
@@ -6561,14 +6561,14 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/006400/finance/quarter",
-        "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+        "fetched_at": "2026-11-01T07:30:34.021504+09:00"
       },
       "valuation_snapshot": {
         "per": 1168.12,
-        "forward_per": 44.67,
+        "forward_per": 52.7,
         "pbr": 1.73,
         "eps": 458.0,
-        "forward_eps": 11978.0,
+        "forward_eps": 10152.0,
         "bps": 308778.0,
         "target_price": null,
         "market_value": "43조 1,133억",
@@ -6907,7 +6907,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-        "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+        "fetched_at": "2026-11-01T07:30:34.021504+09:00"
       },
       "valuation_snapshot": {
         "per": 19.73,
@@ -6933,26 +6933,26 @@
       "previous_close": 34.6,
       "previous_1_week": 16.685714285714287,
       "previous_1_month": 30.314285714285717,
-      "timestamp": "2026-10-30T22:17:50+00:00",
+      "timestamp": "2026-10-30T23:59:48+00:00",
       "source": "CNN Fear & Greed"
     },
     "kr": {
       "available": true,
       "fresh": true,
-      "score": 32.1,
-      "raw_score": 32.1,
+      "score": 31.1,
+      "raw_score": 31.1,
       "rating": "공포",
-      "timestamp": "2026-10-31T07:35:59.814159+09:00",
+      "timestamp": "2026-11-01T07:30:34.021504+09:00",
       "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
       "method": "KOSPI와 KOSDAQ을 각각 최근성 우선(5D > 20D > 60D) 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
       "kospi": {
         "available": true,
         "fresh": true,
         "market": "KOSPI",
-        "score": 38.3,
-        "raw_score": 38.3,
+        "score": 37.3,
+        "raw_score": 37.3,
         "rating": "공포",
-        "timestamp": "2026-10-31T07:35:59.814159+09:00",
+        "timestamp": "2026-11-01T07:30:34.021504+09:00",
         "source": "KOSPI·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSPI 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSPI 20D ≤ -15% → 상단 44",
@@ -7008,9 +7008,9 @@
           {
             "key": "safe_haven",
             "label": "USD/KRW 20D",
-            "score": 71.2,
+            "score": 51.0,
             "weight": 5,
-            "value": "-2.00%"
+            "value": "-0.56%"
           }
         ],
         "trend5_detail": {
@@ -7032,10 +7032,10 @@
         "available": true,
         "fresh": true,
         "market": "KOSDAQ",
-        "score": 25.9,
-        "raw_score": 25.9,
-        "rating": "공포",
-        "timestamp": "2026-10-31T07:35:59.814159+09:00",
+        "score": 24.9,
+        "raw_score": 24.9,
+        "rating": "극단적 공포",
+        "timestamp": "2026-11-01T07:30:34.021504+09:00",
         "source": "KOSDAQ·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSDAQ 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSDAQ 20D ≤ -15% → 상단 44",
@@ -7091,9 +7091,9 @@
           {
             "key": "safe_haven",
             "label": "USD/KRW 20D",
-            "score": 71.2,
+            "score": 51.0,
             "weight": 5,
-            "value": "-2.00%"
+            "value": "-0.56%"
           }
         ],
         "trend5_detail": {
@@ -7114,16 +7114,16 @@
       "components": [],
       "errors": []
     },
-    "blended_score": 29.4,
+    "blended_score": 28.9,
     "blended_rating": "공포",
-    "kr_us_gap": 5.9,
+    "kr_us_gap": 4.9,
     "regime": "SELECTIVE RISK-OFF",
     "recommendation": {
       "base_modifier": -1,
       "note": "공포 우위입니다. 하락 추세 종목의 신규 진입은 감점하고 확인형 접근을 우선합니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-10-31T07:35:59.814159+09:00"
+    "updated_at": "2026-11-01T07:30:34.021504+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -7458,7 +7458,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-          "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+          "fetched_at": "2026-11-01T07:30:34.021504+09:00"
         },
         "valuation_snapshot": {
           "per": 15.63,
@@ -7804,7 +7804,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-          "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+          "fetched_at": "2026-11-01T07:30:34.021504+09:00"
         },
         "valuation_snapshot": {
           "per": 28.96,
@@ -7875,8 +7875,8 @@
           "currentPriceText": "129,100원",
           "fairPriceText": "목표가 확인 중",
           "upsideText": "+10.6% [AI]",
-          "fper": "23.81x",
-          "roe": "6.7% [AI]",
+          "fper": "25.32x",
+          "roe": "6.3% [AI]",
           "topRR": "—",
           "business": "유통 / 화장품 / 음식료 / 면세 / 여행 / 카지노 관련 사업 · 세부 사업구조는 공식 IR 확인",
           "customers": "공식 IR/공시에서 주요 고객 및 매출처 확인",
@@ -7913,7 +7913,7 @@
           "eps4": "1,277원",
           "yoy4": "매출 QoQ -3.4% [AI]",
           "per": "30.95x",
-          "fper2": "23.81x",
+          "fper2": "25.32x",
           "pbr": "1.59x",
           "evebitda": "—",
           "valEps": "1,277원 · 2026Q3E",
@@ -8150,14 +8150,14 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/090430/finance/quarter",
-          "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+          "fetched_at": "2026-11-01T07:30:34.021504+09:00"
         },
         "valuation_snapshot": {
           "per": 30.95,
-          "forward_per": 23.64,
+          "forward_per": 25.15,
           "pbr": 1.59,
           "eps": 4142.0,
-          "forward_eps": 5423.0,
+          "forward_eps": 5098.0,
           "bps": 80855.0,
           "target_price": null,
           "market_value": "7조 4,988억",
@@ -8221,8 +8221,8 @@
           "currentPriceText": "543,000원",
           "fairPriceText": "목표가 확인 중",
           "upsideText": "+9.0% [AI]",
-          "fper": "45.33x",
-          "roe": "3.9% [AI]",
+          "fper": "53.49x",
+          "roe": "3.3% [AI]",
           "topRR": "0.64 : 1 [AI]",
           "business": "2차전지 / 배터리 / 양극재 / 음극재 / 전해질 / 동박 관련 사업 · 세부 사업구조는 공식 IR 확인",
           "customers": "공식 IR/공시에서 주요 고객 및 매출처 확인",
@@ -8259,7 +8259,7 @@
           "eps4": "7,802원",
           "yoy4": "매출 QoQ +7.2% [AI]",
           "per": "1168.12x",
-          "fper2": "45.33x",
+          "fper2": "53.49x",
           "pbr": "1.73x",
           "evebitda": "—",
           "valEps": "7,802원 · 2026Q3E",
@@ -8496,14 +8496,14 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/006400/finance/quarter",
-          "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+          "fetched_at": "2026-11-01T07:30:34.021504+09:00"
         },
         "valuation_snapshot": {
           "per": 1168.12,
-          "forward_per": 44.67,
+          "forward_per": 52.7,
           "pbr": 1.73,
           "eps": 458.0,
-          "forward_eps": 11978.0,
+          "forward_eps": 10152.0,
           "bps": 308778.0,
           "target_price": null,
           "market_value": "43조 1,133억",
@@ -8842,7 +8842,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/002150/finance/quarter",
-          "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+          "fetched_at": "2026-11-01T07:30:34.021504+09:00"
         },
         "valuation_snapshot": {
           "per": 19.73,
@@ -9194,7 +9194,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/035900/finance/quarter",
-          "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+          "fetched_at": "2026-11-01T07:30:34.021504+09:00"
         },
         "valuation_snapshot": {
           "per": 12.76,
@@ -9547,7 +9547,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/035900/finance/quarter",
-        "fetched_at": "2026-10-31T07:35:59.814159+09:00"
+        "fetched_at": "2026-11-01T07:30:34.021504+09:00"
       },
       "valuation_snapshot": {
         "per": 12.76,
@@ -9565,29 +9565,11 @@
   ],
   "kosdaq_selection_diagnostics": [
     {
-      "code": "189300",
-      "name": "인텔리안테크",
-      "fundamental_score": 55.1,
-      "trading_score": 33.0,
-      "final_score": 46.26,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 58.2,
-      "trading_score": 56.0,
-      "final_score": 57.32,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "054930",
-      "name": "유신",
-      "fundamental_score": 64.8,
-      "trading_score": 31.0,
-      "final_score": 51.28,
+      "code": "277810",
+      "name": "레인보우로보틱스",
+      "fundamental_score": 54.2,
+      "trading_score": 38.0,
+      "final_score": 47.72,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -9601,11 +9583,20 @@
       "priority": "70+"
     },
     {
-      "code": "196170",
-      "name": "알테오젠",
-      "fundamental_score": 64.1,
-      "trading_score": 25.0,
-      "final_score": 48.46,
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 58.2,
+      "trading_score": 56.0,
+      "final_score": 57.32,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "189300",
+      "name": "인텔리안테크",
+      "fundamental_score": 55.1,
+      "trading_score": 33.0,
+      "final_score": 46.26,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -9619,11 +9610,20 @@
       "priority": "<60 제외"
     },
     {
-      "code": "277810",
-      "name": "레인보우로보틱스",
-      "fundamental_score": 54.2,
-      "trading_score": 38.0,
-      "final_score": 47.72,
+      "code": "196170",
+      "name": "알테오젠",
+      "fundamental_score": 64.1,
+      "trading_score": 25.0,
+      "final_score": 48.46,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "054930",
+      "name": "유신",
+      "fundamental_score": 64.8,
+      "trading_score": 31.0,
+      "final_score": 51.28,
       "eligible": false,
       "priority": "<60 제외"
     }
@@ -10053,10 +10053,10 @@
       "priority": "<50"
     }
   ],
-  "kospi_selection_updated_at": "2026-10-31T07:35:59.814159+09:00",
+  "kospi_selection_updated_at": "2026-11-01T07:30:34.021504+09:00",
   "sector_cycle": {
     "as_of": "2026-10-30",
-    "generated_at": "2026-10-31T07:35:59.814159+09:00",
+    "generated_at": "2026-11-01T07:30:34.021504+09:00",
     "sector_count": 36,
     "theme_count": 36,
     "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
@@ -10067,8 +10067,8 @@
         "name": "반도체 / 메모리 / AI Chip",
         "actual_cycle": "호황",
         "cycle_attractiveness": "우호적 확장",
-        "cycle_score": 71.4,
-        "investment_score": 69.7,
+        "cycle_score": 71.5,
+        "investment_score": 69.8,
         "valuation_score": 92.0,
         "relative_strength_score": 28.4,
         "catalyst_score": 66.9,
@@ -10095,8 +10095,8 @@
           },
           "revision": {
             "level": 45.2,
-            "momentum": 50.0,
-            "score": 48.1
+            "momentum": 50.5,
+            "score": 48.4
           },
           "structural": {
             "level": 95.0,
@@ -10160,17 +10160,17 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "005930": 45531.0,
-            "000660": 357343.0
+            "005930": 45983.0,
+            "000660": 355563.0
           },
-          "median_fper_or_pbr": 4.84,
+          "median_fper_or_pbr": 4.8,
           "median_r20": -21.985417835109367,
           "median_r60": -16.000000000000004,
           "median_rev_qoq": 50.86398244075754,
           "median_fwd_rev_growth": 20.450819560905586,
           "median_opm": 52.18230956941565,
           "median_opm_delta": 9.430874258143952,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0.24730468734149302
         }
       },
       {
@@ -10284,7 +10284,7 @@
         "name": "해운 / 물류",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 56.7,
+        "cycle_score": 56.6,
         "investment_score": 62.8,
         "valuation_score": 92.0,
         "relative_strength_score": 52.9,
@@ -10302,8 +10302,8 @@
           },
           "price": {
             "level": 50.2,
-            "momentum": 56.9,
-            "score": 54.3
+            "momentum": 57.2,
+            "score": 54.4
           },
           "capex": {
             "level": 58.0,
@@ -10311,9 +10311,9 @@
             "score": 58.0
           },
           "revision": {
-            "level": 65.5,
+            "level": 63.4,
             "momentum": 50.0,
-            "score": 56.2
+            "score": 55.4
           },
           "structural": {
             "level": 60.0,
@@ -10412,9 +10412,9 @@
             "score": 62.2
           },
           "revision": {
-            "level": 62.2,
+            "level": 61.8,
             "momentum": 50.0,
-            "score": 54.9
+            "score": 54.7
           },
           "structural": {
             "level": 61.0,
@@ -10464,11 +10464,11 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "047050": 5355.0,
+            "047050": 5313.0,
             "021240": 9885.0,
             "383220": 12470.0
           },
-          "median_fper_or_pbr": 8.99,
+          "median_fper_or_pbr": 9.06,
           "median_r20": -9.197080291970805,
           "median_r60": -7.758620689655171,
           "median_rev_qoq": 8.460555012408811,
@@ -10567,10 +10567,10 @@
         "raw": {
           "member_forward_eps": {
             "010120": 3722.0,
-            "298040": 81002.0,
+            "298040": 80737.0,
             "267260": 24116.0
           },
-          "median_fper_or_pbr": 22.26,
+          "median_fper_or_pbr": 22.33,
           "median_r20": -35.30678148546824,
           "median_r60": -25.403392635498555,
           "median_rev_qoq": 14.557605695191045,
@@ -10672,11 +10672,11 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "012450": 43973.0,
+            "012450": 35743.0,
             "042660": 5406.0,
             "272210": 627.0
           },
-          "median_fper_or_pbr": 15.51,
+          "median_fper_or_pbr": 19.08,
           "median_r20": -32.408325074331024,
           "median_r60": -25.62704471101418,
           "median_rev_qoq": 61.58754999130587,
@@ -10806,8 +10806,8 @@
           },
           "price": {
             "level": 65.1,
-            "momentum": 50.2,
-            "score": 56.1
+            "momentum": 49.9,
+            "score": 56.0
           },
           "capex": {
             "level": 64.0,
@@ -10815,9 +10815,9 @@
             "score": 72.4
           },
           "revision": {
-            "level": 51.2,
+            "level": 50.8,
             "momentum": 50.0,
-            "score": 50.5
+            "score": 50.3
           },
           "structural": {
             "level": 73.0,
@@ -10869,7 +10869,7 @@
         "raw": {
           "member_forward_eps": {
             "003230": 74267.0,
-            "047050": 5355.0,
+            "047050": 5313.0,
             "021240": 9885.0
           },
           "median_fper_or_pbr": 10.47,
@@ -10974,7 +10974,7 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "096770": 21211.0,
+            "096770": 23502.0,
             "015760": 5949.0,
             "010950": 26573.0
           },
@@ -11297,119 +11297,12 @@
         }
       },
       {
-        "key": "semi_materials",
-        "name": "반도체 소재",
-        "actual_cycle": "성장",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 59.0,
-        "investment_score": 59.7,
-        "valuation_score": 74.0,
-        "relative_strength_score": 26.0,
-        "catalyst_score": 76.3,
-        "factors": {
-          "demand": {
-            "level": 66.1,
-            "momentum": 53.7,
-            "score": 58.7
-          },
-          "supply": {
-            "level": 36.0,
-            "momentum": 64.8,
-            "score": 53.3
-          },
-          "price": {
-            "level": 51.1,
-            "momentum": 34.9,
-            "score": 41.4
-          },
-          "capex": {
-            "level": 64.0,
-            "momentum": 71.0,
-            "score": 68.2
-          },
-          "revision": {
-            "level": 44.4,
-            "momentum": 50.0,
-            "score": 47.7
-          },
-          "structural": {
-            "level": 87.0,
-            "momentum": 76.4,
-            "score": 80.7
-          },
-          "catalyst": {
-            "level": 85.0,
-            "momentum": 70.5,
-            "score": 76.3
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [
-          "산업 성장/수요 Momentum 둔화",
-          "ASP/Margin Momentum 둔화"
-        ],
-        "early_recovery": false,
-        "recovery_signals": [
-          "재고/공급 Balance 개선",
-          "수주/CAPEX 회복"
-        ],
-        "reason": "구조적 성장 81 · Catalyst 76 | 대표: LG화학, DB하이텍, OCI홀딩스",
-        "growth": "EUV · HBM 소재 · Advanced Packaging · 국산화",
-        "subsectors": [
-          "포토레지스트",
-          "Wet Chemical",
-          "특수가스",
-          "CMP",
-          "Silicon Wafer",
-          "CCL",
-          "동박",
-          "Glass Cloth",
-          "패키징 소재"
-        ],
-        "themes": [
-          "국산화",
-          "HBM 소재",
-          "EUV",
-          "Advanced Packaging",
-          "AI Semiconductor Supply Chain"
-        ],
-        "representatives": [
-          {
-            "code": "051910",
-            "name": "LG화학"
-          },
-          {
-            "code": "000990",
-            "name": "DB하이텍"
-          },
-          {
-            "code": "010060",
-            "name": "OCI홀딩스"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "051910": -1983.0,
-            "000990": 9207.0,
-            "010060": 7173.0
-          },
-          "median_fper_or_pbr": 16.22,
-          "median_r20": -26.726862302483067,
-          "median_r60": -10.658914728682166,
-          "median_rev_qoq": 14.65710443747199,
-          "median_fwd_rev_growth": 3.195856137607511,
-          "median_opm": 10.564894448788117,
-          "median_opm_delta": 8.375170749080485,
-          "median_revision_pct": 0.0
-        }
-      },
-      {
         "key": "entertainment",
         "name": "엔터 / 미디어",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 55.9,
-        "investment_score": 59.6,
+        "cycle_score": 56.1,
+        "investment_score": 59.7,
         "valuation_score": 84.0,
         "relative_strength_score": 47.5,
         "catalyst_score": 58.8,
@@ -11426,8 +11319,8 @@
           },
           "price": {
             "level": 53.6,
-            "momentum": 36.5,
-            "score": 43.3
+            "momentum": 39.8,
+            "score": 45.3
           },
           "capex": {
             "level": 52.0,
@@ -11435,9 +11328,9 @@
             "score": 52.0
           },
           "revision": {
-            "level": 44.0,
+            "level": 43.5,
             "momentum": 50.0,
-            "score": 47.6
+            "score": 47.4
           },
           "structural": {
             "level": 75.0,
@@ -11493,9 +11386,9 @@
           "member_forward_eps": {
             "352820": 3842.0,
             "030000": 1741.0,
-            "041510": 5131.0
+            "041510": 5124.0
           },
-          "median_fper_or_pbr": 14.73,
+          "median_fper_or_pbr": 14.75,
           "median_r20": -2.2364217252396124,
           "median_r60": -3.0110935023771823,
           "median_rev_qoq": 25.25976352561805,
@@ -11804,6 +11697,113 @@
         }
       },
       {
+        "key": "semi_materials",
+        "name": "반도체 소재",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "중립",
+        "cycle_score": 59.0,
+        "investment_score": 58.2,
+        "valuation_score": 64.0,
+        "relative_strength_score": 26.0,
+        "catalyst_score": 76.3,
+        "factors": {
+          "demand": {
+            "level": 66.1,
+            "momentum": 53.7,
+            "score": 58.7
+          },
+          "supply": {
+            "level": 36.0,
+            "momentum": 64.8,
+            "score": 53.3
+          },
+          "price": {
+            "level": 51.1,
+            "momentum": 34.9,
+            "score": 41.4
+          },
+          "capex": {
+            "level": 64.0,
+            "momentum": 71.0,
+            "score": 68.2
+          },
+          "revision": {
+            "level": 44.4,
+            "momentum": 50.0,
+            "score": 47.7
+          },
+          "structural": {
+            "level": 87.0,
+            "momentum": 76.4,
+            "score": 80.7
+          },
+          "catalyst": {
+            "level": 85.0,
+            "momentum": 70.5,
+            "score": 76.3
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화",
+          "ASP/Margin Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "구조적 성장 81 · Catalyst 76 | 대표: LG화학, DB하이텍, OCI홀딩스",
+        "growth": "EUV · HBM 소재 · Advanced Packaging · 국산화",
+        "subsectors": [
+          "포토레지스트",
+          "Wet Chemical",
+          "특수가스",
+          "CMP",
+          "Silicon Wafer",
+          "CCL",
+          "동박",
+          "Glass Cloth",
+          "패키징 소재"
+        ],
+        "themes": [
+          "국산화",
+          "HBM 소재",
+          "EUV",
+          "Advanced Packaging",
+          "AI Semiconductor Supply Chain"
+        ],
+        "representatives": [
+          {
+            "code": "051910",
+            "name": "LG화학"
+          },
+          {
+            "code": "000990",
+            "name": "DB하이텍"
+          },
+          {
+            "code": "010060",
+            "name": "OCI홀딩스"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "051910": -1983.0,
+            "000990": 9207.0,
+            "010060": 5040.0
+          },
+          "median_fper_or_pbr": 21.005000000000003,
+          "median_r20": -26.726862302483067,
+          "median_r60": -10.658914728682166,
+          "median_rev_qoq": 14.65710443747199,
+          "median_fwd_rev_growth": 3.195856137607511,
+          "median_opm": 10.564894448788117,
+          "median_opm_delta": 8.375170749080485,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
         "key": "nuclear_smr",
         "name": "원전 / SMR",
         "actual_cycle": "성장",
@@ -11836,8 +11836,8 @@
           },
           "revision": {
             "level": 65.3,
-            "momentum": 50.0,
-            "score": 56.1
+            "momentum": 49.3,
+            "score": 55.7
           },
           "structural": {
             "level": 96.0,
@@ -11889,9 +11889,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "034020": 580.0,
+            "034020": 433.0,
             "010120": 3722.0,
-            "298040": 81002.0
+            "298040": 80737.0
           },
           "median_fper_or_pbr": 39.47,
           "median_r20": -34.55433455433455,
@@ -11900,7 +11900,7 @@
           "median_fwd_rev_growth": 6.201648700063411,
           "median_opm": 11.318960050729231,
           "median_opm_delta": 2.122388788198359,
-          "median_revision_pct": 0.0
+          "median_revision_pct": -0.3271524159897288
         }
       },
       {
@@ -11916,8 +11916,8 @@
         "factors": {
           "demand": {
             "level": 57.8,
-            "momentum": 45.8,
-            "score": 50.6
+            "momentum": 46.1,
+            "score": 50.8
           },
           "supply": {
             "level": 50.0,
@@ -11936,8 +11936,8 @@
           },
           "revision": {
             "level": 41.2,
-            "momentum": 50.0,
-            "score": 46.5
+            "momentum": 49.8,
+            "score": 46.3
           },
           "structural": {
             "level": 76.0,
@@ -11951,9 +11951,7 @@
           }
         },
         "peak_warning": false,
-        "peak_signals": [
-          "산업 성장/수요 Momentum 둔화"
-        ],
+        "peak_signals": [],
         "early_recovery": false,
         "recovery_signals": [],
         "reason": "구조적 성장 70 · Catalyst 67 | 대표: 현대차, 기아, 현대모비스",
@@ -11992,18 +11990,18 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "005380": 35137.0,
+            "005380": 33661.0,
             "000270": 20477.0,
-            "012330": 44263.0
+            "012330": 44209.0
           },
           "median_fper_or_pbr": 7.46,
           "median_r20": -16.549295774647888,
           "median_r60": -28.221649484536083,
           "median_rev_qoq": 7.13208196103956,
-          "median_fwd_rev_growth": -3.6888886166361434,
+          "median_fwd_rev_growth": -3.3970899382815056,
           "median_opm": 5.973769808939827,
           "median_opm_delta": 0.4820756499026233,
-          "median_revision_pct": 0.0
+          "median_revision_pct": -0.12199805706798461
         }
       },
       {
@@ -12335,8 +12333,8 @@
           },
           "revision": {
             "level": 31.7,
-            "momentum": 50.0,
-            "score": 42.7
+            "momentum": 49.1,
+            "score": 42.1
           },
           "structural": {
             "level": 83.0,
@@ -12390,8 +12388,8 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "329180": 27181.0,
-            "009540": 53320.0,
+            "329180": 26992.0,
+            "009540": 53077.0,
             "042660": 5406.0
           },
           "median_fper_or_pbr": 9.1,
@@ -12401,7 +12399,7 @@
           "median_fwd_rev_growth": -4.954044407946689,
           "median_opm": 16.422412431698305,
           "median_opm_delta": 1.1189288355317828,
-          "median_revision_pct": 0.0
+          "median_revision_pct": -0.4557389347336849
         }
       },
       {
@@ -12409,7 +12407,7 @@
         "name": "기계 / 산업재",
         "actual_cycle": "성장",
         "cycle_attractiveness": "중립",
-        "cycle_score": 59.9,
+        "cycle_score": 59.8,
         "investment_score": 56.8,
         "valuation_score": 64.0,
         "relative_strength_score": 17.3,
@@ -12437,8 +12435,8 @@
           },
           "revision": {
             "level": 52.8,
-            "momentum": 50.0,
-            "score": 51.1
+            "momentum": 49.3,
+            "score": 50.7
           },
           "structural": {
             "level": 76.0,
@@ -12490,18 +12488,18 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "028260": 17370.0,
-            "034020": 580.0,
-            "298040": 81002.0
+            "028260": 17423.0,
+            "034020": 433.0,
+            "298040": 80737.0
           },
-          "median_fper_or_pbr": 22.26,
+          "median_fper_or_pbr": 22.33,
           "median_r20": -34.55433455433455,
           "median_r60": -20.119225037257827,
           "median_rev_qoq": 14.612356437157214,
           "median_fwd_rev_growth": -4.026644213053665,
           "median_opm": 8.601012079932639,
           "median_opm_delta": 1.7176395713809756,
-          "median_revision_pct": 0.0
+          "median_revision_pct": -0.3271524159897288
         }
       },
       {
@@ -12590,11 +12588,11 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "035420": 12270.0,
-            "018260": 8942.0,
+            "035420": 12281.0,
+            "018260": 8671.0,
             "035720": 1237.0
           },
-          "median_fper_or_pbr": 22.37,
+          "median_fper_or_pbr": 23.07,
           "median_r20": -11.7312661498708,
           "median_r60": -17.884615384615387,
           "median_rev_qoq": 8.053138355388501,
@@ -12692,17 +12690,117 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "028260": 17370.0,
+            "028260": 17423.0,
             "028050": 4456.0,
             "000720": 4480.0
           },
-          "median_fper_or_pbr": 17.67,
+          "median_fper_or_pbr": 17.62,
           "median_r20": -10.364963503649637,
           "median_r60": -12.660028449502136,
           "median_rev_qoq": 14.612356437157214,
           "median_fwd_rev_growth": -2.0417111205296434,
           "median_opm": 8.601012079932639,
           "median_opm_delta": 1.7176395713809756,
+          "median_revision_pct": 0.0
+        }
+      },
+      {
+        "key": "materials",
+        "name": "철강 / 소재 / 화학",
+        "actual_cycle": "성장",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 51.9,
+        "investment_score": 56.4,
+        "valuation_score": 84.0,
+        "relative_strength_score": 37.6,
+        "catalyst_score": 62.9,
+        "factors": {
+          "demand": {
+            "level": 58.5,
+            "momentum": 46.3,
+            "score": 51.2
+          },
+          "supply": {
+            "level": 64.0,
+            "momentum": 58.8,
+            "score": 60.9
+          },
+          "price": {
+            "level": 38.5,
+            "momentum": 29.8,
+            "score": 33.3
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 65.0,
+            "score": 62.2
+          },
+          "revision": {
+            "level": 25.0,
+            "momentum": 50.0,
+            "score": 40.0
+          },
+          "structural": {
+            "level": 62.0,
+            "momentum": 57.4,
+            "score": 59.2
+          },
+          "catalyst": {
+            "level": 67.0,
+            "momentum": 60.2,
+            "score": 62.9
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "산업 성장/수요 Momentum 둔화"
+        ],
+        "early_recovery": false,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복"
+        ],
+        "reason": "Catalyst 63 · CAPEX/수주 62 | 대표: POSCO홀딩스, 고려아연, LG화학",
+        "growth": "중국 공급감축 · Spread 개선 · 공급과잉 해소",
+        "subsectors": [
+          "철강",
+          "석유화학",
+          "정밀화학",
+          "산업소재"
+        ],
+        "themes": [
+          "중국 공급감축",
+          "Spread 개선",
+          "원재료 가격",
+          "공급과잉 해소"
+        ],
+        "representatives": [
+          {
+            "code": "005490",
+            "name": "POSCO홀딩스"
+          },
+          {
+            "code": "010130",
+            "name": "고려아연"
+          },
+          {
+            "code": "051910",
+            "name": "LG화학"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "005490": 24080.0,
+            "010130": 58485.0,
+            "051910": -1983.0
+          },
+          "median_fper_or_pbr": 13.004999999999999,
+          "median_r20": -11.419249592169656,
+          "median_r60": -13.119999999999997,
+          "median_rev_qoq": 7.734349214873482,
+          "median_fwd_rev_growth": -3.204785369729002,
+          "median_opm": 4.252623489643641,
+          "median_opm_delta": 0.2987409313675071,
           "median_revision_pct": 0.0
         }
       },
@@ -12791,7 +12889,7 @@
         "raw": {
           "member_forward_eps": {
             "402340": 373897.0,
-            "028260": 17370.0,
+            "028260": 17423.0,
             "034730": 160174.0
           },
           "median_fper_or_pbr": 3.09,
@@ -12904,211 +13002,6 @@
         }
       },
       {
-        "key": "materials",
-        "name": "철강 / 소재 / 화학",
-        "actual_cycle": "성장",
-        "cycle_attractiveness": "둔화",
-        "cycle_score": 51.8,
-        "investment_score": 56.3,
-        "valuation_score": 84.0,
-        "relative_strength_score": 37.6,
-        "catalyst_score": 62.9,
-        "factors": {
-          "demand": {
-            "level": 58.5,
-            "momentum": 46.3,
-            "score": 51.2
-          },
-          "supply": {
-            "level": 64.0,
-            "momentum": 58.8,
-            "score": 60.9
-          },
-          "price": {
-            "level": 38.5,
-            "momentum": 29.8,
-            "score": 33.3
-          },
-          "capex": {
-            "level": 58.0,
-            "momentum": 65.0,
-            "score": 62.2
-          },
-          "revision": {
-            "level": 24.0,
-            "momentum": 50.0,
-            "score": 39.6
-          },
-          "structural": {
-            "level": 62.0,
-            "momentum": 57.4,
-            "score": 59.2
-          },
-          "catalyst": {
-            "level": 67.0,
-            "momentum": 60.2,
-            "score": 62.9
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [
-          "산업 성장/수요 Momentum 둔화"
-        ],
-        "early_recovery": false,
-        "recovery_signals": [
-          "재고/공급 Balance 개선",
-          "수주/CAPEX 회복"
-        ],
-        "reason": "Catalyst 63 · CAPEX/수주 62 | 대표: POSCO홀딩스, 고려아연, LG화학",
-        "growth": "중국 공급감축 · Spread 개선 · 공급과잉 해소",
-        "subsectors": [
-          "철강",
-          "석유화학",
-          "정밀화학",
-          "산업소재"
-        ],
-        "themes": [
-          "중국 공급감축",
-          "Spread 개선",
-          "원재료 가격",
-          "공급과잉 해소"
-        ],
-        "representatives": [
-          {
-            "code": "005490",
-            "name": "POSCO홀딩스"
-          },
-          {
-            "code": "010130",
-            "name": "고려아연"
-          },
-          {
-            "code": "051910",
-            "name": "LG화학"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "005490": 24080.0,
-            "010130": 58485.0,
-            "051910": -1983.0
-          },
-          "median_fper_or_pbr": 13.004999999999999,
-          "median_r20": -11.419249592169656,
-          "median_r60": -13.119999999999997,
-          "median_rev_qoq": 7.734349214873482,
-          "median_fwd_rev_growth": -3.204785369729002,
-          "median_opm": 4.252623489643641,
-          "median_opm_delta": 0.2987409313675071,
-          "median_revision_pct": 0.0
-        }
-      },
-      {
-        "key": "battery_ess",
-        "name": "2차전지 / ESS",
-        "actual_cycle": "초기회복",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 56.8,
-        "investment_score": 56.2,
-        "valuation_score": 42.0,
-        "relative_strength_score": 51.2,
-        "catalyst_score": 78.6,
-        "factors": {
-          "demand": {
-            "level": 66.0,
-            "momentum": 58.2,
-            "score": 61.3
-          },
-          "supply": {
-            "level": 43.0,
-            "momentum": 63.9,
-            "score": 55.5
-          },
-          "price": {
-            "level": 38.5,
-            "momentum": 44.0,
-            "score": 41.8
-          },
-          "capex": {
-            "level": 58.0,
-            "momentum": 72.0,
-            "score": 66.4
-          },
-          "revision": {
-            "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
-          },
-          "structural": {
-            "level": 80.0,
-            "momentum": 73.4,
-            "score": 76.1
-          },
-          "catalyst": {
-            "level": 85.0,
-            "momentum": 74.4,
-            "score": 78.6
-          }
-        },
-        "peak_warning": false,
-        "peak_signals": [],
-        "early_recovery": true,
-        "recovery_signals": [
-          "재고/공급 Balance 개선",
-          "수주/CAPEX 회복",
-          "수요 Momentum 회복"
-        ],
-        "reason": "Catalyst 79 · 구조적 성장 76 | 대표: LG에너지솔루션, 삼성SDI, LG화학",
-        "growth": "ESS · LFP · 전고체 · 4680 · AI Data Center ESS",
-        "subsectors": [
-          "Battery Cell",
-          "양극재",
-          "음극재",
-          "전해질",
-          "Separator",
-          "동박",
-          "Battery Equipment",
-          "ESS"
-        ],
-        "themes": [
-          "ESS",
-          "LFP",
-          "전고체",
-          "4680",
-          "AI Data Center ESS",
-          "북미 배터리"
-        ],
-        "representatives": [
-          {
-            "code": "373220",
-            "name": "LG에너지솔루션"
-          },
-          {
-            "code": "006400",
-            "name": "삼성SDI"
-          },
-          {
-            "code": "051910",
-            "name": "LG화학"
-          }
-        ],
-        "raw": {
-          "member_forward_eps": {
-            "373220": -1035.0,
-            "006400": 11978.0,
-            "051910": -1983.0
-          },
-          "median_fper_or_pbr": 44.67,
-          "median_r20": -0.8438818565400852,
-          "median_r60": 7.469512195121952,
-          "median_rev_qoq": 14.535219399538102,
-          "median_fwd_rev_growth": 7.164084058586284,
-          "median_opm": 4.229713810057915,
-          "median_opm_delta": 4.919193249488766,
-          "median_revision_pct": 0.0
-        }
-      },
-      {
         "key": "platform",
         "name": "인터넷 / 플랫폼",
         "actual_cycle": "성장",
@@ -13193,7 +13086,7 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "035420": 12270.0,
+            "035420": 12281.0,
             "035720": 1237.0,
             "323410": 1243.0
           },
@@ -13211,17 +13104,17 @@
         "key": "beauty",
         "name": "화장품 / 뷰티",
         "actual_cycle": "성장",
-        "cycle_attractiveness": "중립",
-        "cycle_score": 55.0,
-        "investment_score": 55.8,
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 54.4,
+        "investment_score": 55.4,
         "valuation_score": 64.0,
         "relative_strength_score": 41.3,
         "catalyst_score": 63.3,
         "factors": {
           "demand": {
             "level": 55.6,
-            "momentum": 48.6,
-            "score": 51.4
+            "momentum": 48.5,
+            "score": 51.3
           },
           "supply": {
             "level": 50.0,
@@ -13230,8 +13123,8 @@
           },
           "price": {
             "level": 50.0,
-            "momentum": 50.9,
-            "score": 50.5
+            "momentum": 49.9,
+            "score": 49.9
           },
           "capex": {
             "level": 52.0,
@@ -13240,8 +13133,8 @@
           },
           "revision": {
             "level": 46.6,
-            "momentum": 50.0,
-            "score": 48.6
+            "momentum": 44.3,
+            "score": 45.2
           },
           "structural": {
             "level": 85.0,
@@ -13292,17 +13185,17 @@
         "raw": {
           "member_forward_eps": {
             "278470": 15212.0,
-            "090430": 5423.0,
-            "051900": 12293.0
+            "090430": 5098.0,
+            "051900": 11940.0
           },
-          "median_fper_or_pbr": 20.82,
+          "median_fper_or_pbr": 21.44,
           "median_r20": -7.503607503607501,
           "median_r60": -10.801393728222997,
           "median_rev_qoq": 5.124952429278196,
-          "median_fwd_rev_growth": -1.2127428502473725,
+          "median_fwd_rev_growth": -1.3394473271388874,
           "median_opm": 9.975338038948891,
           "median_opm_delta": -0.8317793228224915,
-          "median_revision_pct": 0.0
+          "median_revision_pct": -2.871552916293829
         }
       },
       {
@@ -13387,7 +13280,7 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "105560": 18502.0,
+            "105560": 18664.0,
             "055550": 12293.0,
             "086790": 15972.0
           },
@@ -13406,7 +13299,7 @@
         "name": "디스플레이 / OLED",
         "actual_cycle": "초기회복",
         "cycle_attractiveness": "중립",
-        "cycle_score": 59.2,
+        "cycle_score": 59.3,
         "investment_score": 53.7,
         "valuation_score": 28.0,
         "relative_strength_score": 47.2,
@@ -13434,8 +13327,8 @@
           },
           "revision": {
             "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "momentum": 50.9,
+            "score": 30.6
           },
           "structural": {
             "level": 74.0,
@@ -13490,16 +13383,16 @@
         "raw": {
           "member_forward_eps": {
             "034220": -283.0,
-            "171090": 6999.0
+            "171090": 7065.0
           },
-          "median_fper_or_pbr": 531.245,
+          "median_fper_or_pbr": 531.1899999999999,
           "median_r20": -12.949640287769782,
           "median_r60": 30.040160642570292,
           "median_rev_qoq": 9.107468123861562,
           "median_fwd_rev_growth": 193.6627250419488,
           "median_opm": -1.9190677286577216,
           "median_opm_delta": -4.569953164147422,
-          "median_revision_pct": 0.0
+          "median_revision_pct": 0.47149592798971796
         }
       },
       {
@@ -13637,8 +13530,8 @@
           },
           "revision": {
             "level": 0.0,
-            "momentum": 50.0,
-            "score": 30.0
+            "momentum": 49.5,
+            "score": 29.7
           },
           "structural": {
             "level": 69.0,
@@ -13691,9 +13584,9 @@
         ],
         "raw": {
           "member_forward_eps": {
-            "259960": 17010.0,
+            "259960": 16811.0,
             "036570": 22417.0,
-            "251270": 5919.0
+            "251270": 5904.0
           },
           "median_fper_or_pbr": 8.92,
           "median_r20": -6.542056074766355,
@@ -13702,7 +13595,114 @@
           "median_fwd_rev_growth": -8.669695003244648,
           "median_opm": 22.56975989617132,
           "median_opm_delta": 2.2432439291817268,
-          "median_revision_pct": 0.0
+          "median_revision_pct": -0.25342118601114905
+        }
+      },
+      {
+        "key": "battery_ess",
+        "name": "2차전지 / ESS",
+        "actual_cycle": "초기회복",
+        "cycle_attractiveness": "둔화",
+        "cycle_score": 54.7,
+        "investment_score": 52.7,
+        "valuation_score": 28.0,
+        "relative_strength_score": 51.2,
+        "catalyst_score": 78.6,
+        "factors": {
+          "demand": {
+            "level": 66.0,
+            "momentum": 58.2,
+            "score": 61.3
+          },
+          "supply": {
+            "level": 43.0,
+            "momentum": 63.9,
+            "score": 55.5
+          },
+          "price": {
+            "level": 38.5,
+            "momentum": 44.0,
+            "score": 41.8
+          },
+          "capex": {
+            "level": 58.0,
+            "momentum": 72.0,
+            "score": 66.4
+          },
+          "revision": {
+            "level": 0.0,
+            "momentum": 26.4,
+            "score": 15.9
+          },
+          "structural": {
+            "level": 80.0,
+            "momentum": 73.4,
+            "score": 76.1
+          },
+          "catalyst": {
+            "level": 85.0,
+            "momentum": 74.4,
+            "score": 78.6
+          }
+        },
+        "peak_warning": false,
+        "peak_signals": [
+          "EPS Revision 둔화/하향"
+        ],
+        "early_recovery": true,
+        "recovery_signals": [
+          "재고/공급 Balance 개선",
+          "수주/CAPEX 회복",
+          "수요 Momentum 회복"
+        ],
+        "reason": "Catalyst 79 · 구조적 성장 76 | 대표: LG에너지솔루션, 삼성SDI, LG화학",
+        "growth": "ESS · LFP · 전고체 · 4680 · AI Data Center ESS",
+        "subsectors": [
+          "Battery Cell",
+          "양극재",
+          "음극재",
+          "전해질",
+          "Separator",
+          "동박",
+          "Battery Equipment",
+          "ESS"
+        ],
+        "themes": [
+          "ESS",
+          "LFP",
+          "전고체",
+          "4680",
+          "AI Data Center ESS",
+          "북미 배터리"
+        ],
+        "representatives": [
+          {
+            "code": "373220",
+            "name": "LG에너지솔루션"
+          },
+          {
+            "code": "006400",
+            "name": "삼성SDI"
+          },
+          {
+            "code": "051910",
+            "name": "LG화학"
+          }
+        ],
+        "raw": {
+          "member_forward_eps": {
+            "373220": -913.0,
+            "006400": 10152.0,
+            "051910": -1983.0
+          },
+          "median_fper_or_pbr": 52.7,
+          "median_r20": -0.8438818565400852,
+          "median_r60": 7.469512195121952,
+          "median_rev_qoq": 14.535219399538102,
+          "median_fwd_rev_growth": 7.164084058586284,
+          "median_opm": 4.229713810057915,
+          "median_opm_delta": 4.919193249488766,
+          "median_revision_pct": -11.787439613526573
         }
       }
     ]
