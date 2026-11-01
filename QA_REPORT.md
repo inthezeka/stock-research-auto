@@ -10,4 +10,4 @@
 - Fundamental sector score models: **36/36**
 - Fundamental Sector visible cap: **TOP 20**
 - Sector configured members: **min 7 / max 42**
-- Sectors with >=20 configured members: **24/36**
+- Sectors with >=20 configured members: **25/36**
