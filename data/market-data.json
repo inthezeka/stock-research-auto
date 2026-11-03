@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-11-03T21:08:07.244308+09:00",
+    "generated_at": "2026-11-04T07:38:07.953247+09:00",
     "market_date": "2026-11-03",
     "status": "ok",
     "dart_status": "미연결 · API 연결 시 최근 공시 데이터 반영",
@@ -17,7 +17,7 @@
     "profile_switch": "enabled",
     "profile_count": 5,
     "validation_policy": "live run: stock fresh >=80%, market fresh >=60%; JSON/links/theme/TOP5/JS/smoke test pass required",
-    "financial_snapshot_date": "2026-11-03",
+    "financial_snapshot_date": "2026-11-04",
     "financial_snapshot_note": "TOP5 최근 3개 실제 분기 + 다음 분기(E) Consensus 자동 연결.",
     "financial_policy": "Naver Stock/FnGuide quarterly JSON · 다음 분기 Consensus 필수 · OPM/QoQ 자체계산 [AI].",
     "coverage": {
@@ -60,20 +60,20 @@
         "source": "Naver Stock index basic"
       },
       "nasdaq": {
-        "value": 25164.36,
-        "change_pct": -1.07,
-        "date": "2026-11-02",
+        "value": 25372.01,
+        "change_pct": 0.83,
+        "date": "2026-11-03",
         "source": "Naver Stock world-index polling v2"
       },
       "usdkrw": {
-        "value": 1345.5,
-        "change_pct": -0.04,
-        "date": "2026-11-03",
+        "value": 1346.0,
+        "change_pct": 0.0,
+        "date": "2026-11-04",
         "source": "Naver Stock majors RPC"
       },
       "us10y": {
-        "value": 4.937,
-        "change_pct": 0.88,
+        "value": 4.966,
+        "change_pct": 1.48,
         "date": "2026-11-03",
         "source": "Naver Stock majors bond"
       }
@@ -82,7 +82,7 @@
     "korea_sentiment_policy": "Sentiment v3 · 최근성 우선 5D > 20D > 60D · 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 외인/기관 수급 15% + FX 5% · 20D/60D 절대수익률 60% + Percentile 40% · Regime Gate [AI].",
     "stock_universe": {
       "as_of": "2026-11-03",
-      "generated_at": "2026-11-03T21:08:07.244308+09:00",
+      "generated_at": "2026-11-04T07:38:07.953247+09:00",
       "count": 2675,
       "source": "Naver Stock domestic market API · marketSum + priceTop + quantTop"
     },
@@ -93,75 +93,75 @@
     "theme_selection_refreshed_this_run": false,
     "sector_cycle": {
       "as_of": "2026-11-03",
-      "generated_at": "2026-11-03T21:08:07.244308+09:00",
+      "generated_at": "2026-11-04T07:38:07.953247+09:00",
       "sector_count": 36,
       "theme_count": 36,
       "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%"
     },
     "price_integrity": "Undated listing quotes are reference_close only; dated sector OHLC is DAILY_CLOSE (single-provider unless independently reconciled).",
     "quote_source_disagreements": {
-      "267260": {
+      "018260": {
         "count": 31,
         "samples": [
           {
-            "date": "2026-10-16",
-            "naver_close": 513000,
-            "yahoo_close": 516000
+            "date": "2026-10-15",
+            "naver_close": 190600,
+            "yahoo_close": 194300
           },
           {
-            "date": "2026-10-19",
-            "naver_close": 527000,
-            "yahoo_close": 525000
+            "date": "2026-10-16",
+            "naver_close": 198700,
+            "yahoo_close": 199900
           },
           {
             "date": "2026-10-20",
-            "naver_close": 481500,
-            "yahoo_close": 487500
+            "naver_close": 196100,
+            "yahoo_close": 198800
           },
           {
             "date": "2026-10-21",
-            "naver_close": 501000,
-            "yahoo_close": 499000
+            "naver_close": 200000,
+            "yahoo_close": 201500
           },
           {
             "date": "2026-10-22",
-            "naver_close": 483000,
-            "yahoo_close": 490000
+            "naver_close": 209000,
+            "yahoo_close": 207000
           },
           {
             "date": "2026-10-23",
-            "naver_close": 466500,
-            "yahoo_close": 470000
+            "naver_close": 212000,
+            "yahoo_close": 213500
           },
           {
             "date": "2026-10-26",
-            "naver_close": 443500,
-            "yahoo_close": 447000
+            "naver_close": 215000,
+            "yahoo_close": 213000
           },
           {
             "date": "2026-10-27",
-            "naver_close": 454000,
-            "yahoo_close": 450000
+            "naver_close": 215500,
+            "yahoo_close": 215000
           },
           {
             "date": "2026-10-28",
-            "naver_close": 466500,
-            "yahoo_close": 462500
+            "naver_close": 223500,
+            "yahoo_close": 222500
           },
           {
             "date": "2026-10-29",
-            "naver_close": 440000,
-            "yahoo_close": 440500
+            "naver_close": 204500,
+            "yahoo_close": 206500
           },
           {
             "date": "2026-10-30",
-            "naver_close": 418500,
-            "yahoo_close": 424500
+            "naver_close": 200000,
+            "yahoo_close": 203000
           },
           {
             "date": "2026-11-03",
-            "naver_close": 446500,
-            "yahoo_close": 439000
+            "naver_close": 203500,
+            "yahoo_close": 201500
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -232,134 +232,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "035420": {
-        "count": 33,
-        "samples": [
-          {
-            "date": "2026-10-19",
-            "naver_close": 182600,
-            "yahoo_close": 182900
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 176800,
-            "yahoo_close": 178000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 179300,
-            "yahoo_close": 179500
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 175500,
-            "yahoo_close": 176400
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 172600,
-            "yahoo_close": 173600
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 174400,
-            "yahoo_close": 174200
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 181400,
-            "yahoo_close": 174300
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 178400,
-            "yahoo_close": 178000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 175100,
-            "yahoo_close": 174900
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 170800,
-            "yahoo_close": 172300
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 175900,
-            "yahoo_close": 175400
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 171200,
-            "yahoo_close": 169000
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "018260": {
+      "267260": {
         "count": 31,
         "samples": [
           {
-            "date": "2026-10-15",
-            "naver_close": 190600,
-            "yahoo_close": 194300
+            "date": "2026-10-16",
+            "naver_close": 513000,
+            "yahoo_close": 516000
           },
           {
-            "date": "2026-10-16",
-            "naver_close": 198700,
-            "yahoo_close": 199900
+            "date": "2026-10-19",
+            "naver_close": 527000,
+            "yahoo_close": 525000
           },
           {
             "date": "2026-10-20",
-            "naver_close": 196100,
-            "yahoo_close": 198800
+            "naver_close": 481500,
+            "yahoo_close": 487500
           },
           {
             "date": "2026-10-21",
-            "naver_close": 200000,
-            "yahoo_close": 201500
+            "naver_close": 501000,
+            "yahoo_close": 499000
           },
           {
             "date": "2026-10-22",
-            "naver_close": 209000,
-            "yahoo_close": 207000
+            "naver_close": 483000,
+            "yahoo_close": 490000
           },
           {
             "date": "2026-10-23",
-            "naver_close": 212000,
-            "yahoo_close": 213500
+            "naver_close": 466500,
+            "yahoo_close": 470000
           },
           {
             "date": "2026-10-26",
-            "naver_close": 215000,
-            "yahoo_close": 213000
+            "naver_close": 443500,
+            "yahoo_close": 447000
           },
           {
             "date": "2026-10-27",
-            "naver_close": 215500,
-            "yahoo_close": 215000
+            "naver_close": 454000,
+            "yahoo_close": 450000
           },
           {
             "date": "2026-10-28",
-            "naver_close": 223500,
-            "yahoo_close": 222500
+            "naver_close": 466500,
+            "yahoo_close": 462500
           },
           {
             "date": "2026-10-29",
-            "naver_close": 204500,
-            "yahoo_close": 206500
+            "naver_close": 440000,
+            "yahoo_close": 440500
           },
           {
             "date": "2026-10-30",
-            "naver_close": 200000,
-            "yahoo_close": 203000
+            "naver_close": 418500,
+            "yahoo_close": 424500
           },
           {
             "date": "2026-11-03",
-            "naver_close": 203500,
-            "yahoo_close": 201500
+            "naver_close": 446500,
+            "yahoo_close": 439000
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -430,72 +364,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "010120": {
-        "count": 30,
-        "samples": [
-          {
-            "date": "2026-10-16",
-            "naver_close": 159000,
-            "yahoo_close": 158600
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 166600,
-            "yahoo_close": 164600
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 152400,
-            "yahoo_close": 155200
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 165900,
-            "yahoo_close": 166100
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 160100,
-            "yahoo_close": 161400
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 154600,
-            "yahoo_close": 156900
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 152500,
-            "yahoo_close": 152900
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 160300,
-            "yahoo_close": 158100
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 166400,
-            "yahoo_close": 164600
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 157500,
-            "yahoo_close": 158400
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 146900,
-            "yahoo_close": 149600
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 153300,
-            "yahoo_close": 151500
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "000660": {
         "count": 35,
         "samples": [
@@ -558,6 +426,72 @@
             "date": "2026-11-03",
             "naver_close": 1414000,
             "yahoo_close": 1398000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "035420": {
+        "count": 33,
+        "samples": [
+          {
+            "date": "2026-10-19",
+            "naver_close": 182600,
+            "yahoo_close": 182900
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 176800,
+            "yahoo_close": 178000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 179300,
+            "yahoo_close": 179500
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 175500,
+            "yahoo_close": 176400
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 172600,
+            "yahoo_close": 173600
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 174400,
+            "yahoo_close": 174200
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 181400,
+            "yahoo_close": 174300
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 178400,
+            "yahoo_close": 178000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 175100,
+            "yahoo_close": 174900
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 170800,
+            "yahoo_close": 172300
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 175900,
+            "yahoo_close": 175400
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 171200,
+            "yahoo_close": 169000
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -628,68 +562,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "373220": {
-        "count": 33,
+      "010120": {
+        "count": 30,
         "samples": [
           {
+            "date": "2026-10-16",
+            "naver_close": 159000,
+            "yahoo_close": 158600
+          },
+          {
             "date": "2026-10-19",
-            "naver_close": 428500,
-            "yahoo_close": 432000
+            "naver_close": 166600,
+            "yahoo_close": 164600
           },
           {
             "date": "2026-10-20",
-            "naver_close": 411500,
-            "yahoo_close": 414000
+            "naver_close": 152400,
+            "yahoo_close": 155200
           },
           {
             "date": "2026-10-21",
-            "naver_close": 412500,
-            "yahoo_close": 411500
+            "naver_close": 165900,
+            "yahoo_close": 166100
           },
           {
             "date": "2026-10-22",
-            "naver_close": 391500,
-            "yahoo_close": 390000
+            "naver_close": 160100,
+            "yahoo_close": 161400
           },
           {
             "date": "2026-10-23",
-            "naver_close": 381500,
-            "yahoo_close": 383000
+            "naver_close": 154600,
+            "yahoo_close": 156900
           },
           {
             "date": "2026-10-26",
-            "naver_close": 376500,
-            "yahoo_close": 375000
+            "naver_close": 152500,
+            "yahoo_close": 152900
           },
           {
             "date": "2026-10-27",
-            "naver_close": 385500,
-            "yahoo_close": 382500
+            "naver_close": 160300,
+            "yahoo_close": 158100
           },
           {
             "date": "2026-10-28",
-            "naver_close": 373500,
-            "yahoo_close": 389500
+            "naver_close": 166400,
+            "yahoo_close": 164600
           },
           {
             "date": "2026-10-29",
-            "naver_close": 355000,
-            "yahoo_close": 356000
+            "naver_close": 157500,
+            "yahoo_close": 158400
           },
           {
             "date": "2026-10-30",
-            "naver_close": 352500,
-            "yahoo_close": 359500
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 357500,
-            "yahoo_close": 356000
+            "naver_close": 146900,
+            "yahoo_close": 149600
           },
           {
             "date": "2026-11-03",
-            "naver_close": 343000,
-            "yahoo_close": 338000
+            "naver_close": 153300,
+            "yahoo_close": 151500
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -760,72 +694,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "003670": {
-        "count": 33,
-        "samples": [
-          {
-            "date": "2026-10-19",
-            "naver_close": 188800,
-            "yahoo_close": 190300
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 176800,
-            "yahoo_close": 178200
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 180700,
-            "yahoo_close": 180800
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 167400,
-            "yahoo_close": 166800
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 160100,
-            "yahoo_close": 160800
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 156200,
-            "yahoo_close": 156500
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 161600,
-            "yahoo_close": 160500
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 168100,
-            "yahoo_close": 168900
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 162100,
-            "yahoo_close": 160900
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 160200,
-            "yahoo_close": 162100
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 168800,
-            "yahoo_close": 168900
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 165800,
-            "yahoo_close": 163700
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "006400": {
         "count": 29,
         "samples": [
@@ -892,134 +760,134 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "000270": {
-        "count": 30,
+      "373220": {
+        "count": 33,
         "samples": [
           {
-            "date": "2026-10-16",
-            "naver_close": 110900,
-            "yahoo_close": 110200
-          },
-          {
             "date": "2026-10-19",
-            "naver_close": 114600,
-            "yahoo_close": 116000
+            "naver_close": 428500,
+            "yahoo_close": 432000
           },
           {
             "date": "2026-10-20",
-            "naver_close": 111100,
-            "yahoo_close": 112400
+            "naver_close": 411500,
+            "yahoo_close": 414000
           },
           {
             "date": "2026-10-21",
-            "naver_close": 110400,
-            "yahoo_close": 110500
+            "naver_close": 412500,
+            "yahoo_close": 411500
           },
           {
             "date": "2026-10-22",
-            "naver_close": 108400,
-            "yahoo_close": 108800
+            "naver_close": 391500,
+            "yahoo_close": 390000
           },
           {
             "date": "2026-10-23",
-            "naver_close": 106700,
-            "yahoo_close": 106900
+            "naver_close": 381500,
+            "yahoo_close": 383000
           },
           {
             "date": "2026-10-26",
-            "naver_close": 105700,
-            "yahoo_close": 105100
+            "naver_close": 376500,
+            "yahoo_close": 375000
           },
           {
             "date": "2026-10-27",
-            "naver_close": 106700,
-            "yahoo_close": 106500
+            "naver_close": 385500,
+            "yahoo_close": 382500
           },
           {
             "date": "2026-10-28",
-            "naver_close": 107500,
-            "yahoo_close": 107900
+            "naver_close": 373500,
+            "yahoo_close": 389500
           },
           {
             "date": "2026-10-29",
-            "naver_close": 108600,
-            "yahoo_close": 108300
+            "naver_close": 355000,
+            "yahoo_close": 356000
           },
           {
             "date": "2026-10-30",
-            "naver_close": 94800,
-            "yahoo_close": 95600
+            "naver_close": 352500,
+            "yahoo_close": 359500
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 357500,
+            "yahoo_close": 356000
           },
           {
             "date": "2026-11-03",
-            "naver_close": 96700,
-            "yahoo_close": 96600
+            "naver_close": 343000,
+            "yahoo_close": 338000
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "005380": {
-        "count": 31,
+      "003670": {
+        "count": 33,
         "samples": [
           {
             "date": "2026-10-19",
-            "naver_close": 324500,
-            "yahoo_close": 326000
+            "naver_close": 188800,
+            "yahoo_close": 190300
           },
           {
             "date": "2026-10-20",
-            "naver_close": 305500,
-            "yahoo_close": 310000
+            "naver_close": 176800,
+            "yahoo_close": 178200
           },
           {
             "date": "2026-10-21",
-            "naver_close": 310000,
-            "yahoo_close": 309500
+            "naver_close": 180700,
+            "yahoo_close": 180800
           },
           {
             "date": "2026-10-22",
-            "naver_close": 300500,
-            "yahoo_close": 301500
+            "naver_close": 167400,
+            "yahoo_close": 166800
           },
           {
             "date": "2026-10-23",
-            "naver_close": 293000,
-            "yahoo_close": 295500
+            "naver_close": 160100,
+            "yahoo_close": 160800
           },
           {
             "date": "2026-10-26",
-            "naver_close": 289000,
-            "yahoo_close": 288000
+            "naver_close": 156200,
+            "yahoo_close": 156500
           },
           {
             "date": "2026-10-27",
-            "naver_close": 291500,
-            "yahoo_close": 290500
+            "naver_close": 161600,
+            "yahoo_close": 160500
           },
           {
             "date": "2026-10-28",
-            "naver_close": 297000,
-            "yahoo_close": 296000
+            "naver_close": 168100,
+            "yahoo_close": 168900
           },
           {
             "date": "2026-10-29",
-            "naver_close": 292000,
-            "yahoo_close": 292500
+            "naver_close": 162100,
+            "yahoo_close": 160900
           },
           {
             "date": "2026-10-30",
-            "naver_close": 278500,
-            "yahoo_close": 282000
+            "naver_close": 160200,
+            "yahoo_close": 162100
           },
           {
             "date": "2026-11-02",
-            "naver_close": 286500,
-            "yahoo_close": 287000
+            "naver_close": 168800,
+            "yahoo_close": 168900
           },
           {
             "date": "2026-11-03",
-            "naver_close": 279000,
-            "yahoo_close": 277500
+            "naver_close": 165800,
+            "yahoo_close": 163700
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1090,6 +958,72 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
+      "000270": {
+        "count": 30,
+        "samples": [
+          {
+            "date": "2026-10-16",
+            "naver_close": 110900,
+            "yahoo_close": 110200
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 114600,
+            "yahoo_close": 116000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 111100,
+            "yahoo_close": 112400
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 110400,
+            "yahoo_close": 110500
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 108400,
+            "yahoo_close": 108800
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 106700,
+            "yahoo_close": 106900
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 105700,
+            "yahoo_close": 105100
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 106700,
+            "yahoo_close": 106500
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 107500,
+            "yahoo_close": 107900
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 108600,
+            "yahoo_close": 108300
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 94800,
+            "yahoo_close": 95600
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 96700,
+            "yahoo_close": 96600
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
       "012450": {
         "count": 33,
         "samples": [
@@ -1152,6 +1086,72 @@
             "date": "2026-11-03",
             "naver_close": 743000,
             "yahoo_close": 740000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "005380": {
+        "count": 31,
+        "samples": [
+          {
+            "date": "2026-10-19",
+            "naver_close": 324500,
+            "yahoo_close": 326000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 305500,
+            "yahoo_close": 310000
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 310000,
+            "yahoo_close": 309500
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 300500,
+            "yahoo_close": 301500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 293000,
+            "yahoo_close": 295500
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 289000,
+            "yahoo_close": 288000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 291500,
+            "yahoo_close": 290500
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 297000,
+            "yahoo_close": 296000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 292000,
+            "yahoo_close": 292500
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 278500,
+            "yahoo_close": 282000
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 286500,
+            "yahoo_close": 287000
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 279000,
+            "yahoo_close": 277500
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1288,72 +1288,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "083650": {
-        "count": 30,
-        "samples": [
-          {
-            "date": "2026-10-19",
-            "naver_close": 50300,
-            "yahoo_close": 49900
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 45850,
-            "yahoo_close": 46850
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 47400,
-            "yahoo_close": 47600
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 45700,
-            "yahoo_close": 45900
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 43850,
-            "yahoo_close": 44750
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 42050,
-            "yahoo_close": 42600
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 43600,
-            "yahoo_close": 43350
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 44850,
-            "yahoo_close": 44650
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 42650,
-            "yahoo_close": 42900
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 40600,
-            "yahoo_close": 41200
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 42950,
-            "yahoo_close": 43150
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 41250,
-            "yahoo_close": 40450
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "034020": {
         "count": 33,
         "samples": [
@@ -1416,6 +1350,138 @@
             "date": "2026-11-03",
             "naver_close": 52700,
             "yahoo_close": 52200
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "052690": {
+        "count": 34,
+        "samples": [
+          {
+            "date": "2026-10-19",
+            "naver_close": 104300,
+            "yahoo_close": 103700
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 95700,
+            "yahoo_close": 97900
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 98800,
+            "yahoo_close": 99200
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 95200,
+            "yahoo_close": 96500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 92700,
+            "yahoo_close": 93600
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 90900,
+            "yahoo_close": 91200
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 92500,
+            "yahoo_close": 91600
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 96800,
+            "yahoo_close": 96200
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 89000,
+            "yahoo_close": 88700
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 84600,
+            "yahoo_close": 86300
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 89300,
+            "yahoo_close": 89400
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 85200,
+            "yahoo_close": 84500
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "083650": {
+        "count": 30,
+        "samples": [
+          {
+            "date": "2026-10-19",
+            "naver_close": 50300,
+            "yahoo_close": 49900
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 45850,
+            "yahoo_close": 46850
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 47400,
+            "yahoo_close": 47600
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 45700,
+            "yahoo_close": 45900
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 43850,
+            "yahoo_close": 44750
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 42050,
+            "yahoo_close": 42600
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 43600,
+            "yahoo_close": 43350
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 44850,
+            "yahoo_close": 44650
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 42650,
+            "yahoo_close": 42900
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 40600,
+            "yahoo_close": 41200
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 42950,
+            "yahoo_close": 43150
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 41250,
+            "yahoo_close": 40450
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1618,68 +1684,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "052690": {
-        "count": 34,
+      "375500": {
+        "count": 31,
         "samples": [
           {
+            "date": "2026-10-16",
+            "naver_close": 59900,
+            "yahoo_close": 59600
+          },
+          {
             "date": "2026-10-19",
-            "naver_close": 104300,
-            "yahoo_close": 103700
+            "naver_close": 60400,
+            "yahoo_close": 59900
           },
           {
             "date": "2026-10-20",
-            "naver_close": 95700,
-            "yahoo_close": 97900
+            "naver_close": 56800,
+            "yahoo_close": 57300
           },
           {
             "date": "2026-10-21",
-            "naver_close": 98800,
-            "yahoo_close": 99200
+            "naver_close": 58300,
+            "yahoo_close": 57900
           },
           {
             "date": "2026-10-22",
-            "naver_close": 95200,
-            "yahoo_close": 96500
+            "naver_close": 58400,
+            "yahoo_close": 58500
           },
           {
             "date": "2026-10-23",
-            "naver_close": 92700,
-            "yahoo_close": 93600
+            "naver_close": 59600,
+            "yahoo_close": 59900
           },
           {
             "date": "2026-10-26",
-            "naver_close": 90900,
-            "yahoo_close": 91200
+            "naver_close": 56100,
+            "yahoo_close": 56500
           },
           {
             "date": "2026-10-27",
-            "naver_close": 92500,
-            "yahoo_close": 91600
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 96800,
-            "yahoo_close": 96200
+            "naver_close": 57200,
+            "yahoo_close": 56800
           },
           {
             "date": "2026-10-29",
-            "naver_close": 89000,
-            "yahoo_close": 88700
+            "naver_close": 58100,
+            "yahoo_close": 57800
           },
           {
             "date": "2026-10-30",
-            "naver_close": 84600,
-            "yahoo_close": 86300
+            "naver_close": 53100,
+            "yahoo_close": 54200
           },
           {
             "date": "2026-11-02",
-            "naver_close": 89300,
-            "yahoo_close": 89400
+            "naver_close": 56000,
+            "yahoo_close": 55400
           },
           {
             "date": "2026-11-03",
-            "naver_close": 85200,
-            "yahoo_close": 84500
+            "naver_close": 53500,
+            "yahoo_close": 53100
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1750,68 +1816,68 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "375500": {
-        "count": 31,
+      "352820": {
+        "count": 28,
         "samples": [
           {
+            "date": "2026-10-15",
+            "naver_close": 164000,
+            "yahoo_close": 165100
+          },
+          {
             "date": "2026-10-16",
-            "naver_close": 59900,
-            "yahoo_close": 59600
+            "naver_close": 177500,
+            "yahoo_close": 176800
           },
           {
             "date": "2026-10-19",
-            "naver_close": 60400,
-            "yahoo_close": 59900
+            "naver_close": 186200,
+            "yahoo_close": 188500
           },
           {
             "date": "2026-10-20",
-            "naver_close": 56800,
-            "yahoo_close": 57300
+            "naver_close": 182500,
+            "yahoo_close": 184600
           },
           {
             "date": "2026-10-21",
-            "naver_close": 58300,
-            "yahoo_close": 57900
+            "naver_close": 183000,
+            "yahoo_close": 182900
           },
           {
             "date": "2026-10-22",
-            "naver_close": 58400,
-            "yahoo_close": 58500
+            "naver_close": 175800,
+            "yahoo_close": 177200
           },
           {
             "date": "2026-10-23",
-            "naver_close": 59600,
-            "yahoo_close": 59900
+            "naver_close": 176100,
+            "yahoo_close": 176500
           },
           {
             "date": "2026-10-26",
-            "naver_close": 56100,
-            "yahoo_close": 56500
+            "naver_close": 176600,
+            "yahoo_close": 174100
           },
           {
             "date": "2026-10-27",
-            "naver_close": 57200,
-            "yahoo_close": 56800
+            "naver_close": 169000,
+            "yahoo_close": 169400
           },
           {
-            "date": "2026-10-29",
-            "naver_close": 58100,
-            "yahoo_close": 57800
+            "date": "2026-10-28",
+            "naver_close": 169100,
+            "yahoo_close": 168000
           },
           {
             "date": "2026-10-30",
-            "naver_close": 53100,
-            "yahoo_close": 54200
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 56000,
-            "yahoo_close": 55400
+            "naver_close": 155800,
+            "yahoo_close": 157000
           },
           {
             "date": "2026-11-03",
-            "naver_close": 53500,
-            "yahoo_close": 53100
+            "naver_close": 153100,
+            "yahoo_close": 155900
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -1878,138 +1944,6 @@
             "date": "2026-11-03",
             "naver_close": 37250,
             "yahoo_close": 37400
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "036570": {
-        "count": 29,
-        "samples": [
-          {
-            "date": "2026-10-16",
-            "naver_close": 208500,
-            "yahoo_close": 207000
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 215500,
-            "yahoo_close": 218000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 218500,
-            "yahoo_close": 220500
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 213500,
-            "yahoo_close": 214000
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 213000,
-            "yahoo_close": 211500
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 204000,
-            "yahoo_close": 205000
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 199000,
-            "yahoo_close": 198700
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 201500,
-            "yahoo_close": 201000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 200000,
-            "yahoo_close": 199500
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 200000,
-            "yahoo_close": 201500
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 199100,
-            "yahoo_close": 198500
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 197000,
-            "yahoo_close": 195300
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "352820": {
-        "count": 28,
-        "samples": [
-          {
-            "date": "2026-10-15",
-            "naver_close": 164000,
-            "yahoo_close": 165100
-          },
-          {
-            "date": "2026-10-16",
-            "naver_close": 177500,
-            "yahoo_close": 176800
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 186200,
-            "yahoo_close": 188500
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 182500,
-            "yahoo_close": 184600
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 183000,
-            "yahoo_close": 182900
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 175800,
-            "yahoo_close": 177200
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 176100,
-            "yahoo_close": 176500
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 176600,
-            "yahoo_close": 174100
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 169000,
-            "yahoo_close": 169400
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 169100,
-            "yahoo_close": 168000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 155800,
-            "yahoo_close": 157000
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 153100,
-            "yahoo_close": 155900
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -2212,6 +2146,72 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
+      "036570": {
+        "count": 29,
+        "samples": [
+          {
+            "date": "2026-10-16",
+            "naver_close": 208500,
+            "yahoo_close": 207000
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 215500,
+            "yahoo_close": 218000
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 218500,
+            "yahoo_close": 220500
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 213500,
+            "yahoo_close": 214000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 213000,
+            "yahoo_close": 211500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 204000,
+            "yahoo_close": 205000
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 199000,
+            "yahoo_close": 198700
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 201500,
+            "yahoo_close": 201000
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 200000,
+            "yahoo_close": 199500
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 200000,
+            "yahoo_close": 201500
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 199100,
+            "yahoo_close": 198500
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 197000,
+            "yahoo_close": 195300
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
       "108490": {
         "count": 32,
         "samples": [
@@ -2406,6 +2406,72 @@
             "date": "2026-11-03",
             "naver_close": 85900,
             "yahoo_close": 85600
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "090430": {
+        "count": 33,
+        "samples": [
+          {
+            "date": "2026-10-19",
+            "naver_close": 137400,
+            "yahoo_close": 138500
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 137300,
+            "yahoo_close": 137900
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 135000,
+            "yahoo_close": 135600
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 132400,
+            "yahoo_close": 133500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 129100,
+            "yahoo_close": 128800
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 125900,
+            "yahoo_close": 125700
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 124900,
+            "yahoo_close": 124300
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 124800,
+            "yahoo_close": 124500
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 123100,
+            "yahoo_close": 124400
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 128200,
+            "yahoo_close": 129100
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 132000,
+            "yahoo_close": 132200
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 130000,
+            "yahoo_close": 130100
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -2608,72 +2674,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "090430": {
-        "count": 33,
-        "samples": [
-          {
-            "date": "2026-10-19",
-            "naver_close": 137400,
-            "yahoo_close": 138500
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 137300,
-            "yahoo_close": 137900
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 135000,
-            "yahoo_close": 135600
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 132400,
-            "yahoo_close": 133500
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 129100,
-            "yahoo_close": 128800
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 125900,
-            "yahoo_close": 125700
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 124900,
-            "yahoo_close": 124300
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 124800,
-            "yahoo_close": 124500
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 123100,
-            "yahoo_close": 124400
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 128200,
-            "yahoo_close": 129100
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 132000,
-            "yahoo_close": 132200
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 130000,
-            "yahoo_close": 130100
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "017670": {
         "count": 34,
         "samples": [
@@ -2736,6 +2736,72 @@
             "date": "2026-11-03",
             "naver_close": 75000,
             "yahoo_close": 74300
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "189300": {
+        "count": 30,
+        "samples": [
+          {
+            "date": "2026-10-16",
+            "naver_close": 57000,
+            "yahoo_close": 56900
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 60600,
+            "yahoo_close": 60400
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 56000,
+            "yahoo_close": 55400
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 54100,
+            "yahoo_close": 54700
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 53400,
+            "yahoo_close": 53200
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 51800,
+            "yahoo_close": 51300
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 53300,
+            "yahoo_close": 52900
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 54700,
+            "yahoo_close": 54600
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 56600,
+            "yahoo_close": 56700
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 52000,
+            "yahoo_close": 52700
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 52600,
+            "yahoo_close": 52100
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 50000,
+            "yahoo_close": 49300
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -2806,72 +2872,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "103140": {
-        "count": 31,
-        "samples": [
-          {
-            "date": "2026-10-16",
-            "naver_close": 62600,
-            "yahoo_close": 62100
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 64600,
-            "yahoo_close": 64700
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 61100,
-            "yahoo_close": 61400
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 61200,
-            "yahoo_close": 61000
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 60100,
-            "yahoo_close": 60500
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 58600,
-            "yahoo_close": 59500
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 57300,
-            "yahoo_close": 57200
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 58500,
-            "yahoo_close": 57800
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 59700,
-            "yahoo_close": 59800
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 58300,
-            "yahoo_close": 58400
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 57200,
-            "yahoo_close": 57500
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 60200,
-            "yahoo_close": 60300
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "005490": {
         "count": 28,
         "samples": [
@@ -2934,72 +2934,6 @@
             "date": "2026-11-03",
             "naver_close": 268500,
             "yahoo_close": 266500
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "010130": {
-        "count": 32,
-        "samples": [
-          {
-            "date": "2026-10-19",
-            "naver_close": 994000,
-            "yahoo_close": 999000
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 918000,
-            "yahoo_close": 916000
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 920000,
-            "yahoo_close": 913000
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 890000,
-            "yahoo_close": 891000
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 852000,
-            "yahoo_close": 854000
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 848000,
-            "yahoo_close": 845000
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 862000,
-            "yahoo_close": 856000
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 890000,
-            "yahoo_close": 891000
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 898000,
-            "yahoo_close": 878000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 862000,
-            "yahoo_close": 876000
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 886000,
-            "yahoo_close": 876000
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 876000,
-            "yahoo_close": 869000
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -3070,68 +3004,134 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "189300": {
-        "count": 30,
+      "010130": {
+        "count": 32,
         "samples": [
           {
-            "date": "2026-10-16",
-            "naver_close": 57000,
-            "yahoo_close": 56900
+            "date": "2026-10-19",
+            "naver_close": 994000,
+            "yahoo_close": 999000
           },
           {
-            "date": "2026-10-19",
-            "naver_close": 60600,
-            "yahoo_close": 60400
+            "date": "2026-10-20",
+            "naver_close": 918000,
+            "yahoo_close": 916000
           },
           {
             "date": "2026-10-21",
-            "naver_close": 56000,
-            "yahoo_close": 55400
+            "naver_close": 920000,
+            "yahoo_close": 913000
           },
           {
             "date": "2026-10-22",
-            "naver_close": 54100,
-            "yahoo_close": 54700
+            "naver_close": 890000,
+            "yahoo_close": 891000
           },
           {
             "date": "2026-10-23",
-            "naver_close": 53400,
-            "yahoo_close": 53200
+            "naver_close": 852000,
+            "yahoo_close": 854000
           },
           {
             "date": "2026-10-26",
-            "naver_close": 51800,
-            "yahoo_close": 51300
+            "naver_close": 848000,
+            "yahoo_close": 845000
           },
           {
             "date": "2026-10-27",
-            "naver_close": 53300,
-            "yahoo_close": 52900
+            "naver_close": 862000,
+            "yahoo_close": 856000
           },
           {
             "date": "2026-10-28",
-            "naver_close": 54700,
-            "yahoo_close": 54600
+            "naver_close": 890000,
+            "yahoo_close": 891000
           },
           {
             "date": "2026-10-29",
-            "naver_close": 56600,
-            "yahoo_close": 56700
+            "naver_close": 898000,
+            "yahoo_close": 878000
           },
           {
             "date": "2026-10-30",
-            "naver_close": 52000,
-            "yahoo_close": 52700
+            "naver_close": 862000,
+            "yahoo_close": 876000
           },
           {
             "date": "2026-11-02",
-            "naver_close": 52600,
-            "yahoo_close": 52100
+            "naver_close": 886000,
+            "yahoo_close": 876000
           },
           {
             "date": "2026-11-03",
-            "naver_close": 50000,
-            "yahoo_close": 49300
+            "naver_close": 876000,
+            "yahoo_close": 869000
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "103140": {
+        "count": 31,
+        "samples": [
+          {
+            "date": "2026-10-16",
+            "naver_close": 62600,
+            "yahoo_close": 62100
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 64600,
+            "yahoo_close": 64700
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 61100,
+            "yahoo_close": 61400
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 61200,
+            "yahoo_close": 61000
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 60100,
+            "yahoo_close": 60500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 58600,
+            "yahoo_close": 59500
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 57300,
+            "yahoo_close": 57200
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 58500,
+            "yahoo_close": 57800
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 59700,
+            "yahoo_close": 59800
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 58300,
+            "yahoo_close": 58400
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 57200,
+            "yahoo_close": 57500
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 60200,
+            "yahoo_close": 60300
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -3268,6 +3268,72 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
+      "000490": {
+        "count": 28,
+        "samples": [
+          {
+            "date": "2026-10-16",
+            "naver_close": 6920,
+            "yahoo_close": 6940
+          },
+          {
+            "date": "2026-10-19",
+            "naver_close": 7200,
+            "yahoo_close": 7120
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 6970,
+            "yahoo_close": 6950
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 7030,
+            "yahoo_close": 7070
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 7100,
+            "yahoo_close": 7150
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 7000,
+            "yahoo_close": 6940
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 7030,
+            "yahoo_close": 6960
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 7220,
+            "yahoo_close": 7140
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 6960,
+            "yahoo_close": 7000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 6820,
+            "yahoo_close": 6900
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 7000,
+            "yahoo_close": 6980
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 6740,
+            "yahoo_close": 6540
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
       "025860": {
         "count": 28,
         "samples": [
@@ -3334,72 +3400,6 @@
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
       },
-      "064350": {
-        "count": 33,
-        "samples": [
-          {
-            "date": "2026-10-19",
-            "naver_close": 99600,
-            "yahoo_close": 100700
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 85300,
-            "yahoo_close": 86900
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 88500,
-            "yahoo_close": 88600
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 84800,
-            "yahoo_close": 85500
-          },
-          {
-            "date": "2026-10-23",
-            "naver_close": 81600,
-            "yahoo_close": 82700
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 78500,
-            "yahoo_close": 79100
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 79900,
-            "yahoo_close": 79800
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 82600,
-            "yahoo_close": 82800
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 78900,
-            "yahoo_close": 79000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 75100,
-            "yahoo_close": 76500
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 78700,
-            "yahoo_close": 78800
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 77700,
-            "yahoo_close": 77100
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
       "002100": {
         "count": 31,
         "samples": [
@@ -3462,6 +3462,72 @@
             "date": "2026-11-03",
             "naver_close": 8890,
             "yahoo_close": 8780
+          }
+        ],
+        "selected_source": "Yahoo Finance (Naver historical disagreement)"
+      },
+      "064350": {
+        "count": 33,
+        "samples": [
+          {
+            "date": "2026-10-19",
+            "naver_close": 99600,
+            "yahoo_close": 100700
+          },
+          {
+            "date": "2026-10-20",
+            "naver_close": 85300,
+            "yahoo_close": 86900
+          },
+          {
+            "date": "2026-10-21",
+            "naver_close": 88500,
+            "yahoo_close": 88600
+          },
+          {
+            "date": "2026-10-22",
+            "naver_close": 84800,
+            "yahoo_close": 85500
+          },
+          {
+            "date": "2026-10-23",
+            "naver_close": 81600,
+            "yahoo_close": 82700
+          },
+          {
+            "date": "2026-10-26",
+            "naver_close": 78500,
+            "yahoo_close": 79100
+          },
+          {
+            "date": "2026-10-27",
+            "naver_close": 79900,
+            "yahoo_close": 79800
+          },
+          {
+            "date": "2026-10-28",
+            "naver_close": 82600,
+            "yahoo_close": 82800
+          },
+          {
+            "date": "2026-10-29",
+            "naver_close": 78900,
+            "yahoo_close": 79000
+          },
+          {
+            "date": "2026-10-30",
+            "naver_close": 75100,
+            "yahoo_close": 76500
+          },
+          {
+            "date": "2026-11-02",
+            "naver_close": 78700,
+            "yahoo_close": 78800
+          },
+          {
+            "date": "2026-11-03",
+            "naver_close": 77700,
+            "yahoo_close": 77100
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
@@ -3597,72 +3663,6 @@
           }
         ],
         "selected_source": "Yahoo Finance (Naver historical disagreement)"
-      },
-      "000490": {
-        "count": 28,
-        "samples": [
-          {
-            "date": "2026-10-16",
-            "naver_close": 6920,
-            "yahoo_close": 6940
-          },
-          {
-            "date": "2026-10-19",
-            "naver_close": 7200,
-            "yahoo_close": 7120
-          },
-          {
-            "date": "2026-10-20",
-            "naver_close": 6970,
-            "yahoo_close": 6950
-          },
-          {
-            "date": "2026-10-21",
-            "naver_close": 7030,
-            "yahoo_close": 7070
-          },
-          {
-            "date": "2026-10-22",
-            "naver_close": 7100,
-            "yahoo_close": 7150
-          },
-          {
-            "date": "2026-10-26",
-            "naver_close": 7000,
-            "yahoo_close": 6940
-          },
-          {
-            "date": "2026-10-27",
-            "naver_close": 7030,
-            "yahoo_close": 6960
-          },
-          {
-            "date": "2026-10-28",
-            "naver_close": 7220,
-            "yahoo_close": 7140
-          },
-          {
-            "date": "2026-10-29",
-            "naver_close": 6960,
-            "yahoo_close": 7000
-          },
-          {
-            "date": "2026-10-30",
-            "naver_close": 6820,
-            "yahoo_close": 6900
-          },
-          {
-            "date": "2026-11-02",
-            "naver_close": 7000,
-            "yahoo_close": 6980
-          },
-          {
-            "date": "2026-11-03",
-            "naver_close": 6740,
-            "yahoo_close": 6540
-          }
-        ],
-        "selected_source": "Yahoo Finance (Naver historical disagreement)"
       }
     }
   },
@@ -3674,16 +3674,16 @@
     "marketRegime": "RISK-OFF · EXTREME FEAR",
     "kospi": "5,649",
     "kospiDelta": "-3.59% · 11-03",
-    "nasdaq": "25,164",
-    "nasdaqDelta": "-1.07% · 11-02",
+    "nasdaq": "25,372",
+    "nasdaqDelta": "+0.83% · 11-03",
     "fx": "1,346",
-    "fxDelta": "-0.04% · 11-03",
-    "us10y": "4.9%",
-    "us10yDelta": "+0.88% · 11-03",
+    "fxDelta": "+0.00% · 11-04",
+    "us10y": "5.0%",
+    "us10yDelta": "+1.48% · 11-03",
     "flowState": "기관 매도 / 외인 매도",
     "flowDesc": "기관 -4,941억 · 외인 -15,086억",
-    "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-    "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+    "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+    "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
     "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
     "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
     "sector1": "AI 서버 부품 / 메모리",
@@ -3840,7 +3840,7 @@
     "finalLine": "최종선정점수 71.9점 = Fundamental/Catalyst 70×60% + Trading 75×40%. [AI]",
     "sourceMarketDate": "2026-11-03 종가",
     "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-    "sourceUS": "Nasdaq 25,164 · US10Y 4.9%",
+    "sourceUS": "Nasdaq 25,372 · US10Y 5.0%",
     "sourceTopPick": "HMM · 선택 종목별 상세 분석",
     "sourceConsensus": "네이버증권 연계 FnGuide · Fwd.12M/2026E · 확인 2026-10-02 · 실적표: 검증된 실적/컨센서스 스냅샷",
     "footerDataNote": "데이터 기준: 2026-11-03 종가. 최신 반영형 대시보드이며 자체 점수·계산·매매전략은 참고용입니다. 투자 권유가 아닙니다.",
@@ -3876,10 +3876,10 @@
     "rsiScoreState": "중립 하단 · RSI 급락",
     "stochScoreState": "Dead Cross",
     "maGapInfo": "MA20 괴리 +2.6% · MA60 괴리 +6.9% [AI]",
-    "volumeInfo": "20D 평균 대비 0.58배 [AI]",
+    "volumeInfo": "20D 평균 대비 0.52배 [AI]",
     "atrInfo": "ATR14 893원 [AI]",
     "gapInfo": "시가 Gap -0.42% [AI]",
-    "turnoverInfo": "252억원",
+    "turnoverInfo": "225억원",
     "high52Info": "52주 고점 24,500원 [AI]",
     "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
     "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -3909,7 +3909,7 @@
     "target4Display": "목표가 확인 중",
     "price5": "67,800원",
     "target5Display": "목표가 확인 중",
-    "nasdaqDataDate": "2026-11-02",
+    "nasdaqDataDate": "2026-11-03",
     "tradePeriod": "1~6개월",
     "tradeOpinion": "NEUTRAL",
     "selectionScore": "71.9 [AI]",
@@ -5375,10 +5375,10 @@
         "rsiScoreState": "중립 하단 · RSI 급락",
         "stochScoreState": "Dead Cross",
         "maGapInfo": "MA20 괴리 +2.6% · MA60 괴리 +6.9% [AI]",
-        "volumeInfo": "20D 평균 대비 0.58배 [AI]",
+        "volumeInfo": "20D 평균 대비 0.52배 [AI]",
         "atrInfo": "ATR14 893원 [AI]",
         "gapInfo": "시가 Gap -0.42% [AI]",
-        "turnoverInfo": "252억원",
+        "turnoverInfo": "225억원",
         "high52Info": "52주 고점 24,500원 [AI]",
         "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
         "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -5408,7 +5408,7 @@
         "target4Display": "목표가 확인 중",
         "price5": "67,800원",
         "target5Display": "목표가 확인 중",
-        "nasdaqDataDate": "2026-11-02",
+        "nasdaqDataDate": "2026-11-03",
         "tradePeriod": "1~6개월",
         "tradeOpinion": "NEUTRAL",
         "selectionScore": "71.9 [AI]",
@@ -5422,22 +5422,22 @@
         "kospiDelta": "-3.59% · 11-03",
         "kosdaq": "704",
         "kosdaqDelta": "-4.08% · 11-03",
-        "nasdaq": "25,164",
-        "nasdaqDelta": "-1.07% · 11-02",
+        "nasdaq": "25,372",
+        "nasdaqDelta": "+0.83% · 11-03",
         "fx": "1,346",
-        "fxDelta": "-0.04% · 11-03",
-        "us10y": "4.9%",
-        "us10yDelta": "+0.88% · 11-03",
+        "fxDelta": "+0.00% · 11-04",
+        "us10y": "5.0%",
+        "us10yDelta": "+1.48% · 11-03",
         "flowState": "기관 매도 / 외인 매도",
         "flowDesc": "기관 -4,941억 · 외인 -15,086억",
         "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
         "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+        "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-        "sourceUS": "Nasdaq 25,164 · US10Y 4.9%",
+        "sourceUS": "Nasdaq 25,372 · US10Y 5.0%",
         "gpmCard": "N/A",
         "opmCard": "10.4%"
       },
@@ -5523,7 +5523,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-        "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+        "fetched_at": "2026-11-04T07:38:07.953247+09:00"
       },
       "valuation_snapshot": {
         "per": 15.63,
@@ -5754,7 +5754,7 @@
         "target4Display": "목표가 확인 중",
         "price5": "67,800원",
         "target5Display": "목표가 확인 중",
-        "nasdaqDataDate": "2026-11-02",
+        "nasdaqDataDate": "2026-11-03",
         "tradePeriod": "1~6개월",
         "tradeOpinion": "NEUTRAL",
         "selectionScore": "61.0 [AI]",
@@ -5770,22 +5770,22 @@
         "kospiDelta": "-3.59% · 11-03",
         "kosdaq": "704",
         "kosdaqDelta": "-4.08% · 11-03",
-        "nasdaq": "25,164",
-        "nasdaqDelta": "-1.07% · 11-02",
+        "nasdaq": "25,372",
+        "nasdaqDelta": "+0.83% · 11-03",
         "fx": "1,346",
-        "fxDelta": "-0.04% · 11-03",
-        "us10y": "4.9%",
-        "us10yDelta": "+0.88% · 11-03",
+        "fxDelta": "+0.00% · 11-04",
+        "us10y": "5.0%",
+        "us10yDelta": "+1.48% · 11-03",
         "flowState": "기관 매도 / 외인 매도",
         "flowDesc": "기관 -4,941억 · 외인 -15,086억",
         "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
         "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+        "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-        "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+        "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
       },
       "inputs": {
         "currentPrice": "1452000",
@@ -5869,7 +5869,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/207940/finance/quarter",
-        "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+        "fetched_at": "2026-11-04T07:38:07.953247+09:00"
       },
       "valuation_snapshot": {
         "per": 39.97,
@@ -6067,10 +6067,10 @@
         "rsiScoreState": "건강한 상승구간",
         "stochScoreState": "Dead Cross",
         "maGapInfo": "MA20 괴리 +0.6% · MA60 괴리 +0.9% [AI]",
-        "volumeInfo": "20D 평균 대비 0.68배 [AI]",
+        "volumeInfo": "20D 평균 대비 0.61배 [AI]",
         "atrInfo": "ATR14 6,914원 [AI]",
         "gapInfo": "시가 Gap -0.21% [AI]",
-        "turnoverInfo": "654억원",
+        "turnoverInfo": "590억원",
         "high52Info": "52주 고점 236,667원 [AI]",
         "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
         "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -6100,7 +6100,7 @@
         "target4Display": "목표가 확인 중",
         "price5": "67,800원",
         "target5Display": "목표가 확인 중",
-        "nasdaqDataDate": "2026-11-02",
+        "nasdaqDataDate": "2026-11-03",
         "tradePeriod": "1~6개월",
         "tradeOpinion": "NEUTRAL",
         "selectionScore": "60.2 [AI]",
@@ -6116,22 +6116,22 @@
         "kospiDelta": "-3.59% · 11-03",
         "kosdaq": "704",
         "kosdaqDelta": "-4.08% · 11-03",
-        "nasdaq": "25,164",
-        "nasdaqDelta": "-1.07% · 11-02",
+        "nasdaq": "25,372",
+        "nasdaqDelta": "+0.83% · 11-03",
         "fx": "1,346",
-        "fxDelta": "-0.04% · 11-03",
-        "us10y": "4.9%",
-        "us10yDelta": "+0.88% · 11-03",
+        "fxDelta": "+0.00% · 11-04",
+        "us10y": "5.0%",
+        "us10yDelta": "+1.48% · 11-03",
         "flowState": "기관 매도 / 외인 매도",
         "flowDesc": "기관 -4,941억 · 외인 -15,086억",
         "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
         "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+        "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-        "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+        "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
       },
       "inputs": {
         "currentPrice": "189900",
@@ -6215,7 +6215,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-        "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+        "fetched_at": "2026-11-04T07:38:07.953247+09:00"
       },
       "valuation_snapshot": {
         "per": 29.0,
@@ -6413,10 +6413,10 @@
         "rsiScoreState": "50선 돌파 시도",
         "stochScoreState": "과매수 영역",
         "maGapInfo": "MA20 괴리 +4.0% · MA60 괴리 +2.7% [AI]",
-        "volumeInfo": "20D 평균 대비 2.51배 [AI]",
+        "volumeInfo": "20D 평균 대비 2.48배 [AI]",
         "atrInfo": "ATR14 1,289원 [AI]",
         "gapInfo": "시가 Gap +3.15% [AI]",
-        "turnoverInfo": "1895억원",
+        "turnoverInfo": "1871억원",
         "high52Info": "52주 고점 32,000원 [AI]",
         "divergence": "Bullish Divergence · RSI [AI]",
         "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -6446,7 +6446,7 @@
         "target4Display": "목표가 확인 중",
         "price5": "67,800원",
         "target5Display": "목표가 확인 중",
-        "nasdaqDataDate": "2026-11-02",
+        "nasdaqDataDate": "2026-11-03",
         "tradePeriod": "1~6개월",
         "tradeOpinion": "CAUTION",
         "selectionScore": "59.3 [AI]",
@@ -6462,22 +6462,22 @@
         "kospiDelta": "-3.59% · 11-03",
         "kosdaq": "704",
         "kosdaqDelta": "-4.08% · 11-03",
-        "nasdaq": "25,164",
-        "nasdaqDelta": "-1.07% · 11-02",
+        "nasdaq": "25,372",
+        "nasdaqDelta": "+0.83% · 11-03",
         "fx": "1,346",
-        "fxDelta": "-0.04% · 11-03",
-        "us10y": "4.9%",
-        "us10yDelta": "+0.88% · 11-03",
+        "fxDelta": "+0.00% · 11-04",
+        "us10y": "5.0%",
+        "us10yDelta": "+1.48% · 11-03",
         "flowState": "기관 매도 / 외인 매도",
         "flowDesc": "기관 -4,941억 · 외인 -15,086억",
         "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
         "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+        "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-        "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+        "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
       },
       "inputs": {
         "currentPrice": "29150",
@@ -6561,7 +6561,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/003490/finance/quarter",
-        "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+        "fetched_at": "2026-11-04T07:38:07.953247+09:00"
       },
       "valuation_snapshot": {
         "per": null,
@@ -6759,10 +6759,10 @@
         "rsiScoreState": "50선 돌파 시도",
         "stochScoreState": "50~70 상승 우위",
         "maGapInfo": "MA20 괴리 +0.0% · MA60 괴리 -5.1% [AI]",
-        "volumeInfo": "20D 평균 대비 1.25배 [AI]",
+        "volumeInfo": "20D 평균 대비 1.22배 [AI]",
         "atrInfo": "ATR14 1,911원 [AI]",
         "gapInfo": "시가 Gap +0.90% [AI]",
-        "turnoverInfo": "40억원",
+        "turnoverInfo": "39억원",
         "high52Info": "52주 고점 145,700원 [AI]",
         "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
         "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -6792,7 +6792,7 @@
         "target4Display": "목표가 확인 중",
         "price5": "67,800원",
         "target5Display": "목표가 확인 중",
-        "nasdaqDataDate": "2026-11-02",
+        "nasdaqDataDate": "2026-11-03",
         "tradePeriod": "1~6개월",
         "tradeOpinion": "CAUTION",
         "selectionScore": "56.7 [AI]",
@@ -6808,22 +6808,22 @@
         "kospiDelta": "-3.59% · 11-03",
         "kosdaq": "704",
         "kosdaqDelta": "-4.08% · 11-03",
-        "nasdaq": "25,164",
-        "nasdaqDelta": "-1.07% · 11-02",
+        "nasdaq": "25,372",
+        "nasdaqDelta": "+0.83% · 11-03",
         "fx": "1,346",
-        "fxDelta": "-0.04% · 11-03",
-        "us10y": "4.9%",
-        "us10yDelta": "+0.88% · 11-03",
+        "fxDelta": "+0.00% · 11-04",
+        "us10y": "5.0%",
+        "us10yDelta": "+1.48% · 11-03",
         "flowState": "기관 매도 / 외인 매도",
         "flowDesc": "기관 -4,941억 · 외인 -15,086억",
         "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
         "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-        "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+        "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+        "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
         "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
         "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
         "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-        "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+        "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
       },
       "inputs": {
         "currentPrice": "67800",
@@ -6907,7 +6907,7 @@
         ],
         "source": "Naver Stock · FnGuide quarterly",
         "url": "https://m.stock.naver.com/api/stock/000120/finance/quarter",
-        "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+        "fetched_at": "2026-11-04T07:38:07.953247+09:00"
       },
       "valuation_snapshot": {
         "per": 6.92,
@@ -6927,32 +6927,32 @@
     "us": {
       "available": true,
       "fresh": true,
-      "score": 18.7,
+      "score": 19.1,
       "rating": "극단적 공포",
       "rating_en": "extreme fear",
       "previous_close": 22.7285714285714,
       "previous_1_week": 32.8857142857143,
       "previous_1_month": 38.199999999999996,
-      "timestamp": "2026-11-03T11:49:31+00:00",
+      "timestamp": "2026-11-03T22:20:06+00:00",
       "source": "CNN Fear & Greed"
     },
     "kr": {
       "available": true,
       "fresh": true,
-      "score": 23.4,
-      "raw_score": 23.4,
+      "score": 23.6,
+      "raw_score": 23.6,
       "rating": "극단적 공포",
-      "timestamp": "2026-11-03T21:08:07.244308+09:00",
+      "timestamp": "2026-11-04T07:38:07.953247+09:00",
       "source": "KOSPI·KOSDAQ 분리 심리 · 자체 정규화 [AI]",
       "method": "KOSPI와 KOSDAQ을 각각 최근성 우선(5D > 20D > 60D) 추세·20D 변동성·5D 모멘텀·외인/기관 수급·환율로 계산 후 한국 종합점수는 두 시장 평균 [AI]",
       "kospi": {
         "available": true,
         "fresh": true,
         "market": "KOSPI",
-        "score": 28.4,
-        "raw_score": 28.4,
+        "score": 28.6,
+        "raw_score": 28.6,
         "rating": "공포",
-        "timestamp": "2026-11-03T21:08:07.244308+09:00",
+        "timestamp": "2026-11-04T07:38:07.953247+09:00",
         "source": "KOSPI·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSPI 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSPI 20D ≤ -15% → 상단 44",
@@ -7008,9 +7008,9 @@
           {
             "key": "safe_haven",
             "label": "USD/KRW 20D",
-            "score": 37.1,
+            "score": 42.9,
             "weight": 5,
-            "value": "+0.14%"
+            "value": "-0.03%"
           }
         ],
         "trend5_detail": {
@@ -7032,10 +7032,10 @@
         "available": true,
         "fresh": true,
         "market": "KOSDAQ",
-        "score": 18.4,
-        "raw_score": 18.4,
+        "score": 18.7,
+        "raw_score": 18.7,
         "rating": "극단적 공포",
-        "timestamp": "2026-11-03T21:08:07.244308+09:00",
+        "timestamp": "2026-11-04T07:38:07.953247+09:00",
         "source": "KOSDAQ·USD/KRW·수급 · Sentiment v3 자체계산 [AI]",
         "method": "KOSDAQ 5D 추세 25% + 20D 추세 20% + 60D 추세 10% + 20D 변동성 15% + 5D 모멘텀 10% + 수급 15% + FX 5% · 20D/60D 추세는 절대수익률 60% + 과거 Percentile 40% · Regime Gate 적용",
         "regime_gate": "KOSDAQ 20D ≤ -15% → 상단 44",
@@ -7091,9 +7091,9 @@
           {
             "key": "safe_haven",
             "label": "USD/KRW 20D",
-            "score": 37.1,
+            "score": 42.9,
             "weight": 5,
-            "value": "+0.14%"
+            "value": "-0.03%"
           }
         ],
         "trend5_detail": {
@@ -7114,16 +7114,16 @@
       "components": [],
       "errors": []
     },
-    "blended_score": 21.3,
+    "blended_score": 21.6,
     "blended_rating": "극단적 공포",
-    "kr_us_gap": 4.7,
+    "kr_us_gap": 4.5,
     "regime": "RISK-OFF · EXTREME FEAR",
     "recommendation": {
       "base_modifier": -1,
       "note": "극단적 공포입니다. 일괄 매수 가점은 주지 않고 기술적 반등 조건이 확인된 종목만 별도 가점합니다. [AI]",
       "profiles": []
     },
-    "updated_at": "2026-11-03T21:08:07.244308+09:00"
+    "updated_at": "2026-11-04T07:38:07.953247+09:00"
   },
   "stock_profile_groups": {
     "KOSPI": [
@@ -7310,10 +7310,10 @@
           "rsiScoreState": "중립 하단 · RSI 급락",
           "stochScoreState": "Dead Cross",
           "maGapInfo": "MA20 괴리 +2.6% · MA60 괴리 +6.9% [AI]",
-          "volumeInfo": "20D 평균 대비 0.58배 [AI]",
+          "volumeInfo": "20D 평균 대비 0.52배 [AI]",
           "atrInfo": "ATR14 893원 [AI]",
           "gapInfo": "시가 Gap -0.42% [AI]",
-          "turnoverInfo": "252억원",
+          "turnoverInfo": "225억원",
           "high52Info": "52주 고점 24,500원 [AI]",
           "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
           "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -7343,7 +7343,7 @@
           "target4Display": "목표가 확인 중",
           "price5": "67,800원",
           "target5Display": "목표가 확인 중",
-          "nasdaqDataDate": "2026-11-02",
+          "nasdaqDataDate": "2026-11-03",
           "tradePeriod": "1~6개월",
           "tradeOpinion": "NEUTRAL",
           "selectionScore": "71.9 [AI]",
@@ -7357,22 +7357,22 @@
           "kospiDelta": "-3.59% · 11-03",
           "kosdaq": "704",
           "kosdaqDelta": "-4.08% · 11-03",
-          "nasdaq": "25,164",
-          "nasdaqDelta": "-1.07% · 11-02",
+          "nasdaq": "25,372",
+          "nasdaqDelta": "+0.83% · 11-03",
           "fx": "1,346",
-          "fxDelta": "-0.04% · 11-03",
-          "us10y": "4.9%",
-          "us10yDelta": "+0.88% · 11-03",
+          "fxDelta": "+0.00% · 11-04",
+          "us10y": "5.0%",
+          "us10yDelta": "+1.48% · 11-03",
           "flowState": "기관 매도 / 외인 매도",
           "flowDesc": "기관 -4,941억 · 외인 -15,086억",
           "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
           "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+          "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-          "sourceUS": "Nasdaq 25,164 · US10Y 4.9%",
+          "sourceUS": "Nasdaq 25,372 · US10Y 5.0%",
           "gpmCard": "N/A",
           "opmCard": "10.4%"
         },
@@ -7458,7 +7458,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/011200/finance/quarter",
-          "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+          "fetched_at": "2026-11-04T07:38:07.953247+09:00"
         },
         "valuation_snapshot": {
           "per": 15.63,
@@ -7689,7 +7689,7 @@
           "target4Display": "목표가 확인 중",
           "price5": "67,800원",
           "target5Display": "목표가 확인 중",
-          "nasdaqDataDate": "2026-11-02",
+          "nasdaqDataDate": "2026-11-03",
           "tradePeriod": "1~6개월",
           "tradeOpinion": "NEUTRAL",
           "selectionScore": "61.0 [AI]",
@@ -7705,22 +7705,22 @@
           "kospiDelta": "-3.59% · 11-03",
           "kosdaq": "704",
           "kosdaqDelta": "-4.08% · 11-03",
-          "nasdaq": "25,164",
-          "nasdaqDelta": "-1.07% · 11-02",
+          "nasdaq": "25,372",
+          "nasdaqDelta": "+0.83% · 11-03",
           "fx": "1,346",
-          "fxDelta": "-0.04% · 11-03",
-          "us10y": "4.9%",
-          "us10yDelta": "+0.88% · 11-03",
+          "fxDelta": "+0.00% · 11-04",
+          "us10y": "5.0%",
+          "us10yDelta": "+1.48% · 11-03",
           "flowState": "기관 매도 / 외인 매도",
           "flowDesc": "기관 -4,941억 · 외인 -15,086억",
           "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
           "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+          "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-          "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+          "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
         },
         "inputs": {
           "currentPrice": "1452000",
@@ -7804,7 +7804,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/207940/finance/quarter",
-          "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+          "fetched_at": "2026-11-04T07:38:07.953247+09:00"
         },
         "valuation_snapshot": {
           "per": 39.97,
@@ -8002,10 +8002,10 @@
           "rsiScoreState": "건강한 상승구간",
           "stochScoreState": "Dead Cross",
           "maGapInfo": "MA20 괴리 +0.6% · MA60 괴리 +0.9% [AI]",
-          "volumeInfo": "20D 평균 대비 0.68배 [AI]",
+          "volumeInfo": "20D 평균 대비 0.61배 [AI]",
           "atrInfo": "ATR14 6,914원 [AI]",
           "gapInfo": "시가 Gap -0.21% [AI]",
-          "turnoverInfo": "654억원",
+          "turnoverInfo": "590억원",
           "high52Info": "52주 고점 236,667원 [AI]",
           "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
           "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -8035,7 +8035,7 @@
           "target4Display": "목표가 확인 중",
           "price5": "67,800원",
           "target5Display": "목표가 확인 중",
-          "nasdaqDataDate": "2026-11-02",
+          "nasdaqDataDate": "2026-11-03",
           "tradePeriod": "1~6개월",
           "tradeOpinion": "NEUTRAL",
           "selectionScore": "60.2 [AI]",
@@ -8051,22 +8051,22 @@
           "kospiDelta": "-3.59% · 11-03",
           "kosdaq": "704",
           "kosdaqDelta": "-4.08% · 11-03",
-          "nasdaq": "25,164",
-          "nasdaqDelta": "-1.07% · 11-02",
+          "nasdaq": "25,372",
+          "nasdaqDelta": "+0.83% · 11-03",
           "fx": "1,346",
-          "fxDelta": "-0.04% · 11-03",
-          "us10y": "4.9%",
-          "us10yDelta": "+0.88% · 11-03",
+          "fxDelta": "+0.00% · 11-04",
+          "us10y": "5.0%",
+          "us10yDelta": "+1.48% · 11-03",
           "flowState": "기관 매도 / 외인 매도",
           "flowDesc": "기관 -4,941억 · 외인 -15,086억",
           "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
           "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+          "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-          "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+          "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
         },
         "inputs": {
           "currentPrice": "189900",
@@ -8150,7 +8150,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/068270/finance/quarter",
-          "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+          "fetched_at": "2026-11-04T07:38:07.953247+09:00"
         },
         "valuation_snapshot": {
           "per": 29.0,
@@ -8348,10 +8348,10 @@
           "rsiScoreState": "50선 돌파 시도",
           "stochScoreState": "과매수 영역",
           "maGapInfo": "MA20 괴리 +4.0% · MA60 괴리 +2.7% [AI]",
-          "volumeInfo": "20D 평균 대비 2.51배 [AI]",
+          "volumeInfo": "20D 평균 대비 2.48배 [AI]",
           "atrInfo": "ATR14 1,289원 [AI]",
           "gapInfo": "시가 Gap +3.15% [AI]",
-          "turnoverInfo": "1895억원",
+          "turnoverInfo": "1871억원",
           "high52Info": "52주 고점 32,000원 [AI]",
           "divergence": "Bullish Divergence · RSI [AI]",
           "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -8381,7 +8381,7 @@
           "target4Display": "목표가 확인 중",
           "price5": "67,800원",
           "target5Display": "목표가 확인 중",
-          "nasdaqDataDate": "2026-11-02",
+          "nasdaqDataDate": "2026-11-03",
           "tradePeriod": "1~6개월",
           "tradeOpinion": "CAUTION",
           "selectionScore": "59.3 [AI]",
@@ -8397,22 +8397,22 @@
           "kospiDelta": "-3.59% · 11-03",
           "kosdaq": "704",
           "kosdaqDelta": "-4.08% · 11-03",
-          "nasdaq": "25,164",
-          "nasdaqDelta": "-1.07% · 11-02",
+          "nasdaq": "25,372",
+          "nasdaqDelta": "+0.83% · 11-03",
           "fx": "1,346",
-          "fxDelta": "-0.04% · 11-03",
-          "us10y": "4.9%",
-          "us10yDelta": "+0.88% · 11-03",
+          "fxDelta": "+0.00% · 11-04",
+          "us10y": "5.0%",
+          "us10yDelta": "+1.48% · 11-03",
           "flowState": "기관 매도 / 외인 매도",
           "flowDesc": "기관 -4,941억 · 외인 -15,086억",
           "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
           "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+          "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-          "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+          "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
         },
         "inputs": {
           "currentPrice": "29150",
@@ -8496,7 +8496,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/003490/finance/quarter",
-          "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+          "fetched_at": "2026-11-04T07:38:07.953247+09:00"
         },
         "valuation_snapshot": {
           "per": null,
@@ -8694,10 +8694,10 @@
           "rsiScoreState": "50선 돌파 시도",
           "stochScoreState": "50~70 상승 우위",
           "maGapInfo": "MA20 괴리 +0.0% · MA60 괴리 -5.1% [AI]",
-          "volumeInfo": "20D 평균 대비 1.25배 [AI]",
+          "volumeInfo": "20D 평균 대비 1.22배 [AI]",
           "atrInfo": "ATR14 1,911원 [AI]",
           "gapInfo": "시가 Gap +0.90% [AI]",
-          "turnoverInfo": "40억원",
+          "turnoverInfo": "39억원",
           "high52Info": "52주 고점 145,700원 [AI]",
           "divergence": "뚜렷한 RSI/MACD Divergence 없음 [AI]",
           "technicalConfirmation": "4개 지표 동조 신호 추가 확인 필요 [AI]",
@@ -8727,7 +8727,7 @@
           "target4Display": "목표가 확인 중",
           "price5": "67,800원",
           "target5Display": "목표가 확인 중",
-          "nasdaqDataDate": "2026-11-02",
+          "nasdaqDataDate": "2026-11-03",
           "tradePeriod": "1~6개월",
           "tradeOpinion": "CAUTION",
           "selectionScore": "56.7 [AI]",
@@ -8743,22 +8743,22 @@
           "kospiDelta": "-3.59% · 11-03",
           "kosdaq": "704",
           "kosdaqDelta": "-4.08% · 11-03",
-          "nasdaq": "25,164",
-          "nasdaqDelta": "-1.07% · 11-02",
+          "nasdaq": "25,372",
+          "nasdaqDelta": "+0.83% · 11-03",
           "fx": "1,346",
-          "fxDelta": "-0.04% · 11-03",
-          "us10y": "4.9%",
-          "us10yDelta": "+0.88% · 11-03",
+          "fxDelta": "+0.00% · 11-04",
+          "us10y": "5.0%",
+          "us10yDelta": "+1.48% · 11-03",
           "flowState": "기관 매도 / 외인 매도",
           "flowDesc": "기관 -4,941억 · 외인 -15,086억",
           "kospiFlow": "외국인 -15,086억 · 기관 -4,941억",
           "kosdaqFlow": "외국인 -713억 · 기관 -2,359억",
-          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,164 (-1.07% · 11-02)로 최신 종가를 반영했습니다.",
-          "marketReason2": "USD/KRW 1,346 (-0.04% · 11-03), 미 10년물 4.9% (+0.88% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
+          "marketReason1": "KOSPI 5,649 (-3.59% · 11-03), KOSDAQ 704 (-4.08% · 11-03), Nasdaq 25,372 (+0.83% · 11-03)로 최신 종가를 반영했습니다.",
+          "marketReason2": "USD/KRW 1,346 (+0.00% · 11-04), 미 10년물 5.0% (+1.48% · 11-03). KOSPI 수급은 외국인 -15,086억 · 기관 -4,941억입니다.",
           "marketReason3": "급변 장세에서는 지수 반등 자체보다 실적 추정치 변화, 외국인·기관 수급, 주요 지지·저항과 변동성 축소 여부를 함께 확인합니다.",
           "marketImpact": "시장 방향성이 빠르게 바뀌는 구간이므로 지수 추격보다 종목별 실적·Catalyst와 진입 구조가 동시에 확인되는 후보를 우선합니다.",
           "sourceKR": "KOSPI 5,649 · KOSDAQ 704 · USD/KRW 1,346",
-          "sourceUS": "Nasdaq 25,164 · US10Y 4.9%"
+          "sourceUS": "Nasdaq 25,372 · US10Y 5.0%"
         },
         "inputs": {
           "currentPrice": "67800",
@@ -8842,7 +8842,7 @@
           ],
           "source": "Naver Stock · FnGuide quarterly",
           "url": "https://m.stock.naver.com/api/stock/000120/finance/quarter",
-          "fetched_at": "2026-11-03T21:08:07.244308+09:00"
+          "fetched_at": "2026-11-04T07:38:07.953247+09:00"
         },
         "valuation_snapshot": {
           "per": 6.92,
@@ -8872,29 +8872,11 @@
       "priority": "<60 제외"
     },
     {
-      "code": "108490",
-      "name": "로보티즈",
-      "fundamental_score": 62.1,
-      "trading_score": 41.0,
-      "final_score": 53.66,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "277810",
-      "name": "레인보우로보틱스",
-      "fundamental_score": 53.5,
-      "trading_score": 38.0,
-      "final_score": 47.3,
-      "eligible": false,
-      "priority": "<60 제외"
-    },
-    {
-      "code": "035900",
-      "name": "JYP Ent.",
-      "fundamental_score": 69.3,
-      "trading_score": 43.0,
-      "final_score": 58.78,
+      "code": "189300",
+      "name": "인텔리안테크",
+      "fundamental_score": 48.8,
+      "trading_score": 28.0,
+      "final_score": 40.48,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -8908,11 +8890,20 @@
       "priority": "<60 제외"
     },
     {
-      "code": "189300",
-      "name": "인텔리안테크",
-      "fundamental_score": 48.8,
-      "trading_score": 28.0,
-      "final_score": 40.48,
+      "code": "035900",
+      "name": "JYP Ent.",
+      "fundamental_score": 69.3,
+      "trading_score": 43.0,
+      "final_score": 58.78,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "277810",
+      "name": "레인보우로보틱스",
+      "fundamental_score": 53.5,
+      "trading_score": 38.0,
+      "final_score": 47.3,
       "eligible": false,
       "priority": "<60 제외"
     },
@@ -8922,6 +8913,15 @@
       "fundamental_score": 49.0,
       "trading_score": 39.0,
       "final_score": 45.0,
+      "eligible": false,
+      "priority": "<60 제외"
+    },
+    {
+      "code": "108490",
+      "name": "로보티즈",
+      "fundamental_score": 62.1,
+      "trading_score": 41.0,
+      "final_score": 53.66,
       "eligible": false,
       "priority": "<60 제외"
     }
@@ -9351,10 +9351,10 @@
       "priority": "<50"
     }
   ],
-  "kospi_selection_updated_at": "2026-11-03T21:08:07.244308+09:00",
+  "kospi_selection_updated_at": "2026-11-04T07:38:07.953247+09:00",
   "sector_cycle": {
     "as_of": "2026-11-03",
-    "generated_at": "2026-11-03T21:08:07.244308+09:00",
+    "generated_at": "2026-11-04T07:38:07.953247+09:00",
     "sector_count": 36,
     "theme_count": 36,
     "method": "36 Sector Universe · Sector > Sub-sector > Theme · representative stocks daily refresh · Level 40% + Momentum 60%",
